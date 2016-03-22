@@ -1,0 +1,7 @@
+bower_components/*
+node_modules/*
+LICENSE
+bower.json
+package.json
+README.md
+npm-debug.log

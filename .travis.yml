@@ -1,0 +1,17 @@
+language: node_js
+
+notifications: # set notification options
+  email: false
+
+sudo: false
+
+node_js:
+  - "5.4.1"
+
+services:
+  - redis-server
+
+before_script:
+  - npm install -g eslint
+script:
+  - "eslint ."
