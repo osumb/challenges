@@ -1,6 +1,6 @@
 module.exports = {
   'db': {
-    'postgres': process.env.CHALLENGES_DATABASE_URL || 'postgres://localhost:5432/challenges_dev'
+    'postgres': process.env.DATABASE_URL || 'postgres://localhost:5432/challenges_dev'
   },
   'passport': {
     'secret': process.env.PASSPORT_SECRET || 'keyboard cat'
