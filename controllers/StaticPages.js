@@ -1,5 +1,5 @@
 function StaticPagesController() {
-  this.home = function(req, res, next) {
+  this.home = function(req, res) {
     res.render('index', {title: 'OSUMB Challenges', name: 'World'});
   }
 }
