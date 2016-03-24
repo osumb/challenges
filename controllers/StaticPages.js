@@ -1,3 +1,4 @@
+'use strict';
 const Performance = require('../models/Performance');
 
 function StaticPagesController() {

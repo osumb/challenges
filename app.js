@@ -1,3 +1,4 @@
+'use strict';
 const express = require('express');
 const path = require('path');
 const favicon = require('serve-favicon');
@@ -5,6 +6,8 @@ const logger = require('morgan');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const exphbs = require('express-handlebars');
+const config = require('./config');
+const http = require('http');
 
 const routes = require('./routes/routes');
 const StaticPagesController = require('./controllers/StaticPages');
@@ -65,5 +68,19 @@ app.use(function(err, req, res) {
   });
 });
 
+let server;
+function start() {
+  routes.setup(app, controllers);
+  var port = config.server.port;
+  server = http.createServer(app);
+  server.listen(port);
+  console.log('Express server listening on port %d in %s mode', port, app.settings.env);
+}
 
-module.exports = app;
+function end() {
+  server.close();
+}
+
+exports.app = app;
+exports.start = start;
+exports.end = end;

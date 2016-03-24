@@ -7,7 +7,8 @@
   "scripts": {
     "dev": "nodemon --use_strict ./bin/www",
     "start": "node --use_strict ./bin/www",
-    "postinstall": "bower cache clean && bower install"
+    "postinstall": "bower cache clean && bower install",
+    "test": "mocha"
   },
   "dependencies": {
     "body-parser": "~1.13.2",
@@ -21,5 +22,12 @@
     "pg-hstore": "^2.3.2",
     "sequelize": "^3.20.0",
     "serve-favicon": "~2.3.0"
+  },
+  "devDependencies": {
+    "mocha": "^2.4.5",
+    "node-mocks-http": "^1.5.2",
+    "shelljs": "^0.6.0",
+    "should": "^8.3.0",
+    "supertest": "^1.2.0"
   }
 }
