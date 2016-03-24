@@ -6,12 +6,15 @@ notifications: # set notification options
 sudo: false
 
 node_js:
-  - "5.4.1"
+  - "4.1"
 
 services:
-  - redis-server
+  - postgresql
 
 before_script:
+  - psql -c 'create database challenges_dev;' -U postgres
+  - node models/setup.js
   - npm install -g eslint
 script:
   - "eslint ."
+  - "npm test"
