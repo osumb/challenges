@@ -1,6 +1,6 @@
 const Sequelize = require('sequelize');
 const config = require('../config');
-const sql = new Sequelize(config.db.postgres);
+const sql = new Sequelize(config.db.postgres, {logging: false});
 const dataTypes = {
   id: {
     type: Sequelize.INTEGER,
