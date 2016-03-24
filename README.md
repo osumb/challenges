@@ -1,13 +1,21 @@
-# Challenges
+# OSUMB Challenges
+[![Build Status](https://travis-ci.org/osumb/challenges.svg?branch=master)](https://travis-ci.org/osumb/challenges)
+
+![alt text](./public/images/OSUMBlogo.jpg)
 
 Application for members of the OSUMB to signup for challenges
 
 ## Installation and setup
 First [download and install Homebrew](http://brew.sh/)
 
-Make sure you have nodemon for dev ```npm install nodemon -g```
+Install npm, node, and [nodemon](http://nodemon.io/) for running a local server
+```bash
+brew install npm
+brew install node
+npm install nodemon -g
+```
 
-Inside your terminal application run the following commands to get the project up and running.
+Inside your terminal, run the following commands to get the project up and running.
 
 ```bash
 git clone https://github.com/osumb/challenges.git
@@ -24,7 +32,16 @@ npm run dev
 
 Open [http://localhost:3000](http://localhost:3000) and enjoy!
 
-## Staging vs production
-#### The staging branch is protected just like master! Make pull requests to that branch. When everything works and all tests pass in staging, we'll merge staging to master
-We have a staging instance [osumb-challenges-dev.herokuapp.com](https://osumb-challenges-dev.herokuapp.com/)
-Use that to test changes on a Heroku instance before merging to master
+### Tests
+```bash
+npm test
+```
+
+## Staging vs Production
+### Staging
+The staging branch is protected just like master. To test a feature, make a pull request to this branch. We have a
+staging [Heroku instance](https://osumbchallengesdev.herokuapp.com). When a PR to staging is merged, it will a trigger a
+build on that instance. Give it a minute after merging as it has to go through CI again.
+
+### Production
+Working on it... Waiting for approval to get a domain to get all of that figured out

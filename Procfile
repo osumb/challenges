@@ -1,1 +1,1 @@
-web: node --use_strict bin/www
+web: npm start
