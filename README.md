@@ -8,19 +8,12 @@ Application for members of the OSUMB to signup for challenges
 ## Installation and setup
 First [download and install Homebrew](http://brew.sh/)
 
-Install npm, node, and [nodemon](http://nodemon.io/) for running a local server
-```bash
-brew install npm
-brew install node
-npm install nodemon -g
-```
-
 Inside your terminal, run the following commands to get the project up and running.
 
 ```bash
 git clone https://github.com/osumb/challenges.git
 cd challenges
-npm install
+script/setup
 ```
 
 That's it! All your dependencies are ready to go

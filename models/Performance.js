@@ -23,4 +23,4 @@ const dataTypes = {
 
 const options = {freezeTableName: true};
 
-module.exports = sql.define('performance', dataTypes, options);
+module.exports = sql.define('Performance', dataTypes, options);
