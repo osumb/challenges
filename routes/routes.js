@@ -7,6 +7,9 @@ router.setup = function(app, controllers) {
 
   //Performance Controller
   app.get('/performances', controllers.performance.show);
+
+  //Users Controller
+  app.get('/users', controllers.users.showAll);
 };
 
 module.exports = router;

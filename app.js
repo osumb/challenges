@@ -12,6 +12,7 @@ const http = require('http');
 const routes = require('./routes/routes');
 const StaticPagesController = require('./controllers/StaticPages');
 const PerformanceController = require('./controllers/Performance');
+const UsersController = require('./controllers/Users');
 const app = express();
 
 // view engine setup
@@ -32,7 +33,8 @@ app.use('/bower_components',  express.static( path.join(__dirname, '/bower_compo
 app.use('/', routes);
 const controllers = {
   staticPages: new StaticPagesController(),
-  performance: new PerformanceController()
+  performance: new PerformanceController(),
+  users: new UsersController()
 };
 
 routes.setup(app, controllers);
