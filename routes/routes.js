@@ -10,6 +10,10 @@ router.setup = function(app, controllers) {
 
   //Users Controller
   app.get('/users', controllers.users.showAll);
+  app.get('/users/:nameNumber', controllers.users.show);
+
+  //Challenges Controller
+  app.get('/challenges', controllers.challenges.showAll);
 };
 
 module.exports = router;

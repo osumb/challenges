@@ -5,16 +5,12 @@ const should = require('should');
 const request = require('supertest');
 const hbs = require('express-handlebars');
 const app = require('../app.js')
-const User = require('../models/User');
+const User = require('../models').User;
 const config = require('../config');
 const handlebars = hbs.create();
 
 describe('Users', () => {
   const url = 'http://localhost:3000';
-  it('should return true', (done) => {
-    `test`.should.equal(`test`);
-    done();
-  });
 
   it('should render all users correctly', (done) => {
     User.findAll()

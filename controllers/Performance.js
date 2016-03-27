@@ -1,4 +1,4 @@
-const Performance = require('../models/Performance');
+const Performance = require('../models').Performance;
 function PerformanceController() {
   this.show = function(req, res) {
     Performance.findAll().then((performances) => {

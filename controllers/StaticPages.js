@@ -1,5 +1,5 @@
 'use strict';
-const Performance = require('../models/Performance');
+const Performance = require('../models').Performance;
 
 function StaticPagesController() {
   this.home = function(req, res) {
