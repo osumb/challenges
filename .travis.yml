@@ -6,8 +6,19 @@ notifications: # set notification options
 sudo: false
 
 node_js:
-  - "4.1"
+  - "5.4.1"
 
+
+env:
+  - CXX=g++-4.8
+
+addons:
+  apt:
+    sources:
+    - ubuntu-toolchain-r-test
+    packages:
+    - gcc-4.8
+    - g++-4.8
 services:
   - postgresql
 

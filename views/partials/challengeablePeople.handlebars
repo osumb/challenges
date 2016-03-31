@@ -1,0 +1,8 @@
+<h2>People you can challenge</h2>
+<ul class="list-group">
+  {{#each this.challengeableUsers}}
+    <li class="list-group-item">
+      {{this.row}}{{this.file}}: {{this.name}}
+    </li>
+    {{/each}}
+</ul>
