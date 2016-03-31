@@ -11,10 +11,26 @@ function UsersController() {
   };
 
   this.show = (req, res) => {
-    User.findOne({where: {nameNumber: req.params.nameNumber}})
-      .then((user) => {
-        res.render('users', {users: [user]});
+    const user = User.findOne({where: {nameNumber: req.params.nameNumber}});
+    user.then((user) => {
+      const challengeable = User.findAll({
+        attributes: ['name', 'row', 'file', 'spotOpen'],
+        where: {
+          instrument: user.instrument,
+          part: user.part,
+          challenged: false,
+          file: {
+            $lt: 13
+          },
+          nameNumber: {
+            $ne: user.nameNumber
+          }
+        }
       });
+      challengeable.then((challengeableUsers) => {
+        res.render('user', {user: user, challengeableUsers: challengeableUsers});
+      });
+    });
   };
 }
 
