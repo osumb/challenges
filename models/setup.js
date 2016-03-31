@@ -3,10 +3,16 @@ const config = require('../config');
 const xlsx = require('node-xlsx');
 const models = require('../models');
 
-models.sequelize.sync({force: true}).then(() => {
+models.sequelize.sync().then(() => {
   models.Performance.create({name: 'Bowling Green Game', openAt: new Date(2016, 2, 23, 13), closeAt: new Date(2016, 2, 23, 15)});
   models.User.bulkCreate(getUsersFromExcelFile(config.db.userDataPath))
     .then(() => {console.log('\nWe did it!');});
+  models.User.create({
+    nameNumber: 'hoch.4',
+    name: 'Christopher Hoch',
+    admin: true
+  })
+    .then(() => {console.log('Chris Hoch was added');});
 });
 
 //the order of columns in execl file is Spot, Name, Instrument, Part, Name.#
