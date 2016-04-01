@@ -8,12 +8,16 @@ router.setup = function(app, controllers) {
   //Performance Controller
   app.get('/performances', controllers.performance.show);
 
-  //Users Controller
-  app.get('/users', controllers.users.showAll);
-  app.get('/users/:nameNumber', controllers.users.show);
-
   //Challenges Controller
   app.get('/challenges', controllers.challenges.showAll);
+  app.get('/challenges/:performance', controllers.challenges.showForPerformance);
+  app.get('/:nameNumber/challenges', controllers.challenges.showForUser);
+  app.post('/challenges', controllers.challenges.new);
+
+  //Users Controller
+  app.get('/users', controllers.users.showAll);
+  app.get('/:nameNumber', controllers.users.show);
+
 };
 
 module.exports = router;
