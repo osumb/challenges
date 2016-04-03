@@ -8,17 +8,6 @@ function ChallengesController() {
       });
   };
 
-  this.showForUser = (req, res) => {
-    //TODO find all challenges based on req.params.nameNumber
-    res.send('Your challenges');
-  };
-
-  this.showForPerformance = (req, res) => {
-    //TODO get all challenges based on req.params.performance
-    //admin eyes only!
-    res.send('All challenges for {{performance}}');
-  };
-
   this.new = (req, res) => {
     //TODO create new challenges
     console.log(req.body['challenge-form']);
