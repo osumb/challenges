@@ -7,6 +7,12 @@ function ChallengesController() {
         res.send(challenges);
       });
   };
+
+  this.new = (req, res) => {
+    //TODO create new challenges
+    console.log(req.body['challenge-form']);
+    res.send(`You challenged: ${req.body['challenge-form']}. Good luck with that one...`);
+  };
 }
 
 module.exports = ChallengesController;

@@ -1,8 +1,11 @@
 <h2>People you can challenge</h2>
-<ul class="list-group">
+<form id="challenge-form" action="/challenges" method="post">
+  <input type="submit" class="btn btn-default" value="Challenge this person!"/>
+</form>
+<select form="challenge-form" name="challenge-form" class="form-control">
   {{#each this.challengeableUsers}}
-    <li class="list-group-item">
-      {{this.row}}{{this.file}}: {{this.name}}
-    </li>
-    {{/each}}
-</ul>
+      <option value={{this.row}}{{this.file}}>
+        {{this.row}}{{this.file}}: {{this.name}}
+      </option>
+  {{/each}}
+</select>
