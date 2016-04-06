@@ -1,3 +1,4 @@
+'use strict';
 const express = require('express');
 const path = require('path');
 const favicon = require('serve-favicon');
@@ -5,9 +6,14 @@ const logger = require('morgan');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const exphbs = require('express-handlebars');
+const config = require('./config/config');
+const http = require('http');
 
 const routes = require('./routes/routes');
 const StaticPagesController = require('./controllers/StaticPages');
+const PerformanceController = require('./controllers/Performance');
+const UsersController = require('./controllers/Users');
+const ChallengesController = require('./controllers/Challenges');
 const app = express();
 
 // view engine setup
@@ -21,13 +27,16 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
+app.use('/public', express.static(__dirname + '/public'));
 app.use('/bower_components',  express.static( path.join(__dirname, '/bower_components')));
 
 //routing
 app.use('/', routes);
 const controllers = {
-  staticPages: new StaticPagesController()
+  staticPages: new StaticPagesController(),
+  performance: new PerformanceController(),
+  users: new UsersController(),
+  challenges: new ChallengesController
 };
 
 routes.setup(app, controllers);
@@ -63,5 +72,19 @@ app.use(function(err, req, res) {
   });
 });
 
+let server;
+function start() {
+  routes.setup(app, controllers);
+  var port = config.server.port;
+  server = http.createServer(app);
+  server.listen(port);
+  console.log('Express server listening on port %d in %s mode', port, app.settings.env);
+}
 
-module.exports = app;
+function end() {
+  server.close();
+}
+
+exports.app = app;
+exports.start = start;
+exports.end = end;
