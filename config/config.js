@@ -8,6 +8,6 @@ module.exports = {
     'secret': process.env.PASSPORT_SECRET || 'keyboard cat'
   },
   'server': {
-    'port': process.env.PORT || 8080
+    'port': process.env.PORT || 3000
   }
 };

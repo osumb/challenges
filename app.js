@@ -78,7 +78,7 @@ function start() {
   var port = config.server.port;
   server = http.createServer(app);
   server.listen(port);
-  console.log('Express server listening on port %d in %s mode', port, app.settings.env);
+  console.log('Express server listening on port %d in %s mode', port);
 }
 
 function end() {
