@@ -14,7 +14,7 @@ Edit to look:
 ```
 server {
   listen      80;
-  server_name app localhost;
+  server_name localhost;
 ```
 
 Then restart nginx: ```sudo nginx -s stop && sudo nginx ```
