@@ -6,7 +6,7 @@ const logger = require('morgan');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const exphbs = require('express-handlebars');
-const config = require('./config');
+const config = require('./config/config');
 const http = require('http');
 
 const routes = require('./routes/routes');

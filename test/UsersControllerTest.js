@@ -6,7 +6,7 @@ const request = require('supertest');
 const hbs = require('express-handlebars');
 const app = require('../app.js')
 const User = require('../models').User;
-const config = require('../config');
+const config = require('../config/config');
 const handlebars = hbs.create();
 
 describe('Users', () => {
