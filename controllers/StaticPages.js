@@ -3,16 +3,17 @@ const Performance = require('../models').Performance;
 
 function StaticPagesController() {
   this.home = function(req, res) {
-    Performance.findById(1).then((data) => {
+    const performance = Performance.findById(1);
+    performance.then((data) => {
       const dataValues = data.dataValues;
       let renderData = {
         performanceName: dataValues.name,
-        openAt: dataValues.openAt.toDateString(),
-        closeAt: dataValues.closeAt.toDateString()
+        openTime: dataValues.openAt.toLocaleString(),
+        closeTime: dataValues.closeAt.toLocaleString()
       };
       res.render('index', renderData);
-
     });
+    return performance;
   };
 }
 

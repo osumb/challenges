@@ -8,7 +8,7 @@
     "dev": "nodemon --use_strict ./bin/www",
     "start": "node --use_strict ./bin/www",
     "postinstall": "bower cache clean && bower install",
-    "test": "mocha"
+    "test": "jasmine"
   },
   "dependencies": {
     "body-parser": "~1.13.2",
@@ -26,6 +26,7 @@
     "serve-favicon": "~2.3.0"
   },
   "devDependencies": {
+    "jasmine": "^2.4.1",
     "mocha": "^2.4.5",
     "node-mocks-http": "^1.5.2",
     "shelljs": "^0.6.0",
