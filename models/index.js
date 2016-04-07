@@ -1,6 +1,6 @@
 'use strict';
 const Sequelize = require('sequelize');
-const config = require('../config');
+const config = require('../config/config');
 const sequelize = new Sequelize(config.db.postgres, {logging: false});
 const db = {};
 
