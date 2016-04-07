@@ -1,3 +1,7 @@
 <h1>Welcome to OSUMB Challenge Manager</h1>
-<h2>Challenge signup for {{performanceName}} begins on <span style="color: red">{{openTime}}</span>
-  and ends at <span style="color: red">{{closeTime}}</span>. Are you ready?</h2>
+{{#if performanceName}}
+  <h2>Challenge signup for {{performanceName}} begins on <span style="color: red">{{openTime}}</span>
+    and ends at <span style="color: red">{{closeTime}}</span>. Are you ready?</h2>
+{{else}}
+  <h2>The next performance has not been created yet. Go Bucks...</h2>
+{{/if}}
