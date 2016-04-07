@@ -18,6 +18,11 @@ function StaticPagesController() {
       let renderData = createPerformanceObj(dataValues);
       res.render('index', renderData);
     });
+
+    performance.catch(() => {
+      res.render('error');
+    });
+    
     return performance;
   };
 }

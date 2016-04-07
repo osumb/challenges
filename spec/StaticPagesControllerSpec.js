@@ -2,7 +2,7 @@
 const StaticPagesController = require('../controllers/StaticPages');
 const staticPages = new StaticPagesController();
 describe('Static Pages Controller => ', () => {
-  describe('When I make a take test', () => {
+  describe('When I make a fake test', () => {
     it('should pass!', () => {
       expect(true).toBe(true);
     });
