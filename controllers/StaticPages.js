@@ -1,19 +1,39 @@
 'use strict';
 const Performance = require('../models').Performance;
+const nextPerformanceQuery = {
+  where: {
+    openAt: {
+      $gt: Date.now()
+    }
+  },
+  order: [['openAt', 'ASC']],
+  limit: 1
+};
 
 function StaticPagesController() {
   this.home = function(req, res) {
-    Performance.findById(1).then((data) => {
+    const performance = Performance.findAll(nextPerformanceQuery);
+    performance.then((data) => {
       const dataValues = data.dataValues;
-      let renderData = {
-        performanceName: dataValues.name,
-        openAt: dataValues.openAt.toDateString(),
-        closeAt: dataValues.closeAt.toDateString()
-      };
+      let renderData = createPerformanceObj(dataValues);
       res.render('index', renderData);
-
     });
+
+    performance.catch(() => {
+      res.render('error');
+    });
+    
+    return performance;
   };
 }
 
+function createPerformanceObj(dataValues) {
+  let renderData = {};
+  if (dataValues) {
+    renderData.performanceName = dataValues.name;
+    renderData.openTime = dataValues.openAt.toLocaleString();
+    renderData.closeTime = dataValues.closeAt.toLocaleString();
+  }
+  return renderData;
+}
 module.exports = StaticPagesController;
