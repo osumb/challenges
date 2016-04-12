@@ -8,7 +8,7 @@
     "dev": "nodemon --use_strict ./bin/www",
     "start": "node --use_strict ./bin/www",
     "postinstall": "bower cache clean && bower install",
-    "test": "jasmine"
+    "test": "script/test"
   },
   "dependencies": {
     "body-parser": "~1.13.2",

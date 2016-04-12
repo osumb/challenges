@@ -1,0 +1,19 @@
+#!/bin/sh
+
+# script/bootstrap: Resolve all dependencies that the application requires to
+#                   run.
+
+set -e
+
+cd "$(dirname "$0")/.."
+
+echo "=> Setting up test db..."
+node models/setup.js
+echo "=> Done!"
+
+echo "=> Linting..."
+eslint .
+echo "Done!"
+
+echo "=>Running Jasmine"
+jasmine
