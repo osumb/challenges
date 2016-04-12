@@ -1,12 +1,20 @@
+'use strict';
 const Challenge = require('../models').Challenge;
 const User = require('../models').User;
 
 function ChallengesController() {
   this.showAll = (req, res) => {
-    Challenge.findAll()
-      .then((challenges) => {
-        res.send(challenges);
+    let challenge;
+    if (req.isAuthenticated() && req.user.admin) {
+      challenge = Challenge.findAll();
+      challenge.then((challenges) => {
+        res.render('challenges', challenges);
       });
+    } else {
+      res.render('notAuthorized');
+    }
+
+    return challenge;
   };
 
   this.showForPerformance = (req, res) => {

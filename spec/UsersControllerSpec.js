@@ -49,16 +49,4 @@ describe('Users Controller => ', () => {
       expect(res.render).toHaveBeenCalledWith('user', renderObj);
     });
   });
-
-  describe('Show Challenges', () => {
-    beforeEach(() => {
-      res.send = () => {};
-      spyOn(res, 'send').and.callThrough();
-      users.showChallenges(req, res);
-    });
-
-    it(`should send the string 'All challenges for the user'`, () => {
-      expect(res.send).toHaveBeenCalledWith('All challenges for the user');
-    });
-  });
 });
