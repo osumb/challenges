@@ -35,15 +35,11 @@ function getUsersFromExcelFile(filePath) {
       //Solo is considered first
       e[3] = (e[3] === 'Solo') ? 'First': e[3];
       UserObj.part = e[3];
-      UserObj.nameNumber = UserObj.name.split(' ')[1] + '.' + getRandomArbitrary(1, 1000);
+      UserObj.nameNumber = e[4];
       userArr.push(UserObj);
     }
   });
   return userArr;
-}
-
-function getRandomArbitrary(min, max) {
-  return Math.round(Math.random() * (max - min) + min);
 }
 
 module.exports = getUsersFromExcelFile;
