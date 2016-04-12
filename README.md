@@ -25,6 +25,8 @@ npm run dev
 
 Open [http://localhost:3000](http://localhost:3000) and enjoy!
 
+Or if you've configured Nginx, open [http://osumbchallenges.dev](http://osumbchallenges.dev)
+
 ### Tests
 ```bash
 npm test

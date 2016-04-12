@@ -1,11 +1,11 @@
 'use strict';
-const config = require('../config');
+const config = require('../config/config');
 const xlsx = require('node-xlsx');
 const models = require('../models');
 
-models.sequelize.sync().then(() => {
+models.sequelize.sync({force: true}).then(() => {
   models.Performance.create({name: 'Bowling Green Game', openAt: new Date(2016, 2, 23, 13), closeAt: new Date(2016, 2, 23, 15)});
-  models.User.bulkCreate(getUsersFromExcelFile(config.db.userDataPath))
+  models.User.bulkCreate(getUsersFromExcelFile(config.db.fakeUserDataPath))
     .then(() => {console.log('\nWe did it!');});
   models.User.create({
     nameNumber: 'hoch.4',
@@ -41,3 +41,5 @@ function getUsersFromExcelFile(filePath) {
   });
   return userArr;
 }
+
+module.exports = getUsersFromExcelFile;
