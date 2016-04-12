@@ -9,6 +9,14 @@ function ChallengesController() {
       });
   };
 
+  this.showForPerformance = (req, res) => {
+
+  };
+
+  this.showForUser = (req, res) => {
+
+  };
+
   this.new = (req, res) => {
     //TODO create new challenge for req.user
     const rowFileRegex = /[a-zA-Z]+|[0-9]+/g;

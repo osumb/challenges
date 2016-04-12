@@ -44,10 +44,6 @@ function UsersController() {
 
     return challengeable;
   };
-
-  this.showChallenges = (req, res) => {
-    res.send('All challenges for the user');
-  };
 }
 
 module.exports = UsersController;
