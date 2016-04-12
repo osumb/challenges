@@ -27,5 +27,4 @@ before_script:
   - node models/setup.js
   - npm install -g eslint
 script:
-  - "eslint ."
   - "npm test"
