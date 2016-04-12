@@ -35,3 +35,6 @@ bower_components
 
 # Local nginx.conf
 config/nginx.conf
+
+# Mock Data
+models/mock-data/UserData.xlsx

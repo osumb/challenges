@@ -3,9 +3,9 @@ const config = require('../config/config');
 const xlsx = require('node-xlsx');
 const models = require('../models');
 
-models.sequelize.sync().then(() => {
+models.sequelize.sync({force: true}).then(() => {
   models.Performance.create({name: 'Bowling Green Game', openAt: new Date(2016, 2, 23, 13), closeAt: new Date(2016, 2, 23, 15)});
-  models.User.bulkCreate(getUsersFromExcelFile(config.db.userDataPath))
+  models.User.bulkCreate(getUsersFromExcelFile(config.db.fakeUserDataPath))
     .then(() => {console.log('\nWe did it!');});
   models.User.create({
     nameNumber: 'hoch.4',
@@ -35,9 +35,15 @@ function getUsersFromExcelFile(filePath) {
       //Solo is considered first
       e[3] = (e[3] === 'Solo') ? 'First': e[3];
       UserObj.part = e[3];
-      UserObj.nameNumber = e[4];
+      UserObj.nameNumber = UserObj.name.split(' ')[1] + '.' + getRandomArbitrary(1, 1000);
       userArr.push(UserObj);
     }
   });
   return userArr;
 }
+
+function getRandomArbitrary(min, max) {
+  return Math.round(Math.random() * (max - min) + min);
+}
+
+module.exports = getUsersFromExcelFile;
