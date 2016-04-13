@@ -12,14 +12,6 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.STRING,
       allowNull: false
     },
-    row: {
-      type: DataTypes.ENUM('A', 'B', 'C', 'D', 'E', 'F', 'H', 'I', 'J', 'K', 'L', 'M', 'Q', 'R', 'S', 'T', 'X'),
-      allowNull: true
-    },
-    file: {
-      type: DataTypes.INTEGER,
-      allowNull: true
-    },
     instrument: {
       type: DataTypes.ENUM('Trumpet', 'Baton', 'Mellophone', 'Trombone', 'Baritone', 'Snare', 'Tenor', 'Cymbals', 'Bass', 'Sousaphone', 'Director'),
       allowNull: false,
@@ -46,11 +38,6 @@ module.exports = function(sequelize, DataTypes) {
         }
       }
     },
-    spotOpen: {
-      type: DataTypes.BOOLEAN,
-      allowNull: false,
-      defaultValue: false
-    },
     admin: {
       type: DataTypes.BOOLEAN,
       allowNull: false,
@@ -65,6 +52,10 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.BOOLEAN,
       allowNull: false,
       defaultValue: false
+    },
+    eligible: {
+      type: DataTypes.BOOLEAN,
+      allowNull: true
     }
   }, options);
 };
