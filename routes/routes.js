@@ -5,20 +5,24 @@ router.setup = function(app, controllers) {
   //Static Pages Controllers
   app.get('/', controllers.staticPages.home);
 
+
   //Performance Controller
   app.get('/performances', controllers.performance.showAll);
   app.get('/performances/:performance', controllers.performance.show);
-  app.get('/performances/:performance/challenges', controllers.performance.showChallenges);
   app.post('/performances', controllers.performance.new);
 
-  //Challenges Controller
-  app.get('/challenges', controllers.challenges.showAll);
-  app.post('/challenges', controllers.challenges.new);
+  //Spots Controller
+  app.get('/spots', controllers.spots.showAll);
 
   //Users Controller
   app.get('/users', controllers.users.showAll);
   app.get('/:nameNumber', controllers.users.show);
-  app.get('/:nameNumber/challenges', controllers.users.showChallenges);
+
+  //Challengers Controller
+  app.post('/:nameNumber/challenges', controllers.challengers.new);
+
+  //Results Controller
+  app.get('/:nameNumber/results', controllers.results.showForUser);
 
 };
 

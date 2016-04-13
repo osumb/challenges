@@ -13,7 +13,9 @@ const routes = require('./routes/routes');
 const StaticPagesController = require('./controllers/StaticPages');
 const PerformanceController = require('./controllers/Performance');
 const UsersController = require('./controllers/Users');
-const ChallengesController = require('./controllers/Challenges');
+const ChallengersController = require('./controllers/Challengers');
+const ResultsController = require('./controllers/Results');
+const SpotsController = require('./controllers/Spots');
 const app = express();
 
 // view engine setup
@@ -28,7 +30,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use('/public', express.static(__dirname + '/public'));
-app.use('/bower_components',  express.static( path.join(__dirname, '/bower_components')));
+app.use('/bower_components',  express.static(path.join(__dirname, '/bower_components')));
 
 //routing
 app.use('/', routes);
@@ -36,7 +38,9 @@ const controllers = {
   staticPages: new StaticPagesController(),
   performance: new PerformanceController(),
   users: new UsersController(),
-  challenges: new ChallengesController
+  challengers: new ChallengersController(),
+  results: new ResultsController(),
+  spots: new SpotsController()
 };
 
 routes.setup(app, controllers);

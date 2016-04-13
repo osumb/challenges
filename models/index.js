@@ -7,16 +7,19 @@ const db = {};
 //Models
 db.User = sequelize.import(__dirname + '/User');
 db.Performance = sequelize.import(__dirname + '/Performance');
-db.Challenge = sequelize.import(__dirname + '/Challenge');
 db.Challenger = sequelize.import(__dirname + '/Challenger');
-db.Challengee = sequelize.import(__dirname + '/Challengee');
+db.Result = sequelize.import(__dirname + '/Result');
+db.Spot = sequelize.import(__dirname + '/Spot');
 
 //Relations
-db.Performance.hasMany(db.Challenge);
-db.Challenger.belongsTo(db.User);
-db.Challengee.belongsTo(db.User);
-db.Challenge.hasOne(db.Challengee);
-db.Challenge.hasMany(db.Challenger);
+db.Performance.hasMany(db.Challenger);
+db.Performance.hasMany(db.Result);
+db.User.belongsTo(db.Spot);
+db.User.hasMany(db.Challenger);
+db.Challenger.belongsTo(db.Spot);
+db.Result.belongsTo(db.Spot);
+db.Result.belongsTo(db.User, {as: 'first'});
+db.Result.belongsTo(db.User, {as: 'second'});
 
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
