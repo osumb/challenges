@@ -18,10 +18,6 @@ function PerformanceController() {
     });
   };
 
-  this.showChallenges = (req, res) => {
-    res.send(`challenges for performance ${req.params.performance}`);
-  };
-
   this.new = (req, res) => {
     res.send('new performance!');
   };

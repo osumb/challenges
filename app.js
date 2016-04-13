@@ -15,6 +15,7 @@ const PerformanceController = require('./controllers/Performance');
 const UsersController = require('./controllers/Users');
 const ChallengersController = require('./controllers/Challengers');
 const ResultsController = require('./controllers/Results');
+const SpotsController = require('./controllers/Spots');
 const app = express();
 
 // view engine setup
@@ -37,8 +38,9 @@ const controllers = {
   staticPages: new StaticPagesController(),
   performance: new PerformanceController(),
   users: new UsersController(),
-  challenges: new ChallengersController(),
-  results: new ResultsController()
+  challengers: new ChallengersController(),
+  results: new ResultsController(),
+  spots: new SpotsController()
 };
 
 routes.setup(app, controllers);
