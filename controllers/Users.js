@@ -1,15 +1,21 @@
+'use strict';
 const User = require('../models').User;
 
 function UsersController() {
   this.showAll = (req, res) => {
-    const promise = User.findAll();
-    promise.then((users) => {
-      res.render('users', {users: users});
-    });
+    let promise;
+    if (req.isAuthenticated() && req.admin) {
+      promise = User.findAll();
+      promise.then((users) => {
+        res.render('users', {users: users});
+      });
 
-    promise.catch(() => {
-      res.render('error');
-    });
+      promise.catch(() => {
+        res.render('error');
+      });
+    } else {
+      res.render('noAuth');
+    }
 
     return promise;
   };
