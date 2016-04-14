@@ -3,7 +3,7 @@ const Performance = require('../models').Performance;
 const nextPerformanceQuery = {
   where: {
     openAt: {
-      $gt: Date.now()
+      $gt: Date.today()
     }
   },
   order: [['openAt', 'ASC']],
@@ -22,7 +22,7 @@ function StaticPagesController() {
     performance.catch(() => {
       res.render('error');
     });
-    
+
     return performance;
   };
 }
