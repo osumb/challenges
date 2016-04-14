@@ -1,9 +1,10 @@
 'use strict';
 const Performance = require('../models').Performance;
+const moment = require('moment');
 const nextPerformanceQuery = {
   where: {
     openAt: {
-      $gt: Date.today()
+      $gt: moment()
     }
   },
   order: [['openAt', 'ASC']],

@@ -1,5 +1,5 @@
 const path = require('path');
-require('datejs');
+const moment = require('moment');
 
 module.exports = {
   'db': {
@@ -14,6 +14,6 @@ module.exports = {
     'port': process.env.PORT || 3000
   },
   'test': {
-    'mockPerformance': {name: 'Bowling Green Game', openAt: Date.today().add({days: 1, hours: 13}), closeAt: Date.today().add({days: 1, hours: 15})}
+    'mockPerformance': {name: 'Bowling Green Game', openAt: moment(), closeAt: moment().add({hours: 3})}
   }
 };
