@@ -76,7 +76,7 @@ describe('Users Controller => ', () => {
       it('should render the correct data', () => {
         expect(res.render.calls.mostRecent().args.length).toEqual(2);
         expect(res.render.calls.mostRecent().args[0]).toEqual('users');
-        jasmine.addCustomEqualityTester(compareUserArrays)
+        jasmine.addCustomEqualityTester(compareUserArrays);
         expect(res.render.calls.mostRecent().args[1].users).toEqual(usersArray);
       });
     });

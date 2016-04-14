@@ -14,6 +14,6 @@ module.exports = {
     'port': process.env.PORT || 3000
   },
   'test': {
-    'mockPerformance': {name: 'Bowling Green Game', openAt: moment(), closeAt: moment().add({hours: 3})}
+    'mockPerformance': {name: 'Bowling Green Game', openAt: moment().format(), closeAt: moment().add({hours: 3}).format()}
   }
 };
