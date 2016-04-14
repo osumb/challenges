@@ -17,6 +17,7 @@ function StaticPagesController() {
     if (req.isAuthenticated()) {
       performance = Performance.findOne(nextPerformanceQuery);
       performance.then((data) => {
+        data = data || {};
         const dataValues = data.dataValues;
         let renderData = createPerformanceObj(dataValues);
         res.render('index', renderData);
