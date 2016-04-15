@@ -21,15 +21,15 @@ function UsersController() {
   };
 
   this.show = (req, res) => {
-    let userPromise;
-    if (req.isAuthenticated()) {
-      userPromise = User.findOne({where: {'nameNumber': req.user.nameNumber}});
+    if (req.isAuthenticated() && req.user.nameNumber === req.params.nameNumber) {
+      const user = req.user || {};
+      res.render('user', {user: user});
+    } else if (req.isAuthenticated()){
+      res.redirect(`/${req.user.nameNumber}`);
     } else {
       res.render('noAuth');
+
     }
-    const user = req.user || {};
-    res.render('user', {user: user});
-    return userPromise;
   };
 
   this.showChallenges = (req, res) => {

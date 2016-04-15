@@ -82,6 +82,8 @@ describe('Users Controller => ', () => {
     });
   });
 
+  //depending on the functionality of users.show, this might be returning a promise
+  //not sure yet what the end goal is here, but we'll test the basics for now
   describe('Show', () => {
     describe('Not Authorized', () => {
       let res = {}, req = {};
@@ -109,21 +111,45 @@ describe('Users Controller => ', () => {
         req.user = usersArray[0];
         req.params = {};
         res.render = () => {};
+        res.redirect = () => {};
         req.isAuthenticated = () => {};
         spyOn(res, 'render').and.callThrough();
         spyOn(req, 'isAuthenticated').and.returnValue(true);
+        spyOn(res, 'redirect').and.callThrough();
       });
 
       it('should check for authentication', (done) => {
         let userPromise = users.show(req, res);
-        userPromise.then(() => {done();});
+        if (userPromise) userPromise.then(() => {done();});
+        else done();
         expect(req.isAuthenticated).toHaveBeenCalled();
+      });
+
+      it('shoud not render the user view when the session user does not match the user in the route', () => {
+        req.params.nameNumber = req.user.nameNumber + 'bad!';
+        users.show(req, res);
+        expect(res.render).not.toHaveBeenCalledWith('user');
+      });
+
+      it('should redirect the user to the correct route when the session user does not matcht the route', () => {
+        req.params.nameNumber = req.user.nameNumber + 'bad!';
+        users.show(req, res);
+        expect(res.redirect).toHaveBeenCalledWith(`/${req.user.nameNumber}`);
       });
 
       it('should render the user view', (done) => {
         let userPromise = users.show(req, res);
-        userPromise.then(() => {done();});
+        if (userPromise) userPromise.then(() => {done();});
+        else done();
         expect(res.render).toHaveBeenCalledWith('user', jasmine.any(Object));
+      });
+
+      it('should render the user view with the correct user', () => {
+        req.params.nameNumber = req.user.nameNumber;
+        users.show(req, res);
+        expect(res.render).toHaveBeenCalledWith('user', jasmine.any(Object));
+        jasmine.addCustomEqualityTester(compareUserValues);
+        expect(res.render.calls.mostRecent().args[1].user).toEqual(req.user);
       });
     });
   });
