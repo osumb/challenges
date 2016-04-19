@@ -9,20 +9,14 @@ describe('Static Pages Controller => ', () => {
 
     beforeEach((done) => {
       res.render = () => {};
-      req.isAuthenticated = () => {};
       spyOn(res, 'render').and.callThrough();
-      spyOn(req, 'isAuthenticated').and.returnValue(true);
       let promise = staticPages.home(req, res);
       promise.then(() => {
         done();
       });
     });
 
-    it('should check to see if the user is authenticated', () => {
-      expect(req.isAuthenticated).toHaveBeenCalled();
-    });
-
-    it('should render index with the most recent game', () => {
+    it('should render index', () => {
       expect(res.render).toHaveBeenCalledWith('index', jasmine.any(Object));
     });
 
@@ -34,12 +28,25 @@ describe('Static Pages Controller => ', () => {
       expect(resRenderArgs[1]).toEqual(mockPerformance);
     });
   });
+
+  describe('noAuth', () => {
+    let req = {}, res = {};
+    beforeEach(() => {
+      res.render = () => {};
+      spyOn(res, 'render').and.callThrough();
+      staticPages.noAuth(req, res);
+    });
+
+    it('should render noAuth with no other data', () => {
+      expect(res.render).toHaveBeenCalledWith('noAuth');
+    });
+  });
 });
 
 function performanceCompare(dbPerformance, mockPerformance) {
   return dbPerformance.performanceName === mockPerformance.name &&
-         compareDates(moment(dbPerformance.openTime), moment(mockPerformance.openAt)) &&
-         compareDates(moment(dbPerformance.closeTime), moment(mockPerformance.closeAt))
+         compareDates(moment(dbPerformance.openAt), moment(mockPerformance.openAt)) &&
+         compareDates(moment(dbPerformance.closeAt), moment(mockPerformance.closeAt))
 }
 
 function compareDates(a, b) {
