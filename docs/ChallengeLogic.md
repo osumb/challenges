@@ -14,7 +14,12 @@ Great question! To be able to make a challenge, you must meet the following crit
 - [ ] The person you're challenging is on the same instrument and part as you
 - [ ] You aren't ineligible for any reason (disciplinary, failed music check, etc)
 
-_Note: Right now there is a distinction of part in the mellophone section, but parts  don't matter for a mellophone challenge. That might change next year though_
+_Note: Right now there is a distinction of part in the mellophone section, but parts don't matter for a mellophone challenge. That might change next year though_
+
+## Normal Challenge
+
+This is the most occurring use case. Let's say R13 wants to challenge R4. If R4 hasn't already been challenged, R13 makes
+the selection. If R13 wins, he switches spots with R4. If he doesn't win, no spot change happens. Easy!
 
 ## Open Spots
 
@@ -52,6 +57,6 @@ A spot can be vacated for 2 reasons:
   Then R14 becomes R3, R3 becomes R4, R4 becomes R14, and R13 stays put
   ```
 
-__In order for a regular to vacate his/her spot and challenge someone else, the must email a director or admin before
+__In order for a regular to vacate his/her spot and challenge someone else, he/she must email a director or admin before
 the challenge window opens. This is to guarantee that all alternates know that the spot is open before they make a
 selection__
