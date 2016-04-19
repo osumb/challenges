@@ -18,10 +18,6 @@ function UsersController() {
     const user = req.user || {};
     res.render('user', {user: user});
   };
-
-  this.showChallenges = (req, res) => {
-    res.send('All challenges for the user');
-  };
 }
 
 module.exports = UsersController;
