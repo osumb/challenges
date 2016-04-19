@@ -22,9 +22,13 @@ function StaticPagesController() {
     performance.catch(() => {
       res.render('error');
     });
-    
+
     return performance;
   };
+
+  this.noAuth = function(req, res) {
+    res.render('noAuth');
+  }
 }
 
 function createPerformanceObj(dataValues) {
