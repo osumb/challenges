@@ -3,6 +3,7 @@ const UsersController = require('../controllers/Users');
 const mockData = require('../models/mock-data');
 const users = new UsersController();
 const usersArray = mockData.getUsersFromExcelFile();
+const config = require('../config/config');
 describe('Users Controller => ', () => {
   describe('Show All', () => {
     describe('Not Authenticated, but admin', () => {
@@ -138,20 +139,31 @@ describe('Users Controller => ', () => {
       });
 
       it('should render the user view', (done) => {
+        req.params.nameNumber = req.user.nameNumber;
+        req.user.nextPerformance = config.test.mockPerformance;
         let userPromise = users.show(req, res);
+        expect(res.render).toHaveBeenCalledWith('user', jasmine.any(Object));
         if (userPromise) userPromise.then(() => {done();});
         else done();
-        expect(res.render).toHaveBeenCalledWith('user', jasmine.any(Object));
       });
 
       it('should render the user view with the correct user', () => {
         req.params.nameNumber = req.user.nameNumber;
+        req.user.nextPerformance = config.test.mockPerformance;
         users.show(req, res);
         expect(res.render).toHaveBeenCalledWith('user', jasmine.any(Object));
         jasmine.addCustomEqualityTester(compareUserValues);
         expect(res.render.calls.mostRecent().args[1].user).toEqual(req.user);
       });
+
+      it('should render the user profile page if there is not upcoming challenge', () => {
+        req.user.nextPerformance = undefined;
+        req.params.nameNumber = req.user.nameNumber;
+        users.show(req, res);
+        expect(res.render).toHaveBeenCalledWith('profile', jasmine.any(Object));
+      });
     });
+
   });
 });
 

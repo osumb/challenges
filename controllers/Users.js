@@ -23,12 +23,15 @@ function UsersController() {
   this.show = (req, res) => {
     if (req.isAuthenticated() && req.user.nameNumber === req.params.nameNumber) {
       const user = req.user || {};
-      res.render('user', {user: user});
+      if (user.nextPerformance) {
+        res.render('user', {user: user});
+      } else {
+        res.render('profile', {user: user});
+      }
     } else if (req.isAuthenticated()){
       res.redirect(`/${req.user.nameNumber}`);
     } else {
       res.render('noAuth');
-
     }
   };
 
