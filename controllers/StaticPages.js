@@ -1,9 +1,10 @@
 'use strict';
 const Performance = require('../models').Performance;
+const moment = require('moment');
 const nextPerformanceQuery = {
   where: {
     openAt: {
-      $gt: Date.now()
+      $gt: new Date()
     }
   },
   order: [['openAt', 'ASC']],
@@ -28,15 +29,15 @@ function StaticPagesController() {
 
   this.noAuth = function(req, res) {
     res.render('noAuth');
-  }
+  };
 }
 
 function createPerformanceObj(dataValues) {
   let renderData = {};
   if (dataValues) {
     renderData.performanceName = dataValues.name;
-    renderData.openTime = dataValues.openAt.toLocaleString();
-    renderData.closeTime = dataValues.closeAt.toLocaleString();
+    renderData.openTime = moment(dataValues.openAt).format();
+    renderData.closeTime = moment(dataValues.closeAt).format();
   }
   return renderData;
 }
