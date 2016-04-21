@@ -2,7 +2,7 @@
 const config = require('../../config/config');
 const xlsx = require('node-xlsx');
 
-//the order of columns in execl file is Spot, Name, Instrument, Part, Name.#
+//the order of columns in execl file is Spot, Name, Instrument, Part, Name.#, Eligible, squadLeader, admin
 function getUsersFromExcelFile(filePath) {
   filePath = filePath || config.db.fakeUserDataPath;
   const parseObj = xlsx.parse(filePath);
@@ -18,6 +18,9 @@ function getUsersFromExcelFile(filePath) {
       UserObj.instrument = e[2];
       UserObj.part = e[3];
       UserObj.nameNumber = e[4];
+      UserObj.eligible = e[5];
+      UserObj.squadLeader = e[6];
+      UserObj.admin = e[7];
       userArr.push(UserObj);
     }
   });
@@ -25,7 +28,7 @@ function getUsersFromExcelFile(filePath) {
 }
 
 function getSpotsFromExcelFile(filePath) {
-  filePath = filePath || config.db.fakeUserDataPath;
+  filePath = filePath || config.db.fakeSpotDataPath;
   const parseObj = xlsx.parse(filePath);
   const spotArr = [];
   let spotObj = {};
@@ -33,6 +36,8 @@ function getSpotsFromExcelFile(filePath) {
     if (index != 0) {
       spotObj = new Object();
       spotObj.id = e[0];
+      spotObj.open = e[1];
+      spotObj.challenged = e[2];
       spotArr.push(spotObj);
     }
   });

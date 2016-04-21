@@ -46,14 +46,10 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: false,
       defaultValue: false
     },
-    challenged: {
+    eligible: {
       type: DataTypes.BOOLEAN,
       allowNull: false,
       defaultValue: false
-    },
-    eligible: {
-      type: DataTypes.BOOLEAN,
-      allowNull: true
     }
   }, options);
 };

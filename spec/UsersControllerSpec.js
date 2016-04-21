@@ -29,6 +29,10 @@ function compareUserArrays(dbUsers, mockUsers) {
   else {
     dbUsers.some((e, i) => {
       arraysEqual = compareUserValues(e.dataValues, mockUsers[i]);
+      if (!arraysEqual) {
+        console.log(e.dataValues);
+        console.log(mockUsers[i]);
+      }
       return !arraysEqual;
     });
   }
@@ -40,5 +44,8 @@ function compareUserValues(dbUser, mockUser) {
          dbUser.name === mockUser.name &&
          dbUser.instrument === mockUser.instrument &&
          dbUser.part === (mockUser.part || null) &&
-         dbUser.SpotId ===  mockUser.SpotId;
+         dbUser.SpotId ===  mockUser.SpotId &&
+         dbUser.admin === mockUser.admin &&
+         dbUser.squadLeader === mockUser.squadLeader &&
+         dbUser.eligible === mockUser.eligible;
 }
