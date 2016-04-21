@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const ensureAuthenticated = require('../auth').ensureAuthenticated;
 const ensureAdmin = require('../auth').ensureAdmin;
+const ensureAuthAndNameNumberRoute = require('../auth').ensureAuthAndNameNumberRoute;
 
 router.setup = function(app, controllers) {
   //Static Pages Controllers
@@ -13,7 +14,7 @@ router.setup = function(app, controllers) {
 
   //Users Controller
   app.get('/users', ensureAdmin, controllers.users.showAll);
-  app.get('/:nameNumber', ensureAuthenticated, controllers.users.show);
+  app.get('/:nameNumber', ensureAuthAndNameNumberRoute, controllers.users.showProfile);
 
 };
 

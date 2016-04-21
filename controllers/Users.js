@@ -14,9 +14,9 @@ function UsersController() {
     return promise;
   };
 
-  this.show = (req, res) => {
+  this.showProfile = (req, res) => {
     const user = req.user || {};
-    res.render('user', {user: user});
+    res.render('userProfile', {user: user});
   };
 }
 

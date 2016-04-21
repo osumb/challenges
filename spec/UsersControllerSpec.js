@@ -21,6 +21,25 @@ const config = require('../config/config');describe('Users Controller.', () => {
       expect(res.render.calls.mostRecent().args[1].users).toEqual(usersArray);
     });
   });
+
+  describe('showProfile: ', () => {
+    let req = {}, res = {};
+    req.params = {};
+    beforeEach((done) => {
+      res.render = () => {};
+      //get A13
+      req.user = usersArray[12];
+      spyOn(res, 'render').and.callThrough();
+      //when result data is built in, there will be a promise that resolves
+      let promise = users.showProfile(req, res);
+      if (promise) promise.then(() => {done();});
+      else done();
+    });
+
+    it('should render the userProfile view', () => {
+      expect(res.render).toHaveBeenCalledWith('userProfile', jasmine.any(Object));
+    });
+  });
 });
 
 function compareUserArrays(dbUsers, mockUsers) {
