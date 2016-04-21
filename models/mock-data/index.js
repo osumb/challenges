@@ -21,6 +21,11 @@ function getUsersFromExcelFile(filePath) {
       UserObj.eligible = e[5];
       UserObj.squadLeader = e[6];
       UserObj.admin = e[7];
+      if (UserObj.SpotId.match(/[A-Z]+|[1-9]+/g)[1] > 12) {
+        UserObj.alternate = true;
+      } else {
+        UserObj.alternate = false;
+      }
       userArr.push(UserObj);
     }
   });
@@ -44,7 +49,19 @@ function getSpotsFromExcelFile(filePath) {
   return spotArr;
 }
 
+function getEligibleChallengers(usersArr) {
+  const eligibleChallengers = [];
+  usersArr.forEach((e) => {
+    if (e.eligible) {
+      eligibleChallengers.push(e);
+    }
+  });
+  return eligibleChallengers;
+}
+
 const obj = {};
 obj.getUsersFromExcelFile = getUsersFromExcelFile;
 obj.getSpotsFromExcelFile = getSpotsFromExcelFile;
+obj.getEligibleChallengers = getEligibleChallengers;
+
 module.exports = obj;

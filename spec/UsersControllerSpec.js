@@ -3,7 +3,13 @@ const UsersController = require('../controllers/Users');
 const mockData = require('../models/mock-data');
 const users = new UsersController();
 const usersArray = mockData.getUsersFromExcelFile();
-const config = require('../config/config');describe('Users Controller.', () => {
+const eligibleChallengers = mockData.getEligibleChallengers(usersArray);
+const config = require('../config/config');
+const User = require('../models').User;
+const Spot = require('../models').Spot;
+const challengeablePeopleQuery = require('../models').challengeablePeopleQuery;
+
+describe('Users Controller.', () => {
   describe('showAll: ', () => {
     let req = {}, res = {};
     beforeEach((done) => {
@@ -40,6 +46,47 @@ const config = require('../config/config');describe('Users Controller.', () => {
       expect(res.render).toHaveBeenCalledWith('userProfile', jasmine.any(Object));
     });
   });
+
+  describe('showChallengeSelect: ', () => {
+    let req = {}, res = {};
+
+    //we want to test all of the 'challengeable people' for each eligible challenger, so we'll make a loop of tests
+    function addTest(user) {
+      it('should render the challengeSelect view with the correct data', (done) => {
+        req.user = user;
+        User.findAll(challengeablePeopleQuery(user)).then((challengeableUsers) => {
+          users.showChallengeSelect(req, res).then(() => {
+            jasmine.addCustomEqualityTester(compareUserArrays);
+            expect(res.render.calls.mostRecent().args[1].challengeableUsers).toEqual(challengeableUsers);
+            done();
+          });
+        });
+      });
+    }
+
+    beforeEach(() => {
+      res.render = () => {};
+      spyOn(res, 'render').and.callThrough();
+    });
+
+    it('should render the challengeSelect view', () => {
+      users.showChallengeSelect(req, res).then(() => {
+        expect(res.render).toHaveBeenCalledWith('challengeSelect', jasmine.any(Object));
+      });
+    });
+
+    for (let user in eligibleChallengers) {
+      addTest(user);
+    }
+
+    it('should render the challengeSelect view with the correct user', () => {
+      req.user = eligibleChallengers[0];
+      users.showChallengeSelect(req, res).then(() => {
+        expect(res.render.calls.mostRecent().args[1].user).toEqual(req.user);
+      });
+    });
+
+  });
 });
 
 function compareUserArrays(dbUsers, mockUsers) {
@@ -47,10 +94,12 @@ function compareUserArrays(dbUsers, mockUsers) {
   if (dbUsers.length != mockUsers.length) arraysEqual = false;
   else {
     dbUsers.some((e, i) => {
-      arraysEqual = compareUserValues(e.dataValues, mockUsers[i]);
+      let mock = mockUsers[i].dataValues || mockUsers[i];
+      arraysEqual = compareUserValues(e.dataValues, mock);
       if (!arraysEqual) {
+        console.log('\n\nWe found a mismatch!\n\n');
         console.log(e.dataValues);
-        console.log(mockUsers[i]);
+        console.log(mock);
       }
       return !arraysEqual;
     });
