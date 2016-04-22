@@ -29,7 +29,7 @@ A spot can be vacated for 2 reasons:
 
 ### The regular holding the spot is being punished for some reason (failed music, for instance)
 
- In this case, we'll flag the spot as open and and person ineligible for a challenge. They are not able to make a
+ In this case, we'll flag the spot as open and the person ineligible for a challenge. They are not able to make a
  selection for the upcoming performance. Their eligibility is reviewed on a weekly basis by an admin/director.
 
 
@@ -38,7 +38,7 @@ A spot can be vacated for 2 reasons:
   This is where things get weird. A regular performer can vacate his/her spot in order to challenge someone else.
   Consider the following people holding the spots R13, R14, R3, and R4. Let's say that R13 is much better than R3 and
   everyone knows it. R3, knowing he'll lose, vacates his spot to try and challenge R4 for his spot. By doing this, the
-  R3 spot becomes an open spot. Now R13 and R14 face each other in a challenge for the R3 spot. For outcomes can happen:
+  R3 spot becomes an open spot. Now R13 and R14 face each other in a challenge for the R3 spot. Four outcomes can happen:
 
   ```
   R13 and R4 win
@@ -60,3 +60,5 @@ A spot can be vacated for 2 reasons:
 __In order for a regular to vacate his/her spot and challenge someone else, he/she must email a director or admin before
 the challenge window opens. This is to guarantee that all alternates know that the spot is open before they make a
 selection__
+
+__Also: an open must be challenged by at least one person, but not necessarily two people__
