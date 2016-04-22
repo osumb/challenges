@@ -24,4 +24,24 @@ db.Result.belongsTo(db.User, {as: 'second'});
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
 
+db.challengeablePeopleQuery = (user) => {
+  return {
+    where: {
+      nameNumber: {
+        $ne: user.nameNumber
+      },
+      instrument: user.instrument,
+      part: user.part,
+      eligible: false,
+      alternate: false
+    },
+    include: [{
+      model: db.Spot,
+      where: {
+        challenged: false
+      }
+    }]
+  };
+};
+
 module.exports = db;

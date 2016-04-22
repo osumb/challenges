@@ -13,20 +13,18 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: false
     },
     instrument: {
-      type: DataTypes.ENUM('Trumpet', 'Baton', 'Mellophone', 'Trombone', 'Baritone', 'Snare', 'Tenor', 'Cymbals', 'Bass', 'Sousaphone', 'Director'),
-      allowNull: false,
-      defaultValue: 'Baton'
+      type: DataTypes.ENUM('Trumpet', 'Mellophone', 'Trombone', 'Baritone', 'Snare', 'Tenor', 'Cymbals', 'Bass', 'Sousaphone'),
+      allowNull: true
     },
     part: {
-      type: DataTypes.ENUM('Efer', 'First', 'Second', 'Flugel', 'Bass', 'Drum Major'),
-      allowNull: false,
-      defaultValue: 'First',
+      type: DataTypes.ENUM('Efer', 'First', 'Second', 'Flugel', 'Bass', 'Solo'),
+      allowNull: true,
       validate: {
         correctInstrument: function(value) {
           let instrumentMatchesPart = true;
           switch(this.instrument) {
           case 'Trumpet':
-            instrumentMatchesPart = (value === 'First' || value === 'Second' || value === 'Flugel' || value === 'Effer');
+            instrumentMatchesPart = (value === 'Solo' || value === 'First' || value === 'Second' || value === 'Flugel' || value === 'Effer');
             break;
           case 'Trombone':
             instrumentMatchesPart = (value === 'First' || value === 'Second' || value === 'Bass');
@@ -48,12 +46,12 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: false,
       defaultValue: false
     },
-    challenged: {
+    eligible: {
       type: DataTypes.BOOLEAN,
       allowNull: false,
       defaultValue: false
     },
-    eligible: {
+    alternate: {
       type: DataTypes.BOOLEAN,
       allowNull: true
     }
