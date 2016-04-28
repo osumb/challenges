@@ -49,19 +49,22 @@ function getSpotsFromExcelFile(filePath) {
   return spotArr;
 }
 
-function getEligibleChallengers(usersArr) {
-  const eligibleChallengers = [];
-  usersArr.forEach((e) => {
-    if (e.eligible) {
+function separateEligibleMembers(userArr) {
+  const eligibleChallengers = [], ineligibleChallengers = [];
+  userArr.forEach((e) => {
+    if(e.eligible) {
       eligibleChallengers.push(e);
+    } else {
+      ineligibleChallengers.push(e);
     }
   });
-  return eligibleChallengers;
+  const returnObj = {eligibleChallengers, ineligibleChallengers};
+  return returnObj;
 }
 
 const obj = {};
 obj.getUsersFromExcelFile = getUsersFromExcelFile;
 obj.getSpotsFromExcelFile = getSpotsFromExcelFile;
-obj.getEligibleChallengers = getEligibleChallengers;
+obj.separateEligibleMembers = separateEligibleMembers;
 
 module.exports = obj;

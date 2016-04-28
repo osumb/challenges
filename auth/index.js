@@ -9,17 +9,27 @@ function ensureAuthenticated(req, res, next) {
 }
 
 function ensureAuthAndNameNumberRoute(req, res, next) {
-  if (req.isAuthenticated && req.isAuthenticated() && req.params.nameNumber === req.user.nameNumber) {
+  ensureAuthenticated(req, res, next);
+  if (req.params.nameNumber === req.user.nameNumber) {
     return next();
   } else {
     res.redirect('/noAuth');
   }
 }
 
+function ensureEligibleToChallenge(req, res, next) {
+  ensureAuthAndNameNumberRoute(req, res, next);
+  if (req.user.eligible) {
+    return next();
+  } else {
+    res.status(401);
+  }
+}
+
 function ensureAdmin(req, res, next) {
+  ensureAuthenticated(req, res, next);
   const userIsAdmin = req.user && req.user.admin;
-  const isAuthenticated = req.isAuthenticated && req.isAuthenticated();
-  if (userIsAdmin && isAuthenticated) {
+  if (userIsAdmin) {
     return next();
   } else {
     res.redirect('/noAuth');
@@ -29,5 +39,6 @@ function ensureAdmin(req, res, next) {
 obj.ensureAuthenticated = ensureAuthenticated;
 obj.ensureAdmin = ensureAdmin;
 obj.ensureAuthAndNameNumberRoute = ensureAuthAndNameNumberRoute;
+obj.ensureEligibleToChallenge = ensureEligibleToChallenge;
 
 module.exports = obj;
