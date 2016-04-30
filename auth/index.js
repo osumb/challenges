@@ -1,4 +1,29 @@
+const passport = require('passport');
+const Strategy = require('passport-local').Strategy;
+const User = require('../models').User;
+const bcrypt = require('bcrypt');
 const obj = {};
+
+passport.use(new Strategy((username, password, done) => {
+  User.findOne({where: {nameNumber: username}})
+  .then((user) => {
+    if (!user) done(null, false);
+    if (!bcrypt.compareSync(password, user.password)) done(null, false);
+    done(null, user);
+  })
+  .catch((err) => {
+    done(err);
+  });
+}));
+
+passport.serializeUser((user, done) => {
+  delete user.password;
+  done(null, user);
+});
+
+passport.deserializeUser((user, done) => {
+  done(null, user);
+});
 
 function ensureAuthenticated(req, res, next) {
   if (req.isAuthenticated && (req.isAuthenticated())) {
@@ -29,5 +54,6 @@ function ensureAdmin(req, res, next) {
 obj.ensureAuthenticated = ensureAuthenticated;
 obj.ensureAdmin = ensureAdmin;
 obj.ensureAuthAndNameNumberRoute = ensureAuthAndNameNumberRoute;
+obj.passport = passport;
 
 module.exports = obj;

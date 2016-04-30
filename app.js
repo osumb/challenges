@@ -8,6 +8,8 @@ const bodyParser = require('body-parser');
 const exphbs = require('express-handlebars');
 const config = require('./config/config');
 const http = require('http');
+const passport = require('./auth').passport;
+const session = require('express-session');
 
 const routes = require('./routes/routes');
 const StaticPagesController = require('./controllers/StaticPages');
@@ -16,6 +18,7 @@ const UsersController = require('./controllers/Users');
 const ChallengersController = require('./controllers/Challengers');
 const ResultsController = require('./controllers/Results');
 const SpotsController = require('./controllers/Spots');
+const SessionsController = require('./controllers/Sessions');
 const app = express();
 
 // view engine setup
@@ -23,6 +26,15 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'handlebars');
 app.engine('handlebars', exphbs({defaultLayout: 'main'}));
 
+//session setup
+app.use(session( {
+  secret: process.env.SECRET || 'notMuchOfASecret',
+  resave: true,
+  saveUninitialized: true
+}));
+
+app.use(passport.initialize());
+app.use(passport.session());
 
 app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
@@ -40,7 +52,8 @@ const controllers = {
   users: new UsersController(),
   challengers: new ChallengersController(),
   results: new ResultsController(),
-  spots: new SpotsController()
+  spots: new SpotsController(),
+  sessions: new SessionsController()
 };
 
 routes.setup(app, controllers);
