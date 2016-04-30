@@ -3,7 +3,7 @@ const Strategy = require('passport-local').Strategy;
 const Models = require('../models');
 const User = Models.User;
 const Performance = Models.Performance;
-const nextPerformanceQuery = Models.nextPerformanceQuery;
+const openPerformanceWindowQuery = Models.openPerformanceWindowQuery;
 const bcrypt = require('bcrypt');
 const obj = {};
 
@@ -13,7 +13,7 @@ passport.use(new Strategy((username, password, done) => {
     if (!user) done(null, false);
     if (!bcrypt.compareSync(password, user.password)) done(null, false);
     user.password = undefined;
-    Performance.findOne(nextPerformanceQuery)
+    Performance.findOne(openPerformanceWindowQuery)
     .then((performance) => {
       user.dataValues.nextPerformance = performance.dataValues;
       done(null, user.dataValues);

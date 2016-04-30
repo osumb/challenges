@@ -8,7 +8,7 @@ function StaticPagesController() {
   this.home = function(req, res) {
     const performance = Performance.findOne(nextPerformanceQuery);
     performance.then((data) => {
-      const dataValues = data.dataValues;
+      const dataValues = data ? data.dataValues : data;
       let renderData = createPerformanceObj(dataValues);
       renderData.user = req.user;
       res.render('index', renderData);

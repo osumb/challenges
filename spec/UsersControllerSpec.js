@@ -70,6 +70,7 @@ describe('Users Controller.', () => {
     });
 
     it('should render the challengeSelect view', () => {
+      req.user = eligibleChallengers[0];
       users.showChallengeSelect(req, res).then(() => {
         expect(res.render).toHaveBeenCalledWith('challengeSelect', jasmine.any(Object));
       });
