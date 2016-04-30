@@ -2,10 +2,10 @@
 {{#if message}}
 <p>{{message}}</p>
 {{/if}}
-<form name="inputForm" id="inputForm" action="/login" method="post">
-  <label for='POST-username')>Username</label>
-  <input id="POST-name" type="text", name='username', placeholder="Username" autofocus>
-  <label for='POST-password')>Password</label>
-  <input id="POST-password" type="password", name='password', placeholder="Password">
+<form name="loginForm" id="loginForm" action="/login" method="post">
+  <label for='username'>Username</label>
+  <input type="text", name='username', placeholder="name.#" autofocus>
+  <label for='password'>Password</label>
+  <input type="password", name='password', placeholder="Password">
   <input type="submit" value="Submit" class="btn btn-primary">
 </form>
