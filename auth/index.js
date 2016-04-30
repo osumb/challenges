@@ -38,6 +38,7 @@ function ensureAuthAndNameNumberRoute(req, res, next) {
     return next();
   } else {
     res.redirect('/noAuth');
+    return false;
   }
 }
 
@@ -51,9 +52,26 @@ function ensureAdmin(req, res, next) {
   }
 }
 
+function ensureEligibleForChallenge(req, res, next) {
+  if (ensureAuthAndNameNumberRoute(req, res, next) === false) {
+    const challengeWindowOpen = req.user.nextPerformance ? req.user.nextPerformance.openAt : undefined;
+    const challengeWindowClose = req.user.nextPerformance ? req.user.nextPerformance.closeAt : undefined;
+    const withinChallengeWindow = challengeWindowOpen <= new Date() && new Date() <= challengeWindowClose;
+    if (!(req.user.eligible && withinChallengeWindow)) {
+      res.redirect(`/${req.user.nameNumber}`);
+    } else {
+      return next();
+    }
+  } else {
+    return false;
+  }
+}
+
 obj.ensureAuthenticated = ensureAuthenticated;
 obj.ensureAdmin = ensureAdmin;
 obj.ensureAuthAndNameNumberRoute = ensureAuthAndNameNumberRoute;
 obj.passport = passport;
+obj.ensureEligibleForChallenge = ensureEligibleForChallenge;
+
 
 module.exports = obj;

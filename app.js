@@ -27,6 +27,10 @@ app.set('view engine', 'handlebars');
 app.engine('handlebars', exphbs({defaultLayout: 'main'}));
 
 //session setup
+/*
+  If there is a env variable for redis_url (like in staging/prod), create a redis client
+  If there isn't, we're probably in local, so just use memory store so there's one less thing to worry about
+*/
 let redis;
 if (process.env.REDIS_URL) {
   const rtg = require('url').parse(process.env.REDIS_URL);

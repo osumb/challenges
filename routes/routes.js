@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const ensureAuthenticated = require('../auth').ensureAuthenticated;
 const ensureAdmin = require('../auth').ensureAdmin;
+const ensureEligibleForChallenge = require('../auth').ensureEligibleForChallenge;
 const ensureAuthAndNameNumberRoute = require('../auth').ensureAuthAndNameNumberRoute;
 const passport = require('../auth').passport;
 
@@ -16,9 +17,12 @@ router.setup = function(app, controllers) {
   //Sessions Controller
   app.get('/login', controllers.sessions.login);
   app.post('/login', passport.authenticate('local', {failureRedirect: '/login?auth=false'}), controllers.sessions.redirect);
+  app.post('/logout', controllers.sessions.logout);
+
   //Users Controller
   app.get('/users', ensureAdmin, controllers.users.showAll);
   app.get('/:nameNumber', ensureAuthAndNameNumberRoute, controllers.users.showProfile);
+  app.get('/:nameNumber/makeChallenge', ensureEligibleForChallenge, controllers.users.showChallengeSelect);
 
 };
 
