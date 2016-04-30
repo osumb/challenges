@@ -10,7 +10,7 @@ const config = require('./config/config');
 const http = require('http');
 const passport = require('./auth').passport;
 const session = require('express-session');
-
+const RedisStore = require('connect-redis')(session);
 const routes = require('./routes/routes');
 const StaticPagesController = require('./controllers/StaticPages');
 const PerformanceController = require('./controllers/Performance');
@@ -27,10 +27,17 @@ app.set('view engine', 'handlebars');
 app.engine('handlebars', exphbs({defaultLayout: 'main'}));
 
 //session setup
+let redis;
+if (process.env.REDIS_URL) {
+  const rtg = require('url').parse(process.env.REDIS_URL);
+  redis = require('redis').createClient(rtg.port, rtg.hostname);
+}
+
 app.use(session( {
-  secret: process.env.SECRET || 'notMuchOfASecret',
+  secret: process.env.PASSPORT_SECRET || 'notMuchOfASecret',
   resave: true,
-  saveUninitialized: true
+  saveUninitialized: true,
+  session: redis ? new RedisStore({client: redis}) : undefined
 }));
 
 app.use(passport.initialize());
