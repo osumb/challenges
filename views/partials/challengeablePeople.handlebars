@@ -1,11 +1,11 @@
 <h2>People you can challenge</h2>
-<form id="challenge-form" action="/challenges" method="post">
-  <input type="submit" class="btn btn-default" value="Challenge this person!"/>
-</form>
 <select form="challenge-form" name="challenge-form" class="form-control">
   {{#each this.challengeableUsers}}
       <option value={{this.row}}{{this.file}}>
-        {{this.row}}{{this.file}}: {{this.name}}
+        {{this.SpotId}}: {{this.name}}
       </option>
   {{/each}}
+  <form id="challenge-form" action="/challenges" method="post">
+    <input type="submit" class="btn btn-default" value="Challenge this person!"/>
+  </form>
 </select>

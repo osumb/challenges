@@ -16,8 +16,8 @@ router.setup = function(app, controllers) {
 
   //Sessions Controller
   app.get('/login', controllers.sessions.login);
+  app.get('/logout', controllers.sessions.logout);
   app.post('/login', passport.authenticate('local', {failureRedirect: '/login?auth=false'}), controllers.sessions.redirect);
-  app.post('/logout', controllers.sessions.logout);
 
   //Users Controller
   app.get('/users', ensureAdmin, controllers.users.showAll);

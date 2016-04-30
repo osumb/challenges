@@ -1,23 +1,16 @@
 'use strict';
-const Performance = require('../models').Performance;
+const Models = require('../models');
+const Performance = Models.Performance;
 const moment = require('moment');
-const nextPerformanceQuery = {
-  where: {
-    openAt: {
-      $gt: new Date()
-    }
-  },
-  order: [['openAt', 'ASC']],
-  limit: 1
-};
+const nextPerformanceQuery = Models.nextPerformanceQuery;
 
 function StaticPagesController() {
   this.home = function(req, res) {
-    const performance = Performance.findAll(nextPerformanceQuery);
+    const performance = Performance.findOne(nextPerformanceQuery);
     performance.then((data) => {
-      //we're doing find all with a limit 1, so it's coming back as an array of length 1
-      const dataValues = data[0].dataValues;
+      const dataValues = data.dataValues;
       let renderData = createPerformanceObj(dataValues);
+      renderData.user = req.user;
       res.render('index', renderData);
     });
 

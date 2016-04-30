@@ -1,6 +1,9 @@
 const passport = require('passport');
 const Strategy = require('passport-local').Strategy;
-const User = require('../models').User;
+const Models = require('../models');
+const User = Models.User;
+const Performance = Models.Performance;
+const nextPerformanceQuery = Models.nextPerformanceQuery;
 const bcrypt = require('bcrypt');
 const obj = {};
 
@@ -9,7 +12,15 @@ passport.use(new Strategy((username, password, done) => {
   .then((user) => {
     if (!user) done(null, false);
     if (!bcrypt.compareSync(password, user.password)) done(null, false);
-    done(null, user);
+    user.password = undefined;
+    Performance.findOne(nextPerformanceQuery)
+    .then((performance) => {
+      user.dataValues.nextPerformance = performance.dataValues;
+      done(null, user.dataValues);
+    })
+    .catch(() => {
+      done(null, user);
+    });
   })
   .catch((err) => {
     done(err);
@@ -17,7 +28,6 @@ passport.use(new Strategy((username, password, done) => {
 }));
 
 passport.serializeUser((user, done) => {
-  delete user.password;
   done(null, user);
 });
 
@@ -53,7 +63,7 @@ function ensureAdmin(req, res, next) {
 }
 
 function ensureEligibleForChallenge(req, res, next) {
-  if (ensureAuthAndNameNumberRoute(req, res, next) === false) {
+  if (ensureAuthAndNameNumberRoute(req, res, next) === false && req.user && req.user.nextPerformance) {
     const challengeWindowOpen = req.user.nextPerformance ? req.user.nextPerformance.openAt : undefined;
     const challengeWindowClose = req.user.nextPerformance ? req.user.nextPerformance.closeAt : undefined;
     const withinChallengeWindow = challengeWindowOpen <= new Date() && new Date() <= challengeWindowClose;

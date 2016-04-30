@@ -44,4 +44,13 @@ db.challengeablePeopleQuery = (user) => {
   };
 };
 
+db.nextPerformanceQuery = {
+  where: {
+    openAt: {
+      $lt: new Date()
+    }
+  },
+  order: [['openAt', 'ASC']]
+};
+
 module.exports = db;
