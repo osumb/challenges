@@ -35,16 +35,24 @@ passport.deserializeUser((user, done) => {
   done(null, user);
 });
 
+function isAuthenticated(req) {
+  if (req.isAuthenticated && req.isAuthenticated()) {
+    return true;
+  } else {
+    return false;
+  }
+}
 function ensureAuthenticated(req, res, next) {
-  if (req.isAuthenticated && (req.isAuthenticated())) {
+  if (isAuthenticated(req)) {
     return next();
   } else {
     res.redirect('/noAuth');
+    return false;
   }
 }
 
 function ensureAuthAndNameNumberRoute(req, res, next) {
-  if (req.isAuthenticated && req.isAuthenticated() && req.params.nameNumber === req.user.nameNumber) {
+  if (isAuthenticated(req) && req.params.nameNumber === req.user.nameNumber) {
     return next();
   } else {
     res.redirect('/noAuth');
@@ -53,26 +61,28 @@ function ensureAuthAndNameNumberRoute(req, res, next) {
 }
 
 function ensureAdmin(req, res, next) {
-  const userIsAdmin = req.user && req.user.admin;
-  const isAuthenticated = req.isAuthenticated && req.isAuthenticated();
-  if (userIsAdmin && isAuthenticated) {
-    return next();
-  } else {
-    res.redirect('/noAuth');
+  if (isAuthenticated(req)) {
+    const userIsAdmin = req.user && req.user.admin;
+    if (userIsAdmin) {
+      return next();
+    } else {
+      res.redirect('/notAdmin');
+    }
   }
 }
 
 function ensureEligibleForChallenge(req, res, next) {
-  if (ensureAuthAndNameNumberRoute(req, res, next) === false && req.user && req.user.nextPerformance) {
+  if (isAuthenticated(req)) {
     const challengeWindowOpen = req.user.nextPerformance ? req.user.nextPerformance.openAt : undefined;
     const challengeWindowClose = req.user.nextPerformance ? req.user.nextPerformance.closeAt : undefined;
     const withinChallengeWindow = challengeWindowOpen <= new Date() && new Date() <= challengeWindowClose;
-    if (!(req.user.eligible && withinChallengeWindow)) {
-      res.redirect(`/${req.user.nameNumber}`);
+    if (req.user.eligible && withinChallengeWindow) {
+      next();
     } else {
-      return next();
+      res.redirect(`/${req.user.nameNumber}`);
     }
   } else {
+    res.redirect('/noAuth');
     return false;
   }
 }
