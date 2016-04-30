@@ -10,20 +10,20 @@ const obj = {};
 passport.use(new Strategy((username, password, done) => {
   User.findOne({where: {nameNumber: username}})
   .then((user) => {
-    if (!user) done(null, false);
-    if (!bcrypt.compareSync(password, user.password)) done(null, false);
-    user.password = undefined;
+    if (!user) return done(null, false);
+    if (!bcrypt.compareSync(password, user.password)) return done(null, false);
+    user.dataValues.password = undefined;
     Performance.findOne(openPerformanceWindowQuery)
     .then((performance) => {
       user.dataValues.nextPerformance = performance.dataValues;
-      done(null, user.dataValues);
+      return done(null, user.dataValues);
     })
     .catch(() => {
-      done(null, user);
+      return done(null, user);
     });
   })
   .catch((err) => {
-    done(err);
+    return done(err);
   });
 }));
 

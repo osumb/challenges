@@ -1,4 +1,7 @@
 <h1>Login Page!!</h1>
+{{#if message}}
+<p>{{message}}</p>
+{{/if}}
 <form name="inputForm" id="inputForm" action="/login" method="post">
   <label for='POST-username')>Username</label>
   <input id="POST-name" type="text", name='username', placeholder="Username" autofocus>
