@@ -16,15 +16,13 @@ function UsersController() {
   };
 
   this.showProfile = (req, res) => {
-    const user = req.user || {};
-    res.render('userProfile', {user: user});
+    res.render('userProfile', {user: req.user});
   };
 
   this.showChallengeSelect = (req, res) => {
-    const user = req.user || {};
-    const promise = User.findAll(challengeablePeopleQuery(user));
+    const promise = User.findAll(challengeablePeopleQuery(req.user));
     promise.then((challengeableUsers) => {
-      res.render('challengeSelect', {user: user, challengeableUsers: challengeableUsers});
+      res.render('challengeSelect', {user: req.user, challengeableUsers: challengeableUsers});
     });
 
     promise.catch(() => {

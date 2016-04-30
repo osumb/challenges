@@ -1,0 +1,6 @@
+{{#if user.nextPerformance}}
+  <h1>Who do you want to challenge for the {{user.nextPerformance.name}}?</h1>
+  {{> challengeablePeople}}
+{{else}}
+  <h1>Sorry! There is currently no performance for which to make a challenge</h1>
+{{/if}}
