@@ -12,6 +12,10 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.STRING,
       allowNull: false
     },
+    password: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
     instrument: {
       type: DataTypes.ENUM('Trumpet', 'Mellophone', 'Trombone', 'Baritone', 'Snare', 'Tenor', 'Cymbals', 'Bass', 'Sousaphone'),
       allowNull: true

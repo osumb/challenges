@@ -13,8 +13,15 @@
 
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav">
-        <li><a href="/performances">Performances</a></li>
-        <li><a href="/users">Users</a></li>
+        {{#if user}}
+          <li><a href=/{{user.nameNumber}}>Profile</a></li>
+          {{#if user.eligible}}
+            <li><a href=/{{user.nameNumber}}/makeChallenge>Make A Challenge</a></li>
+          {{/if}}
+          <li><a href="/logout">Logout</a></li>
+        {{else}}
+          <li><a href="/login">Login</a></li>
+        {{/if}}
       </ul>
     </div>
   </div>

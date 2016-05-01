@@ -6,9 +6,9 @@ const logger = require('morgan');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const exphbs = require('express-handlebars');
-const config = require('./config/config');
-const http = require('http');
-
+const passport = require('./auth').passport;
+const session = require('express-session');
+const RedisStore = require('connect-redis')(session);
 const routes = require('./routes/routes');
 const StaticPagesController = require('./controllers/StaticPages');
 const PerformanceController = require('./controllers/Performance');
@@ -16,6 +16,7 @@ const UsersController = require('./controllers/Users');
 const ChallengersController = require('./controllers/Challengers');
 const ResultsController = require('./controllers/Results');
 const SpotsController = require('./controllers/Spots');
+const SessionsController = require('./controllers/Sessions');
 const app = express();
 
 // view engine setup
@@ -23,6 +24,26 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'handlebars');
 app.engine('handlebars', exphbs({defaultLayout: 'main'}));
 
+//session setup
+/*
+  If there is a env variable for redis_url (like in staging/prod), create a redis client
+  If there isn't, we're probably in local, so just use memory store so there's one less thing to worry about
+*/
+let redis;
+if (process.env.REDIS_URL) {
+  const rtg = require('url').parse(process.env.REDIS_URL);
+  redis = require('redis').createClient(rtg.port, rtg.hostname);
+}
+
+app.use(session( {
+  secret: process.env.PASSPORT_SECRET || 'notMuchOfASecret',
+  resave: true,
+  saveUninitialized: true,
+  session: redis ? new RedisStore({client: redis}) : undefined
+}));
+
+app.use(passport.initialize());
+app.use(passport.session());
 
 app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
@@ -40,7 +61,8 @@ const controllers = {
   users: new UsersController(),
   challengers: new ChallengersController(),
   results: new ResultsController(),
-  spots: new SpotsController()
+  spots: new SpotsController(),
+  sessions: new SessionsController()
 };
 
 routes.setup(app, controllers);
@@ -76,19 +98,4 @@ app.use(function(err, req, res) {
   });
 });
 
-let server;
-function start() {
-  routes.setup(app, controllers);
-  var port = config.server.port;
-  server = http.createServer(app);
-  server.listen(port);
-  console.log('Express server listening on port %d in %s mode', port);
-}
-
-function end() {
-  server.close();
-}
-
 exports.app = app;
-exports.start = start;
-exports.end = end;

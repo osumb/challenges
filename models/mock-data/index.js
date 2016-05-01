@@ -1,8 +1,9 @@
 'use strict';
 const config = require('../../config/config');
 const xlsx = require('node-xlsx');
+const bcrypt = require('bcrypt');
 
-//the order of columns in execl file is Spot, Name, Instrument, Part, Name.#, Eligible, squadLeader, admin
+//the order of columns in execl file is Spot, Name, Instrument, Part, Name.#, Eligible, squadLeader, admin, password
 function getUsersFromExcelFile(filePath) {
   filePath = filePath || config.db.fakeUserDataPath;
   const parseObj = xlsx.parse(filePath);
@@ -26,6 +27,7 @@ function getUsersFromExcelFile(filePath) {
       } else {
         UserObj.alternate = false;
       }
+      UserObj.password = bcrypt.hashSync(e[8], bcrypt.genSaltSync(10));
       userArr.push(UserObj);
     }
   });
