@@ -7,9 +7,10 @@ const separatedMembers = mockData.separateEligibleMembers(usersArray);
 const eligibleChallengers = separatedMembers.eligibleChallengers;
 const ineligibleChallengers = separatedMembers.ineligibleChallengers;
 const config = require('../config/config');
-const User = require('../models').User;
-const Spot = require('../models').Spot;
-const challengeablePeopleQuery = require('../models').challengeablePeopleQuery;
+const Models = require('../models');
+const User = Models.User;
+const Spot = Models.Spot;
+const challengeablePeopleQuery = Models.challengeablePeopleQuery;
 
 describe('Users Controller.', () => {
   describe('showAll: ', () => {

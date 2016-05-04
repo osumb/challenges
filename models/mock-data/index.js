@@ -27,7 +27,7 @@ function getUsersFromExcelFile(filePath) {
       } else {
         UserObj.alternate = false;
       }
-      UserObj.password = bcrypt.hashSync(e[8], bcrypt.genSaltSync(10));
+      UserObj.password = bcrypt.hashSync(e[8], bcrypt.genSaltSync(1));
       userArr.push(UserObj);
     }
   });
