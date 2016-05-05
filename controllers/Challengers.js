@@ -2,7 +2,8 @@
 
 function ChallengersController() {
   this.new = (req, res) => {
-    res.send('`New Challenger`');
+    console.log(req.body);
+    res.send('You made a challenge!');
   };
 }
 

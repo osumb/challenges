@@ -13,6 +13,9 @@ router.setup = function(app, controllers) {
   //Performance Controller
   app.get('/performances', ensureAuthenticated, controllers.performance.showAll);
 
+  //Challengers Controller
+  app.post('/challenge', ensureAuthenticated, controllers.challengers.new);
+
   //Sessions Controller
   app.get('/login', controllers.sessions.login);
   app.get('/logout', controllers.sessions.logout);
