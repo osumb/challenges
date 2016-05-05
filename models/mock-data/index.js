@@ -44,7 +44,7 @@ function getSpotsFromExcelFile(filePath) {
       spotObj = new Object();
       spotObj.id = e[0];
       spotObj.open = e[1];
-      spotObj.challenged = e[2];
+      spotObj.challengedAmount = e[2];
       spotArr.push(spotObj);
     }
   });
