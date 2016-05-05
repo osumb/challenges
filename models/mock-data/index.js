@@ -64,9 +64,24 @@ function separateEligibleMembers(userArr) {
   return returnObj;
 }
 
+function getMockChallengesList(filePath) {
+  filePath = filePath || config.db.fakeChallengeListPath;
+  const parseObj = xlsx.parse(filePath);
+  const challengeList = [];
+  let challengeObj = {};
+  parseObj[0].data.forEach((e) => {
+    challengeObj = new Object();
+    challengeObj.UserNameNumber = e[1];
+    challengeObj.PerformanceId = 1;
+    challengeObj.SpotId = e[2];
+    challengeList.push(challengeObj);
+  });
+  return challengeList;
+}
 const obj = {};
 obj.getUsersFromExcelFile = getUsersFromExcelFile;
 obj.getSpotsFromExcelFile = getSpotsFromExcelFile;
 obj.separateEligibleMembers = separateEligibleMembers;
+obj.getMockChallengesList = getMockChallengesList;
 
 module.exports = obj;
