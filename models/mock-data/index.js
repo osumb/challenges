@@ -78,10 +78,17 @@ function getMockChallengesList(filePath) {
   });
   return challengeList;
 }
+
+function getNoConflictChallengeList(filePath) {
+  filePath = filePath || config.db.fakeNoConflictChallengeListPath;
+  return getMockChallengesList(filePath);
+}
+
 const obj = {};
 obj.getUsersFromExcelFile = getUsersFromExcelFile;
 obj.getSpotsFromExcelFile = getSpotsFromExcelFile;
 obj.separateEligibleMembers = separateEligibleMembers;
 obj.getMockChallengesList = getMockChallengesList;
+obj.getNoConflictChallengeList = getNoConflictChallengeList;
 
 module.exports = obj;

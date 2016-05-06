@@ -70,9 +70,18 @@ function ensureAdmin(req, res, next) {
   }
 }
 
+function ensureEligible(req, res, next) {
+  if (isAuthenticated(req) && req.user.eligible) {
+    return next();
+  } else {
+    res.redirect('/');
+  }
+}
+
 obj.ensureAuthenticated = ensureAuthenticated;
 obj.ensureAdmin = ensureAdmin;
 obj.ensureAuthAndNameNumberRoute = ensureAuthAndNameNumberRoute;
+obj.ensureEligible = ensureEligible;
 obj.passport = passport;
 
 module.exports = obj;
