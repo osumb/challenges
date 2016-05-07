@@ -36,7 +36,7 @@ describe('ChallengersController.', () => {
         req.body['challenge-form'] = challengeObj.SpotId;
         let promise = challengers.new(req, res);
         promise.then(() => {
-          expect(res.render).toHaveBeenCalledWith('challengeSuccess');
+          expect(res.render).toHaveBeenCalledWith('challengeSuccess', {SpotId: challengeObj.SpotId, user: jasmine.any(Object)});
           Promise.all([
             Spot.findOne({where: {id: challengeObj.SpotId}}),
             User.findOne({where: {nameNumber: challengeObj.UserNameNumber}}),

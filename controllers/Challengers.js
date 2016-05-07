@@ -29,7 +29,7 @@ function ChallengersController() {
     })
     .then(() => {
       if (success) {
-        res.render('challengeSuccess');
+        res.render('challengeSuccess', {SpotId: req.body['challenge-form'], user: req.user});
         req.user.eligible = false;
       }
       else res.render('challengeFailure', {message: 'Sorry! You can\'t challenge that spot'});
