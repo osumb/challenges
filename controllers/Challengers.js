@@ -32,7 +32,7 @@ function ChallengersController() {
         res.render('challengeSuccess');
         req.user.eligible = false;
       }
-      else res.render('challengeFailure');
+      else res.render('challengeFailure', {message: 'Sorry! You can\'t challenge that spot'});
     })
     .catch((e) => {
       console.log(`Error from Challenge creation: ${e}`);

@@ -8,7 +8,8 @@ module.exports = {
     'fakeUserDataPath': path.join(__dirname, '../models/mock-data/FakeUsers.xlsx'),
     'fakeSpotDataPath': path.join(__dirname, '../models/mock-data/Spots.xlsx'),
     'fakeChallengeListPath': path.join(__dirname, '../models/mock-data/MockChallengeList.xlsx'),
-    'fakeNoConflictChallengeListPath': path.join(__dirname, '../models/mock-data/NoConflictChallenges.xlsx')
+    'fakeNoConflictChallengeListPath': path.join(__dirname, '../models/mock-data/NoConflictChallenges.xlsx'),
+    'fakeSpotFullChallengeListPath': path.join(__dirname, '../models/mock-data/SpotFullChallenges.xlsx')
   },
   'passport': {
     'secret': process.env.PASSPORT_SECRET || 'keyboard cat'
