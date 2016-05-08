@@ -1,0 +1,10 @@
+{{#if performanceName}}
+  {{#if windowOpen}}
+  <h2>Challenges for {{performanceName}} are open now!</h2>
+  {{else}}
+  <h2>Challenge signup for {{performanceName}} begins on <span style="color: red">{{openAtFormated}}</span>
+    and ends at <span style="color: red">{{closeAtFormated}}</span>. Are you ready?</h2>
+  {{/if}}
+{{else}}
+  <h2>The next performance has not been created yet. Go Bucks...</h2>
+{{/if}}

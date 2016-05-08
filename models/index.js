@@ -38,7 +38,20 @@ db.challengeablePeopleQuery = (user) => {
     include: [{
       model: db.Spot,
       where: {
-        challenged: false
+        $or: [
+          {
+            open: false,
+            challengedAmount: {
+              $lt: 1
+            }
+          },
+          {
+            open: true,
+            challengedAmount: {
+              $lt: 2
+            }
+          }
+        ]
       }
     }]
   };
@@ -46,7 +59,7 @@ db.challengeablePeopleQuery = (user) => {
 
 db.nextPerformanceQuery = {
   where: {
-    openAt: {
+    closeAt: {
       $gt: new Date()
     }
   },
@@ -57,6 +70,9 @@ db.openPerformanceWindowQuery = {
   where: {
     openAt: {
       $lt: new Date()
+    },
+    closeAt: {
+      $gt: new Date()
     }
   },
   order: [['openAt', 'ASC']]

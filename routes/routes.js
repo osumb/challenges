@@ -1,9 +1,11 @@
 const express = require('express');
 const router = express.Router();
-const ensureAuthenticated = require('../auth').ensureAuthenticated;
-const ensureAdmin = require('../auth').ensureAdmin;
-const ensureAuthAndNameNumberRoute = require('../auth').ensureAuthAndNameNumberRoute;
-const passport = require('../auth').passport;
+const auth = require('../auth');
+const ensureAuthenticated = auth.ensureAuthenticated;
+const ensureAdmin = auth.ensureAdmin;
+const ensureAuthAndNameNumberRoute = auth.ensureAuthAndNameNumberRoute;
+const ensureEligible = auth.ensureEligible;
+const passport = auth.passport;
 
 router.setup = function(app, controllers) {
   //Static Pages Controllers
@@ -12,6 +14,9 @@ router.setup = function(app, controllers) {
 
   //Performance Controller
   app.get('/performances', ensureAuthenticated, controllers.performance.showAll);
+
+  //Challengers Controller
+  app.post('/challenge', ensureEligible, controllers.challengers.new);
 
   //Sessions Controller
   app.get('/login', controllers.sessions.login);

@@ -27,7 +27,7 @@ function getUsersFromExcelFile(filePath) {
       } else {
         UserObj.alternate = false;
       }
-      UserObj.password = bcrypt.hashSync(e[8], bcrypt.genSaltSync(10));
+      UserObj.password = bcrypt.hashSync(e[8], bcrypt.genSaltSync(1));
       userArr.push(UserObj);
     }
   });
@@ -44,26 +44,63 @@ function getSpotsFromExcelFile(filePath) {
       spotObj = new Object();
       spotObj.id = e[0];
       spotObj.open = e[1];
-      spotObj.challenged = e[2];
+      spotObj.challengedAmount = e[2];
       spotArr.push(spotObj);
     }
   });
   return spotArr;
 }
 
-function getEligibleChallengers(usersArr) {
-  const eligibleChallengers = [];
-  usersArr.forEach((e) => {
-    if (e.eligible) {
+function separateEligibleMembers(userArr) {
+  const eligibleChallengers = [], ineligibleChallengers = [];
+  userArr.forEach((e) => {
+    if(e.eligible) {
       eligibleChallengers.push(e);
+    } else {
+      ineligibleChallengers.push(e);
     }
   });
-  return eligibleChallengers;
+  const returnObj = {eligibleChallengers, ineligibleChallengers};
+  return returnObj;
+}
+
+function getMockChallengesList(filePath) {
+  filePath = filePath || config.db.fakeChallengeListPath;
+  const parseObj = xlsx.parse(filePath);
+  const challengeList = [];
+  let challengeObj = {};
+  parseObj[0].data.forEach((e) => {
+    challengeObj = new Object();
+    challengeObj.UserNameNumber = e[1];
+    challengeObj.PerformanceId = 1;
+    challengeObj.SpotId = e[2];
+    challengeList.push(challengeObj);
+  });
+  return challengeList;
+}
+
+function getNoConflictChallengeList(filePath) {
+  filePath = filePath || config.db.fakeNoConflictChallengeListPath;
+  return getMockChallengesList(filePath);
+}
+
+function getSpotFullChallengeList(filePath) {
+  filePath = filePath || config.db.fakeSpotFullChallengeListPath;
+  return getMockChallengesList(filePath);
+}
+
+function getWrongPersonChallengeList(filePath) {
+  filePath = filePath || config.db.wrongPersonChallengeListPath;
+  return getMockChallengesList(filePath);
 }
 
 const obj = {};
 obj.getUsersFromExcelFile = getUsersFromExcelFile;
 obj.getSpotsFromExcelFile = getSpotsFromExcelFile;
-obj.getEligibleChallengers = getEligibleChallengers;
+obj.separateEligibleMembers = separateEligibleMembers;
+obj.getMockChallengesList = getMockChallengesList;
+obj.getNoConflictChallengeList = getNoConflictChallengeList;
+obj.getSpotFullChallengeList = getSpotFullChallengeList;
+obj.getWrongPersonChallengeList = getWrongPersonChallengeList;
 
 module.exports = obj;

@@ -30,8 +30,13 @@ function createPerformanceObj(dataValues) {
   let renderData = {};
   if (dataValues) {
     renderData.performanceName = dataValues.name;
-    renderData.openAt = moment(dataValues.openAt).format();
-    renderData.closeAt = moment(dataValues.closeAt).format();
+    renderData.openAt = moment(dataValues.openAt);
+    renderData.closeAt = moment(dataValues.closeAt);
+    renderData.openAtFormated = renderData.openAt.format('MMMM Do, h:mm:ss a');
+    renderData.closeAtFormated = renderData.closeAt.format('MMMM Do, h:mm:ss a');
+    if (renderData.openAt.isBefore(moment())) {
+      renderData.windowOpen = true;
+    }
   }
   return renderData;
 }

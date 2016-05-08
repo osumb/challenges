@@ -21,9 +21,9 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.BOOLEAN,
       defaultValue: false
     },
-    challenged: {
-      type: DataTypes.BOOLEAN,
-      defaultValue: false
+    challengedAmount: {
+      type: DataTypes.INTEGER,
+      defaultValue: 0
     }
   }, options);
 };

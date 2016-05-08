@@ -24,6 +24,7 @@ describe('Static Pages Controller => ', () => {
       const resRenderArgs = res.render.calls.mostRecent().args;
       expect(resRenderArgs.length).toEqual(2);
       expect(resRenderArgs[0]).toEqual('index');
+      expect(resRenderArgs[1].windowOpen).toEqual(true);
       jasmine.addCustomEqualityTester(performanceCompare);
       expect(resRenderArgs[1]).toEqual(mockPerformance);
     });

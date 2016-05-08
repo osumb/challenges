@@ -3,11 +3,14 @@ const UsersController = require('../controllers/Users');
 const mockData = require('../models/mock-data');
 const users = new UsersController();
 const usersArray = mockData.getUsersFromExcelFile();
-const eligibleChallengers = mockData.getEligibleChallengers(usersArray);
+const separatedMembers = mockData.separateEligibleMembers(usersArray);
+const eligibleChallengers = separatedMembers.eligibleChallengers;
+const ineligibleChallengers = separatedMembers.ineligibleChallengers;
 const config = require('../config/config');
-const User = require('../models').User;
-const Spot = require('../models').Spot;
-const challengeablePeopleQuery = require('../models').challengeablePeopleQuery;
+const Models = require('../models');
+const User = Models.User;
+const Spot = Models.Spot;
+const challengeablePeopleQuery = Models.challengeablePeopleQuery;
 
 describe('Users Controller.', () => {
   describe('showAll: ', () => {
@@ -50,20 +53,6 @@ describe('Users Controller.', () => {
   describe('showChallengeSelect: ', () => {
     let req = {}, res = {};
 
-    //we want to test all of the 'challengeable people' for each eligible challenger, so we'll make a loop of tests
-    function addTest(user) {
-      it('should render the challengeSelect view with the correct data', (done) => {
-        req.user = user;
-        User.findAll(challengeablePeopleQuery(user)).then((challengeableUsers) => {
-          users.showChallengeSelect(req, res).then(() => {
-            jasmine.addCustomEqualityTester(compareUserArrays);
-            expect(res.render.calls.mostRecent().args[1].challengeableUsers).toEqual(challengeableUsers);
-            done();
-          });
-        });
-      });
-    }
-
     beforeEach(() => {
       res.render = () => {};
       spyOn(res, 'render').and.callThrough();
@@ -83,10 +72,25 @@ describe('Users Controller.', () => {
     it('should render the challengeSelect view with the correct user', () => {
       req.user = eligibleChallengers[0];
       users.showChallengeSelect(req, res).then(() => {
-        expect(res.render.calls.mostRecent().args[1].user).toEqual(req.user);
+        if (res.render.calls) {
+          expect(res.render.calls.mostRecent().args[1].user).toEqual(req.user);
+        }
       });
     });
 
+    //we want to test all of the 'challengeable people' for each eligible challenger, so we'll make a loop of tests
+    function addTest(user) {
+      it('should render the challengeSelect view with the correct data', (done) => {
+        req.user = user;
+        User.findAll(challengeablePeopleQuery(user)).then((challengeableUsers) => {
+          users.showChallengeSelect(req, res).then(() => {
+            jasmine.addCustomEqualityTester(compareUserArrays);
+            expect(res.render.calls.mostRecent().args[1].challengeableUsers).toEqual(challengeableUsers);
+            done();
+          });
+        });
+      });
+    }
   });
 });
 
