@@ -89,6 +89,11 @@ function getSpotFullChallengeList(filePath) {
   return getMockChallengesList(filePath);
 }
 
+function getWrongPersonChallengeList(filePath) {
+  filePath = filePath || config.db.wrongPersonChallengeListPath;
+  return getMockChallengesList(filePath);
+}
+
 const obj = {};
 obj.getUsersFromExcelFile = getUsersFromExcelFile;
 obj.getSpotsFromExcelFile = getSpotsFromExcelFile;
@@ -96,5 +101,6 @@ obj.separateEligibleMembers = separateEligibleMembers;
 obj.getMockChallengesList = getMockChallengesList;
 obj.getNoConflictChallengeList = getNoConflictChallengeList;
 obj.getSpotFullChallengeList = getSpotFullChallengeList;
+obj.getWrongPersonChallengeList = getWrongPersonChallengeList;
 
 module.exports = obj;
