@@ -11,6 +11,7 @@ models.sequelize.sync({force: true}).then(() => {
       models.User.bulkCreate(mockData.getUsersFromExcelFile(config.db.fakeUserDataPath)).then(() => {
         console.log('Added fake data');
         models.Challenger.bulkCreate(mockData.getMockChallengesList()).then(() => {console.log('Added fake challengers');});
+        models.Result.bulkCreate(mockData.getFakeResults()).then(() => {console.log('Added fake results');});
       });
     });
 });

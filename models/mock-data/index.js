@@ -51,6 +51,27 @@ function getSpotsFromExcelFile(filePath) {
   return spotArr;
 }
 
+function getFakeResults(filePath) {
+  filePath = filePath || config.db.fakeResultsDataPath;
+  const parseObj = xlsx.parse(filePath);
+  const resultsArray = [];
+  let resultObj;
+  parseObj[0].data.forEach((e, i) => {
+    if (i != 0) {
+      resultObj = new Object();
+      resultObj.firstNameNumber = e[0];
+      resultObj.secondNameNumber = e[1];
+      resultObj.PerformanceId = e[2];
+      resultObj.SpotId = e[3];
+      resultObj.winnerId = e[4];
+      resultObj.comments1 = e[5];
+      resultObj.comments2 = e[6];
+      resultsArray.push(resultObj);
+    }
+  });
+  return resultsArray;
+}
+
 function separateEligibleMembers(userArr) {
   const eligibleChallengers = [], ineligibleChallengers = [];
   userArr.forEach((e) => {
@@ -102,5 +123,6 @@ obj.getMockChallengesList = getMockChallengesList;
 obj.getNoConflictChallengeList = getNoConflictChallengeList;
 obj.getSpotFullChallengeList = getSpotFullChallengeList;
 obj.getWrongPersonChallengeList = getWrongPersonChallengeList;
+obj.getFakeResults = getFakeResults;
 
 module.exports = obj;

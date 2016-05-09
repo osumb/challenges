@@ -10,7 +10,8 @@ module.exports = {
     'fakeChallengeListPath': path.join(__dirname, '../models/mock-data/MockChallengeList.xlsx'),
     'fakeNoConflictChallengeListPath': path.join(__dirname, '../models/mock-data/NoConflictChallenges.xlsx'),
     'fakeSpotFullChallengeListPath': path.join(__dirname, '../models/mock-data/SpotFullChallenges.xlsx'),
-    'wrongPersonChallengeListPath': path.join(__dirname, '../models/mock-data/WrongPersonChallenges.xlsx')
+    'wrongPersonChallengeListPath': path.join(__dirname, '../models/mock-data/WrongPersonChallenges.xlsx'),
+    'fakeResultsDataPath': path.join(__dirname, '../models/mock-data/Results.xlsx')
   },
   'passport': {
     'secret': process.env.PASSPORT_SECRET || 'keyboard cat'

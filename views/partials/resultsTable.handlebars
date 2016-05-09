@@ -1,0 +1,10 @@
+{{#each results}}
+  <h3>For {{this.PerformanceName}}, you faced {{this.opponentName}}</h3>
+  {{#if this.winner}}
+    <h3>And you won!</h3>
+  {{else}}
+    <h3>And you lost :(</h3>
+  {{/if}}
+  <h3>Comments: {{this.comments}}</h3>
+  <hr />
+{{/each}}
