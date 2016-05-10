@@ -66,6 +66,7 @@ function getFakeResults(filePath) {
       resultObj.winnerId = e[4];
       resultObj.comments1 = e[5];
       resultObj.comments2 = e[6];
+      resultObj.pending = false;
       resultsArray.push(resultObj);
     }
   });
