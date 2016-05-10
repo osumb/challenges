@@ -57,6 +57,14 @@ db.challengeablePeopleQuery = (user) => {
   };
 };
 
+db.userResultsQuery = (nameNumber) => {
+  const queryString = 'SELECT R."firstNameNumber" AS FNN, R."secondNameNumber" AS SNN, U."name" AS uName, R."winnerId", R."comments1", R."comments2", P."name" AS pName, P."id" AS PerformanceId, R."SpotId" FROM "Results" AS R, "Users" AS U, "Performances" AS P WHERE (R."firstNameNumber" = U."nameNumber" OR R."secondNameNumber" = U."nameNumber") AND (R."firstNameNumber" = $1 OR R."secondNameNumber" = $2) AND R."PerformanceId" = P."id" AND R."pending" = false';
+  return {
+    queryString,
+    bind: [nameNumber, nameNumber]
+  };
+};
+
 db.nextPerformanceQuery = {
   where: {
     closeAt: {
@@ -77,5 +85,29 @@ db.openPerformanceWindowQuery = {
   },
   order: [['openAt', 'ASC']]
 };
+
+db.parseResults = (results, nameNumber, name) => {
+  const toReturn = [];
+  results = splitResults(results, nameNumber, name);
+  for (let i = 0; i < results.userResults.length; i++) {
+    let result = new Object(), userResult = results.userResults[i], nonUserResult = results.nonUserResults[i];
+    result.PerformanceName = userResult.pname;
+    result.opponentName = nonUserResult.uname;
+    result.comments = userResult.fnn === nameNumber ? userResult.comments1 : userResult.comments2;
+    result.winner = userResult.winnerId === nameNumber;
+    result.SpotId = userResult.SpotId;
+    toReturn.push(result);
+  }
+  return toReturn;
+};
+
+function splitResults(results, userNameNumber, name) {
+  const userResults = [], nonUserResults = [];
+  results.forEach((e) => {
+    if (e.uname === name) userResults.push(e);
+    if (e.uname != name) nonUserResults.push(e);
+  });
+  return {userResults, nonUserResults};
+}
 
 module.exports = db;

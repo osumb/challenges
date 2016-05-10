@@ -1,0 +1,24 @@
+<table class="table">
+  <thead>
+      <tr>
+        <th>Performance</th>
+        <th>Opponent</th>
+        <th>For Spot</th>
+        <th>Won?</th>
+        <th>Comments</th>
+      </tr>
+  </thead>
+  {{#each results}}
+    <tr id="row-id-"{{@index}}>
+      <td>{{this.PerformanceName}}</td>
+      <td>{{this.opponentName}}</td>
+      <td>{{this.SpotId}}</td>
+      {{#if this.winner}}
+        <td><i class="em em-trophy"></i></td>
+      {{else}}
+        <td><i class="em em-crying_cat_face"></i></td>
+      {{/if}}
+      <td>{{this.comments}}</td>
+    </tr>
+  {{/each}}
+</table>

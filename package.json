@@ -8,7 +8,8 @@
     "dev": "nodemon ./bin/www",
     "start": "node ./bin/www",
     "postinstall": "bower cache clean && bower install",
-    "test": "script/test"
+    "test": "script/test",
+    "mock-data": "script/mock-data"
   },
   "dependencies": {
     "bcrypt": "^0.8.6",

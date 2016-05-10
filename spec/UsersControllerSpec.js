@@ -6,11 +6,13 @@ const usersArray = mockData.getUsersFromExcelFile();
 const separatedMembers = mockData.separateEligibleMembers(usersArray);
 const eligibleChallengers = separatedMembers.eligibleChallengers;
 const ineligibleChallengers = separatedMembers.ineligibleChallengers;
+const fakeChallengers = mockData.getMockChallengesList();
 const config = require('../config/config');
 const Models = require('../models');
 const User = Models.User;
 const Spot = Models.Spot;
 const challengeablePeopleQuery = Models.challengeablePeopleQuery;
+const mockPerformance = require('../config/config').test.mockPerformance;
 
 describe('Users Controller.', () => {
   describe('showAll: ', () => {
@@ -34,20 +36,26 @@ describe('Users Controller.', () => {
   describe('showProfile: ', () => {
     let req = {}, res = {};
     req.params = {};
-    beforeEach((done) => {
+    beforeEach(() => {
       res.render = () => {};
-      //get A13
-      req.user = usersArray[12];
       spyOn(res, 'render').and.callThrough();
-      //when result data is built in, there will be a promise that resolves
-      let promise = users.showProfile(req, res);
-      if (promise) promise.then(() => {done();});
-      else done();
     });
 
-    it('should render the userProfile view', () => {
-      expect(res.render).toHaveBeenCalledWith('userProfile', jasmine.any(Object));
+    fakeChallengers.forEach((e) => {
+      addUserProfileTest(e);
     });
+
+    function addUserProfileTest(challengerObj) {
+      it('should render the userProfile view', (done) => {
+        req.user = findUserInExcelArray(usersArray, challengerObj.UserNameNumber);
+        req.user.nextPerformance = {id: 1};
+        users.showProfile(req, res)
+          .then(() => {
+            expect(res.render).toHaveBeenCalledWith('userProfile', jasmine.any(Object));
+            done();
+          });
+      });
+    }
   });
 
   describe('showChallengeSelect: ', () => {
@@ -121,4 +129,15 @@ function compareUserValues(dbUser, mockUser) {
          dbUser.admin === mockUser.admin &&
          dbUser.squadLeader === mockUser.squadLeader &&
          dbUser.eligible === mockUser.eligible;
+}
+
+function findUserInExcelArray(array, nameNumber) {
+  let user;
+  array.some((e) => {
+    if (e.nameNumber === nameNumber) {
+      user = e;
+      return true;
+    }
+  });
+  return user;
 }
