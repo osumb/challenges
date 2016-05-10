@@ -1,10 +1,22 @@
-{{#each results}}
-  <h3>For {{this.PerformanceName}}, you faced {{this.opponentName}}</h3>
-  {{#if this.winner}}
-    <h3>And you won!</h3>
-  {{else}}
-    <h3>And you lost :(</h3>
-  {{/if}}
-  <h3>Comments: {{this.comments}}</h3>
-  <hr />
-{{/each}}
+<table class="table">
+  <thead>
+      <tr>
+        <th>Performance</th>
+        <th>Opponent</th>
+        <th>Won?</th>
+        <th>Comments</th>
+      </tr>
+  </thead>
+  {{#each results}}
+    <tr id="row-id-"{{@index}}>
+      <td>{{this.PerformanceName}}</td>
+      <td>{{this.opponentName}}</td>
+      {{#if this.winner}}
+        <td>:)</td>
+      {{else}}
+        <td>:(</td>
+      {{/if}}
+      <td>{{this.comments}}</td>
+    </tr>
+  {{/each}}
+</table>
