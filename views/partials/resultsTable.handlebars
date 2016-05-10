@@ -3,6 +3,7 @@
       <tr>
         <th>Performance</th>
         <th>Opponent</th>
+        <th>For Spot</th>
         <th>Won?</th>
         <th>Comments</th>
       </tr>
@@ -11,6 +12,7 @@
     <tr id="row-id-"{{@index}}>
       <td>{{this.PerformanceName}}</td>
       <td>{{this.opponentName}}</td>
+      <td>{{this.SpotId}}</td>
       {{#if this.winner}}
         <td><i class="em em-trophy"></i></td>
       {{else}}

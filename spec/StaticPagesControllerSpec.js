@@ -1,7 +1,7 @@
 'use strict';
 const StaticPagesController = require('../controllers/StaticPages');
 const staticPages = new StaticPagesController();
-const mockPerformance = require('../config/config').test.mockPerformance;
+const mockPerformance = require('../config/config').test.mockPerformance[0];
 const moment = require('moment');
 describe('Static Pages Controller => ', () => {
   describe('Home', () => {

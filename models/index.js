@@ -58,7 +58,7 @@ db.challengeablePeopleQuery = (user) => {
 };
 
 db.userResultsQuery = (nameNumber) => {
-  const queryString = 'SELECT R."firstNameNumber" AS FNN, R."secondNameNumber" AS SNN, U."name" AS uName, R."winnerId", R."comments1", R."comments2", P."name" AS pName, P."id" AS PerformanceId FROM "Results" AS R, "Users" AS U, "Performances" AS P WHERE (R."firstNameNumber" = U."nameNumber" OR R."secondNameNumber" = U."nameNumber") AND (R."firstNameNumber" = $1 OR R."secondNameNumber" = $2) AND R."PerformanceId" = P."id" AND R."pending" = false';
+  const queryString = 'SELECT R."firstNameNumber" AS FNN, R."secondNameNumber" AS SNN, U."name" AS uName, R."winnerId", R."comments1", R."comments2", P."name" AS pName, P."id" AS PerformanceId, R."SpotId" FROM "Results" AS R, "Users" AS U, "Performances" AS P WHERE (R."firstNameNumber" = U."nameNumber" OR R."secondNameNumber" = U."nameNumber") AND (R."firstNameNumber" = $1 OR R."secondNameNumber" = $2) AND R."PerformanceId" = P."id" AND R."pending" = false';
   return {
     queryString,
     bind: [nameNumber, nameNumber]
@@ -95,6 +95,7 @@ db.parseResults = (results, nameNumber, name) => {
     result.opponentName = nonUserResult.uname;
     result.comments = userResult.fnn === nameNumber ? userResult.comments1 : userResult.comments2;
     result.winner = userResult.winnerId === nameNumber;
+    result.SpotId = userResult.SpotId;
     toReturn.push(result);
   }
   return toReturn;
