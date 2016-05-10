@@ -36,20 +36,26 @@ describe('Users Controller.', () => {
   describe('showProfile: ', () => {
     let req = {}, res = {};
     req.params = {};
-    beforeEach((done) => {
+    beforeEach(() => {
       res.render = () => {};
-      req.user = findUserInExcelArray(usersArray, fakeChallengers[0].UserNameNumber)
-      req.user.nextPerformance = {id: 1};
       spyOn(res, 'render').and.callThrough();
-      //when result data is built in, there will be a promise that resolves
-      let promise = users.showProfile(req, res);
-      if (promise) promise.then(() => {done();});
-      else done();
     });
 
-    it('should render the userProfile view', () => {
-      expect(res.render).toHaveBeenCalledWith('userProfile', jasmine.any(Object));
+    fakeChallengers.forEach((e) => {
+      addUserProfileTest(e);
     });
+
+    function addUserProfileTest(challengerObj) {
+      it('should render the userProfile view', (done) => {
+        req.user = findUserInExcelArray(usersArray, challengerObj.UserNameNumber);
+        req.user.nextPerformance = {id: 1};
+        users.showProfile(req, res)
+          .then(() => {
+            expect(res.render).toHaveBeenCalledWith('userProfile', jasmine.any(Object));
+            done();
+          });
+      });
+    }
   });
 
   describe('showChallengeSelect: ', () => {
