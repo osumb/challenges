@@ -22,10 +22,12 @@ function UsersController() {
 
   this.showProfile = (req, res) => {
     const queryObj = userResultsQuery(req.user.nameNumber);
+    const nextPerfId = typeof req.user.nextPerformance === 'undefined' ? null : req.user.nextPerformance.id;
+
     const promise = Promise.all([
       Challenger.findOne({
         where: {
-          PerformanceId: req.user.nextPerformance.id,
+          PerformanceId: nextPerfId,
           UserNameNumber: req.user.nameNumber
         }
       }),

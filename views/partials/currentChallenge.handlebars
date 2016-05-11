@@ -1,8 +1,9 @@
 {{#if currentChallenge}}
+<hr />
 <h2>You're currently signed up to challenge spot {{currentChallenge.SpotId}} for the {{user.nextPerformance.name}}</h2>
 {{else}}
-<h2>You're not currently signed up for a challenge</h2>
   {{#if user.eligible}}
-    <p>You need to make a challenge! Head to Make A Challenge to do that</p>
+		<hr />
+    <h2>You need to make a challenge! Head to Make A Challenge to do that</h2>
   {{/if}}
 {{/if}}
