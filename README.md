@@ -1,17 +1,19 @@
-# Challenges
+# OSUMB Challenges
+[![Build Status](https://travis-ci.org/osumb/challenges.svg?branch=master)](https://travis-ci.org/osumb/challenges)
+
+![alt text](./public/images/OSUMBlogo.jpg)
 
 Application for members of the OSUMB to signup for challenges
 
 ## Installation and setup
 First [download and install Homebrew](http://brew.sh/)
-Make sure you have nodemon for dev ```bash npm install nodemon -g```
 
-Inside your terminal application run the following commands to get the project up and running.
+Inside your terminal, run the following commands to get the project up and running.
 
 ```bash
 git clone https://github.com/osumb/challenges.git
 cd challenges
-npm install
+script/setup
 ```
 
 That's it! All your dependencies are ready to go
@@ -22,3 +24,19 @@ npm run dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) and enjoy!
+
+Or if you've configured Nginx, open [http://osumbchallenges.dev](http://osumbchallenges.dev)
+
+### Tests
+```bash
+npm test
+```
+
+## Staging vs Production
+### Staging
+The staging branch is protected just like master. To test a feature, make a pull request to this branch. We have a
+staging [Heroku instance](https://osumbchallengesdev.herokuapp.com). When a PR to staging is merged, it will a trigger a
+build on that instance. Give it a minute after merging as it has to go through CI again.
+
+### Production
+Working on it... Waiting for approval to get a domain to get all of that figured out

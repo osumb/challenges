@@ -1,0 +1,13 @@
+{
+  "spec_dir": "spec",
+  "spec_files": [
+    "**/UsersControllerSpec.js",
+    "**/StaticPagesControllerSpec.js",
+    "**/ChallengersControllerSpec.js"
+  ],
+  "helpers": [
+    "helpers/**/*.js"
+  ],
+  "stopSpecOnExpectationFailure": false,
+  "random": false
+}
