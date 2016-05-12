@@ -49,6 +49,26 @@ function ChallengersController() {
     });
   };
 
+  this.showChallengeEvalForm = (req, res) => {
+    const mock = {
+      PerformanceName: 'Bowling Green Game',
+      challenges: [
+        {
+          'person1': 'Mark Tareshawty',
+          'person2': 'Seth Justice'
+        },
+        {
+          'person1': 'Alex Tareshawty',
+          'person2': 'John Doe'
+        },
+        {
+          'person1': 'Captain Dildo',
+          'person2': 'Patrick Long Fenus'
+        }
+      ]
+    };
+    res.render('challengeEvalForm', mock);
+  };
 }
 
 module.exports = ChallengersController;

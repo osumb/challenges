@@ -78,10 +78,19 @@ function ensureEligible(req, res, next) {
   }
 }
 
+function ensureSquadLeaderOrAdmin(req, res, next) {
+  if (isAuthenticated(req) && (req.user.squadLeader || req.user.admin)) {
+    return next();
+  } else {
+    res.redirect('/');
+  }
+}
+
 obj.ensureAuthenticated = ensureAuthenticated;
 obj.ensureAdmin = ensureAdmin;
 obj.ensureAuthAndNameNumberRoute = ensureAuthAndNameNumberRoute;
 obj.ensureEligible = ensureEligible;
+obj.ensureSquadLeaderOrAdmin = ensureSquadLeaderOrAdmin;
 obj.passport = passport;
 
 module.exports = obj;

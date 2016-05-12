@@ -1,10 +1,12 @@
 const express = require('express');
 const router = express.Router();
+
 const auth = require('../auth');
-const ensureAuthenticated = auth.ensureAuthenticated;
 const ensureAdmin = auth.ensureAdmin;
+const ensureAuthenticated = auth.ensureAuthenticated;
 const ensureAuthAndNameNumberRoute = auth.ensureAuthAndNameNumberRoute;
 const ensureEligible = auth.ensureEligible;
+const ensureSquadLeaderOrAdmin = auth.ensureSquadLeaderOrAdmin;
 const passport = auth.passport;
 
 router.setup = function(app, controllers) {
@@ -17,6 +19,7 @@ router.setup = function(app, controllers) {
 
   //Challengers Controller
   app.post('/challenge', ensureEligible, controllers.challengers.new);
+  app.get('/sl/challenges', ensureSquadLeaderOrAdmin, controllers.challengers.showChallengeEvalForm);
 
   //Sessions Controller
   app.get('/login', controllers.sessions.login);

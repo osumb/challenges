@@ -1,0 +1,18 @@
+<h2>{{PerformanceName}}</h2>
+{{#each challenges}}
+  <hr />
+  <div class="container">
+    <form class="form-inline">
+      <div class="form-group">
+          <td>{{this.person1}}</td>
+          <textarea class="form-control" name="comments1" placeholder="Comments"></textarea>
+          <input type="checkbox" name="winner1" />
+      </div>
+      <div class="form-group">
+        <td>{{this.person2}}</td>
+        <textarea class="form-control" name="comments2" placeholder="Comments"></textarea>
+        <input type="checkbox" name="winner2" />
+      </div>
+    </form>
+  </div>
+{{/each}}
