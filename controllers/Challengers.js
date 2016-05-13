@@ -103,7 +103,7 @@ function ChallengersController() {
       ]
     };
     res.render('challengeEvalForm', mock);
-  }
+  };
 }
 
 module.exports = ChallengersController;
