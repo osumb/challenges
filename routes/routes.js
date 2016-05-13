@@ -20,6 +20,7 @@ router.setup = function(app, controllers) {
   //Challengers Controller
   app.post('/challenge', ensureEligible, controllers.challengers.new);
   app.get('/sl/challenges', ensureSquadLeaderOrAdmin, controllers.challengers.showChallengeEvalForm);
+  app.post('/challengeeval', ensureSquadLeaderOrAdmin, controllers.challengers.challengeEval);
 
   //Sessions Controller
   app.get('/login', controllers.sessions.login);

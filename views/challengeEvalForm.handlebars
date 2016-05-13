@@ -1,17 +1,21 @@
-<h2>{{PerformanceName}}</h2>
+<h2>Challenges for: {{PerformanceName}}</h2>
 {{#each challenges}}
   <hr />
   <div class="container">
-    <form class="form-inline">
-      <div class="form-group">
-          <td>{{this.person1}}</td>
-          <textarea class="form-control" name="comments1" placeholder="Comments"></textarea>
-          <input type="checkbox" name="winner1" />
+    <form class="form-inline" method="POST" action="/challengeeval">
+      <div class="form-group col-md-5">
+        <label>{{this.person1}}</label>
+        <textarea class="form-control" name="comments1" placeholder="Comments"></textarea>
       </div>
-      <div class="form-group">
-        <td>{{this.person2}}</td>
+      <div class="form-group col-md-2">
+        <label>Winner of: {{this.SpotId}}</label><br />
+        <input type="radio" name="winner{{@index}}" value={{this.person1}}> {{this.person1}}<br />
+        <input type="radio" name="winner{{@index}}" value={{this.person2}}> {{this.person2}}<br />
+        <input type="submit" value="Submit" class="btn btn-primary"/>
+      </div>
+      <div class="form-group col-md-5">
+        <label>{{this.person2}}</label>
         <textarea class="form-control" name="comments2" placeholder="Comments"></textarea>
-        <input type="checkbox" name="winner2" />
       </div>
     </form>
   </div>

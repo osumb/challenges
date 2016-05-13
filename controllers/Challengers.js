@@ -51,24 +51,59 @@ function ChallengersController() {
 
   this.showChallengeEvalForm = (req, res) => {
     const mock = {
+      user: req.user,
       PerformanceName: 'Bowling Green Game',
       challenges: [
         {
-          'person1': 'Mark Tareshawty',
-          'person2': 'Seth Justice'
+          person1: 'Nickie Pawlowicz',
+          person2: 'Bettye Lerman',
+          SpotId: 'K3'
         },
         {
-          'person1': 'Alex Tareshawty',
-          'person2': 'John Doe'
+          person1: 'Love Ester',
+          person2: 'Maurita Michalski',
+          SpotId: 'L5'
         },
         {
-          'person1': 'Captain Dildo',
-          'person2': 'Patrick Long Fenus'
+          person1: 'Al Popham',
+          person2: 'Dyan Eddington',
+          SpotId: 'K9'
+        },
+        {
+          person1: 'Maira Berrier',
+          person2: 'Brian Drake',
+          SpotId: 'L8'
         }
       ]
     };
     res.render('challengeEvalForm', mock);
   };
+
+  this.challengeEval = (req, res) => {
+    console.log(req.body);
+    const mock = {
+      user: req.user,
+      PerformanceName: 'Bowling Green Game',
+      challenges: [
+        {
+          person1: 'Love Ester',
+          person2: 'Maurita Michalski',
+          SpotId: 'L5'
+        },
+        {
+          person1: 'Al Popham',
+          person2: 'Dyan Eddington',
+          SpotId: 'K9'
+        },
+        {
+          person1: 'Maira Berrier',
+          person2: 'Brian Drake',
+          SpotId: 'L8'
+        }
+      ]
+    };
+    res.render('challengeEvalForm', mock);
+  }
 }
 
 module.exports = ChallengersController;
