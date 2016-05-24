@@ -15,14 +15,14 @@ function getUsersFromExcelFile(filePath) {
     if (index != 0) {
       UserObj = new Object();
       UserObj.name = e[1];
-      UserObj.SpotId = e[0];
+      UserObj.spotId = e[0];
       UserObj.instrument = e[2];
       UserObj.part = e[3];
       UserObj.nameNumber = e[4];
       UserObj.eligible = e[5];
       UserObj.squadLeader = e[6];
       UserObj.admin = e[7];
-      if (UserObj.SpotId.match(/[A-Z]+|[1-9]+/g)[1] > 12) {
+      if (UserObj.spotId.match(/[A-Z]+|[1-9]+/g)[1] > 12) {
         UserObj.alternate = true;
       } else {
         UserObj.alternate = false;

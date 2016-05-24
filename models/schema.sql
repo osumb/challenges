@@ -107,6 +107,8 @@ CREATE TABLE users (
   instrument instrument,
   part part,
   eligible boolean NOT NULL DEFAULT FALSE,
+	squadLeader boolean NOT NULL DEFAULT FALSE,
+	admin boolean NOT NULL DEFAULT FALSE,
   created_at timestamp NOT NULL,
   modified_at timestamp NOT NULL
 );
