@@ -20,9 +20,9 @@ module.exports = {
     'port': process.env.PORT || 3000
   },
   'test': {
-    'mockPerformance': [
-      {name: 'Bowling Green Game', openAt: moment().startOf('day').add().format(), closeAt: moment().startOf('day').add({days: 1, hours: 3}).format()},
-      {name: 'Buckeye Invite', openAt: moment().startOf('month').add().format(), closeAt: moment().startOf('month').add({days: 1, hours: 3}).format()}
+    'mockPerformances': [
+      {name: 'Bowling Green Game', openAt: moment().startOf('day').add().format('YYYY-MM-DD HH:mm:ss'), closeAt: moment().startOf('day').add({days: 1, hours: 3}).format('YYYY-MM-DD HH:mm:ss')},
+      {name: 'Buckeye Invite', openAt: moment().startOf('month').add().format('YYYY-MM-DD HH:mm:ss'), closeAt: moment().startOf('month').add({days: 1, hours: 3}).format('YYYY-MM-DD HH:mm:ss')}
     ]
   }
 };

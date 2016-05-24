@@ -124,6 +124,7 @@ FOR EACH ROW EXECUTE PROCEDURE modified_stamp();
 ----------------------------------------
 CREATE TABLE performances (
   id serial PRIMARY KEY,
+	name varchar(256) NOT NULL,
   openAt timestamp NOT NULL,
   closeAt timestamp NOT NULL,
   created_at timestamp NOT NULL,
@@ -133,7 +134,7 @@ CREATE TABLE performances (
 CREATE TRIGGER performances_created_stamp BEFORE INSERT ON performances
 FOR EACH ROW EXECUTE PROCEDURE created_stamp();
 
-CREATE TRIGGER performances_modified_stamp BEFORE INSERT ON spots
+CREATE TRIGGER performances_modified_stamp BEFORE INSERT ON performances
 FOR EACH ROW EXECUTE PROCEDURE modified_stamp();
 
 ----------------------------------------
@@ -160,6 +161,7 @@ FOR EACH ROW EXECUTE PROCEDURE modified_stamp();
 CREATE TABLE results (
   id serial PRIMARY KEY,
   performanceId integer references performances(id) NOT NULL,
+	spotId varchar(3) references spots(id) NOT NULL,
   firstNameNumber varchar(256) references users(nameNumber) NOT NULL,
 	secondNameNumber varchar(256) references users(nameNumber) NOT NULL,
   firstComments text NOT NULL DEFAULT '',
