@@ -1,4 +1,3 @@
-'use strict';
 const queries = require('./queries');
 const utils = require('../utils');
 
@@ -21,7 +20,7 @@ class Challenge {
 
       query.on('error', (err) => {
         client.end();
-        reject({ error: err });
+        reject(err);
       });
     });
   }
