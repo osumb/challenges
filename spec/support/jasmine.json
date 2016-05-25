@@ -1,9 +1,7 @@
 {
   "spec_dir": "spec",
   "spec_files": [
-    "**/UsersControllerSpec.js",
-    "**/StaticPagesControllerSpec.js",
-    "**/ChallengersControllerSpec.js"
+    "**/*Spec.js"
   ],
   "helpers": [
     "helpers/**/*.js"

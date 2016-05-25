@@ -10,9 +10,10 @@ echo "==> Linting..."
 eslint .
 echo "==> Done!"
 
-echo "==> Setting Up Test Database..."
-node models/setup.js
-echo "==> Done!"
-
-echo "==> Running tests..."
-jasmine
+# We'll do some integration tests later
+# echo "==> Setting Up Test Database..."
+# node models/setup.js
+# echo "==> Done!"
+#
+# echo "==> Running tests..."
+# jasmine
