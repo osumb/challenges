@@ -27,9 +27,14 @@ module.exports = class Performance {
 
   formatPerformance(performance, formatString) {
     const now = new Date().toJSON();
-    performance.windowOpen = moment(performance.openat).isBefore(moment(now)) && moment(now).isBefore(moment(performance.closeat));
-    performance.openAt = moment(performance.openat).format(formatString);
-    performance.closeAt = moment(performance.closeat).format(formatString);
-    return performance;
+    const windowOpen = moment(performance.openat).isBefore(moment(now))
+                       && moment(now).isBefore(moment(performance.closeat));
+
+    return {
+      name: performance.name,
+      openAt: moment(performance.openat).format(formatString),
+      closeAt: moment(performance.closeat).format(formatString),
+      windowOpen
+    };
   }
 };
