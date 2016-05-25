@@ -12,6 +12,7 @@
     "mock-data": "script/mock-data"
   },
   "dependencies": {
+    "async": "^2.0.0-rc.5",
     "bcrypt": "^0.8.6",
     "body-parser": "~1.13.2",
     "bower": "^1.7.7",

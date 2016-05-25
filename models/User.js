@@ -1,63 +1,60 @@
-'use strict';
-const options = {freezeTableName: true};
+const utils = require('../utils');
 
-module.exports = function(sequelize, DataTypes) {
-  return sequelize.define('Users', {
-    'nameNumber': {
-      type: DataTypes.STRING,
-      primaryKey: true,
-      autoIncrement: false
-    },
-    name: {
-      type: DataTypes.STRING,
-      allowNull: false
-    },
-    password: {
-      type: DataTypes.STRING,
-      allowNull: false
-    },
-    instrument: {
-      type: DataTypes.ENUM('Trumpet', 'Mellophone', 'Trombone', 'Baritone', 'Snare', 'Tenor', 'Cymbals', 'Bass', 'Sousaphone'),
-      allowNull: true
-    },
-    part: {
-      type: DataTypes.ENUM('Efer', 'First', 'Second', 'Flugel', 'Bass', 'Solo'),
-      allowNull: true,
-      validate: {
-        correctInstrument: function(value) {
-          let instrumentMatchesPart = true;
-          switch(this.instrument) {
-          case 'Trumpet':
-            instrumentMatchesPart = (value === 'Solo' || value === 'First' || value === 'Second' || value === 'Flugel' || value === 'Effer');
-            break;
-          case 'Trombone':
-            instrumentMatchesPart = (value === 'First' || value === 'Second' || value === 'Bass');
-            break;
-          default:
-            instrumentMatchesPart = true;
-          }
-          if (!instrumentMatchesPart) throw new Error(`Instrument: ${this.instrument} can't have part ${value}`);
-        }
-      }
-    },
-    admin: {
-      type: DataTypes.BOOLEAN,
-      allowNull: false,
-      defaultValue: false
-    },
-    squadLeader: {
-      type: DataTypes.BOOLEAN,
-      allowNull: false,
-      defaultValue: false
-    },
-    eligible: {
-      type: DataTypes.BOOLEAN,
-      allowNull: false,
-      defaultValue: false
-    },
-    alternate: {
-      type: DataTypes.BOOLEAN,
-      allowNull: true
-    }
-  }, options);
-};
+function parseUserFromDB(user) {
+  delete user.password;
+  delete user.createdAt;
+  delete user.updatedAt;
+
+  return user;
+}
+
+class User {
+  findByNameNumber(nameNumber) {
+    return new Promise((resolve, reject) => {
+      const client = utils.db.createClient();
+      const queryString = 'SELECT * FROM "Users" WHERE "nameNumber" = $1;';
+
+      client.connect();
+      client.on('error', (err) => {reject(err);});
+
+      const query = client.query(queryString, [nameNumber]);
+      query.on('row', (result) => {
+        client.end();
+        resolve(parseUserFromDB(result));
+      });
+
+      query.on('error', (err) => {
+        client.end();
+        reject(err);
+      });
+    });
+  }
+
+  findAll() {
+    return new Promise((resolve, reject) => {
+      const client = utils.db.createClient();
+      const queryString = 'SELECT * FROM "Users"';
+      const users = [];
+
+      client.connect();
+      client.on('error', (err) => {reject(err);});
+
+      const query = client.query(queryString);
+      query.on('row', (result) => {
+        users.push(parseUserFromDB(result));
+      });
+
+      query.on('end', () => {
+        client.end();
+        resolve(users);
+      });
+
+      query.on('error', (err) => {
+        client.end();
+        reject(err);
+      });
+    });
+  }
+}
+
+module.exports = User;
