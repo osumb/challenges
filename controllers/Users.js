@@ -18,7 +18,6 @@ function UsersController() {
   };
 
   this.showProfile = (req, res) => {
-
     Promise.all([Result.getAllForUser(req.user.nameNumber), Challenge.getForUser(req.user.nameNumber)])
       .then((data) => {
         const results = data[0], challenge = data[1];

@@ -16,7 +16,10 @@ class Challenge {
         client.end();
         resolve(this.parse(result));
       });
-
+      query.on('end', () => {
+        client.end();
+        resolve(null);
+      });
       query.on('error', (err) => {
         client.end();
         reject(err);
