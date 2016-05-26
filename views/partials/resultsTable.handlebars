@@ -10,9 +10,9 @@
   </thead>
   {{#each results}}
     <tr id="row-id-"{{@index}}>
-      <td>{{this.PerformanceName}}</td>
+      <td>{{this.performanceName}}</td>
       <td>{{this.opponentName}}</td>
-      <td>{{this.SpotId}}</td>
+      <td>{{this.spotId}}</td>
       {{#if this.winner}}
         <td><i class="em em-trophy"></i></td>
       {{else}}

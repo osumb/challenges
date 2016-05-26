@@ -1,10 +1,6 @@
 const Models = require('../models');
-const User = Models.User;
-const Challenger = Models.Challenger;
-const sequelize = Models.sequelize;
-const userResultsQuery = Models.userResultsQuery;
-const parseResults = Models.parseResults;
-const challengeablePeopleQuery = require('../models').challengeablePeopleQuery;
+const User = new Models.User();
+const Result = new Models.Result();
 
 function UsersController() {
   this.showAll = (req, res) => {
@@ -21,32 +17,14 @@ function UsersController() {
   };
 
   this.showProfile = (req, res) => {
-    const queryObj = userResultsQuery(req.user.nameNumber);
-    const nextPerfId = typeof req.user.nextPerformance === 'undefined' ? null : req.user.nextPerformance.id;
 
-    const promise = Promise.all([
-      Challenger.findOne({
-        where: {
-          PerformanceId: nextPerfId,
-          UserNameNumber: req.user.nameNumber
-        }
-      }),
-      sequelize.query(queryObj.queryString, {bind: queryObj.bind})
-    ]);
-    promise.then((results) => {
-      results[0] = results[0] || {dataValues: undefined};
-      if (results[1][0].length <= 0) {
-        res.render('userProfile', {user: req.user, currentChallenge: results[0].dataValues});
-      } else {
-        const parsedResults = parseResults(results[1][0], req.user.nameNumber, req.user.name);
-        res.render('userProfile', {user: req.user, currentChallenge: results[0].dataValues, results: parsedResults});
-      }
-    })
-    .catch((e) => {
-      console.log(e);
-      res.render('error');
-    });
-    return promise;
+    Promise.all([Result.getAllForUser(req.user.nameNumber)/*, Challenge.getForUser(req.user.nameNumber)*/])
+      .then((data) => {
+        const results = data[0];
+
+        res.render('userProfile', {user: req.user, results});
+      })
+      .catch(() => res.render('error'));
   };
 
   this.showChallengeSelect = (req, res) => {

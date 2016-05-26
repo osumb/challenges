@@ -3,8 +3,8 @@ const fs = require('fs');
 const path = require('path');
 
 const config = require('../config/config');
-const mockData = require('./mock-data');
 const db = require('../utils').db;
+const mockData = require('./mock-data');
 
 const client = db.createClient();
 

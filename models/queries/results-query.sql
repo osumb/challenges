@@ -1,5 +1,5 @@
 SELECT * FROM
-  (SELECT R1.id, get_user_result_comments(R1.firstNameNumber, R1.firstComments, R1.secondComments, $1) AS comments, P.name, R1.winnerId FROM Results as R1, Performances as P
+  (SELECT R1.id, get_user_result_comments(R1.firstNameNumber, R1.firstComments, R1.secondComments, $1) AS comments, P.name, R1.winnerId, R1.spotId FROM Results as R1, Performances as P
   WHERE (R1.firstNameNumber = $1 OR R1.secondNameNumber = $1) AND
   R1.performanceId = P.id AND NOT R1.pending) t1
 left join
