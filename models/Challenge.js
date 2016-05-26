@@ -2,6 +2,27 @@ const queries = require('./queries');
 const utils = require('../utils');
 
 class Challenge {
+  getAllChallengeablePeopleForUser(user) {
+    const sql = 'SELECT * FROM spots AS S, users AS U WHERE u.instrument = $1 AND u.part = $2 AND u.eligible = FALSE AND S.id = U.spotId';
+
+    return new Promise((resolve, reject) => {
+      const client = utils.db.createClient();
+      const users = [];
+
+      client.connect();
+      client.on('error', (err) => reject(err));
+
+      const query = client.query(sql, [user.instrument, user.part]);
+
+      query.on('row', (user) => users.push(this.parseChallengeAblePerson(user)));
+      query.on('end', () => {
+        client.end();
+        resolve(users);
+      });
+      query.on('error', (err) => reject(err));
+    });
+  }
+
   getForUser(nameNumber) {
     const sql = 'SELECT * FROM challenges AS C, performances AS P WHERE userNameNumber = $1 AND C.performanceId = P.id ORDER BY C.id LIMIT 1';
     return new Promise((resolve, reject) => {
@@ -14,7 +35,7 @@ class Challenge {
 
       query.on('row', (result) => {
         client.end();
-        resolve(this.parse(result));
+        resolve(this.parseChallenge(result));
       });
       query.on('end', () => {
         client.end();
@@ -50,10 +71,19 @@ class Challenge {
     });
   }
 
-  parse(challenge) {
+  parseChallenge(challenge) {
     return {
       spotId: challenge.spotid,
       performanceName: challenge.name
+    };
+  }
+
+  parseChallengeAblePerson(challenge) {
+    return {
+      challengedCount: challenge.challengedcount,
+      name: challenge.name,
+      spotOpen: challenge.open,
+      spotId: challenge.spotid
     };
   }
 }

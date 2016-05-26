@@ -17,7 +17,10 @@ module.exports = class Performance {
         client.end();
         resolve(result);
       });
-
+      query.on('end', () => {
+        client.end();
+        resolve(null);
+      });
       query.on('error', (err) => {
         client.end();
         reject(err);
@@ -25,7 +28,7 @@ module.exports = class Performance {
     });
   }
 
-  formatPerformance(performance, formatString) {
+  format(performance, formatString) {
     const now = new Date().toJSON();
     const windowOpen = moment(performance.openat).isBefore(moment(now))
                        && moment(now).isBefore(moment(performance.closeat));

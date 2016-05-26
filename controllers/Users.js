@@ -1,6 +1,7 @@
 const Models = require('../models');
 const Challenge = new Models.Challenge();
 const Result = new Models.Result();
+const Performance = new Models.Performance();
 const User = new Models.User();
 
 function UsersController() {
@@ -24,20 +25,15 @@ function UsersController() {
 
         res.render('userProfile', {user: req.user, challenge, results});
       })
-      .catch((err) => {console.error(err); res.render('error');});
+      .catch(() => res.render('error'));
   };
 
   this.showChallengeSelect = (req, res) => {
-    const promise = User.findAll(challengeablePeopleQuery(req.user));
-    promise.then((challengeableUsers) => {
-      res.render('challengeSelect', {user: req.user, challengeableUsers: challengeableUsers});
-    });
-
-    promise.catch(() => {
-      res.render('error');
-    });
-
-    return promise;
+    Promise.all([Challenge.getAllChallengeablePeopleForUser(req.user), Performance.getNext()])
+      .then((data) =>
+        res.render('challengeSelect', {user: req.user, challengeableUsers: data[0], nextPerformance: data[1]})
+      )
+      .catch(() => res.render('error'));
   };
 }
 
