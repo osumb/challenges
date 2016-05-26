@@ -1,6 +1,7 @@
 const Models = require('../models');
-const User = new Models.User();
+const Challenge = new Models.Challenge();
 const Result = new Models.Result();
+const User = new Models.User();
 
 function UsersController() {
   this.showAll = (req, res) => {
@@ -18,13 +19,13 @@ function UsersController() {
 
   this.showProfile = (req, res) => {
 
-    Promise.all([Result.getAllForUser(req.user.nameNumber)/*, Challenge.getForUser(req.user.nameNumber)*/])
+    Promise.all([Result.getAllForUser(req.user.nameNumber), Challenge.getForUser(req.user.nameNumber)])
       .then((data) => {
-        const results = data[0];
+        const results = data[0], challenge = data[1];
 
-        res.render('userProfile', {user: req.user, results});
+        res.render('userProfile', {user: req.user, challenge, results});
       })
-      .catch(() => res.render('error'));
+      .catch((err) => {console.error(err); res.render('error');});
   };
 
   this.showChallengeSelect = (req, res) => {
