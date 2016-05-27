@@ -14,7 +14,10 @@ class User {
         client.end();
         resolve(result);
       });
-
+      query.on('end', () => {
+        client.end();
+        resolve(null);
+      });
       query.on('error', (err) => {
         client.end();
         reject(err);
