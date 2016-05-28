@@ -2,7 +2,7 @@ const utils = require('../utils');
 
 class Challenge {
   getAllChallengeablePeopleForUser(user) {
-    const sql = 'SELECT * FROM spots AS S, users AS U WHERE u.instrument = $1 AND u.part = $2 AND u.eligible = FALSE AND S.id = U.spotId';
+    const sql = `SELECT * FROM spots AS S, users AS U WHERE u.instrument = $1 AND u.part = $2 AND u.eligible = FALSE AND S.id = U.spotId ORDER BY (substring(s.id, '^[A-X]'), substring(s.id, '[0-9]+')::int)`;
 
     return new Promise((resolve, reject) => {
       const client = utils.db.createClient();
