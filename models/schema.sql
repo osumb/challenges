@@ -14,6 +14,36 @@ DROP TYPE IF EXISTS role;
 ----------------------------------------
 -- FUNCTIONS
 ----------------------------------------
+DROP FUNCTION IF EXISTS make_challenge(uId varchar(256), pId int, sId varchar(3));
+CREATE OR REPLACE FUNCTION make_challenge(uId varchar(256), pId int, sId varchar(3))
+RETURNS text as $$
+DECLARE message TEXT;
+BEGIN
+  IF EXISTS (SELECT * FROM challenges WHERE userNameNumber = uId AND performanceId = pId) THEN
+    message := 'Challenge already made';
+    RETURN message;
+  END IF;
+  IF (SELECT open FROM spots WHERE id = sId) = TRUE THEN
+    IF (SELECT challengedCount FROM spots WHERE id = sId) >= 2 THEN
+      message := 'Spot already challenged';
+      RETURN message;
+    END IF;
+  ELSE
+    IF (SELECT challengedCount FROM spots WHERE id = sId) >= 1 THEN
+      message := 'Spot already challenged';
+      RETURN message;
+    END IF;
+  END IF;
+  INSERT INTO challenges (userNameNumber, performanceId, spotId) VALUES (uId, pId, sId);
+  UPDATE spots SET challengedCount = challengedCount + 1 WHERE id = sId;
+  UPDATE users SET eligible = FALSE WHERE nameNumber = uId;
+	message:= '';
+
+	RETURN message;
+END;
+$$ LANGUAGE plpgsql;
+
+
 CREATE OR REPLACE FUNCTION get_user_result_comments(idOne varchar(256), commentsOne text, commentsTwo text, id varchar(256))
 RETURNS text AS $$
 DECLARE comments text;

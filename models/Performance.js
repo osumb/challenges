@@ -34,6 +34,7 @@ module.exports = class Performance {
                        && moment(now).isBefore(moment(performance.closeat));
 
     return {
+      id: performance.id,
       name: performance.name,
       openAt: moment(performance.openat).format(formatString),
       closeAt: moment(performance.closeat).format(formatString),

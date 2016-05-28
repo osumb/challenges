@@ -1,4 +1,3 @@
-const queries = require('./queries');
 const utils = require('../utils');
 
 class Challenge {
@@ -48,22 +47,26 @@ class Challenge {
     });
   }
 
-  makeChallenge(userId, spotId) {
-    const sql = queries.makeChallenge;
+  makeChallenge(userId, spotId, performanceId) {
+    const sql = 'SELECT make_challenge($1, $2, $3)';
 
     return new Promise((resolve, reject) => {
       const client = utils.db.createClient();
+      let challengeMessage = '';
 
       client.connect();
-      client.on('error', (err) => { reject(err); });
+      client.on('error', (err) => reject(err));
 
-      const query = client.query(sql, [userId, spotId]);
+      const query = client.query(sql, [ userId, performanceId, spotId ]);
 
-      query.on('row', (result) => {
-        client.end();
-        resolve(result);
+      query.on('row', (message) => {
+        challengeMessage = message.make_challenge;
       });
 
+      query.on('end', () => {
+        client.end();
+        return challengeMessage === '' ? resolve() : reject(challengeMessage);
+      });
       query.on('error', (err) => {
         client.end();
         reject(err);
