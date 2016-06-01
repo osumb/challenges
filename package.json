@@ -6,7 +6,7 @@
   "private": true,
   "scripts": {
     "dev": "nodemon --use_strict ./bin/www",
-    "start": "node ./bin/www",
+    "start": "node --use_strict ./bin/www",
     "postinstall": "bower cache clean && bower install",
     "test": "script/test",
     "mock-data": "script/mock-data"
