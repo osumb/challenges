@@ -5,13 +5,14 @@
   "description": "Challenge signup manager for OSUMB",
   "private": true,
   "scripts": {
-    "dev": "nodemon ./bin/www",
+    "dev": "nodemon --use_strict ./bin/www",
     "start": "node ./bin/www",
     "postinstall": "bower cache clean && bower install",
     "test": "script/test",
     "mock-data": "script/mock-data"
   },
   "dependencies": {
+    "async": "^2.0.0-rc.5",
     "bcrypt": "^0.8.6",
     "body-parser": "~1.13.2",
     "bower": "^1.7.7",
