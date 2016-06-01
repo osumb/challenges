@@ -14,7 +14,10 @@ function ChallengersController() {
         console.log(`${req.user.name} successfully challenged for ${spotId}`); //TODO: logging
         res.render('challengeSuccess', { user: req.user, spotId });
       })
-      .catch(() => res.render('challengeFailure'));
+      .catch((err) => {
+        console.error(err);
+        res.render('challengeFailure', { user: req.user });
+      });
   };
 }
 
