@@ -14,6 +14,40 @@ DROP TYPE IF EXISTS role;
 ----------------------------------------
 -- FUNCTIONS
 ----------------------------------------
+DROP FUNCTION IF EXISTS make_challenge(uId varchar(256), pId int, sId varchar(3));
+CREATE OR REPLACE FUNCTION make_challenge(uId varchar(256), pId int, sId varchar(3))
+RETURNS text as $$
+DECLARE message TEXT; open boolean; cCount int;
+BEGIN
+  IF EXISTS (SELECT * FROM challenges WHERE userNameNumber = uId AND performanceId = pId) THEN
+    message := 'Challenge already made';
+    RETURN message;
+  END IF;
+  SELECT spots.open, spots.challengedCount INTO open, cCount FROM spots WHERE id = sId;
+  IF ((open AND cCount >= 2) OR (NOT open AND cCount >= 1)) THEN
+    message := 'Spot already challenged';
+    RETURN message;
+  END IF;
+  INSERT INTO challenges (userNameNumber, performanceId, spotId) VALUES (uId, pId, sId);
+  UPDATE spots SET challengedCount = challengedCount + 1 WHERE id = sId;
+  UPDATE users SET eligible = FALSE WHERE nameNumber = uId;
+  -- If the spot is fully challenged, we're going to add to the results table
+  -- There are two ways we could grab the other user. If they're also challenging the spot
+  -- or if the spot isn't open, we need the current user associated with the spot
+  IF (open AND cCount + 1 = 2) THEN
+    INSERT INTO results (performanceId, spotId, firstNameNumber, secondNameNumber, pending)
+    VALUES (pId, sId, (SELECT userNameNumber FROM challenges WHERE performanceId = pId AND spotId = sId), uId, TRUE);
+  ELSIF (NOT open AND cCount + 1 = 1) THEN
+    INSERT INTO results (performanceId, spotId, firstNameNumber, secondNameNumber, pending)
+    VALUES (pId, sId, uId, (SELECT nameNumber FROM users WHERE spotId = sId), TRUE);
+  END IF;
+	message:= '';
+
+	RETURN message;
+END;
+$$ LANGUAGE plpgsql;
+
+
 CREATE OR REPLACE FUNCTION get_user_result_comments(idOne varchar(256), commentsOne text, commentsTwo text, id varchar(256))
 RETURNS text AS $$
 DECLARE comments text;
@@ -109,6 +143,7 @@ CREATE TABLE users (
   eligible boolean NOT NULL DEFAULT FALSE,
 	squadLeader boolean NOT NULL DEFAULT FALSE,
 	admin boolean NOT NULL DEFAULT FALSE,
+	alternate boolean NOT NULL DEFAULT FALSE,
   created_at timestamp NOT NULL,
   modified_at timestamp NOT NULL
 );
@@ -166,7 +201,7 @@ CREATE TABLE results (
 	secondNameNumber varchar(256) references users(nameNumber) NOT NULL,
   firstComments text NOT NULL DEFAULT '',
 	secondComments text NOT NULL DEFAULT '',
-	winnerId varchar(256) references users(nameNumber) NOT NULL,
+	winnerId varchar(256) references users(nameNumber),
 	pending boolean NOT NULL DEFAULT false,
   created_at timestamp NOT NULL,
   modified_at timestamp NOT NULL

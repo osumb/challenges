@@ -1,13 +1,6 @@
 const queries = require('./queries');
 const utils = require('../utils');
 
-function parseForUser(userNameNumber, result) {
-  delete result.id;
-  result.winner = userNameNumber === result.winnerId;
-  delete result.winnerId;
-  return result;
-}
-
 module.exports = class Results {
   getAllForUser(nameNumber) {
     const client = utils.db.createClient();
@@ -19,7 +12,7 @@ module.exports = class Results {
       client.on('error', (err) => {reject(err);});
 
       const query = client.query(sql, [nameNumber]);
-      query.on('row', (result) => {results.push(parseForUser(nameNumber, result));});
+      query.on('row', (result) => {results.push(this.parse(result, nameNumber));});
 
       query.on('end', () => {
         client.end();
@@ -31,5 +24,15 @@ module.exports = class Results {
         reject(err);
       });
     });
+  }
+
+  parse(result, nameNumber) {
+    return {
+      comments: result.comments,
+      opponentName: result.opponentname,
+      performanceName: result.name,
+      spotId: result.spotid,
+      winner: nameNumber === result.winnerid
+    };
   }
 };

@@ -10,13 +10,6 @@ const passport = require('./auth').passport;
 const session = require('express-session');
 const RedisStore = require('connect-redis')(session);
 const routes = require('./routes/routes');
-const StaticPagesController = require('./controllers/StaticPages');
-const PerformanceController = require('./controllers/Performance');
-const UsersController = require('./controllers/Users');
-const ChallengersController = require('./controllers/Challengers');
-const ResultsController = require('./controllers/Results');
-const SpotsController = require('./controllers/Spots');
-const SessionsController = require('./controllers/Sessions');
 const app = express();
 
 // view engine setup
@@ -55,17 +48,8 @@ app.use('/bower_components',  express.static(path.join(__dirname, '/bower_compon
 
 //routing
 app.use('/', routes);
-const controllers = {
-  staticPages: new StaticPagesController(),
-  performance: new PerformanceController(),
-  users: new UsersController(),
-  challengers: new ChallengersController(),
-  results: new ResultsController(),
-  spots: new SpotsController(),
-  sessions: new SessionsController()
-};
 
-routes.setup(app, controllers);
+routes.setup(app);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
