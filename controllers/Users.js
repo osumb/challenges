@@ -6,16 +6,13 @@ const User = new Models.User();
 
 function UsersController() {
   this.showAll = (req, res) => {
-    const promise = User.findAll();
-    promise.then((users) => {
-      res.render('users', {users: users});
-    });
-
-    promise.catch(() => {
-      res.render('error');
-    });
-
-    return promise;
+    User.findAll()
+      .then((users) => {
+        res.render('users', {users: users});
+      })
+      .catch(() => {
+        res.render('error');
+      });
   };
 
   this.showProfile = (req, res) => {
