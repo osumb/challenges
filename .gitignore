@@ -38,3 +38,6 @@ config/nginx.conf
 
 # Mock Data
 models/mock-data/~$*.xlsx
+
+# Output scss
+dist
