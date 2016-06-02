@@ -29,7 +29,7 @@ if (process.env.REDIS_URL) {
 } else {
   redis = require('redis').createClient();
 }
-console.log('Using redis', redis);
+
 app.use(session( {
   secret: process.env.PASSPORT_SECRET || 'notMuchOfASecret',
   resave: true,
