@@ -17,14 +17,14 @@ DROP TYPE IF EXISTS role;
 DROP FUNCTION IF EXISTS make_challenge(uId varchar(256), pId int, sId varchar(3));
 CREATE OR REPLACE FUNCTION make_challenge(uId varchar(256), pId int, sId varchar(3))
 RETURNS text as $$
-DECLARE message TEXT; open boolean; cCount int;
+DECLARE message TEXT; spotOpen boolean; cCount int;
 BEGIN
   IF EXISTS (SELECT * FROM challenges WHERE userNameNumber = uId AND performanceId = pId) THEN
     message := 'Challenge already made';
     RETURN message;
   END IF;
-  SELECT spots.open, spots.challengedCount INTO open, cCount FROM spots WHERE id = sId;
-  IF ((open AND cCount >= 2) OR (NOT open AND cCount >= 1)) THEN
+  SELECT spots.open, spots.challengedCount INTO spotOpen, cCount FROM spots WHERE id = sId;
+  IF ((spotOpen AND cCount >= 2) OR (NOT spotOpen AND cCount >= 1)) THEN
     message := 'Spot already challenged';
     RETURN message;
   END IF;
@@ -34,10 +34,10 @@ BEGIN
   -- If the spot is fully challenged, we're going to add to the results table
   -- There are two ways we could grab the other user. If they're also challenging the spot
   -- or if the spot isn't open, we need the current user associated with the spot
-  IF (open AND cCount + 1 = 2) THEN
+  IF (spotOpen AND cCount + 1 = 2) THEN
     INSERT INTO results (performanceId, spotId, firstNameNumber, secondNameNumber, pending)
     VALUES (pId, sId, (SELECT userNameNumber FROM challenges WHERE performanceId = pId AND spotId = sId), uId, TRUE);
-  ELSIF (NOT open AND cCount + 1 = 1) THEN
+  ELSIF (NOT spotOpen AND cCount + 1 = 1) THEN
     INSERT INTO results (performanceId, spotId, firstNameNumber, secondNameNumber, pending)
     VALUES (pId, sId, uId, (SELECT nameNumber FROM users WHERE spotId = sId), TRUE);
   END IF;
