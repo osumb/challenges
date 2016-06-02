@@ -1,0 +1,12 @@
+#!/bin/sh
+
+# script/server: Start application for web environment
+
+set -e
+
+cd "$(dirname "$0")/.."
+
+echo "===> Webpack is gonna do it's thang"
+webpack
+
+node --use_strict ./bin/www

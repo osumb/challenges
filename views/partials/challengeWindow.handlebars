@@ -1,9 +1,9 @@
-{{#if performanceName}}
+{{#if performance.name}}
   {{#if windowOpen}}
-  <h2>Challenges for {{performanceName}} are open now!</h2>
+  <h2>Challenges for {{performance.name}} are open now!</h2>
   {{else}}
-  <h2>Challenge signup for {{performanceName}} begins on <span style="color: red">{{openAtFormated}}</span>
-    and ends at <span style="color: red">{{closeAtFormated}}</span>. Are you ready?</h2>
+  <h2>Challenge signup for {{performance.name}} begins on <span style="color: red">{{performance.openAt}}</span>
+    and ends at <span style="color: red">{{performance.closeAt}}</span>. Are you ready?</h2>
   {{/if}}
 {{else}}
   <h2>The next performance has not been created yet. Go Bucks...</h2>

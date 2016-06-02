@@ -10,13 +10,6 @@ const passport = require('./auth').passport;
 const session = require('express-session');
 const RedisStore = require('connect-redis')(session);
 const routes = require('./routes/routes');
-const StaticPagesController = require('./controllers/StaticPages');
-const PerformanceController = require('./controllers/Performance');
-const UsersController = require('./controllers/Users');
-const ChallengersController = require('./controllers/Challengers');
-const ResultsController = require('./controllers/Results');
-const SpotsController = require('./controllers/Spots');
-const SessionsController = require('./controllers/Sessions');
 const app = express();
 
 // view engine setup
@@ -32,14 +25,16 @@ app.engine('handlebars', exphbs({defaultLayout: 'main'}));
 let redis;
 if (process.env.REDIS_URL) {
   const rtg = require('url').parse(process.env.REDIS_URL);
-  redis = require('redis').createClient(rtg.port, rtg.hostname);
+  redis = require('redis').createClient({ port: rtg.port, host: rtg.hostname, password: process.env.REDIS_PASSWORD });
+} else {
+  redis = require('redis').createClient();
 }
 
 app.use(session( {
   secret: process.env.PASSPORT_SECRET || 'notMuchOfASecret',
   resave: true,
   saveUninitialized: true,
-  session: redis ? new RedisStore({client: redis}) : undefined
+  store: new RedisStore({ client: redis })
 }));
 
 app.use(passport.initialize());
@@ -50,22 +45,14 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
+app.use('/dist', express.static(__dirname + '/dist'));
 app.use('/public', express.static(__dirname + '/public'));
 app.use('/bower_components',  express.static(path.join(__dirname, '/bower_components')));
 
 //routing
 app.use('/', routes);
-const controllers = {
-  staticPages: new StaticPagesController(),
-  performance: new PerformanceController(),
-  users: new UsersController(),
-  challengers: new ChallengersController(),
-  results: new ResultsController(),
-  spots: new SpotsController(),
-  sessions: new SessionsController()
-};
 
-routes.setup(app, controllers);
+routes.setup(app);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

@@ -1,30 +1,21 @@
 const passport = require('passport');
 const Strategy = require('passport-local').Strategy;
 const Models = require('../models');
-const User = Models.User;
-const Performance = Models.Performance;
-const openPerformanceWindowQuery = Models.openPerformanceWindowQuery;
+const User = new Models.User();
 const bcrypt = require('bcrypt');
-const obj = {};
 
 passport.use(new Strategy((username, password, done) => {
-  User.findOne({where: {nameNumber: username}})
-  .then((user) => {
-    if (!user) return done(null, false);
-    if (!bcrypt.compareSync(password, user.password)) return done(null, false);
-    user.dataValues.password = undefined;
-    Performance.findOne(openPerformanceWindowQuery)
-    .then((performance) => {
-      user.dataValues.nextPerformance = performance.dataValues;
-      return done(null, user.dataValues);
+  User.findByNameNumber(username)
+    .then((user) => {
+      if (!user) {
+        return done(null, false);
+      }
+      if (!user.password && !bcrypt.compareSync(password, user.password)) {
+        return done(null, false);
+      }
+      return done(null, User.parse(user));
     })
-    .catch(() => {
-      return done(null, user);
-    });
-  })
-  .catch((err) => {
-    return done(err);
-  });
+    .catch((err) => done(err));
 }));
 
 passport.serializeUser((user, done) => {
@@ -78,10 +69,10 @@ function ensureEligible(req, res, next) {
   }
 }
 
-obj.ensureAuthenticated = ensureAuthenticated;
-obj.ensureAdmin = ensureAdmin;
-obj.ensureAuthAndNameNumberRoute = ensureAuthAndNameNumberRoute;
-obj.ensureEligible = ensureEligible;
-obj.passport = passport;
-
-module.exports = obj;
+module.exports = {
+  ensureAuthenticated,
+  ensureAdmin,
+  ensureAuthAndNameNumberRoute,
+  ensureEligible,
+  passport
+};

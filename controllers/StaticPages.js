@@ -1,24 +1,17 @@
-'use strict';
-const Models = require('../models');
-const Performance = Models.Performance;
-const moment = require('moment');
-const nextPerformanceQuery = Models.nextPerformanceQuery;
+const models = require('../models');
+const Performance = new models.Performance();
 
 function StaticPagesController() {
   this.home = function(req, res) {
-    const performance = Performance.findOne(nextPerformanceQuery);
-    performance.then((data) => {
-      const dataValues = data ? data.dataValues : data;
-      let renderData = createPerformanceObj(dataValues);
-      renderData.user = req.user;
-      res.render('index', renderData);
-    });
-
-    performance.catch(() => {
-      res.render('error');
-    });
-
-    return performance;
+    Performance.getNext()
+      .then((performance) => res.render('index',
+        { user: req.user,
+          performance: Performance.format(performance, 'MMMM Do, h:mm:ss a')
+        }))
+      .catch((err) => {
+        console.error(err);
+        res.render('error');
+      });
   };
 
   this.noAuth = function(req, res) {
@@ -26,18 +19,4 @@ function StaticPagesController() {
   };
 }
 
-function createPerformanceObj(dataValues) {
-  let renderData = {};
-  if (dataValues) {
-    renderData.performanceName = dataValues.name;
-    renderData.openAt = moment(dataValues.openAt);
-    renderData.closeAt = moment(dataValues.closeAt);
-    renderData.openAtFormated = renderData.openAt.format('MMMM Do, h:mm:ss a');
-    renderData.closeAtFormated = renderData.closeAt.format('MMMM Do, h:mm:ss a');
-    if (renderData.openAt.isBefore(moment())) {
-      renderData.windowOpen = true;
-    }
-  }
-  return renderData;
-}
 module.exports = StaticPagesController;

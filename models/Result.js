@@ -1,25 +1,38 @@
-'use strict';
-const options = {freezeTableName: true};
-module.exports = (sequelize, DataTypes) => {
-  return sequelize.define('Results', {
-    'winnerId': {
-      type: DataTypes.STRING,
-      allowNull: true,
-      defaultValue: null
-    },
-    'comments1': {
-      type: DataTypes.STRING,
-      allowNull: true,
-      defaultValue: ''
-    },
-    'comments2': {
-      type: DataTypes.STRING,
-      allowNull: true,
-      defaultValue: ''
-    },
-    'pending': {
-      type: DataTypes.BOOLEAN,
-      defaultValue: true
-    }
-  }, options);
+const queries = require('./queries');
+const utils = require('../utils');
+
+module.exports = class Results {
+  getAllForUser(nameNumber) {
+    const client = utils.db.createClient();
+    const sql = queries.resultsForUser;
+    const results = [];
+
+    return new Promise((resolve, reject) => {
+      client.connect();
+      client.on('error', (err) => {reject(err);});
+
+      const query = client.query(sql, [nameNumber]);
+      query.on('row', (result) => {results.push(this.parse(result, nameNumber));});
+
+      query.on('end', () => {
+        client.end();
+        resolve(results);
+      });
+
+      query.on('error', (err) => {
+        client.end();
+        reject(err);
+      });
+    });
+  }
+
+  parse(result, nameNumber) {
+    return {
+      comments: result.comments,
+      opponentName: result.opponentname,
+      performanceName: result.name,
+      spotId: result.spotid,
+      winner: nameNumber === result.winnerid
+    };
+  }
 };
