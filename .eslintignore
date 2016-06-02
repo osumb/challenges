@@ -7,3 +7,4 @@ bower.json
 package.json
 README.md
 npm-debug.log
+webpack.*
