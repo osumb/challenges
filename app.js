@@ -25,14 +25,16 @@ app.engine('handlebars', exphbs({defaultLayout: 'main'}));
 let redis;
 if (process.env.REDIS_URL) {
   const rtg = require('url').parse(process.env.REDIS_URL);
-  redis = require('redis').createClient(rtg.port, rtg.hostname);
+  redis = require('redis').createClient({ port: rtg.port, host: rtg.hostname, password: process.env.REDIS_PASSWORD });
+} else {
+  redis = require('redis').createClient();
 }
-
+console.log('Using redis', redis);
 app.use(session( {
   secret: process.env.PASSPORT_SECRET || 'notMuchOfASecret',
   resave: true,
   saveUninitialized: true,
-  store: redis ? new RedisStore({ client: redis }) : null
+  store: new RedisStore({ client: redis })
 }));
 
 app.use(passport.initialize());
