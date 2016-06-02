@@ -32,7 +32,7 @@ app.use(session( {
   secret: process.env.PASSPORT_SECRET || 'notMuchOfASecret',
   resave: true,
   saveUninitialized: true,
-  session: redis ? new RedisStore({client: redis}) : undefined
+  store: redis ? new RedisStore({ client: redis }) : null
 }));
 
 app.use(passport.initialize());
