@@ -20,7 +20,7 @@ else
   echo "===> Setting up DB..."
   createdb challenges_dev
 fi
-node models/setup.js
+script/mock-data
 
 
 echo "==> App is now ready to go!"
