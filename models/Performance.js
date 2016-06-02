@@ -3,6 +3,31 @@ const moment = require('moment');
 const utils = require('../utils');
 
 module.exports = class Performance {
+  getAll(formatString) {
+    return new Promise((resolve, reject) => {
+      const client = utils.db.createClient();
+      const queryString = 'SELECT * FROM performances';
+      const performances = [];
+
+      client.connect();
+      client.on('error', (err) => reject(err));
+
+      const query = client.query(queryString, [new Date().toJSON()]);
+
+      query.on('row', (performance) => {
+        performances.push(this.format(performance, formatString));
+      });
+      query.on('end', () => {
+        client.end();
+        resolve(performances);
+      });
+      query.on('error', (err) => {
+        client.end();
+        reject(err);
+      });
+    });
+  }
+
   getNext() {
     return new Promise((resolve, reject) => {
       const client = utils.db.createClient();

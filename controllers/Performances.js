@@ -1,9 +1,11 @@
-const Performance = require('../models').Performance;
+const models = require('../models');
+const Performance = new models.Performance();
+
 function PerformanceController() {
   this.showAll = (req, res) => {
-    Performance.findAll().then((performances) => {
-      res.render('performance', {performances: performances});
-    });
+    Performance.getAll('MMMM Do, h:mm:ss a')
+      .then((performances) => res.json(performances))
+      .catch(() => res.render('error'));
   };
 }
 
