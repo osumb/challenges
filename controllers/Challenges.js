@@ -1,4 +1,3 @@
-'use strict';
 const models = require('../models');
 const Challenge = new models.Challenge();
 

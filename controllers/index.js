@@ -1,3 +1,4 @@
+/* eslint-disable */
 module.exports = {
   Challenges: require('./Challenges'),
   Performances: require('./Performances'),

@@ -1,19 +1,18 @@
-'use strict';
 const config = require('../../config/config');
 const xlsx = require('node-xlsx');
 const bcrypt = require('bcrypt');
 
 //the order of columns in execl file is Spot, Name, Instrument, Part, Name.#, Eligible, squadLeader, admin, password
 function getUsersFromExcelFile(filePath) {
-  filePath = filePath || config.db.fakeUserDataPath;
-  const parseObj = xlsx.parse(filePath);
+  const path = filePath || config.db.fakeUserDataPath;
+  const parseObj = xlsx.parse(path);
   const userArr = [];
   let UserObj = {};
 
   parseObj[0].data.forEach((e, index) => {
     //first line of file is column names
-    if (index != 0) {
-      UserObj = new Object();
+    if (index !== 0) {
+      UserObj = {};
       UserObj.name = e[1];
       UserObj.spotId = e[0];
       UserObj.instrument = e[2];
@@ -27,7 +26,7 @@ function getUsersFromExcelFile(filePath) {
       } else {
         UserObj.alternate = false;
       }
-      UserObj.password = bcrypt.hashSync(e[8], bcrypt.genSaltSync(1));
+      UserObj.password = bcrypt.hashSync(e[8], bcrypt.genSaltSync(1)); // eslint-disable-line no-sync
       userArr.push(UserObj);
     }
   });
@@ -35,13 +34,14 @@ function getUsersFromExcelFile(filePath) {
 }
 
 function getSpotsFromExcelFile(filePath) {
-  filePath = filePath || config.db.fakeSpotDataPath;
-  const parseObj = xlsx.parse(filePath);
+  const path = filePath || config.db.fakeSpotDataPath;
+  const parseObj = xlsx.parse(path);
   const spotArr = [];
   let spotObj = {};
+
   parseObj[0].data.forEach((e, index) => {
-    if (index != 0) {
-      spotObj = new Object();
+    if (index !== 0) {
+      spotObj = {};
       spotObj.id = e[0];
       spotObj.open = e[1];
       spotObj.challengedAmount = e[2];
@@ -52,13 +52,14 @@ function getSpotsFromExcelFile(filePath) {
 }
 
 function getFakeResults(filePath) {
-  filePath = filePath || config.db.fakeResultsDataPath;
-  const parseObj = xlsx.parse(filePath);
+  const path = filePath || config.db.fakeResultsDataPath;
+  const parseObj = xlsx.parse(path);
   const resultsArray = [];
   let resultObj;
+
   parseObj[0].data.forEach((e, i) => {
-    if (i != 0) {
-      resultObj = new Object();
+    if (i !== 0) {
+      resultObj = {};
       resultObj.firstNameNumber = e[0];
       resultObj.secondNameNumber = e[1];
       resultObj.PerformanceId = e[2];
@@ -75,24 +76,25 @@ function getFakeResults(filePath) {
 
 function separateEligibleMembers(userArr) {
   const eligibleChallengers = [], ineligibleChallengers = [];
+
   userArr.forEach((e) => {
-    if(e.eligible) {
+    if (e.eligible) {
       eligibleChallengers.push(e);
     } else {
       ineligibleChallengers.push(e);
     }
   });
-  const returnObj = {eligibleChallengers, ineligibleChallengers};
-  return returnObj;
+  return { eligibleChallengers, ineligibleChallengers };
 }
 
 function getMockChallengesList(filePath) {
-  filePath = filePath || config.db.fakeChallengeListPath;
-  const parseObj = xlsx.parse(filePath);
+  const path = filePath || config.db.fakeChallengeListPath;
+  const parseObj = xlsx.parse(path);
   const challengeList = [];
   let challengeObj = {};
+
   parseObj[0].data.forEach((e) => {
-    challengeObj = new Object();
+    challengeObj = {};
     challengeObj.UserNameNumber = e[1];
     challengeObj.PerformanceId = 1;
     challengeObj.SpotId = e[2];
@@ -102,28 +104,30 @@ function getMockChallengesList(filePath) {
 }
 
 function getNoConflictChallengeList(filePath) {
-  filePath = filePath || config.db.fakeNoConflictChallengeListPath;
-  return getMockChallengesList(filePath);
+  const path = filePath || config.db.fakeNoConflictChallengeListPath;
+
+  return getMockChallengesList(path);
 }
 
 function getSpotFullChallengeList(filePath) {
-  filePath = filePath || config.db.fakeSpotFullChallengeListPath;
-  return getMockChallengesList(filePath);
+  const path = filePath || config.db.fakeSpotFullChallengeListPath;
+
+  return getMockChallengesList(path);
 }
 
 function getWrongPersonChallengeList(filePath) {
-  filePath = filePath || config.db.wrongPersonChallengeListPath;
-  return getMockChallengesList(filePath);
+  const path = filePath || config.db.wrongPersonChallengeListPath;
+
+  return getMockChallengesList(path);
 }
 
-const obj = {};
-obj.getUsersFromExcelFile = getUsersFromExcelFile;
-obj.getSpotsFromExcelFile = getSpotsFromExcelFile;
-obj.separateEligibleMembers = separateEligibleMembers;
-obj.getMockChallengesList = getMockChallengesList;
-obj.getNoConflictChallengeList = getNoConflictChallengeList;
-obj.getSpotFullChallengeList = getSpotFullChallengeList;
-obj.getWrongPersonChallengeList = getWrongPersonChallengeList;
-obj.getFakeResults = getFakeResults;
-
-module.exports = obj;
+module.exports = {
+  getUsersFromExcelFile,
+  getSpotsFromExcelFile,
+  separateEligibleMembers,
+  getMockChallengesList,
+  getNoConflictChallengeList,
+  getSpotFullChallengeList,
+  getWrongPersonChallengeList,
+  getFakeResults
+};

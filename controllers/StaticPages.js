@@ -2,7 +2,7 @@ const models = require('../models');
 const Performance = new models.Performance();
 
 function StaticPagesController() {
-  this.home = function(req, res) {
+  this.home = (req, res) => {
     Performance.getNext()
       .then((performance) => res.render('index',
         { user: req.user,
@@ -14,7 +14,7 @@ function StaticPagesController() {
       });
   };
 
-  this.noAuth = function(req, res) {
+  this.noAuth = (req, res) => {
     res.render('noAuth');
   };
 }

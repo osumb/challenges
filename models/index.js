@@ -1,5 +1,4 @@
-'use strict';
-
+/* eslint-disable */
 module.exports = {
   Challenge: require('./Challenge'),
   Performance: require('./Performance'),

@@ -6,5 +6,5 @@ const createClient = () =>
   new pg.Client(config.db.postgres);
 
 module.exports = {
-  createClient: createClient
+  createClient
 };

@@ -22,7 +22,7 @@ const insertSpotQueryString = 'INSERT INTO spots VALUES ($1, $2, $3)';
 const insertUserQueryString = 'INSERT INTO users VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)';
 
 function createDb(value, cb) {
-  const sql = fs.readFileSync(path.resolve(__dirname, 'schema.sql')).toString();
+  const sql = fs.readFileSync(path.resolve(__dirname, 'schema.sql')).toString(); // eslint-disable-line no-sync
 
   client.query(sql, [], (err) => {
     cb(err);
