@@ -20,10 +20,9 @@ app.set('view engine', 'handlebars');
 app.engine('handlebars', exphbs({ defaultLayout: 'main' }));
 
 //session setup
-/*
-  If there is a env variable for redis_url (like in staging/prod), create a redis client
-  If there isn't, we're probably in local, so just use memory store so there's one less thing to worry about
-*/
+
+//  If there is a env variable for redis_url (like in staging/prod), create a redis client
+// If there isn't, we're probably in local, so just use memory store so there's one less thing to worry about
 let redis;
 
 if (process.env.REDIS_URL) {
@@ -49,8 +48,8 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use('/dist', express.static(path.resolve(__dirname, '/dist')));
-app.use('/public', express.static(path.resolve(__dirname, '/public')));
+app.use('/dist', express.static(path.join(__dirname, '/dist')));
+app.use('/public', express.static(path.join(__dirname, '/public')));
 app.use('/bower_components', express.static(path.join(__dirname, '/bower_components')));
 
 //routing
