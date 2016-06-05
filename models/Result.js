@@ -105,7 +105,10 @@ module.exports = class Results {
   parseForEval(result) {
     return {
       firstName: result.nameone,
+      firstNameNumber: result.firstnamenumber,
+      resultId: result.resultid,
       secondName: result.nametwo,
+      secondNameNumber: result.secondnamenumber,
       spotId: result.spotid
     };
   }

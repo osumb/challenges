@@ -14,6 +14,7 @@ const passport = auth.passport;
 
 const Challenges = new controllers.Challenges();
 const Performances = new controllers.Performances();
+const Results = new controllers.Results();
 const Sessions = new controllers.Sessions();
 const StaticPages = new controllers.StaticPages();
 const Users = new controllers.Users();
@@ -22,6 +23,9 @@ router.setup = (app) => {
   //Static Pages Controllers
   app.get('/', StaticPages.home);
   app.get('/noAuth', StaticPages.noAuth);
+
+  //Results Controller
+  app.post('/results/:resultId/eval', Results.evaluate);
 
   //Performance Controller
   app.get('/performances', ensureAuthenticated, Performances.showAll);
