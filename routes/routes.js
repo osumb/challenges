@@ -11,27 +11,33 @@ const ensureAuthAndNameNumberRoute = auth.ensureAuthAndNameNumberRoute;
 const ensureEligible = auth.ensureEligible;
 const passport = auth.passport;
 
+const Challenges = new controllers.Challenges();
+const Performances = new controllers.Performances();
+const Sessions = new controllers.Sessions();
+const StaticPages = new controllers.StaticPages();
+const Users = new controllers.Users();
 
 router.setup = (app) => {
   //Static Pages Controllers
-  app.get('/', new controllers.StaticPages().home);
-  app.get('/noAuth', new controllers.StaticPages().noAuth);
+  app.get('/', StaticPages.home);
+  app.get('/noAuth', StaticPages.noAuth);
 
   //Performance Controller
-  app.get('/performances', ensureAuthenticated, new controllers.Performances().showAll);
+  app.get('/performances', ensureAuthenticated, Performances.showAll);
+  app.get('/performances/:performanceId/results', Performances.getResults);
 
   //Challengers Controller
-  app.post('/challenge/:performanceId', ensureEligible, new controllers.Challenges().new);
+  app.post('/challenge/:performanceId', ensureEligible, Challenges.new);
 
   //Sessions Controller
-  app.get('/login', new controllers.Sessions().login);
-  app.get('/logout', new controllers.Sessions().logout);
-  app.post('/login', [passport.authenticate('local', { failureRedirect: '/login?auth=false' }), currentPerformance], new controllers.Sessions().redirect);
+  app.post('/login', [passport.authenticate('local', { failureRedirect: '/login?auth=false' }), currentPerformance],  Sessions.redirect);
+  app.get('/login', Sessions.login);
+  app.get('/logout', Sessions.logout);
 
   //Users Controller
-  app.get('/users', ensureAdmin, new controllers.Users().showAll);
-  app.get('/:nameNumber', ensureAuthAndNameNumberRoute, new controllers.Users().showProfile);
-  app.get('/:nameNumber/makeChallenge', ensureAuthAndNameNumberRoute, new controllers.Users().showChallengeSelect);
+  app.get('/users', ensureAdmin, Users.showAll);
+  app.get('/:nameNumber', ensureAuthAndNameNumberRoute, Users.showProfile);
+  app.get('/:nameNumber/makeChallenge', ensureAuthAndNameNumberRoute, Users.showChallengeSelect);
 
 };
 
