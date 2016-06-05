@@ -7,5 +7,5 @@ set -e
 cd "$(dirname "$0")/.."
 
 echo "==> Setting Up Test Database..."
-node models/setup.js
+node --use_strict db/setup.js
 echo "==> Done!"

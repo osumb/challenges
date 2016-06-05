@@ -2,19 +2,18 @@ const async = require('async');
 const fs = require('fs');
 const path = require('path');
 
-const config = require('../config/config');
 const db = require('../utils').db;
-const mockData = require('./mock-data');
+const mockData = require('../spec/fixtures');
 
 const client = db.createClient();
 
 client.connect();
 
-const challenges = mockData.getMockChallengesList(config.db.fakeChallengeListPath);
-const performances = config.test.mockPerformances;
-const results = mockData.getFakeResults(config.db.fakeResultsDataPath);
-const spots = mockData.getSpotsFromExcelFile(config.db.fakeSpotDataPath);
-const users = mockData.getUsersFromExcelFile(config.db.fakeUserDataPath);
+const challenges = mockData.fakeChallengeList;
+const performances = mockData.fakePerformances;
+const results = mockData.fakeResults;
+const spots = mockData.fakeSpots;
+const users = mockData.fakeUsers;
 const insertChallengeQueryString = 'INSERT INTO challenges (performanceId, userNameNumber, spotId) VALUES($1, $2, $3)';
 const insertPerformanceQueryString = 'INSERT INTO performances (name, openAt, closeAt) VALUES($1, $2, $3)';
 const insertResultQueryString = 'INSERT INTO results (performanceId, spotId, firstNameNumber, secondNameNumber, firstComments, secondComments, winnerId, pending) VALUES($1, $2, $3, $4, $5, $6, $7, $8)';
@@ -22,7 +21,7 @@ const insertSpotQueryString = 'INSERT INTO spots VALUES ($1, $2, $3)';
 const insertUserQueryString = 'INSERT INTO users VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)';
 
 function createDb(value, cb) {
-  const sql = fs.readFileSync(path.resolve(__dirname, 'schema.sql')).toString();
+  const sql = fs.readFileSync(path.resolve(__dirname, 'schema.sql')).toString(); // eslint-disable-line no-sync
 
   client.query(sql, [], (err) => {
     cb(err);

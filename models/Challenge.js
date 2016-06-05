@@ -14,7 +14,7 @@ class Challenge {
 
       const query = client.query(sql, [user.instrument, user.part]);
 
-      query.on('row', (user) => users.push(this.parseChallengeAblePerson(user)));
+      query.on('row', (dbUser) => users.push(this.parseChallengeAblePerson(dbUser)));
       query.on('end', () => {
         client.end();
         resolve(users);
@@ -25,6 +25,7 @@ class Challenge {
 
   getForUser(nameNumber) {
     const sql = 'SELECT * FROM challenges AS C, performances AS P WHERE userNameNumber = $1 AND C.performanceId = P.id ORDER BY C.id LIMIT 1';
+
     return new Promise((resolve, reject) => {
       const client = utils.db.createClient();
 
@@ -58,7 +59,7 @@ class Challenge {
       client.connect();
       client.on('error', (err) => reject(err));
 
-      const query = client.query(sql, [ userId, performanceId, spotId ]);
+      const query = client.query(sql, [userId, performanceId, spotId]);
 
       query.on('row', (message) => {
         challengeMessage = message.make_challenge;

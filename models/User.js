@@ -7,9 +7,10 @@ class User {
       const queryString = 'SELECT * FROM users WHERE nameNumber = $1;';
 
       client.connect();
-      client.on('error', (err) => {reject(err);});
+      client.on('error', (err) => reject(err));
 
       const query = client.query(queryString, [nameNumber]);
+
       query.on('row', (result) => {
         client.end();
         resolve(result);
@@ -32,9 +33,10 @@ class User {
       const users = [];
 
       client.connect();
-      client.on('error', (err) => {reject(err);});
+      client.on('error', (err) => reject(err));
 
       const query = client.query(queryString);
+
       query.on('row', (result) => {
         users.push(this.parse(result));
       });

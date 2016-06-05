@@ -1,5 +1,5 @@
 const express = require('express');
-const router = express.Router();
+const router = express.Router(); // eslint-disable-line new-cap
 
 const auth = require('../auth');
 const controllers = require('../controllers');
@@ -9,7 +9,7 @@ const ensureAuthAndNameNumberRoute = auth.ensureAuthAndNameNumberRoute;
 const ensureEligible = auth.ensureEligible;
 const passport = auth.passport;
 
-router.setup = function(app) {
+router.setup = (app) => {
   //Static Pages Controllers
   app.get('/', new controllers.StaticPages().home);
   app.get('/noAuth', new controllers.StaticPages().noAuth);
@@ -23,7 +23,7 @@ router.setup = function(app) {
   //Sessions Controller
   app.get('/login', new controllers.Sessions().login);
   app.get('/logout', new controllers.Sessions().logout);
-  app.post('/login', passport.authenticate('local', {failureRedirect: '/login?auth=false'}), new controllers.Sessions().redirect);
+  app.post('/login', passport.authenticate('local', { failureRedirect: '/login?auth=false' }), new controllers.Sessions().redirect);
 
   //Users Controller
   app.get('/users', ensureAdmin, new controllers.Users().showAll);

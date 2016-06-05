@@ -1,4 +1,4 @@
-const queries = require('./queries');
+const queries = require('../db/queries');
 const utils = require('../utils');
 
 module.exports = class Results {
@@ -9,10 +9,13 @@ module.exports = class Results {
 
     return new Promise((resolve, reject) => {
       client.connect();
-      client.on('error', (err) => {reject(err);});
+      client.on('error', (err) => reject(err));
 
       const query = client.query(sql, [nameNumber]);
-      query.on('row', (result) => {results.push(this.parse(result, nameNumber));});
+
+      query.on('row', (result) => {
+        results.push(this.parse(result, nameNumber));
+      });
 
       query.on('end', () => {
         client.end();

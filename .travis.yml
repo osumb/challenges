@@ -6,7 +6,7 @@ notifications: # set notification options
 sudo: false
 
 node_js:
-  - "5"
+  - "6"
 
 
 env:
@@ -24,8 +24,7 @@ services:
 
 before_script:
   - psql -c 'create database challenges_dev;' -U postgres
-  - node models/setup.js
+  - npm run mock-data
   - npm install -g eslint
 script:
-  - "eslint ."
   - "npm test"

@@ -8,7 +8,7 @@ function UsersController() {
   this.showAll = (req, res) => {
     User.findAll()
       .then((users) => {
-        res.render('users', {users: users});
+        res.render('users', { users });
       })
       .catch(() => {
         res.render('error');
@@ -20,7 +20,7 @@ function UsersController() {
       .then((data) => {
         const results = data[0], challenge = data[1];
 
-        res.render('userProfile', {user: req.user, challenge, results});
+        res.render('userProfile', { user: req.user, challenge, results });
       })
       .catch(() => res.render('error'));
   };
@@ -28,7 +28,7 @@ function UsersController() {
   this.showChallengeSelect = (req, res) => {
     Promise.all([Challenge.getAllChallengeablePeopleForUser(req.user), Performance.getNext()])
       .then((data) =>
-        res.render('challengeSelect', {user: req.user, challengeableUsers: data[0], nextPerformance: data[1]})
+        res.render('challengeSelect', { user: req.user, challengeableUsers: data[0], nextPerformance: data[1] })
       )
       .catch(() => res.render('error'));
   };
