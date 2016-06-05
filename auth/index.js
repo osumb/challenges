@@ -71,10 +71,18 @@ function ensureEligible(req, res, next) {
   }
 }
 
+function ensureSL(req, res, next) {
+  if (isAuthenticated(req) && req.user.squadLeader) {
+    return next();
+  } else {
+    return res.redirect('/');
+  }
+}
 module.exports = {
   ensureAuthenticated,
   ensureAdmin,
   ensureAuthAndNameNumberRoute,
   ensureEligible,
+  ensureSL,
   passport
 };

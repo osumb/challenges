@@ -14,6 +14,20 @@ DROP TYPE IF EXISTS role;
 ----------------------------------------
 -- FUNCTIONS
 ----------------------------------------
+DROP FUNCTION IF EXISTS can_sl_eval(instrumentA varchar(256), instrumentB varchar(256), partA varchar(256), partB varchar(256));
+CREATE OR REPLACE FUNCTION can_sl_eval(instrumentA varchar(256), instrumentB varchar(256), partA varchar(256), partB varchar(256))
+RETURNS boolean as $$
+BEGIN
+
+  -- We'll probably have to do some fancier things here for trumpet challenge evals
+  IF (instrumentA = 'Trumpet') THEN
+    RETURN instrumentA = instrumentB AND partA = partB;
+  END IF;
+
+  RETURN instrumentA = instrumentB;
+END;
+$$ LANGUAGE plpgsql;
+
 DROP FUNCTION IF EXISTS make_challenge(uId varchar(256), pId int, sId varchar(3));
 CREATE OR REPLACE FUNCTION make_challenge(uId varchar(256), pId int, sId varchar(3))
 RETURNS text as $$

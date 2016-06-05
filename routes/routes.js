@@ -8,6 +8,7 @@ const currentPerformance = require('../middleware').currentPerformance;
 const ensureAuthenticated = auth.ensureAuthenticated;
 const ensureAdmin = auth.ensureAdmin;
 const ensureAuthAndNameNumberRoute = auth.ensureAuthAndNameNumberRoute;
+// const ensureSL = auth.ensureSL;
 const ensureEligible = auth.ensureEligible;
 const passport = auth.passport;
 
@@ -24,7 +25,8 @@ router.setup = (app) => {
 
   //Performance Controller
   app.get('/performances', ensureAuthenticated, Performances.showAll);
-  app.get('/performances/:performanceId/results', Performances.getResults);
+  app.get('/performances/:performanceId/results', ensureAdmin, Performances.getResults);
+  app.get('/performances/:performanceId/eval', /*ensureSL, */Performances.getForEval);
 
   //Challengers Controller
   app.post('/challenge/:performanceId', ensureEligible, Challenges.new);

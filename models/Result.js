@@ -2,6 +2,32 @@ const queries = require('../db/queries');
 const utils = require('../utils');
 
 module.exports = class Results {
+  findAllForEval(instrument, part, performanceId) {
+    const client = utils.db.createClient();
+    const sql = queries.resultsForEval;
+    const results = [];
+
+    return new Promise((resolve, reject) => {
+      client.connect();
+      client.on('error', (err) => reject(err));
+
+      const query = client.query(sql, [instrument, part, performanceId]);
+
+      query.on('row', (result) => results.push(this.parseForEval(result)));
+
+      query.on('end', (result) => {
+        console.log(result.command);
+        client.end();
+        resolve(results);
+      });
+
+      query.on('error', (err) => {
+        client.end();
+        reject(err);
+      });
+    });
+  }
+
   findAllForPerformance(performanceId) {
     const client = utils.db.createClient();
     const sql = queries.resultsForPerformance;
@@ -73,6 +99,14 @@ module.exports = class Results {
       secondName: result.nametwo,
       spotId: result.spotid,
       winner: result.winner === result.namenumberone ? result.nameone : result.nametwo
+    };
+  }
+
+  parseForEval(result) {
+    return {
+      firstName: result.nameone,
+      secondName: result.nametwo,
+      spotId: result.spotid
     };
   }
 };
