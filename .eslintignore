@@ -8,4 +8,3 @@ package.json
 README.md
 npm-debug.log
 webpack.*
-models/mock-data

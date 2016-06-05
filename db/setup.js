@@ -2,16 +2,15 @@ const async = require('async');
 const fs = require('fs');
 const path = require('path');
 
-const config = require('../config/config');
 const db = require('../utils').db;
-const mockData = require('./mock-data');
+const mockData = require('../spec/fixtures');
 
 const client = db.createClient();
 
 client.connect();
 
 const challenges = mockData.fakeChallengeList;
-const performances = config.test.mockPerformances;
+const performances = mockData.fakePerformances;
 const results = mockData.fakeResults;
 const spots = mockData.fakeSpots;
 const users = mockData.fakeUsers;

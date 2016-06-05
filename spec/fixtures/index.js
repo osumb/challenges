@@ -3,6 +3,7 @@
 // const bcrypt = require('bcrypt');
 
 const fakeChallengeList = require('./fakeChallengeList.js');
+const fakePerformances = require('./fakePerformances.js');
 const fakeResults = require('./fakeResults.js');
 const fakeSpots = require('./fakeSpots.js');
 const fakeUsers = require('./fakeUsers.js');
@@ -101,6 +102,7 @@ module.exports = {
   // getMockChallengesList,
   // getFakeResults,
   fakeChallengeList,
+  fakePerformances,
   fakeResults,
   fakeUsers,
   fakeSpots
