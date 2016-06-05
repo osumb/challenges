@@ -1,6 +1,6 @@
 const pg = require('pg');
 
-const config = require('../config/config.js');
+const config = require('../config');
 
 const createClient = () =>
   new pg.Client(config.db.postgres);

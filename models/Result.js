@@ -1,4 +1,4 @@
-const queries = require('./queries');
+const queries = require('../db/queries');
 const utils = require('../utils');
 
 module.exports = class Results {
