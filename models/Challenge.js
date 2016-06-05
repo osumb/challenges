@@ -1,7 +1,7 @@
 const utils = require('../utils');
 
 class Challenge {
-  getAllChallengeablePeopleForUser(user) {
+  findAllChallengeablePeopleForUser(user) {
     // eslint-disable-next-line
     const sql = `SELECT * FROM spots AS S, users AS U WHERE u.instrument = $1 AND u.part = $2 AND u.eligible = FALSE AND S.id = U.spotId ORDER BY (substring(s.id, '^[A-X]'), substring(s.id, '[0-9]+')::int)`;
 
@@ -23,7 +23,7 @@ class Challenge {
     });
   }
 
-  getForUser(nameNumber) {
+  findForUser(nameNumber) {
     const sql = 'SELECT * FROM challenges AS C, performances AS P WHERE userNameNumber = $1 AND C.performanceId = P.id ORDER BY C.id LIMIT 1';
 
     return new Promise((resolve, reject) => {
