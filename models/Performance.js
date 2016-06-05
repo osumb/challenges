@@ -3,7 +3,7 @@ const moment = require('moment');
 const utils = require('../utils');
 
 module.exports = class Performance {
-  getAll(formatString) {
+  findAll(formatString) {
     return new Promise((resolve, reject) => {
       const client = utils.db.createClient();
       const queryString = 'SELECT * FROM performances';
@@ -28,7 +28,7 @@ module.exports = class Performance {
     });
   }
 
-  getNext() {
+  findNext() {
     return new Promise((resolve, reject) => {
       const client = utils.db.createClient();
       const queryString = 'SELECT * FROM performances WHERE openAt < $1::date ORDER BY openAt desc LIMIT 1';

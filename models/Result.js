@@ -2,7 +2,7 @@ const queries = require('../db/queries');
 const utils = require('../utils');
 
 module.exports = class Results {
-  getAllForUser(nameNumber) {
+  findAllForUser(nameNumber) {
     const client = utils.db.createClient();
     const sql = queries.resultsForUser;
     const results = [];
