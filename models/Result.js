@@ -1,9 +1,20 @@
 const queries = require('../db/queries');
-const utils = require('../utils');
+const { db } = require('../utils');
+
+const modelAttributes = ['id', 'performanceId', 'spotId', 'firstNameNumber', 'secondNameNumber', 'firstComments', 'secondComments', 'winnerId', 'pending', 'needsApproval'];
 
 module.exports = class Results {
+
+  static getAttributes() {
+    return modelAttributes;
+  }
+
+  static getTableName() {
+    return 'results';
+  }
+
   findAllForEval(instrument, part, performanceId) {
-    const client = utils.db.createClient();
+    const client = db.createClient();
     const sql = queries.resultsForEval;
     const results = [];
 
@@ -15,8 +26,7 @@ module.exports = class Results {
 
       query.on('row', (result) => results.push(this.parseForEval(result)));
 
-      query.on('end', (result) => {
-        console.log(result.command);
+      query.on('end', () => {
         client.end();
         resolve(results);
       });
@@ -29,7 +39,7 @@ module.exports = class Results {
   }
 
   findAllForPerformance(performanceId) {
-    const client = utils.db.createClient();
+    const client = db.createClient();
     const sql = queries.resultsForPerformance;
     const results = [];
 
@@ -54,7 +64,7 @@ module.exports = class Results {
   }
 
   findAllForUser(nameNumber) {
-    const client = utils.db.createClient();
+    const client = db.createClient();
     const sql = queries.resultsForUser;
     const results = [];
 
@@ -77,6 +87,28 @@ module.exports = class Results {
         client.end();
         reject(err);
       });
+    });
+  }
+
+  update(attributes) {
+    const client = db.createClient();
+
+    return new Promise((resolve, reject) => {
+      client.connect();
+      client.on('error', (err) => reject(err));
+
+      const id = attributes.id;
+
+      if (typeof id === 'undefined') {
+        reject(new Error('No id provided with attributes'));
+      }
+
+      delete attributes.id;
+      const { sql, values } = db.queryBuilder(Results, attributes, { statement: 'UPDATE', id });
+      const query = client.query(sql, values);
+
+      query.on('end', () => resolve());
+      query.on('error', (err) => reject(err));
     });
   }
 
