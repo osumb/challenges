@@ -31,12 +31,13 @@ module.exports = class Performance {
   findNext() {
     return new Promise((resolve, reject) => {
       const client = utils.db.createClient();
-      const queryString = 'SELECT * FROM performances WHERE openAt < $1::date ORDER BY openAt desc LIMIT 1';
+      const queryString = 'SELECT * FROM performances WHERE openAt < $1::date AND $2::date < closeAt ORDER BY openAt desc LIMIT 1';
+      const now = new Date().toJSON();
 
       client.connect();
       client.on('error', (err) => reject(err));
 
-      const query = client.query(queryString, [new Date().toJSON()]);
+      const query = client.query(queryString, [now, now]);
 
       query.on('row', (result) => {
         client.end();
@@ -54,6 +55,9 @@ module.exports = class Performance {
   }
 
   format(performance, formatString) {
+    if (!performance) {
+      return null;
+    }
     const now = new Date().toJSON();
     const windowOpen = moment(performance.openat).isBefore(moment(now))
                        && moment(now).isBefore(moment(performance.closeat));
