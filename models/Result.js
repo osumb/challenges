@@ -9,6 +9,10 @@ module.exports = class Results {
     return modelAttributes;
   }
 
+  static getIdName() {
+    return 'id';
+  }
+
   static getTableName() {
     return 'results';
   }

@@ -2,7 +2,22 @@ const moment = require('moment');
 
 const utils = require('../utils');
 
+const attributes = ['id', 'name', 'openAt', 'closeAt'];
+
 module.exports = class Performance {
+
+  static getAttributes() {
+    return attributes;
+  }
+
+  static getIdName() {
+    return 'id';
+  }
+
+  static getTableName() {
+    return 'performances';
+  }
+
   findAll(formatString) {
     return new Promise((resolve, reject) => {
       const client = utils.db.createClient();

@@ -1,6 +1,21 @@
 const utils = require('../utils');
 
+const attributes = ['nameNumber', 'spotId', 'name', 'password', 'instrument', 'part', 'eligible', 'squadLeader', 'admin', 'alternate'];
+
 class User {
+
+  static getAttributes() {
+    return attributes;
+  }
+
+  static getIdName() {
+    return 'nameNumber';
+  }
+
+  static getTableName() {
+    return 'users';
+  }
+
   findByNameNumber(nameNumber) {
     return new Promise((resolve, reject) => {
       const client = utils.db.createClient();

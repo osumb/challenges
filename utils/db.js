@@ -6,8 +6,9 @@ const createClient = () =>
   new pg.Client(config.db.postgres);
 
 const queryBuilder = (model, params, options) => {
-  const attributes = model.getAttributes(), tableName = model.getTableName();
+  const attributes = model.getAttributes(), tableName = model.getTableName(), idName = model.getIdName();
 
+  options = options || {}; // eslint-disable-line no-param-reassign
   try {
 
     /* eslint-disable indent */
@@ -21,7 +22,7 @@ const queryBuilder = (model, params, options) => {
 
         values.push(options.id);
         return {
-          sql: buildUpdateQuery(tableName, attributes, params),
+          sql: buildUpdateQuery(tableName, idName, attributes, params),
           values
         };
 
@@ -80,11 +81,11 @@ function buildInsertParamsString(length) {
   return `${paramsString})`;
 }
 
-function buildUpdateQuery(tableName, attributes, params) {
+function buildUpdateQuery(tableName, idName, attributes, params) {
   try {
     const updateString = buildUpdateString(attributes, params, tableName);
 
-    return `UPDATE ${tableName} SET ${updateString} WHERE id=$${Object.keys(params).length + 1}`;
+    return `UPDATE TABLE ${tableName} SET ${updateString} WHERE ${idName} = $${Object.keys(params).length + 1}`;
   } catch (e) {
     throw (e);
   }
@@ -93,7 +94,7 @@ function buildUpdateQuery(tableName, attributes, params) {
 function buildUpdateString(attributes, params, tableName = '') {
   return Object.keys(params).reduce((prev, curr, i) => {
     if (attributes.includes(curr)) {
-      return i === 0 ? `${curr}=$${i + 1}` : `${prev}, ${curr}=$${i + 1}`;
+      return i === 0 ? `${curr} = $${i + 1}` : `${prev}, ${curr} = $${i + 1}`;
     }
     throw new Error(`Attribute ${curr} doesn't exist for ${tableName} model`);
   }, '');

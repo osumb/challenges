@@ -14,6 +14,6 @@ echo "==> Done!"
 # echo "==> Setting Up Test Database..."
 # node models/setup.js
 # echo "==> Done!"
-#
-# echo "==> Running tests..."
-# jasmine
+
+echo "==> Running tests..."
+jasmine
