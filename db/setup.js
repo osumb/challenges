@@ -15,7 +15,7 @@ const results = mockData.fakeResults;
 const spots = mockData.fakeSpots;
 const users = mockData.fakeUsers;
 const insertChallengeQueryString = 'INSERT INTO challenges (performanceId, userNameNumber, spotId) VALUES($1, $2, $3)';
-const insertPerformanceQueryString = 'INSERT INTO performances (name, openAt, closeAt) VALUES($1, $2, $3)';
+const insertPerformanceQueryString = 'INSERT INTO performances (name, openAt, closeAt, performDate, current) VALUES($1, $2, $3, $4, $5)';
 const insertResultQueryString = 'INSERT INTO results (performanceId, spotId, firstNameNumber, secondNameNumber, firstComments, secondComments, winnerId, pending) VALUES($1, $2, $3, $4, $5, $6, $7, $8)';
 const insertSpotQueryString = 'INSERT INTO spots VALUES ($1, $2, $3)';
 const insertUserQueryString = 'INSERT INTO users VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)';
@@ -37,7 +37,7 @@ function insertChallenge(challenge, cb) {
 }
 
 function insertPerformance(performance, cb) {
-  client.query(insertPerformanceQueryString, [performance.name, performance.openAt, performance.closeAt], (err) => {
+  client.query(insertPerformanceQueryString, [performance.name, performance.openAt, performance.closeAt, performance.performDate, performance.current], (err) => {
     cb(err);
   });
 }

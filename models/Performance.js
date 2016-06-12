@@ -28,10 +28,10 @@ module.exports = class Performance {
     });
   }
 
-  findNext() {
+  findNextWithinWindow() {
     return new Promise((resolve, reject) => {
       const client = utils.db.createClient();
-      const queryString = 'SELECT * FROM performances WHERE openAt < $1::date AND $2::date < closeAt ORDER BY openAt desc LIMIT 1';
+      const queryString = 'SELECT * FROM performances WHERE openAt < $1 AND $2 < closeAt ORDER BY openAt desc LIMIT 1';
       const now = new Date().toJSON();
 
       client.connect();
@@ -58,6 +58,7 @@ module.exports = class Performance {
     if (!performance) {
       return null;
     }
+    formatString = formatString || 'MMMM Do, h:mm:ss a'; // eslint-disable-line no-param-reassign
     const now = new Date().toJSON();
     const windowOpen = moment(performance.openat).isBefore(moment(now))
                        && moment(now).isBefore(moment(performance.closeat));

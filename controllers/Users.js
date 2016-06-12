@@ -26,7 +26,7 @@ function UsersController() {
   };
 
   this.showChallengeSelect = (req, res) => {
-    Promise.all([Challenge.findAllChallengeablePeopleForUser(req.user), Performance.findNext()])
+    Promise.all([Challenge.findAllChallengeablePeopleForUser(req.user), Performance.findNextWithinWindow()])
       .then((data) =>
         res.render('challengeSelect', { user: req.user, challengeableUsers: data[0], nextPerformance: data[1] })
       )
