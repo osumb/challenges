@@ -85,14 +85,17 @@ module.exports = class Performance {
     }
     formatString = formatString || 'MMMM Do, h:mm:ss a'; // eslint-disable-line no-param-reassign
     const now = new Date().toJSON();
-    const windowOpen = moment(performance.openat).isBefore(moment(now))
-                       && moment(now).isBefore(moment(performance.closeat));
+    const windowOpen =
+      moment(performance.openat).isBefore(moment(now)) &&
+      moment(now).isBefore(moment(performance.closeat));
 
     return {
+      closeAt: moment(performance.closeat).format(formatString),
+      current: performance.current,
+      date: performance.performdate,
       id: performance.id,
       name: performance.name,
       openAt: moment(performance.openat).format(formatString),
-      closeAt: moment(performance.closeat).format(formatString),
       windowOpen
     };
   }
