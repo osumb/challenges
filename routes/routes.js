@@ -8,13 +8,11 @@ const currentPerformance = require('../middleware').currentPerformance;
 const ensureAuthenticated = auth.ensureAuthenticated;
 const ensureAdmin = auth.ensureAdmin;
 const ensureAuthAndNameNumberRoute = auth.ensureAuthAndNameNumberRoute;
-// const ensureSL = auth.ensureSL;
 const ensureEligible = auth.ensureEligible;
 const passport = auth.passport;
 
 const Challenges = new controllers.Challenges();
 const Performances = new controllers.Performances();
-const Results = new controllers.Results();
 const Sessions = new controllers.Sessions();
 const StaticPages = new controllers.StaticPages();
 const Users = new controllers.Users();
@@ -24,19 +22,15 @@ router.setup = (app) => {
   app.get('/', StaticPages.home);
   app.get('/noAuth', StaticPages.noAuth);
 
-  //Results Controller
-  app.post('/results/:resultId/eval', Results.evaluate);
-
   //Performance Controller
   app.get('/performances', ensureAuthenticated, Performances.showAll);
-  app.get('/performances/:performanceId/results', ensureAdmin, Performances.getResults);
-  app.get('/performances/:performanceId/eval', /*ensureSL, */Performances.getForEval);
+  app.get('/performances/:performanceId/results', Performances.getResults);
 
   //Challengers Controller
   app.post('/challenge/:performanceId', ensureEligible, Challenges.new);
 
   //Sessions Controller
-  app.post('/login', [passport.authenticate('local', { failureRedirect: '/login?auth=false' }), currentPerformance],  Sessions.redirect);
+  app.post('/login', [passport.authenticate('local', { failureRedirect: '/login?auth=false' }), currentPerformance], Sessions.redirect);
   app.get('/login', Sessions.login);
   app.get('/logout', Sessions.logout);
 
