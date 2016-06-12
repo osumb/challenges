@@ -160,6 +160,8 @@ FOR EACH ROW EXECUTE PROCEDURE modified_stamp();
 CREATE TABLE performances (
   id serial PRIMARY KEY,
 	name varchar(256) NOT NULL,
+  performDate timestamp NOT NULL,
+  current boolean NOT NULL DEFAULT FALSE,
   openAt timestamp NOT NULL,
   closeAt timestamp NOT NULL,
   created_at timestamp NOT NULL,
