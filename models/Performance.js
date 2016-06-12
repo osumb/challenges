@@ -28,6 +28,31 @@ module.exports = class Performance {
     });
   }
 
+  findCurrent() {
+    return new Promise((resolve, reject) => {
+      const client = utils.db.createClient();
+      const queryString = 'SELECT * FROM performances WHERE current LIMIT 1';
+
+      client.connect();
+      client.on('error', (err) => reject(err));
+
+      const query = client.query(queryString);
+
+      query.on('row', (result) => {
+        client.end();
+        resolve(result);
+      });
+      query.on('end', () => {
+        client.end();
+        resolve(null);
+      });
+      query.on('error', (err) => {
+        client.end();
+        reject(err);
+      });
+    });
+  }
+
   findNextWithinWindow() {
     return new Promise((resolve, reject) => {
       const client = utils.db.createClient();
