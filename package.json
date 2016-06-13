@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "author": "Alex Tareshawty",
   "description": "Challenge signup manager for OSUMB",
+  "engines": {
+    "node": "6.2.1"
+  },
   "private": true,
   "scripts": {
     "dev": "nodemon --use_strict ./bin/www",
