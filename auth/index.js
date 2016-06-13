@@ -71,8 +71,8 @@ function ensureEligible(req, res, next) {
   }
 }
 
-function ensureSL(req, res, next) {
-  if (isAuthenticated(req) && req.user.squadLeader) {
+function ensureEvalAbility(req, res, next) {
+  if (isAuthenticated(req) && (req.user.squadLeader && !req.user.eligible) || req.user.admin) {
     return next();
   } else {
     return res.redirect('/');
@@ -83,6 +83,6 @@ module.exports = {
   ensureAdmin,
   ensureAuthAndNameNumberRoute,
   ensureEligible,
-  ensureSL,
+  ensureEvalAbility,
   passport
 };

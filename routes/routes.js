@@ -9,7 +9,7 @@ const ensureAuthenticated = auth.ensureAuthenticated;
 const ensureAdmin = auth.ensureAdmin;
 const ensureAuthAndNameNumberRoute = auth.ensureAuthAndNameNumberRoute;
 const ensureEligible = auth.ensureEligible;
-const ensureSL = auth.ensureSL;
+const ensureEvalAbility = auth.ensureEvalAbility;
 const passport = auth.passport;
 
 const Challenges = new controllers.Challenges();
@@ -28,8 +28,8 @@ router.setup = (app) => {
   app.get('/performances/:performanceId/results', ensureAdmin, Performances.getResults);
 
   //Results Controller
-  app.get('/results/eval', ensureSL, Results.getForEval);
-  app.post('/results/:resultId/eval', ensureSL, Results.evaluate);
+  app.get('/results/eval', ensureEvalAbility, Results.getForEval);
+  app.post('/results/:resultId/eval', ensureEvalAbility, Results.evaluate);
 
   //Static Pages Controllers
   app.get('/', StaticPages.home);

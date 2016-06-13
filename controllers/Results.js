@@ -21,7 +21,7 @@ function ResultsController() {
   };
 
   this.getForEval = (req, res) => {
-    Result.findAllForEval(req.user.instrument, req.user.part, req.session.currentPerformance.id)
+    Result.findAllForEval(req.user.instrument, req.user.part, req.session.currentPerformance.id, req.user.nameNumber)
       .then((results) => res.render('challengesForEval', { user: req.user, results }))
       .catch((err) => {
         console.error(err);

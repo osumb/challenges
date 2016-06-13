@@ -3,7 +3,7 @@ SELECT t1.name AS nameOne, t2.name AS nameTwo, t1.spotId AS spotId, t1.id AS res
 FROM
   (SELECT u1.name, r1.id, r1.spotId, u1.nameNumber
    FROM results AS r1, users AS u1
-   WHERE can_sl_eval(u1.instrument::text, $1, u1.part::text, $2) AND r1.firstNameNumber = u1.nameNumber AND r1.performanceId = $3 AND NOT r1.needsApproval) t1
+   WHERE can_sl_eval(u1.instrument::text, $1, u1.part::text, $2) AND r1.firstNameNumber = u1.nameNumber AND r1.performanceId = $3 AND NOT r1.needsApproval AND u1.nameNumber != $4) t1
 LEFT JOIN
   (SELECT u2.name, r2.id, u2.nameNumber
    FROM results AS r2, users AS u2
