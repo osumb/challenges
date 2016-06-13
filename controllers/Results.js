@@ -3,13 +3,10 @@ const Result = new models.Result();
 
 function ResultsController() {
   this.evaluate = (req, res) => {
-    const { currentPerformance } = req.session;
-
     Result.update({
       id: req.params.resultId,
       needsApproval: true,
       firstComments: req.body.firstComments,
-      performanceId: currentPerformance.id,
       secondComments: req.body.secondComments,
       spotId: req.body.spotId,
       winnerId: req.body.winner
