@@ -1,4 +1,4 @@
-// const config = require('../../config/config');
+// const path = require('path');
 // const xlsx = require('node-xlsx');
 // const bcrypt = require('bcrypt');
 
@@ -10,8 +10,8 @@ const fakeUsers = require('./fakeUsers.js');
 
 //the order of columns in execl file is Spot, Name, Instrument, Part, Name.#, Eligible, squadLeader, admin, password
 // function getUsersFromExcelFile(filePath) {
-//   const path = filePath || config.db.fakeUserDataPath;
-//   const parseObj = xlsx.parse(path);
+//   filePath = filePath || path.resolve(__dirname, 'FakeUsers.xlsx');
+//   const parseObj = xlsx.parse(filePath);
 //   const userArr = [];
 //   let UserObj = {};
 //
