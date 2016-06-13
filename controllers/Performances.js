@@ -3,20 +3,6 @@ const Performance = new models.Performance();
 const Result = new models.Result();
 
 function PerformanceController() {
-  this.getForEval = (req, res) => {
-    req.user = {
-      instrument: 'Mellophone',
-      part: 'First'
-    };
-
-    Result.findAllForEval(req.user.instrument, req.user.part, req.params.performanceId)
-      .then((results) => res.render('challengesForEval', { results }))
-      .catch((err) => {
-        console.error(err);
-        res.render('error');
-      });
-  };
-
   this.getResults = (req, res) => {
     Result.findAllForPerformance(req.params.performanceId)
       .then((results) => res.render('resultsForPerformance', { results }))

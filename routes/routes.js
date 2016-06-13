@@ -20,17 +20,16 @@ const StaticPages = new controllers.StaticPages();
 const Users = new controllers.Users();
 
 router.setup = (app) => {
-  //Challengers Controller
+  //Challenges Controller
   app.post('/challenge/:performanceId', ensureEligible, Challenges.new);
 
   //Performance Controller
   app.get('/performances', ensureAuthenticated, Performances.showAll);
   app.get('/performances/:performanceId/results', ensureAdmin, Performances.getResults);
-  app.get('/performances/:performanceId/eval', ensureSL, Performances.getForEval);
-  app.get('/performances/:performanceId/results', Performances.getResults);
 
   //Results Controller
-  app.get('/results/:resultId/eval', Results.evaluate);
+  app.get('/results/eval', ensureSL, Results.getForEval);
+  app.post('/results/:resultId/eval', ensureSL, Results.evaluate);
 
   //Static Pages Controllers
   app.get('/', StaticPages.home);

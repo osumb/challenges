@@ -52,8 +52,8 @@ BEGIN
     INSERT INTO results (performanceId, spotId, firstNameNumber, secondNameNumber, pending)
     VALUES (pId, sId, (SELECT userNameNumber FROM challenges WHERE performanceId = pId AND spotId = sId), uId, TRUE);
   ELSIF (NOT spotOpen AND cCount + 1 = 1) THEN
-    INSERT INTO results (performanceId, spotId, firstNameNumber, secondNameNumber, pending)
-    VALUES (pId, sId, uId, (SELECT nameNumber FROM users WHERE spotId = sId), TRUE);
+    INSERT INTO results (performanceId, spotId, firstNameNumber, secondNameNumber, pending, needsApproval)
+    VALUES (pId, sId, uId, (SELECT nameNumber FROM users WHERE spotId = sId), TRUE, FALSE);
   END IF;
 	message:= '';
 

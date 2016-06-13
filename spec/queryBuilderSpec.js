@@ -20,7 +20,7 @@ describe('UPDATE', () => {
       id: 1
     });
 
-    expect(sql).toEqual('UPDATE TABLE results SET needsApproval = $1, firstComments = $2, secondComments = $3, spotId = $4, winnerId = $5 WHERE id = $6');
+    expect(sql).toEqual('UPDATE results SET needsApproval = $1, firstComments = $2, secondComments = $3, spotId = $4, winnerId = $5 WHERE id = $6');
     expect(values).toEqual([needsApproval, firstComments, secondComments, spotId, winnerId, id]);
   });
 
@@ -34,7 +34,7 @@ describe('UPDATE', () => {
       id: nameNumber
     });
 
-    expect(sql).toEqual('UPDATE TABLE users SET password = $1 WHERE nameNumber = $2');
+    expect(sql).toEqual('UPDATE users SET password = $1 WHERE nameNumber = $2');
     expect(values).toEqual([password, nameNumber]);
   });
 
@@ -51,7 +51,7 @@ describe('UPDATE', () => {
       id
     });
 
-    expect(sql).toEqual('UPDATE TABLE challenges SET id = $1, performanceId = $2, userNameNumber = $3, spotId = $4 WHERE id = $5');
+    expect(sql).toEqual('UPDATE challenges SET id = $1, performanceId = $2, userNameNumber = $3, spotId = $4 WHERE id = $5');
     expect(values).toEqual([id, performanceId, userNameNumber, spotId, id]);
   });
 

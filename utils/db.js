@@ -85,7 +85,7 @@ function buildUpdateQuery(tableName, idName, attributes, params) {
   try {
     const updateString = buildUpdateString(attributes, params, tableName);
 
-    return `UPDATE TABLE ${tableName} SET ${updateString} WHERE ${idName} = $${Object.keys(params).length + 1}`;
+    return `UPDATE ${tableName} SET ${updateString} WHERE ${idName} = $${Object.keys(params).length + 1}`;
   } catch (e) {
     throw (e);
   }
