@@ -3,14 +3,16 @@ const router = express.Router(); // eslint-disable-line new-cap
 
 const auth = require('../auth');
 const controllers = require('../controllers');
-const currentPerformance = require('../middleware').currentPerformance;
+const middleware = require('../middleware');
 
+const currentPerformance = middleware.currentPerformance;
 const ensureAuthenticated = auth.ensureAuthenticated;
 const ensureAdmin = auth.ensureAdmin;
 const ensureAuthAndNameNumberRoute = auth.ensureAuthAndNameNumberRoute;
 const ensureEligible = auth.ensureEligible;
 const ensureEvalAbility = auth.ensureEvalAbility;
 const passport = auth.passport;
+const refreshCurrentPerformance = middleware.refreshCurrentPerformance;
 
 const Challenges = new controllers.Challenges();
 const Performances = new controllers.Performances();
@@ -32,7 +34,7 @@ router.setup = (app) => {
   app.post('/results/:resultId/eval', ensureEvalAbility, Results.evaluate);
 
   //Static Pages Controllers
-  app.get('/', StaticPages.home);
+  app.get('/', refreshCurrentPerformance, StaticPages.home);
   app.get('/noAuth', StaticPages.noAuth);
 
   //Sessions Controller
