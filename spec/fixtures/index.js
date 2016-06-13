@@ -24,10 +24,10 @@ const fakeUsers = require('./fakeUsers.js');
 //       UserObj.instrument = e[2];
 //       UserObj.part = e[3];
 //       UserObj.nameNumber = e[4];
-//       UserObj.eligible = e[5];
-//       UserObj.squadLeader = e[6];
-//       UserObj.admin = e[7];
-//       if (UserObj.spotId.match(/[A-Z]+|[1-9]+/g)[1] > 12) {
+//       UserObj.eligible = e[5] || false;
+//       UserObj.squadLeader = e[6] || false;
+//       UserObj.admin = e[7] || false;
+//       if (UserObj.spotId && UserObj.spotId.match(/[A-Z]+|[1-9]+/g)[1] > 12) {
 //         UserObj.alternate = true;
 //       } else {
 //         UserObj.alternate = false;
