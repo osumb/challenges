@@ -18,6 +18,11 @@
           {{#if user.eligible}}
             <li><a href=/{{user.nameNumber}}/makeChallenge>Make A Challenge</a></li>
           {{/if}}
+          {{#if user.squadLeader}}
+            {{#unless user.eligible}}
+              <li><a href="/results/eval">Evaluate Challenges</a></li>
+            {{/unless}}
+          {{/if}}
           <li><a href="/logout">Logout</a></li>
         {{else}}
           <li><a href="/login">Login</a></li>
