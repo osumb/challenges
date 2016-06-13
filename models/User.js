@@ -44,7 +44,7 @@ class User {
   findAll() {
     return new Promise((resolve, reject) => {
       const client = utils.db.createClient();
-      const queryString = 'SELECT * FROM "Users"';
+      const queryString = 'SELECT * FROM users';
       const users = [];
 
       client.connect();
