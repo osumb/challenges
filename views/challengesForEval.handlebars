@@ -1,0 +1,15 @@
+{{#if results}}
+  {{#each results}}
+    <form action="/results/{{this.resultId}}/eval" method="post">
+      <p>{{this.spotId}}<input name="spotId" type="hidden" value={{this.spotId}} /></p>
+      <p><span>{{this.firstName}} </span><input type="radio" name="winner" value={{this.firstNameNumber}} checked/></p>
+      <p><span>{{this.secondName}} </span></span><input type="radio" name="winner" value={{this.secondNameNumber}} /></p>
+      <textarea name="firstComments"></textarea>
+      <textarea name="secondComments"></textarea>
+      <input type="submit" value="Submit" />
+    </form>
+    <hr />
+  {{/each}}
+{{else}}
+  <h2>There are no challenges for you to evaluate</h2>
+{{/if}}

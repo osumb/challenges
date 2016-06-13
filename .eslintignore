@@ -1,7 +1,8 @@
 bower_components/*
 node_modules/*
-spec/*
 bin/*
+spec/fixtures/*
+spec/support/*
 LICENSE
 bower.json
 package.json

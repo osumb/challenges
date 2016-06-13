@@ -14,6 +14,20 @@ DROP TYPE IF EXISTS role;
 ----------------------------------------
 -- FUNCTIONS
 ----------------------------------------
+DROP FUNCTION IF EXISTS can_sl_eval(instrumentA varchar(256), instrumentB varchar(256), partA varchar(256), partB varchar(256));
+CREATE OR REPLACE FUNCTION can_sl_eval(instrumentA varchar(256), instrumentB varchar(256), partA varchar(256), partB varchar(256))
+RETURNS boolean as $$
+BEGIN
+
+  -- We'll probably have to do some fancier things here for trumpet challenge evals
+  IF (instrumentA = 'Trumpet') THEN
+    RETURN instrumentA = instrumentB AND partA = partB;
+  END IF;
+
+  RETURN instrumentA = instrumentB;
+END;
+$$ LANGUAGE plpgsql;
+
 DROP FUNCTION IF EXISTS make_challenge(uId varchar(256), pId int, sId varchar(3));
 CREATE OR REPLACE FUNCTION make_challenge(uId varchar(256), pId int, sId varchar(3))
 RETURNS text as $$
@@ -38,8 +52,8 @@ BEGIN
     INSERT INTO results (performanceId, spotId, firstNameNumber, secondNameNumber, pending)
     VALUES (pId, sId, (SELECT userNameNumber FROM challenges WHERE performanceId = pId AND spotId = sId), uId, TRUE);
   ELSIF (NOT spotOpen AND cCount + 1 = 1) THEN
-    INSERT INTO results (performanceId, spotId, firstNameNumber, secondNameNumber, pending)
-    VALUES (pId, sId, uId, (SELECT nameNumber FROM users WHERE spotId = sId), TRUE);
+    INSERT INTO results (performanceId, spotId, firstNameNumber, secondNameNumber, pending, needsApproval)
+    VALUES (pId, sId, uId, (SELECT nameNumber FROM users WHERE spotId = sId), TRUE, FALSE);
   END IF;
 	message:= '';
 
@@ -205,6 +219,7 @@ CREATE TABLE results (
 	secondComments text NOT NULL DEFAULT '',
 	winnerId varchar(256) references users(nameNumber),
 	pending boolean NOT NULL DEFAULT false,
+  needsApproval boolean NOT NULL DEFAULT true,
   created_at timestamp NOT NULL,
   modified_at timestamp NOT NULL
 );

@@ -71,10 +71,18 @@ function ensureEligible(req, res, next) {
   }
 }
 
+function ensureEvalAbility(req, res, next) {
+  if (isAuthenticated(req) && (req.user.squadLeader && !req.user.eligible) || req.user.admin) {
+    return next();
+  } else {
+    return res.redirect('/');
+  }
+}
 module.exports = {
   ensureAuthenticated,
   ensureAdmin,
   ensureAuthAndNameNumberRoute,
   ensureEligible,
+  ensureEvalAbility,
   passport
 };
