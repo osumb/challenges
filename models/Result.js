@@ -17,6 +17,32 @@ module.exports = class Results {
     return 'results';
   }
 
+  findAllForApproval(performanceId) {
+    const client = db.createClient();
+    const sql = queries.resultsForApproval;
+    const results = [];
+
+    return new Promise((resolve, reject) => {
+      client.connect();
+      client.on('error', (err) => reject(err));
+
+      const query = client.query(sql, [performanceId]);
+
+      query.on('row', (result) => {
+        console.log(result);
+        results.push(this.parseForAdmin(result));
+      });
+      query.on('end', () => {
+        client.end();
+        resolve(results);
+      });
+      query.on('error', (err) => {
+        client.end();
+        reject(err);
+      });
+    });
+  }
+
   findAllForEval(instrument, part, performanceId, userNameNumber) {
     const client = db.createClient();
     const sql = queries.resultsForEval;
@@ -127,6 +153,7 @@ module.exports = class Results {
   }
 
   parseForAdmin(result) {
+    console.log(result.namenumberone, result.namenumbertwo, result.winnerid);
     return {
       firstComments: result.firstcomments,
       secondComments: result.secondcomments,
@@ -134,7 +161,7 @@ module.exports = class Results {
       pending: result.pending,
       secondName: result.nametwo,
       spotId: result.spotid,
-      winner: result.winner === result.namenumberone ? result.nameone : result.nametwo
+      winner: result.winnerid === result.namenumberone ? result.nameone : result.nametwo
     };
   }
 

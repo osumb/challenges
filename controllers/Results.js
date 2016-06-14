@@ -2,6 +2,17 @@ const models = require('../models');
 const Result = new models.Result();
 
 function ResultsController() {
+  this.approve = (req, res) => {
+    Result.findAllForApproval(req.session.currentPerformance.id)
+    .then((results) => {
+      res.render('resultsApprove', { user: req.user, results });
+    })
+    .catch((err) => {
+      console.error(err);
+      res.render('error');
+    });
+  };
+
   this.evaluate = (req, res) => {
     Result.update({
       id: req.params.resultId,
