@@ -4,18 +4,22 @@ const Result = new Models.Result();
 
 function UsersController() {
   this.show = (req, res) => {
-    Promise.all([Result.findAllForUser(req.user.nameNumber), Challenge.findForUser(req.user.nameNumber)])
-      .then(data => {
-        const results = data[0], challenge = data[1];
+    if (req.user.admin) {
+      res.render('users/admin', { user: req.user });
+    } else {
+      Promise.all([Result.findAllForUser(req.user.nameNumber), Challenge.findForUser(req.user.nameNumber)])
+        .then(data => {
+          const results = data[0], challenge = data[1];
 
-        res.render('users/show', {
-          user: req.user,
-          challenge,
-          results,
-          currentPerformance: req.session.currentPerformance
-        });
-      })
-      .catch(() => res.render('static-pages/error'));
+          res.render('users/show', {
+            user: req.user,
+            challenge,
+            results,
+            currentPerformance: req.session.currentPerformance
+          });
+        })
+        .catch(() => res.render('static-pages/error'));
+    }
   };
 }
 
