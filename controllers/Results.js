@@ -3,6 +3,15 @@ const Result = new models.Result();
 
 function ResultsController() {
   this.approve = (req, res) => {
+    Result.approve(req.params.resultId)
+    .then(() => res.redirect('/results/toApprove'))
+    .catch((err) => {
+      console.error(err);
+      res.redirect('/results/toApprove');
+    });
+  };
+
+  this.getForApproval = (req, res) => {
     Result.findAllForApproval(req.session.currentPerformance.id)
     .then((results) => {
       res.render('resultsApprove', { user: req.user, results });

@@ -17,6 +17,27 @@ module.exports = class Results {
     return 'results';
   }
 
+  approve(id) {
+    const client = db.createClient();
+    const sql = 'UPDATE results SET needsApproval = FALSE WHERE id=$1';
+
+    return new Promise((resolve, reject) => {
+      client.connect();
+      client.on('error', (err) => reject(err));
+
+      const query = client.query(sql, [id]);
+
+      query.on('end', () => {
+        client.end();
+        resolve();
+      });
+      query.on('error', (err) => {
+        console.error(err);
+        client.end();
+      });
+    });
+  }
+
   findAllForApproval(performanceId) {
     const client = db.createClient();
     const sql = queries.resultsForApproval;
@@ -28,10 +49,7 @@ module.exports = class Results {
 
       const query = client.query(sql, [performanceId]);
 
-      query.on('row', (result) => {
-        console.log(result);
-        results.push(this.parseForAdmin(result));
-      });
+      query.on('row', (result) => results.push(this.parseForAdmin(result)));
       query.on('end', () => {
         client.end();
         resolve(results);
@@ -153,9 +171,9 @@ module.exports = class Results {
   }
 
   parseForAdmin(result) {
-    console.log(result.namenumberone, result.namenumbertwo, result.winnerid);
     return {
       firstComments: result.firstcomments,
+      id: result.resultid,
       secondComments: result.secondcomments,
       firstName: result.nameone,
       pending: result.pending,

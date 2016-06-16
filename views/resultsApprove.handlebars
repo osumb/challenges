@@ -1,5 +1,12 @@
-{{#each results}}
-  <h2>{{this.firstName}} vs {{this.secondName}}</h2>
-  <h3>Winner: {{this.winner}}</h3>
-  <hr />
-{{/each}}
+{{#if results}}
+  {{#each results}}
+    <form action="/results/{{this.id}}/approve" method="POST">
+      <h2>{{this.firstName}} vs {{this.secondName}}</h2>
+      <h3>Winner: {{this.winner}}</h3>
+      <input type="submit" value="Approve" />
+      <hr />
+    </form>
+  {{/each}}
+{{else}}
+  <h1>There are no results to approve!</h1>
+{{/if}}
