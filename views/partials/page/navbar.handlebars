@@ -16,7 +16,9 @@
         {{#if user}}
           <li><a href=/{{user.nameNumber}}>Profile</a></li>
           {{#if user.eligible}}
-            <li><a href=/{{user.nameNumber}}/makeChallenge>Make A Challenge</a></li>
+            {{#if currentPerformance}}
+              <li><a href=/challenges/{{currentPerformance.id}}/new>Make A Challenge</a></li>
+            {{/if}}
           {{/if}}
           {{#if user.squadLeader}}
             {{#unless user.eligible}}

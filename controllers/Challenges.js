@@ -18,6 +18,18 @@ function ChallengersController() {
         res.render('challengeFailure', { user: req.user });
       });
   };
+
+  this.showChallengeSelect = (req, res) => {
+    Challenge.findAllChallengeablePeopleForUser(req.user)
+    .then((data) =>
+      res.render('challengeSelect', {
+        user: req.user,
+        challengeableUsers: data,
+        nextPerformance: req.session.currentPerformance
+      })
+    )
+    .catch(() => res.render('error'));
+  };
 }
 
 module.exports = ChallengersController;

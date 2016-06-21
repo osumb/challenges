@@ -19,21 +19,14 @@ function UsersController() {
       .then((data) => {
         const results = data[0], challenge = data[1];
 
-        res.render('userProfile', { user: req.user, challenge, results });
+        res.render('userProfile', {
+          user: req.user,
+          challenge,
+          results,
+          currentPerformance: req.session.currentPerformance
+        });
       })
       .catch(() => res.render('error'));
-  };
-
-  this.showChallengeSelect = (req, res) => {
-    Challenge.findAllChallengeablePeopleForUser(req.user)
-    .then((data) =>
-      res.render('challengeSelect', {
-        user: req.user,
-        challengeableUsers: data,
-        nextPerformance: req.session.currentPerformance
-      })
-    )
-    .catch(() => res.render('error'));
   };
 }
 
