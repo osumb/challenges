@@ -1,3 +1,4 @@
+const email = require('../utils').email;
 const models = require('../models');
 const Challenge = new models.Challenge();
 
@@ -10,6 +11,13 @@ function ChallengersController() {
     Challenge.makeChallenge(userId, spotId, performanceId)
       .then(() => {
         req.user.eligible = false;
+        email.sendChallengeSuccessEmail({
+          nameNumber: 'tareshawty.3', // TODO: actually email the real person
+          performanceName: req.session.currentPerformance.name,
+          spotId
+        })
+        .then((info) => console.log(info))
+        .catch((err) => console.error(err));
         console.log(`${req.user.name} successfully challenged for ${spotId}`); //TODO: logging
         res.render('challengeSuccess', { user: req.user, spotId });
       })
