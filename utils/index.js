@@ -1,4 +1,5 @@
 /* eslint-disable global-require */
 module.exports = {
-  db: require('./db')
+  db: require('./db'),
+  email: require('./email')
 };
