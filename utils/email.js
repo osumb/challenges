@@ -15,8 +15,10 @@ const sendChallengeSuccessEmail = (options) => {
   request.method = 'POST';
   request.path = '/v3/mail/send';
   request.body = requestBody;
-  sg.API(request, (response) => { // eslint-disable-line new-cap
-    console.log(response);
+  return new Promise((resolve) => {
+    sg.API(request, (response) => { // eslint-disable-line new-cap
+      resolve(response);
+    });
   });
 };
 
