@@ -19,19 +19,24 @@ module.exports = class Performance {
   }
 
   // arguments coming in as name, performDate, openAt, closeAt, current
-  create(...args) {
+  create(name, performDate, openAt, closeAt, current) {
     return new Promise((resolve, reject) => {
       const client = utils.db.createClient();
       const queryString = 'INSERT INTO performances (name, performDate, openAt, closeAt, current) VALUES ($1, $2, $3, $4, $5) RETURNING id';
+      let perfId;
 
       client.connect();
       client.on('error', err => reject(err));
 
-      const query = client.query(queryString, args);
+      const query = client.query(queryString, [name, performDate, openAt, closeAt, current]);
 
       query.on('row', (id) => {
+        perfId = id;
+      });
+
+      query.on('end', () => {
         client.end();
-        resolve(id);
+        resolve(perfId);
       });
 
       query.on('error', (err) => {
@@ -50,7 +55,7 @@ module.exports = class Performance {
       client.connect();
       client.on('error', (err) => reject(err));
 
-      const query = client.query(queryString, [new Date().toJSON()]);
+      const query = client.query(queryString);
 
       query.on('row', (performance) => {
         performances.push(this.format(performance, formatString));

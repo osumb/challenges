@@ -1,41 +1,26 @@
 <h2>Create New Performance</h2>
-<form name="newPerformanceForm" id="newPerformanceForm" action="/performances/create" method="post">
-  <div>
-    <input type="text" name="performanceName" autofocus placeholder="Name" />
+<div class="newPerformanceForm">
+  <div class="newPerformanceForm-item">
+    <input type="text" class="performanceName" autofocus placeholder="Name" />
   </div>
-  <div>
+  <div class="newPerformanceForm-item">
     <label>Date of performance</label>
-    <input type="text" id="performanceDate" name="performanceDate" placeholder=""/>
+    <input type="text" id="performanceDate" class="performanceDate" placeholder="2016-09-03"/>
   </div>
-  <div>
+  <div class="newPerformanceForm-item">
     <label>When does the challenge window open?</label>
-    <input type="text" id="openAt" name="openAt" placeholder="yyyy-mm-dd 13:00"/>
+    <input type="text" id="openAt" class="openAt" placeholder="2016-09-03 1:00 PM"/>
   </div>
-  <div>
+  <div class="newPerformanceForm-item">
     <label>When does the challenge window close?</label>
-    <input type="text" name="closeAt" placeholder="yyyy-mm-dd 15:10"/>
+    <input type="text" class="closeAt" placeholder="2016-09-03 4:10 PM"/>
   </div>
-  <div>
+  <div class="newPerformanceForm-item">
     <label>Is this the next performance?</label>
-    <input type="checkbox" name="current" default="checked" />    
+    <input type="checkbox" class="current" default="checked" />
   </div>
-  <input type="submit" class="btn btn-default" value="Submit" />
-</form>
-
-<!--  Yes, I realize that there shouldn't be any js in an html file, let alone a template file -->
-<!--  But this should be one of very few client side scripts, so it's not a big deal right now -->
-<script>
-  const datePickerOptions = {
-    changeMonth: true,
-    numberOfMonths: 1,
-    dateFormat: 'yy-mm-dd'
-  }
-  const performanceDate = $('#performanceDate');
-
-  performanceDate.datepicker(Object.assign({}, datePickerOptions, {
-    onClose: function(selectedDate) {
-      performanceDate.datepicker('option', 'minDate', selectedDate);
-    }
-  }));
-
-</script>
+  <div class="newPerformanceForm-item">
+    <input type="submit" class="btn btn-default newPerformanceSubmit" value="Submit" />
+  </div>
+</div>
+<script src="/public/js/newPerformance.js"></script>

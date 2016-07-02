@@ -1,0 +1,9 @@
+.newPerformanceForm {
+  display: flex;
+  flex-direction: column;
+}
+
+.newPerformanceForm-item {
+  align-self: flex-start;
+  padding-bottom: 5px;
+}
