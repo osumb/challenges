@@ -1,16 +1,29 @@
 <h2>Create New Performance</h2>
 <form name="newPerformanceForm" id="newPerformanceForm" action="/performances/create" method="post">
-  <input type="text" name="performanceName" autofocus placeholder="Name" />
-  <label>Date of performance</label>
-  <input type="text" id="performanceDate" name="performanceDate" placeholder=""/>
-  <label>When does the challenge window open?</label>
-  <input type="text" id="openAt" name="openAt" placeholder="yyyy-mm-dd 13:00"/>
-  <label>When does the challenge window close?</label>
-  <input type="text" name="closeAt" placeholder="yyyy-mm-dd 15:10"/>
-  <label>Is this the next performance?</label>
-  <input type="checkbox" name="current" default="checked" />
+  <div>
+    <input type="text" name="performanceName" autofocus placeholder="Name" />
+  </div>
+  <div>
+    <label>Date of performance</label>
+    <input type="text" id="performanceDate" name="performanceDate" placeholder=""/>
+  </div>
+  <div>
+    <label>When does the challenge window open?</label>
+    <input type="text" id="openAt" name="openAt" placeholder="yyyy-mm-dd 13:00"/>
+  </div>
+  <div>
+    <label>When does the challenge window close?</label>
+    <input type="text" name="closeAt" placeholder="yyyy-mm-dd 15:10"/>
+  </div>
+  <div>
+    <label>Is this the next performance?</label>
+    <input type="checkbox" name="current" default="checked" />    
+  </div>
   <input type="submit" class="btn btn-default" value="Submit" />
 </form>
+
+<!--  Yes, I realize that there shouldn't be any js in an html file, let alone a template file -->
+<!--  But this should be one of very few client side scripts, so it's not a big deal right now -->
 <script>
   const datePickerOptions = {
     changeMonth: true,
