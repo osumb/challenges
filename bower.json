@@ -22,6 +22,7 @@
   "dependencies": {
     "bootstrap": "~3.3.6",
     "moment": "~2.13.0",
-    "jquery-ui": "~1.11.4"
+    "jquery-ui": "~1.11.4",
+    "fetch": "~1.0.0"
   }
 }
