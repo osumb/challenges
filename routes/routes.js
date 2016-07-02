@@ -29,6 +29,8 @@ router.setup = (app) => {
 
   //Performance Controller
   app.get('/performances', ensureAuthenticated, Performances.showAll);
+  app.get('/performances/new', ensureAdmin, Performances.new);
+  app.post('/performances/create', ensureAdmin, Performances.create);
 
   //Results Controller
   app.get('/performances/:performanceId/results/evaluate', ensureEvalAbility, Results.showForEvaluation);

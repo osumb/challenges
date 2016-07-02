@@ -18,6 +18,29 @@ module.exports = class Performance {
     return 'performances';
   }
 
+  // arguments coming in as name, performDate, openAt, closeAt, current
+  create(...args) {
+    return new Promise((resolve, reject) => {
+      const client = utils.db.createClient();
+      const queryString = 'INSERT INTO performances (name, performDate, openAt, closeAt, current) VALUES ($1, $2, $3, $4, $5) RETURNING id';
+
+      client.connect();
+      client.on('error', err => reject(err));
+
+      const query = client.query(queryString, args);
+
+      query.on('row', (id) => {
+        client.end();
+        resolve(id);
+      });
+
+      query.on('error', (err) => {
+        client.end();
+        reject(err);
+      });
+    });
+  }
+
   findAll(formatString) {
     return new Promise((resolve, reject) => {
       const client = utils.db.createClient();

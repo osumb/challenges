@@ -21,6 +21,7 @@
   ],
   "dependencies": {
     "bootstrap": "~3.3.6",
-    "moment": "~2.13.0"
+    "moment": "~2.13.0",
+    "jquery-ui": "~1.11.4"
   }
 }
