@@ -25,6 +25,7 @@ $('.newPerformanceSubmit').on('click', () => {
       })
     })
     .then(() => {
+      banner(`Successfully Created ${inputs.performanceName.val()}!`);
       clearInput();
     })
     .catch(err => console.error(err));
@@ -39,6 +40,10 @@ const clearInput = () => {
   inputs.performanceDate.val('');
   inputs.openAt.val('');
   inputs.closeAt.val('');
+};
+
+const banner = (message) => {
+  $('.navbar').after(`<h2>${message}</h2>`);
 };
 
 const validInput = () => {
