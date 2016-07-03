@@ -1,9 +1,10 @@
 {{#if results}}
+  <input type="submit" class="approveSubmitAll" value="Approve All" />
   {{#each results}}
     <div class="resultToApprove-{{this.id}}">
       <h2>{{this.firstName}} vs {{this.secondName}}</h2>
       <h3>Winner: {{this.winner}}</h3>
-      <input type="submit" class="approveSubmit {{this.id}}"value="Approve" />
+      <input type="submit" class="approveSubmit {{this.id}}" value="Approve" />
       <hr />
     </div>
   {{/each}}
