@@ -18,7 +18,6 @@ module.exports = class Performance {
     return 'performances';
   }
 
-  // arguments coming in as name, performDate, openAt, closeAt, current
   create(name, performDate, openAt, closeAt, current) {
     return new Promise((resolve, reject) => {
       const client = utils.db.createClient();

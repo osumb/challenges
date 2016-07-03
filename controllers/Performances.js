@@ -9,7 +9,7 @@ function PerformanceController() {
     .then(({ id }) => {
       // TODO: create cron job
       console.log('Performance id', id);
-      res.redirect(`/${req.user.nameNumber}`);
+      res.json({ success: true });
     })
     .catch(err => {
       console.error(err);

@@ -1,4 +1,3 @@
-/* eslint-disable no-undef */
 const inputs = {
   performanceName: $('.performanceName'),
   performanceDate: $('.performanceDate'),

@@ -9,6 +9,7 @@
   "private": true,
   "scripts": {
     "dev": "nodemon --use_strict ./bin/www",
+    "lint": "eslint .",
     "start": "script/server",
     "postinstall": "bower cache clean && bower install",
     "test": "script/test",

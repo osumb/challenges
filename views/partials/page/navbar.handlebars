@@ -2,12 +2,6 @@
   <div class="container-fluid">
     <!-- Brand and toggle get grouped for better mobile display -->
     <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-        <span class="sr-only">Toggle navigation</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
       <a class="navbar-brand" href="/">OSUMB</a>
     </div>
 
@@ -16,19 +10,9 @@
         {{#if user}}
           <li><a href=/{{user.nameNumber}}>Profile</a></li>
           {{#if user.admin}}
-            <li><a href="/performances/new">Create Performance</a></li>
-            <li><a href="/performances/{{currentPerformance.id}}/results/toapprove">Approve Results</a></li>
+            {{> page/admin-navbar }}
           {{else}}
-            {{#if user.eligible}}
-              {{#if currentPerformance}}
-                <li><a href="/performances/{{currentPerformance.id}}/challenges/new">Make A Challenge</a></li>
-              {{/if}}
-            {{/if}}
-            {{#if user.squadLeader}}
-              {{#unless user.eligible}}
-                <li><a href="/performances/{{currentPerformance.id}}/results/evaluate">Evaluate Challenges</a></li>
-              {{/unless}}
-            {{/if}}
+            {{> page/user-navbar }}
           {{/if}}
           <li><a href="/logout">Logout</a></li>
         {{else}}
