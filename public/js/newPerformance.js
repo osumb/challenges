@@ -27,10 +27,13 @@ $('.newPerformanceSubmit').on('click', () => {
       banner(`Successfully Created ${inputs.performanceName.val()}!`);
       clearInput();
     })
-    .catch(err => console.error(err));
+    .catch(err => {
+      banner('We\'re sorry! There was an error creating your performance');
+      console.error(err);
+    });
 
   } else {
-    console.log('Bad data');
+    banner('We couldn\'t create your new performance. Please format your input like the suggestions');
   }
 });
 
@@ -42,7 +45,8 @@ const clearInput = () => {
 };
 
 const banner = (message) => {
-  $('.navbar').after(`<h2>${message}</h2>`);
+  $('.bannerMessage').remove();
+  $('.navbar').after(`<h3 class="bannerMessage">${message}</h3>`);
 };
 
 const validInput = () => {
