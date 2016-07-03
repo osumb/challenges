@@ -1,12 +1,13 @@
 {{#if results}}
   {{#each results}}
-    <form action="/results/{{this.id}}/approve" method="POST">
+    <div class="resultToApprove-{{this.id}}">
       <h2>{{this.firstName}} vs {{this.secondName}}</h2>
       <h3>Winner: {{this.winner}}</h3>
-      <input type="submit" value="Approve" />
+      <input type="submit" class="approveSubmit {{this.id}}"value="Approve" />
       <hr />
-    </form>
+    </div>
   {{/each}}
+  <script src="/public/js/resultsApprove.js"></script>
 {{else}}
   <h1>There are no results to approve!</h1>
 {{/if}}

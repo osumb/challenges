@@ -3,8 +3,10 @@ const Result = new models.Result();
 
 function ResultsController() {
   this.approve = (req, res) => {
-    Result.approve(req.params.resultId)
-    .then(() => res.redirect('/results/toApprove'))
+    const { ids } = req.body;
+
+    Result.approve(ids)
+    .then(() => res.json({ message: 'success!' }))
     .catch((err) => {
       console.error(err);
       res.redirect('/results/toApprove');

@@ -17,15 +17,15 @@ module.exports = class Results {
     return 'results';
   }
 
-  approve(id) {
+  approve(ids) {
     const client = db.createClient();
-    const sql = 'UPDATE results SET needsApproval = FALSE WHERE id=$1';
+    const sql = 'UPDATE results SET needsApproval = FALSE WHERE id = ANY($1)';
 
     return new Promise((resolve, reject) => {
       client.connect();
       client.on('error', (err) => reject(err));
 
-      const query = client.query(sql, [id]);
+      const query = client.query(sql, [ids]);
 
       query.on('end', () => {
         client.end();
