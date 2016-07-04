@@ -1,27 +1,21 @@
-$('.approveSubmit').on('click', (element) => {
-  const id = getIdFromElement(element);
-
-  sendApprovals([id])
-  .then((response) => {
-    if (response.status !== 200) {
-      console.error('Bad response');
-    } else {
-      removeIds([id]);
-    }
-  })
-  .catch((err) => console.error(err));
-});
-
 $('.approveSubmitAll').on('click', () => {
   const ids = getAllResultIds();
 
   sendApprovals(ids)
   .then(() => {
     removeIds(ids);
-    removeAllButton();
     banner('There are no results to approve!');
   })
   .catch((err) => console.error(err));
+});
+
+$('.approveSubmitChecked').on('click', () => {
+  const ids = getAllCheckedIds();
+
+  sendApprovals(ids)
+  .then(() => {
+    removeIds(ids);
+  });
 });
 
 const sendApprovals = (ids) => {
@@ -38,8 +32,9 @@ const sendApprovals = (ids) => {
 
 const removeIds = (ids) => {
   ids.forEach((id) => {
-    $(`.resultToApprove-${id}`).remove();
+    $(`.resultsApprove-list-item ${id}`).remove();
   });
+  window.location.reload(false);
 };
 
 const getIdFromElement = element => {
@@ -51,16 +46,15 @@ const getIdFromElement = element => {
 };
 
 const getAllResultIds = () => {
-  const idButtons = $('.approveSubmit'), ids = [];
+  const divs = $('.resultsApprove-list-item').toArray();
 
-  for (let i = 0; i < idButtons.length; i++) {
-    ids.push(getIdFromElement(idButtons[i]));
-  }
-  return ids;
+  return divs.map(getIdFromElement);
 };
 
-const removeAllButton = () => {
-  $('.approveSubmitAll').remove();
+const getAllCheckedIds = () => {
+  const divs = $('.resultsApprove-list-item').toArray();
+
+  return divs.filter(div => $($(div).children()[0]).find('input')[0].checked).map(div => getIdFromElement(div));
 };
 
 const banner = (message) => {

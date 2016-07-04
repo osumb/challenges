@@ -1,13 +1,22 @@
 {{#if results}}
-  <input type="submit" class="approveSubmitAll" value="Approve All" />
-  {{#each results}}
-    <div class="resultToApprove-{{this.id}}">
-      <h2>{{this.firstName}} vs {{this.secondName}}</h2>
-      <h3>Winner: {{this.winner}}</h3>
-      <input type="submit" class="approveSubmit {{this.id}}" value="Approve" />
-      <hr />
+  <div class="resultsApprove">
+    <div class="resultsApprove-header">
+      <input type="submit" class="approveSubmitAll btn btn-default" value="Approve All" />
+      <input type="submit" class="approveSubmitChecked btn btn-default" value="Approve Checked" />
     </div>
-  {{/each}}
+    <div class="resultsApprove-list">
+      {{#each results}}
+        <div class="resultsApprove-list-item {{this.id}}">
+          <div class="result">
+            <p>{{this.firstName}} vs {{this.secondName}}</p>
+            <p>Winner: {{this.winner}}</p>
+            <label>Approve</label>
+            <input type="checkbox" class="result" value="Approve" />
+          </div>
+        </div>
+      {{/each}}
+    </div>
+  </div>
   <script src="/public/js/resultsApprove.js"></script>
 {{else}}
   <h1>There are no results to approve!</h1>

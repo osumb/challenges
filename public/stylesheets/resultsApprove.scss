@@ -1,0 +1,25 @@
+.resultsApprove {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  height: 100%;
+}
+
+.resultsApprove-header {
+
+}
+
+.resultsApprove-list {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  padding-top: 5px;
+}
+
+.resultsApprove-list-item {
+  flex-grow: 1;
+  // height: 350px;
+  padding: 5px;
+  min-width: 300px;
+  max-width: 300px;
+}
