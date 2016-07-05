@@ -9,7 +9,7 @@ function ResultsController() {
     .then(() => res.json({ message: 'success!' }))
     .catch((err) => {
       console.error(err);
-      res.redirect('/results/toApprove');
+      res.json({ err });
     });
   };
 
