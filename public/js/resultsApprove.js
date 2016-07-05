@@ -52,9 +52,9 @@ const getAllResultIds = () => {
 };
 
 const getAllCheckedIds = () => {
-  const divs = $('.resultsApprove-list-item').toArray();
+  const divs = $('.resultsApprove-checkbox').toArray();
 
-  return divs.filter(div => $($(div).children()[0]).find('input')[0].checked).map(div => getIdFromElement(div));
+  return divs.filter(div => div.checked).map(div => getIdFromElement(div));
 };
 
 const banner = (message) => {

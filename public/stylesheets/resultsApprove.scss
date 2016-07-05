@@ -5,21 +5,40 @@
   height: 100%;
 }
 
-.resultsApprove-header {
-
-}
-
-.resultsApprove-list {
+.resultsApproveList {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
   padding-top: 5px;
 }
 
-.resultsApprove-list-item {
+.resultsApproveList-item {
+  display: flex;
+  flex-direction: column;
   flex-grow: 1;
-  // height: 350px;
-  padding: 5px;
-  min-width: 300px;
-  max-width: 300px;
+  margin: 5px;
+  max-width: 350px;
+  min-width: 350px;
+}
+
+.resultsApproveList-item-header {
+  display: flex;
+  flex-direction: row;
+}
+
+.resultsApproveList-item-header-item {
+  flex-grow: 1;
+  margin: 5px;
+  height: 100%;
+}
+
+.resultsApproveList-item-body {
+  display: flex;
+  flex-direction: row;
+}
+
+.resultsApproveList-item-body-item {
+  flex-grow: 1;
+
+  margin: 4px;
 }
