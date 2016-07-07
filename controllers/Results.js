@@ -12,7 +12,7 @@ function ResultsController() {
       winnerId: req.body.winner
     })
     .then(() =>
-      res.redirect('/results/eval')
+      res.redirect('results/show-for-evaluation')
     )
     .catch((err) => {
       console.error(err);
@@ -20,19 +20,28 @@ function ResultsController() {
     });
   };
 
-  this.getForEval = (req, res) => {
+  this.showForEvaluation = (req, res) => {
     Result.findAllForEval(req.user.instrument, req.user.part, req.session.currentPerformance.id, req.user.nameNumber)
       .then((results) => {
         if (results.length === 0) {
           results = null; // eslint-disable-line no-param-reassign
         }
 
-        res.render('challengesForEval', { user: req.user, results });
+        res.render('results/show-for-evaluation', { user: req.user, results });
       })
       .catch((err) => {
         console.error(err);
         res.render('error');
       });
+  };
+
+  this.showAll = (req, res) => {
+    Result.findAllForPerformance(req.params.performanceId)
+    .then(results => res.render('results/show', { user: req.user, results }))
+    .catch(err => {
+      console.error(err);
+      res.render('error', { user: req.user });
+    });
   };
 }
 

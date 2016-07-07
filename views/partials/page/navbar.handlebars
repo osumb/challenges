@@ -22,7 +22,7 @@
           {{/if}}
           {{#if user.squadLeader}}
             {{#unless user.eligible}}
-              <li><a href="/results/eval">Evaluate Challenges</a></li>
+              <li><a href="/performances/{{currentPerformance.id}}/results/evaluate">Evaluate Challenges</a></li>
             {{/unless}}
           {{/if}}
           <li><a href="/logout">Logout</a></li>

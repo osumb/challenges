@@ -24,15 +24,16 @@ const Users = new controllers.Users();
 router.setup = (app) => {
   //Challenges Controller
   app.get('/performances/:performanceId/challenges/new', ensureEligible, Challenges.new);
+  // app.get('/performances/:performanceId/challenges', ensureAdmin, Challenges.showAll);
   app.post('/performances/:performanceId/challenges', ensureEligible, Challenges.create);
 
   //Performance Controller
   app.get('/performances', ensureAuthenticated, Performances.showAll);
-  app.get('/performances/:performanceId/results', ensureAdmin, Performances.getResults);
 
   //Results Controller
-  app.get('/results/eval', ensureEvalAbility, Results.getForEval);
-  app.post('/results/:resultId/eval', ensureEvalAbility, Results.evaluate);
+  app.get('/performances/:performanceId/results/evaluate', ensureEvalAbility, Results.showForEvaluation);
+  app.get('/performances/:performanceId/results', ensureAdmin, Results.showAll);
+  app.post('/performances/:performanceId/results/:resultId', ensureEvalAbility, Results.evaluate);
 
   //Static Pages Controllers
   app.get('/', refreshCurrentPerformance, StaticPages.home);
