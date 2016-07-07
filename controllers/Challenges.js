@@ -3,12 +3,12 @@ const models = require('../models');
 const Challenge = new models.Challenge();
 
 function ChallengersController() {
-  this.new = (req, res) => {
+  this.create = (req, res) => {
     const userId = req.user.nameNumber,
       spotId = req.body['challenge-form'],
       performanceId = req.params.performanceId;
 
-    Challenge.makeChallenge(userId, spotId, performanceId)
+    Challenge.create(userId, spotId, performanceId)
       .then(() => {
         req.user.eligible = false;
         email.sendChallengeSuccessEmail({
@@ -18,24 +18,24 @@ function ChallengersController() {
         })
         .then(console.log);
         console.log(`${req.user.name} successfully challenged for ${spotId}`); //TODO: logging
-        res.render('challengeSuccess', { user: req.user, spotId });
+        res.render('challenges/success', { user: req.user, spotId });
       })
       .catch((err) => {
         console.error(err);
-        res.render('challengeFailure', { user: req.user });
+        res.render('challenges/failure', { user: req.user });
       });
   };
 
-  this.showChallengeSelect = (req, res) => {
+  this.new = (req, res) => {
     Challenge.findAllChallengeablePeopleForUser(req.user)
     .then((data) =>
-      res.render('challengeSelect', {
+      res.render('challenges/new', {
         user: req.user,
         challengeableUsers: data,
         nextPerformance: req.session.currentPerformance
       })
     )
-    .catch(() => res.render('error'));
+    .catch(() => res.render('static-pages/error'));
   };
 }
 

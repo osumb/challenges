@@ -23,20 +23,21 @@ const Users = new controllers.Users();
 
 router.setup = (app) => {
   //Challenges Controller
-  app.get('/challenges/:performanceId/new', ensureEligible, Challenges.showChallengeSelect);
-  app.post('/challenges/:performanceId', ensureEligible, Challenges.new);
+  app.get('/performances/:performanceId/challenges/new', ensureEligible, Challenges.new);
+  // app.get('/performances/:performanceId/challenges', ensureAdmin, Challenges.showAll);
+  app.post('/performances/:performanceId/challenges', ensureEligible, Challenges.create);
 
   //Performance Controller
   app.get('/performances', ensureAuthenticated, Performances.showAll);
-  app.get('/performances/:performanceId/results', ensureAdmin, Performances.getResults);
 
   //Results Controller
-  app.get('/results/eval', ensureEvalAbility, Results.getForEval);
-  app.post('/results/:resultId/eval', ensureEvalAbility, Results.evaluate);
+  app.get('/performances/:performanceId/results/evaluate', ensureEvalAbility, Results.showForEvaluation);
+  app.get('/performances/:performanceId/results', ensureAdmin, Results.showAll);
+  app.post('/performances/:performanceId/results/:resultId', ensureEvalAbility, Results.evaluate);
 
   //Static Pages Controllers
   app.get('/', refreshCurrentPerformance, StaticPages.home);
-  app.get('/noAuth', StaticPages.noAuth);
+  app.get('/noauth', StaticPages.noAuth);
 
   //Sessions Controller
   app.post('/login', [passport.authenticate('local', { failureRedirect: '/login?auth=false' }), currentPerformance], Sessions.redirect);
@@ -44,8 +45,7 @@ router.setup = (app) => {
   app.get('/logout', Sessions.logout);
 
   //Users Controller
-  app.get('/users', ensureAdmin, Users.showAll);
-  app.get('/:nameNumber', ensureAuthAndNameNumberRoute, Users.showProfile);
+  app.get('/:nameNumber', ensureAuthAndNameNumberRoute, Users.show);
 };
 
 module.exports = router;
