@@ -36,7 +36,7 @@ router.setup = (app) => {
 
   //Static Pages Controllers
   app.get('/', refreshCurrentPerformance, StaticPages.home);
-  app.get('/noAuth', StaticPages.noAuth);
+  app.get('/noauth', StaticPages.noAuth);
 
   //Sessions Controller
   app.post('/login', [passport.authenticate('local', { failureRedirect: '/login?auth=false' }), currentPerformance], Sessions.redirect);

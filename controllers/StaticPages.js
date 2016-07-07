@@ -4,7 +4,7 @@ const Performance = new models.Performance();
 function StaticPagesController() {
   this.home = (req, res) => {
     Performance.findNextWithinWindow()
-      .then((performance) => res.render('index',
+      .then((performance) => res.render('static-pages/home',
         { user: req.user,
           performance: Performance.format(performance, 'MMMM Do, h:mm:ss a')
         }))
@@ -15,7 +15,7 @@ function StaticPagesController() {
   };
 
   this.noAuth = (req, res) => {
-    res.render('noAuth');
+    res.render('static-pages/no-auth');
   };
 }
 

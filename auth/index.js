@@ -38,7 +38,7 @@ function ensureAuthenticated(req, res, next) {
   if (isAuthenticated(req)) {
     return next();
   } else {
-    return res.redirect('/noAuth');
+    return res.redirect('/noauth');
   }
 }
 
@@ -46,7 +46,7 @@ function ensureAuthAndNameNumberRoute(req, res, next) {
   if (isAuthenticated(req) && req.params.nameNumber === req.user.nameNumber) {
     return next();
   } else {
-    return res.redirect('/noAuth');
+    return res.redirect('/noauth');
   }
 }
 
@@ -60,7 +60,7 @@ function ensureAdmin(req, res, next) {
       return res.redirect('/notAdmin');
     }
   }
-  return res.redirect('/noAuth');
+  return res.redirect('/noauth');
 }
 
 function ensureEligible(req, res, next) {
