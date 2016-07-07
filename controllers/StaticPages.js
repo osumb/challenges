@@ -10,7 +10,7 @@ function StaticPagesController() {
         }))
       .catch((err) => {
         console.error(err);
-        res.render('error');
+        res.render('static-pages/error');
       });
   };
 

@@ -18,11 +18,11 @@ function ChallengersController() {
         })
         .then(console.log);
         console.log(`${req.user.name} successfully challenged for ${spotId}`); //TODO: logging
-        res.render('challengeSuccess', { user: req.user, spotId });
+        res.render('challenges/success', { user: req.user, spotId });
       })
       .catch((err) => {
         console.error(err);
-        res.render('challengeFailure', { user: req.user });
+        res.render('challenges/failure', { user: req.user });
       });
   };
 
@@ -35,7 +35,7 @@ function ChallengersController() {
         nextPerformance: req.session.currentPerformance
       })
     )
-    .catch(() => res.render('error'));
+    .catch(() => res.render('static-pages/error'));
   };
 }
 

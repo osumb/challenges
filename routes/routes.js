@@ -45,8 +45,7 @@ router.setup = (app) => {
   app.get('/logout', Sessions.logout);
 
   //Users Controller
-  app.get('/users', ensureAdmin, Users.showAll);
-  app.get('/:nameNumber', ensureAuthAndNameNumberRoute, Users.showProfile);
+  app.get('/:nameNumber', ensureAuthAndNameNumberRoute, Users.show);
 };
 
 module.exports = router;

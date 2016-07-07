@@ -6,7 +6,7 @@ function SessionsController() {
     if (req.query.auth === 'false') {
       message = 'Username or password is incorrect';
     }
-    res.render('login', { message });
+    res.render('sessions/login', { message });
   };
 
   this.redirect = (req, res) => {

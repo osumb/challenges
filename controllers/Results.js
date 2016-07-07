@@ -16,7 +16,7 @@ function ResultsController() {
     )
     .catch((err) => {
       console.error(err);
-      res.render('error');
+      res.render('static-pages/error');
     });
   };
 
@@ -31,7 +31,7 @@ function ResultsController() {
       })
       .catch((err) => {
         console.error(err);
-        res.render('error');
+        res.render('static-pages/error');
       });
   };
 
@@ -40,7 +40,7 @@ function ResultsController() {
     .then(results => res.render('results/show', { user: req.user, results }))
     .catch(err => {
       console.error(err);
-      res.render('error', { user: req.user });
+      res.render('static-pages/error', { user: req.user });
     });
   };
 }
