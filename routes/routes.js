@@ -23,8 +23,8 @@ const Users = new controllers.Users();
 
 router.setup = (app) => {
   //Challenges Controller
-  app.get('/challenges/:performanceId/new', ensureEligible, Challenges.showChallengeSelect);
-  app.post('/challenges/:performanceId', ensureEligible, Challenges.new);
+  app.get('/performances/:performanceId/challenges/new', ensureEligible, Challenges.new);
+  app.post('/performances/:performanceId/challenges', ensureEligible, Challenges.create);
 
   //Performance Controller
   app.get('/performances', ensureAuthenticated, Performances.showAll);

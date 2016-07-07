@@ -17,7 +17,7 @@
           <li><a href=/{{user.nameNumber}}>Profile</a></li>
           {{#if user.eligible}}
             {{#if currentPerformance}}
-              <li><a href=/challenges/{{currentPerformance.id}}/new>Make A Challenge</a></li>
+              <li><a href=/performances/{{currentPerformance.id}}/challenges/new>Make A Challenge</a></li>
             {{/if}}
           {{/if}}
           {{#if user.squadLeader}}

@@ -3,12 +3,12 @@ const models = require('../models');
 const Challenge = new models.Challenge();
 
 function ChallengersController() {
-  this.new = (req, res) => {
+  this.create = (req, res) => {
     const userId = req.user.nameNumber,
       spotId = req.body['challenge-form'],
       performanceId = req.params.performanceId;
 
-    Challenge.makeChallenge(userId, spotId, performanceId)
+    Challenge.create(userId, spotId, performanceId)
       .then(() => {
         req.user.eligible = false;
         email.sendChallengeSuccessEmail({
@@ -26,10 +26,10 @@ function ChallengersController() {
       });
   };
 
-  this.showChallengeSelect = (req, res) => {
+  this.new = (req, res) => {
     Challenge.findAllChallengeablePeopleForUser(req.user)
     .then((data) =>
-      res.render('challengeSelect', {
+      res.render('challenges/new', {
         user: req.user,
         challengeableUsers: data,
         nextPerformance: req.session.currentPerformance

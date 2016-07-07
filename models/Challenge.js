@@ -64,7 +64,7 @@ class Challenge {
     });
   }
 
-  makeChallenge(userId, spotId, performanceId) {
+  create(userId, spotId, performanceId) {
     const sql = 'SELECT make_challenge($1, $2, $3)';
 
     return new Promise((resolve, reject) => {
