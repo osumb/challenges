@@ -6,6 +6,7 @@
 }
 
 .UserSearchPadding {
+  flex-basis: 0px;
   flex-grow: 1;
 }
 
@@ -26,8 +27,8 @@
 }
 
 .UserSearch-results {
-  align-self: flex-start;
   flex-basis: 0px;
   flex-grow: 3;
+  padding-top: 5px;
   width: 100;
 }

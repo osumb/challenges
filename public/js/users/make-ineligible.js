@@ -21,7 +21,10 @@ $('.UserSearch-search').on('keyup', ({ target }) => {
 });
 
 const appendUsersToSearch = users => {
-  const list = $(document.createElement('ul')), cName = 'UserSearch-search-result';
+  const ul = document.createElement('ul'), cName = 'UserSearch-search-result list-group-item';
+
+  ul.className = 'list-group';
+  const list = $(ul);
 
   users.forEach(({ name, id, eligible, spotId }) => {
     list.append(
