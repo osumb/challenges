@@ -23,6 +23,15 @@ function UsersController() {
     }
   };
 
+  this.makeIneligible = (req, res) => {
+    User.makeIneligible(req.body.nameNumber)
+    .then(() => res.json({ success: true }))
+    .catch((err) => {
+      console.error(err);
+      res.json({ success: false });
+    });
+  };
+
   this.search = (req, res) => {
     User.search(req.query.q)
     .then(users => res.json(users))

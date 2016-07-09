@@ -68,6 +68,27 @@ class User {
     });
   }
 
+  makeIneligible(nameNumber) {
+    return new Promise((resolve, reject) => {
+      const client = utils.db.createClient();
+      const queryString = 'UPDATE users SET eligible = false WHERE nameNumber = $1';
+
+      client.connect();
+      client.on('error', (err) => reject(err));
+
+      const query = client.query(queryString, [nameNumber]);
+
+      query.on('end', () => {
+        client.end();
+        resolve();
+      });
+
+      query.on('error', (err) => {
+        client.end();
+        reject(err);
+      });
+    });
+  }
   parse(user) {
     return {
       admin: user.admin,

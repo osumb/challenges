@@ -52,6 +52,7 @@ router.setup = (app) => {
   app.get('/:nameNumber', ensureAuthAndNameNumberRoute, Users.show);
   app.get('/users/makeineligible', ensureAdmin, Users.showMakeIneligible);
   app.get('/users/search', ensureAdmin, Users.search);
+  app.post('/users/makeineligible', ensureAdmin, Users.makeIneligible);
 };
 
 module.exports = router;

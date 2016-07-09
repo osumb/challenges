@@ -18,10 +18,6 @@ $('.UserSearch-search').on('keyup', ({ target }) => {
   }
 });
 
-$('.UserSearch-search-result-button').on('click', element => {
-  console.log(element);
-});
-
 const appendUsersToSearch = users => {
   const ul = document.createElement('ul'), cName = 'UserSearch-search-result list-group-item';
 
@@ -44,4 +40,43 @@ const appendUsersToSearch = users => {
   });
 
   $('.UserSearch-results').html(list);
+  $('.UserSearch-search-result-ineligibleButton').click(({ target }) => {
+    fetch('/users/makeineligible', {
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      credentials: 'same-origin',
+      method: 'post',
+      body: JSON.stringify({ nameNumber: target.classList[1] })
+    })
+    .then(res => res.json())
+    .then(() => {
+      banner('User is now ineligible for next challenge');
+      $(document.getElementsByClassName(target.classList.value)).remove();
+    })
+    .catch(() => banner('Sorry! We can\'t fufill that request right now'));
+  });
+  $('.UserSearch-search-result-openSpotbutton').click(({ target }) => {
+    fetch('/spots/open', {
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      credentials: 'same-origin',
+      method: 'post',
+      body: JSON.stringify({ nameNumber: target.classList[1] })
+    })
+    .then(res => res.json())
+    .then(() => {
+      banner('User is now ineligible for next challenge');
+      $(document.getElementsByClassName(target.classList.value)).remove();
+    })
+    .catch(() => banner('Sorry! We can\'t fufill that request right now'));
+  });
+};
+
+const banner = (message) => {
+  $('.bannerMessage').remove();
+  $('.navbar').after(`<h3 class="bannerMessage">${message}</h3>`);
 };
