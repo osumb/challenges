@@ -105,7 +105,6 @@ class User {
   parseForSearch(user) {
     const partiallyParsed = this.parse(user);
 
-    partiallyParsed.spotId = user.spotid;
     partiallyParsed.spotOpen = user.open;
     return partiallyParsed;
   }
@@ -122,7 +121,7 @@ class User {
       const query = client.query(queryString, [searchQuery]);
 
       query.on('row', (result) => {
-        users.push(this.parse(result));
+        users.push(this.parseForSearch(result));
       });
 
       query.on('end', () => {

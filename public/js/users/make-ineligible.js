@@ -31,7 +31,7 @@ const appendUsersToSearch = users => {
       `<button class="UserSearch-search-result-ineligibleButton ${nameNumber}">Make Ineligible</button>` :
       '';
     const openSpotButton = !spotOpen && parseInt(spotId.substring(1), 10) < 13 ?
-      `<button class="UserSearch-search-result-openSpotbutton ${nameNumber}">Open Spot</button>` :
+      `<button class="UserSearch-search-result-openSpotbutton ${spotId}">Open Spot</button>` :
       '';
 
     list.append(
@@ -40,6 +40,7 @@ const appendUsersToSearch = users => {
   });
 
   $('.UserSearch-results').html(list);
+
   $('.UserSearch-search-result-ineligibleButton').click(({ target }) => {
     fetch('/users/makeineligible', {
       headers: {
@@ -57,6 +58,7 @@ const appendUsersToSearch = users => {
     })
     .catch(() => banner('Sorry! We can\'t fufill that request right now'));
   });
+
   $('.UserSearch-search-result-openSpotbutton').click(({ target }) => {
     fetch('/spots/open', {
       headers: {
@@ -65,7 +67,7 @@ const appendUsersToSearch = users => {
       },
       credentials: 'same-origin',
       method: 'post',
-      body: JSON.stringify({ nameNumber: target.classList[1] })
+      body: JSON.stringify({ spotId: target.classList[1] })
     })
     .then(res => res.json())
     .then(() => {
