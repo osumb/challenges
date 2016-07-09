@@ -13,7 +13,7 @@ function PerformanceController() {
     })
     .catch(err => {
       console.error(err);
-      res.render('error', { user: req.user });
+      res.render('static-pages/error', { user: req.user });
     });
   };
 
