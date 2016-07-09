@@ -18,6 +18,7 @@ const Challenges = new controllers.Challenges();
 const Performances = new controllers.Performances();
 const Results = new controllers.Results();
 const Sessions = new controllers.Sessions();
+const Spots = new controllers.Spots();
 const StaticPages = new controllers.StaticPages();
 const Users = new controllers.Users();
 
@@ -47,6 +48,9 @@ router.setup = (app) => {
   app.post('/login', [passport.authenticate('local', { failureRedirect: '/login?auth=false' }), currentPerformance], Sessions.redirect);
   app.get('/login', Sessions.login);
   app.get('/logout', Sessions.logout);
+
+  //Spots Controller
+  app.post('/spots/open', ensureAdmin, Spots.open);
 
   //Users Controller
   app.get('/:nameNumber', ensureAuthAndNameNumberRoute, Users.show);
