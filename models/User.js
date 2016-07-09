@@ -85,6 +85,7 @@ class User {
     const partiallyParsed = this.parse(user);
 
     partiallyParsed.spotId = user.spotid;
+    partiallyParsed.spotOpen = user.open;
     return partiallyParsed;
   }
 
