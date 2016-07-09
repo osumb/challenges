@@ -33,11 +33,11 @@ router.setup = (app) => {
   app.post('/performances/create', ensureAdmin, Performances.create);
 
   //Results Controller
-  app.get('/performances/:performanceId/results/evaluate', ensureEvalAbility, Results.showForEvaluation);
+  app.get('/performances/results/evaluate', ensureEvalAbility, Results.showForEvaluation);
   app.get('/performances/:performanceId/results/toapprove', ensureAdmin, Results.getForApproval);
   app.get('/performances/:performanceId/results', ensureAdmin, Results.showAll);
   app.post('/performances/:performanceId/results/:resultId', ensureEvalAbility, Results.evaluate);
-  app.post('/results:resultId/approve', ensureAdmin, Results.approve);
+  app.post('/results/:resultId/approve', ensureAdmin, Results.approve);
 
   //Static Pages Controllers
   app.get('/', refreshCurrentPerformance, StaticPages.home);

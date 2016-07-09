@@ -14,9 +14,9 @@ function ResultsController() {
   };
 
   this.getForApproval = (req, res) => {
-    Result.findAllForApproval(req.session.currentPerformance.id)
+    Result.findAllForApproval()
     .then((results) => {
-      res.render('resultsApprove', { user: req.user, results });
+      res.render('resultsApprove', { user: req.user, currentPerformance: req.session.currentPerformance, results });
     })
     .catch((err) => {
       console.error(err);

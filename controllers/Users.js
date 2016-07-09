@@ -5,7 +5,7 @@ const Result = new Models.Result();
 function UsersController() {
   this.show = (req, res) => {
     if (req.user.admin) {
-      res.render('users/admin', { user: req.user });
+      res.render('users/admin', { user: req.user, currentPerformance: req.session.currentPerformance });
     } else {
       Promise.all([Result.findAllForUser(req.user.nameNumber), Challenge.findForUser(req.user.nameNumber)])
         .then(data => {

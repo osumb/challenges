@@ -38,7 +38,7 @@ module.exports = class Results {
     });
   }
 
-  findAllForApproval(performanceId) {
+  findAllForApproval() {
     const client = db.createClient();
     const sql = queries.resultsForApproval;
     const results = [];
@@ -47,11 +47,12 @@ module.exports = class Results {
       client.connect();
       client.on('error', (err) => reject(err));
 
-      const query = client.query(sql, [performanceId]);
+      const query = client.query(sql);
 
       query.on('row', (result) => results.push(this.parseForAdmin(result)));
       query.on('end', () => {
         client.end();
+        console.log(results);
         resolve(results);
       });
       query.on('error', (err) => {
@@ -172,11 +173,13 @@ module.exports = class Results {
 
   parseForAdmin(result) {
     return {
-      firstComments: result.firstcomments,
       id: result.resultid,
-      secondComments: result.secondcomments,
+      firstComments: result.firstcomments,
       firstName: result.nameone,
       pending: result.pending,
+      performanceId: result.performanceid,
+      performanceName: result.performancename,
+      secondComments: result.secondcomments,
       secondName: result.nametwo,
       spotId: result.spotid,
       winner: result.winnerid === result.namenumberone ? result.nameone : result.nametwo
