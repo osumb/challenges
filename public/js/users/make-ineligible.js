@@ -41,6 +41,7 @@ const appendUsersToSearch = users => {
 
   $('.UserSearch-results').html(list);
 
+  // Add list button listeners
   $('.UserSearch-search-result-ineligibleButton').click(({ target }) => {
     fetch('/users/makeineligible', {
       headers: {
@@ -53,8 +54,11 @@ const appendUsersToSearch = users => {
     })
     .then(res => res.json())
     .then(() => {
+      const buttonParent = $(target.parentElement);
+
       banner('User is now ineligible for next challenge');
       $(document.getElementsByClassName(target.classList.value)).remove();
+      buttonParent.text(buttonParent[0].innerText.replace('Can', 'Can\'t'));
     })
     .catch(() => banner('Sorry! We can\'t fufill that request right now'));
   });
