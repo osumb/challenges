@@ -4,7 +4,6 @@ $('.approveSubmitAll').on('click', () => {
   sendApprovals(ids)
   .then(() => {
     removeIds(ids);
-    banner('There are no results to approve!');
   })
   .catch((err) => console.error(err));
 });
@@ -12,10 +11,12 @@ $('.approveSubmitAll').on('click', () => {
 $('.approveSubmitChecked').on('click', () => {
   const ids = getAllCheckedIds();
 
+  removeIds(ids);
   sendApprovals(ids)
   .then(() => {
     removeIds(ids);
-  });
+  })
+  .catch(err => console.error(err));
 });
 
 const sendApprovals = (ids) => {
@@ -32,7 +33,7 @@ const sendApprovals = (ids) => {
 
 const removeIds = (ids) => {
   ids.forEach((id) => {
-    $(`.resultsApprove-list-item ${id}`).remove();
+    $(`.resultsApproveList-item.${id}`).remove();
   });
   window.location.reload(false);
 };
@@ -46,7 +47,7 @@ const getIdFromElement = element => {
 };
 
 const getAllResultIds = () => {
-  const divs = $('.resultsApprove-list-item').toArray();
+  const divs = $('.resultsApproveList-item').toArray();
 
   return divs.map(getIdFromElement);
 };
@@ -55,9 +56,4 @@ const getAllCheckedIds = () => {
   const divs = $('.resultsApprove-checkbox').toArray();
 
   return divs.filter(div => div.checked).map(div => getIdFromElement(div));
-};
-
-const banner = (message) => {
-  $('.bannerMessage').remove();
-  $('.navbar').after(`<h3 class="bannerMessage">${message}</h3>`);
 };

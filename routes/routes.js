@@ -37,7 +37,7 @@ router.setup = (app) => {
   app.get('/performances/:performanceId/results/toapprove', ensureAdmin, Results.getForApproval);
   app.get('/performances/:performanceId/results', ensureAdmin, Results.showAll);
   app.post('/performances/:performanceId/results/:resultId', ensureEvalAbility, Results.evaluate);
-  app.post('/results/:resultId/approve', ensureAdmin, Results.approve);
+  app.post('/results/approve', ensureAdmin, Results.approve);
 
   //Static Pages Controllers
   app.get('/', refreshCurrentPerformance, StaticPages.home);
