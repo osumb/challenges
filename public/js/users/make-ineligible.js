@@ -71,8 +71,11 @@ const appendUsersToSearch = users => {
     })
     .then(res => res.json())
     .then(() => {
-      banner('User is now ineligible for next challenge');
+      const buttonParent = $(target.parentElement);
+
+      banner(`Spot ${target.classList[1]} is now open!`);
       $(document.getElementsByClassName(target.classList.value)).remove();
+      buttonParent.text(buttonParent[0].innerText.replace('not ', ''));
     })
     .catch(() => banner('Sorry! We can\'t fufill that request right now'));
   });
