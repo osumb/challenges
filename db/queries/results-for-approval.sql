@@ -7,7 +7,6 @@ FROM
     p.id AS performanceId, p.name AS performanceName
     FROM results AS r1, users AS u1, performances AS p
     WHERE r1.firstNameNumber = u1.nameNumber AND r1.needsApproval AND r1.performanceId = p.id AND NOT r1.pending
-    ORDER BY p.id
   ) t1
 LEFT JOIN
   (
@@ -16,4 +15,5 @@ LEFT JOIN
     WHERE r2.secondNameNumber = u2.nameNumber
   ) t2
 ON
-  t1.id = t2.id;
+  t1.id = t2.id
+ORDER BY t1.performanceId;
