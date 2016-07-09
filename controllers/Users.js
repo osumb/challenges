@@ -1,6 +1,7 @@
 const Models = require('../models');
 const Challenge = new Models.Challenge();
 const Result = new Models.Result();
+const User = new Models.User();
 
 function UsersController() {
   this.show = (req, res) => {
@@ -20,6 +21,16 @@ function UsersController() {
         })
         .catch(() => res.render('static-pages/error'));
     }
+  };
+
+  this.search = (req, res) => {
+    User.search(req.query.q)
+    .then(users => res.json(users))
+    .catch(err => res.status(500).json({ message: err }));
+  };
+
+  this.showMakeIneligible = (req, res) => {
+    res.render('users/make-ineligible', { user: req.user });
   };
 }
 

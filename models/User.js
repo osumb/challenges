@@ -80,6 +80,40 @@ class User {
       squadLeader: user.squadleader
     };
   }
+
+  parseForSearch(user) {
+    const partiallyParsed = this.parse(user);
+
+    partiallyParsed.spotId = user.spotid;
+    return partiallyParsed;
+  }
+
+  search(searchQuery) {
+    return new Promise((resolve, reject) => {
+      const client = utils.db.createClient();
+      const queryString = 'SELECT * FROM users AS u, spots AS s WHERE lower(name) LIKE \'%\' || lower($1) || \'%\' and u.spotId = s.id';
+      const users = [];
+
+      client.connect();
+      client.on('error', (err) => reject(err));
+
+      const query = client.query(queryString, [searchQuery]);
+
+      query.on('row', (result) => {
+        users.push(this.parse(result));
+      });
+
+      query.on('end', () => {
+        client.end();
+        resolve(users);
+      });
+
+      query.on('error', (err) => {
+        client.end();
+        reject(err);
+      });
+    });
+  }
 }
 
 module.exports = User;

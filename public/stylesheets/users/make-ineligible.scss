@@ -1,0 +1,33 @@
+.UserSearch {
+  display: flex;
+  flex-direction: row;
+  height: 100%;
+  width: 100%;
+}
+
+.UserSearchPadding {
+  flex-grow: 1;
+}
+
+.UserSearchCenter {
+  display: flex;
+  flex-basis: 0px;
+  flex-direction: column;
+  flex-grow: 3;
+}
+
+.UserSearchResultsList {
+  display: flex;
+  flex-direction: row;
+}
+
+.UserSearch-search {
+  width: 100%;
+}
+
+.UserSearch-results {
+  align-self: flex-start;
+  flex-basis: 0px;
+  flex-grow: 3;
+  width: 100;
+}

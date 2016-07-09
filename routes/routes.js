@@ -34,7 +34,7 @@ router.setup = (app) => {
 
   //Results Controller
   app.get('/performances/results/evaluate', ensureEvalAbility, Results.showForEvaluation);
-  app.get('/performances/:performanceId/results/toapprove', ensureAdmin, Results.getForApproval);
+  app.get('/performances/results/toapprove', ensureAdmin, Results.getForApproval);
   app.get('/performances/:performanceId/results', ensureAdmin, Results.showAll);
   app.post('/performances/:performanceId/results/:resultId', ensureEvalAbility, Results.evaluate);
   app.post('/results/approve', ensureAdmin, Results.approve);
@@ -50,6 +50,8 @@ router.setup = (app) => {
 
   //Users Controller
   app.get('/:nameNumber', ensureAuthAndNameNumberRoute, Users.show);
+  app.get('/users/makeineligible', ensureAdmin, Users.showMakeIneligible);
+  app.get('/users/search', ensureAdmin, Users.search);
 };
 
 module.exports = router;
