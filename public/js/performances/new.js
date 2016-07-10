@@ -2,8 +2,7 @@ const inputs = {
   performanceName: $('.performanceName'),
   performanceDate: $('.performanceDate'),
   openAt: $('.openAt'),
-  closeAt: $('.closeAt'),
-  current: $('.current')
+  closeAt: $('.closeAt')
 };
 
 $('.newPerformanceSubmit').on('click', () => {
@@ -19,8 +18,7 @@ $('.newPerformanceSubmit').on('click', () => {
         performanceName: inputs.performanceName.val(),
         performanceDate: inputs.performanceDate.val(),
         openAt: inputs.openAt.val(),
-        closeAt: inputs.closeAt.val(),
-        current: inputs.current.is(':checked')
+        closeAt: inputs.closeAt.val()
       })
     })
     .then(() => {

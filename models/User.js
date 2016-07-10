@@ -89,6 +89,7 @@ class User {
       });
     });
   }
+
   parse(user) {
     return {
       admin: user.admin,

@@ -18,16 +18,16 @@ module.exports = class Performance {
     return 'performances';
   }
 
-  create(name, performDate, openAt, closeAt, current) {
+  create(name, performDate, openAt, closeAt) {
     return new Promise((resolve, reject) => {
       const client = utils.db.createClient();
-      const queryString = 'INSERT INTO performances (name, performDate, openAt, closeAt, current) VALUES ($1, $2, $3, $4, $5) RETURNING id';
+      const queryString = 'INSERT INTO performances (name, performDate, openAt, closeAt) VALUES ($1, $2, $3, $4) RETURNING id';
       let perfId;
 
       client.connect();
       client.on('error', err => reject(err));
 
-      const query = client.query(queryString, [name, performDate, openAt, closeAt, current]);
+      const query = client.query(queryString, [name, performDate, openAt, closeAt]);
 
       query.on('row', (id) => {
         perfId = id;
@@ -42,6 +42,22 @@ module.exports = class Performance {
         client.end();
         reject(err);
       });
+    });
+  }
+
+  flagCurrent() {
+    const client = utils.db.createClient();
+    const sql = 'SELECT flag_current_performance()';
+
+    client.connect();
+    client.on('error', err => console.error('Error from models/Performance.flagCurrent', err));
+
+    const query = client.query(sql);
+
+    query.on('end', () => client.end());
+    query.on('error', err => {
+      client.end();
+      console.error('Error from models/Performance.flagCurrent', err);
     });
   }
 

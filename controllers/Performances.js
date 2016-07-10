@@ -3,11 +3,13 @@ const Performance = new models.Performance();
 
 function PerformanceController() {
   this.create = (req, res) => {
-    const { performanceName, performanceDate, openAt, closeAt, current } = req.body;
+    const { performanceName, performanceDate, openAt, closeAt } = req.body;
 
-    Performance.create(performanceName, performanceDate, openAt, closeAt, current)
+    Performance.create(performanceName, performanceDate, openAt, closeAt)
     .then(() => {
+      // We'll eventually use { id } in this function to create the cron job
       // TODO: create cron job
+      Performance.flagCurrent();
       res.json({ success: true });
     })
     .catch(err => {

@@ -14,6 +14,18 @@ DROP TYPE IF EXISTS role;
 ----------------------------------------
 -- FUNCTIONS
 ----------------------------------------
+DROP FUNCTION IF EXISTS flag_current_performance();
+CREATE OR REPLACE FUNCTION flag_current_performance()
+RETURNS void AS $$
+DECLARE performanceId int;
+BEGIN
+  SELECT id INTO performanceId FROM performances WHERE now() < closeAt ORDER BY openAt ASC LIMIT 1;
+
+  UPDATE performances SET current = FALSE WHERE id <> performanceId;
+  UPDATE performances SET current = TRUE WHERE id = performanceId;
+END;
+$$ LANGUAGE plpgsql;
+
 DROP FUNCTION IF EXISTS can_sl_eval(instrumentA varchar(256), instrumentB varchar(256), partA varchar(256), partB varchar(256));
 CREATE OR REPLACE FUNCTION can_sl_eval(instrumentA varchar(256), instrumentB varchar(256), partA varchar(256), partB varchar(256))
 RETURNS boolean as $$
