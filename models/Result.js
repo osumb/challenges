@@ -17,6 +17,51 @@ module.exports = class Results {
     return 'results';
   }
 
+  approve(ids) {
+    const client = db.createClient();
+    const sql = 'UPDATE results SET needsApproval = FALSE WHERE id = ANY($1)';
+
+    return new Promise((resolve, reject) => {
+      client.connect();
+      client.on('error', (err) => reject(err));
+
+      const query = client.query(sql, [ids]);
+
+      query.on('end', () => {
+        client.end();
+        resolve();
+      });
+      query.on('error', (err) => {
+        console.error(err);
+        client.end();
+      });
+    });
+  }
+
+  findAllForApproval() {
+    const client = db.createClient();
+    const sql = queries.resultsForApproval;
+    const results = [];
+
+    return new Promise((resolve, reject) => {
+      client.connect();
+      client.on('error', (err) => reject(err));
+
+      const query = client.query(sql);
+
+      query.on('row', (result) => results.push(this.parseForAdmin(result)));
+      query.on('end', () => {
+        client.end();
+        console.log(results);
+        resolve(results);
+      });
+      query.on('error', (err) => {
+        client.end();
+        reject(err);
+      });
+    });
+  }
+
   findAllForEval(instrument, part, performanceId, userNameNumber) {
     const client = db.createClient();
     const sql = queries.resultsForEval;
@@ -128,13 +173,16 @@ module.exports = class Results {
 
   parseForAdmin(result) {
     return {
+      id: result.resultid,
       firstComments: result.firstcomments,
-      secondComments: result.secondcomments,
       firstName: result.nameone,
       pending: result.pending,
+      performanceId: result.performanceid,
+      performanceName: result.performancename,
+      secondComments: result.secondcomments,
       secondName: result.nametwo,
       spotId: result.spotid,
-      winner: result.winner === result.namenumberone ? result.nameone : result.nametwo
+      winner: result.winnerid === result.namenumberone ? result.nameone : result.nametwo
     };
   }
 

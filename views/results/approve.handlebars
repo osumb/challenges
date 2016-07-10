@@ -1,0 +1,35 @@
+{{#if results}}
+  <div class="resultsApprove">
+    <div class="resultsApprove-header">
+      <input type="submit" class="approveSubmitAll btn btn-default" value="Approve All" />
+      <input type="submit" class="approveSubmitChecked btn btn-default" value="Approve Checked" />
+    </div>
+    <div class="resultsApproveList">
+      {{#each results}}
+        <div class="resultsApproveList-item {{this.id}}">
+          <div class="resultsApproveList-item-header">
+            <p class="resultsApproveList-item-header-item">{{this.spotId}}:</p>
+            <p class="resultsApproveList-item-header-item">{{this.winner}}</p>
+            <div class="resultsApproveList-item-header-item">
+              <input type="checkbox" class="resultsApprove-checkbox {{this.id}}" value="Approve" />
+            </div>
+          </div>
+          For performance: {{this.performanceName}}
+          <div class="resultsApproveList-item-body">
+            <div class="resultsApproveList-item-body-item">
+              <p>{{this.firstName}}</p>
+              <p>{{this.firstComments}}</p>
+            </div>
+            <div class="resultsApproveList-item-body-item">
+              <p>{{this.secondName}}</p>
+              <p>{{this.secondComments}}</p>
+            </div>
+          </div>
+        </div>
+      {{/each}}
+    </div>
+  </div>
+  <script src="/public/js/results/approve.js"></script>
+{{else}}
+  <h1>There are no results to approve!</h1>
+{{/if}}

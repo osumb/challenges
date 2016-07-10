@@ -44,7 +44,7 @@ class User {
   findAll() {
     return new Promise((resolve, reject) => {
       const client = utils.db.createClient();
-      const queryString = 'SELECT * FROM "Users"';
+      const queryString = 'SELECT * FROM users';
       const users = [];
 
       client.connect();
@@ -68,6 +68,50 @@ class User {
     });
   }
 
+  forfeitSpot(nameNumber) {
+    return new Promise((resolve, reject) => {
+      const client = utils.db.createClient();
+      const sql = 'SELECT forfeit_spot($1)';
+
+      client.connect();
+      client.on('error', (err) => reject(err));
+
+      const query = client.query(sql, [nameNumber]);
+
+      query.on('end', () => {
+        client.end();
+        resolve();
+      });
+
+      query.on('error', (err) => {
+        client.end();
+        reject(err);
+      });
+    });
+  }
+
+  makeIneligible(nameNumber) {
+    return new Promise((resolve, reject) => {
+      const client = utils.db.createClient();
+      const queryString = 'UPDATE users SET eligible = false WHERE nameNumber = $1';
+
+      client.connect();
+      client.on('error', (err) => reject(err));
+
+      const query = client.query(queryString, [nameNumber]);
+
+      query.on('end', () => {
+        client.end();
+        resolve();
+      });
+
+      query.on('error', (err) => {
+        client.end();
+        reject(err);
+      });
+    });
+  }
+
   parse(user) {
     return {
       admin: user.admin,
@@ -79,6 +123,40 @@ class User {
       spotId: user.spotid,
       squadLeader: user.squadleader
     };
+  }
+
+  parseForSearch(user) {
+    const partiallyParsed = this.parse(user);
+
+    partiallyParsed.spotOpen = user.open;
+    return partiallyParsed;
+  }
+
+  search(searchQuery) {
+    return new Promise((resolve, reject) => {
+      const client = utils.db.createClient();
+      const queryString = 'SELECT * FROM users AS u, spots AS s WHERE lower(name) LIKE \'%\' || lower($1) || \'%\' and u.spotId = s.id';
+      const users = [];
+
+      client.connect();
+      client.on('error', (err) => reject(err));
+
+      const query = client.query(queryString, [searchQuery]);
+
+      query.on('row', (result) => {
+        users.push(this.parseForSearch(result));
+      });
+
+      query.on('end', () => {
+        client.end();
+        resolve(users);
+      });
+
+      query.on('error', (err) => {
+        client.end();
+        reject(err);
+      });
+    });
   }
 }
 

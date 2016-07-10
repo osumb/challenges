@@ -2,6 +2,28 @@ const models = require('../models');
 const Result = new models.Result();
 
 function ResultsController() {
+  this.approve = (req, res) => {
+    const { ids } = req.body;
+
+    Result.approve(ids)
+    .then(() => res.json({ message: 'success!' }))
+    .catch((err) => {
+      console.error(err);
+      res.json({ err });
+    });
+  };
+
+  this.getForApproval = (req, res) => {
+    Result.findAllForApproval()
+    .then((results) => {
+      res.render('results/approve', { user: req.user, currentPerformance: req.session.currentPerformance, results });
+    })
+    .catch((err) => {
+      console.error(err);
+      res.render('static-pages/error');
+    });
+  };
+
   this.evaluate = (req, res) => {
     Result.update({
       id: req.params.resultId,

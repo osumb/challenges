@@ -21,7 +21,9 @@
         ]
     },
     "env": {
+        "browser": true,
         "es6": true,
+        "jquery": true,
         "node": true
     },
     "extends": "@btmills/eslint-config-btmills/es6"

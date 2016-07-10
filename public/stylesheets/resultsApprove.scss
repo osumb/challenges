@@ -1,0 +1,44 @@
+.resultsApprove {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  height: 100%;
+}
+
+.resultsApproveList {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  padding-top: 5px;
+}
+
+.resultsApproveList-item {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  margin: 5px;
+  max-width: 350px;
+  min-width: 350px;
+}
+
+.resultsApproveList-item-header {
+  display: flex;
+  flex-direction: row;
+}
+
+.resultsApproveList-item-header-item {
+  flex-grow: 1;
+  margin: 5px;
+  height: 100%;
+}
+
+.resultsApproveList-item-body {
+  display: flex;
+  flex-direction: row;
+}
+
+.resultsApproveList-item-body-item {
+  flex-grow: 1;
+
+  margin: 4px;
+}

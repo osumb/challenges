@@ -18,6 +18,49 @@ module.exports = class Performance {
     return 'performances';
   }
 
+  create(name, performDate, openAt, closeAt) {
+    return new Promise((resolve, reject) => {
+      const client = utils.db.createClient();
+      const queryString = 'INSERT INTO performances (name, performDate, openAt, closeAt) VALUES ($1, $2, $3, $4) RETURNING id';
+      let perfId;
+
+      client.connect();
+      client.on('error', err => reject(err));
+
+      const query = client.query(queryString, [name, performDate, openAt, closeAt]);
+
+      query.on('row', (id) => {
+        perfId = id;
+      });
+
+      query.on('end', () => {
+        client.end();
+        resolve(perfId);
+      });
+
+      query.on('error', (err) => {
+        client.end();
+        reject(err);
+      });
+    });
+  }
+
+  flagCurrent() {
+    const client = utils.db.createClient();
+    const sql = 'SELECT flag_current_performance()';
+
+    client.connect();
+    client.on('error', err => console.error('Error from models/Performance.flagCurrent', err));
+
+    const query = client.query(sql);
+
+    query.on('end', () => client.end());
+    query.on('error', err => {
+      client.end();
+      console.error('Error from models/Performance.flagCurrent', err);
+    });
+  }
+
   findAll(formatString) {
     return new Promise((resolve, reject) => {
       const client = utils.db.createClient();
@@ -27,7 +70,7 @@ module.exports = class Performance {
       client.connect();
       client.on('error', (err) => reject(err));
 
-      const query = client.query(queryString, [new Date().toJSON()]);
+      const query = client.query(queryString);
 
       query.on('row', (performance) => {
         performances.push(this.format(performance, formatString));
