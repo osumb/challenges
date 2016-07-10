@@ -138,16 +138,7 @@ BEGIN
   INSERT INTO challenges (userNameNumber, performanceId, spotId) VALUES (uId, pId, sId);
   UPDATE spots SET challengedCount = challengedCount + 1 WHERE id = sId;
   UPDATE users SET eligible = FALSE WHERE nameNumber = uId;
-  -- If the spot is fully challenged, we're going to add to the results table
-  -- There are two ways we could grab the other user. If they're also challenging the spot
-  -- or if the spot isn't open, we need the current user associated with the spot
-  IF (spotOpen AND cCount + 1 = 2) THEN
-    INSERT INTO results (performanceId, spotId, firstNameNumber, secondNameNumber, pending)
-    VALUES (pId, sId, (SELECT userNameNumber FROM challenges WHERE performanceId = pId AND spotId = sId), uId, TRUE);
-  ELSIF (NOT spotOpen AND cCount + 1 = 1) THEN
-    INSERT INTO results (performanceId, spotId, firstNameNumber, secondNameNumber, pending, needsApproval)
-    VALUES (pId, sId, uId, (SELECT nameNumber FROM users WHERE spotId = sId), TRUE, FALSE);
-  END IF;
+
 	message:= '';
 
 	RETURN message;
