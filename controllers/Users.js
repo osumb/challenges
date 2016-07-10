@@ -4,6 +4,30 @@ const Result = new Models.Result();
 const User = new Models.User();
 
 function UsersController() {
+  this.forfeitSpot = (req, res) => {
+    User.forfeitSpot(req.body.nameNumber)
+    .then(() => res.json({ success: true }))
+    .catch((err) => {
+      console.error(err);
+      res.json({ success: false });
+    });
+  };
+
+  this.makeIneligible = (req, res) => {
+    User.makeIneligible(req.body.nameNumber)
+    .then(() => res.json({ success: true }))
+    .catch((err) => {
+      console.error(err);
+      res.json({ success: false });
+    });
+  };
+
+  this.search = (req, res) => {
+    User.search(req.query.q)
+    .then(users => res.json(users))
+    .catch(err => res.status(500).json({ message: err }));
+  };
+
   this.show = (req, res) => {
     if (req.user.admin) {
       res.render('users/admin', { user: req.user, currentPerformance: req.session.currentPerformance });
@@ -21,21 +45,6 @@ function UsersController() {
         })
         .catch(() => res.render('static-pages/error'));
     }
-  };
-
-  this.makeIneligible = (req, res) => {
-    User.makeIneligible(req.body.nameNumber)
-    .then(() => res.json({ success: true }))
-    .catch((err) => {
-      console.error(err);
-      res.json({ success: false });
-    });
-  };
-
-  this.search = (req, res) => {
-    User.search(req.query.q)
-    .then(users => res.json(users))
-    .catch(err => res.status(500).json({ message: err }));
   };
 
   this.showManage = (req, res) => {

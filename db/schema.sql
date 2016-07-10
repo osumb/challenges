@@ -14,6 +14,17 @@ DROP TYPE IF EXISTS role;
 ----------------------------------------
 -- FUNCTIONS
 ----------------------------------------
+DROP FUNCTION IF EXISTS forfeit_spot(userNameNumber varchar(256));
+CREATE OR REPLACE FUNCTION forfeit_spot(userNameNumber varchar(256))
+RETURNS void AS $$
+DECLARE sId char(3);
+BEGIN
+  SELECT spotId INTO sId FROM users WHERE nameNumber = userNameNumber;
+  UPDATE spots SET open = TRUE WHERE id = sId;
+  UPDATE users SET eligible = TRUE WHERE nameNumber = userNameNumber;
+END;
+$$ LANGUAGE plpgsql;
+
 DROP FUNCTION IF EXISTS flag_current_performance();
 CREATE OR REPLACE FUNCTION flag_current_performance()
 RETURNS void AS $$

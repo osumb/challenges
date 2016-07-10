@@ -68,6 +68,28 @@ class User {
     });
   }
 
+  forfeitSpot(nameNumber) {
+    return new Promise((resolve, reject) => {
+      const client = utils.db.createClient();
+      const sql = 'SELECT forfeit_spot($1)';
+
+      client.connect();
+      client.on('error', (err) => reject(err));
+
+      const query = client.query(sql, [nameNumber]);
+
+      query.on('end', () => {
+        client.end();
+        resolve();
+      });
+
+      query.on('error', (err) => {
+        client.end();
+        reject(err);
+      });
+    });
+  }
+
   makeIneligible(nameNumber) {
     return new Promise((resolve, reject) => {
       const client = utils.db.createClient();

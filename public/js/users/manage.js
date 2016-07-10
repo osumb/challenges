@@ -33,9 +33,13 @@ const appendUsersToSearch = users => {
     const openSpotButton = !spotOpen && parseInt(spotId.substring(1), 10) < 13 ?
       `<button class="UserSearch-search-result-openSpotbutton ${spotId}">Open Spot</button>` :
       '';
+    const forfeitSpotButton = !spotOpen && !eligible ?
+    `<button class="UserSearch-search-result-forfeitSpotbutton ${nameNumber}">Forfeit Spot</button>` :
+      '';
+
 
     list.append(
-      $(`<li class="${cName}">${name} | ${canChallenge} | ${spot} ${ineligibleButton} ${openSpotButton}</li>`)
+      $(`<li class="${cName}">${name} | ${canChallenge} | ${spot} ${ineligibleButton} ${openSpotButton} ${forfeitSpotButton}</li>`)
     );
   });
 
@@ -80,6 +84,23 @@ const appendUsersToSearch = users => {
       banner(`Spot ${target.classList[1]} is now open!`);
       $(document.getElementsByClassName(target.classList.value)).remove();
       buttonParent.text(buttonParent[0].innerText.replace('not ', ''));
+    })
+    .catch(() => banner('Sorry! We can\'t fufill that request right now'));
+  });
+
+  $('.UserSearch-search-result-forfeitSpotbutton').click(({ target }) => {
+    fetch('/users/forfeitspot', {
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      credentials: 'same-origin',
+      method: 'post',
+      body: JSON.stringify({ nameNumber: target.classList[1] })
+    })
+    .then(() => {
+      banner('User\'s spot is now forfeited for the next challenge');
+      $(document.getElementsByClassName(target.classList.value)).remove();
     })
     .catch(() => banner('Sorry! We can\'t fufill that request right now'));
   });
