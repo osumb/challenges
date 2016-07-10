@@ -54,7 +54,7 @@ router.setup = (app) => {
 
   //Users Controller
   app.get('/:nameNumber', ensureAuthAndNameNumberRoute, Users.show);
-  app.get('/users/makeineligible', ensureAdmin, Users.showMakeIneligible);
+  app.get('/users/manage', ensureAdmin, Users.showManage);
   app.get('/users/search', ensureAdmin, Users.search);
   app.post('/users/makeineligible', ensureAdmin, Users.makeIneligible);
 };

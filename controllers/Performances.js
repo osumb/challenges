@@ -17,7 +17,7 @@ function PerformanceController() {
   };
 
   this.new = (req, res) => {
-    res.render('performances/new-performance', { user: req.user });
+    res.render('performances/new', { user: req.user });
   };
 
   this.showAll = (req, res) => {

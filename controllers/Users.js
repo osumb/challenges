@@ -38,8 +38,8 @@ function UsersController() {
     .catch(err => res.status(500).json({ message: err }));
   };
 
-  this.showMakeIneligible = (req, res) => {
-    res.render('users/make-ineligible', { user: req.user });
+  this.showManage = (req, res) => {
+    res.render('users/manage', { user: req.user });
   };
 }
 
