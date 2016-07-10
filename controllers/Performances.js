@@ -6,9 +6,8 @@ function PerformanceController() {
     const { performanceName, performanceDate, openAt, closeAt, current } = req.body;
 
     Performance.create(performanceName, performanceDate, openAt, closeAt, current)
-    .then(({ id }) => {
+    .then(() => {
       // TODO: create cron job
-      console.log('Performance id', id);
       res.json({ success: true });
     })
     .catch(err => {
@@ -18,7 +17,7 @@ function PerformanceController() {
   };
 
   this.new = (req, res) => {
-    res.render('newPerformance', { user: req.user });
+    res.render('performances/new-performance', { user: req.user });
   };
 
   this.showAll = (req, res) => {
