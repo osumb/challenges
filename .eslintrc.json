@@ -18,6 +18,10 @@
         ],
         "no-console": [
           0
+        ],
+        "curly": [
+          "error",
+          "multi-line"
         ]
     },
     "env": {

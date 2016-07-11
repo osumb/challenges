@@ -2,6 +2,32 @@ const queries = require('../db/queries');
 const { db } = require('../utils');
 
 const modelAttributes = ['id', 'performanceId', 'spotId', 'firstNameNumber', 'secondNameNumber', 'firstComments', 'secondComments', 'winnerId', 'pending', 'needsApproval'];
+const alternateVersusRegular = result =>
+  (!result.useronealternate && result.usertwoalternate) ||
+  (result.useronealternate && !result.usertwoalternate);
+const alternateVersusAlternate = result =>
+  result.useronealternate && result.usertwoalternate;
+const regularVersusRegular = result =>
+  !result.useronealternate && !result.usertwoalternate;
+
+/*
+  We need a special sorting for results when we're switching user spots based on results
+  - Regular VS Alternate
+  - Alternate VS Alternate
+  - Regular VS Regular
+  This grossness does that
+*/
+const resultsSort = (a, b) => { // eslint-disable-line consistent-return, array-callback-return
+  if (alternateVersusRegular(a) && alternateVersusRegular(b)) return 0;
+  if (alternateVersusRegular(a) && alternateVersusAlternate(b)) return -1;
+  if (alternateVersusRegular(a) && regularVersusRegular(b)) return -1;
+  if (alternateVersusAlternate(a) && alternateVersusRegular(b)) return 1;
+  if (alternateVersusAlternate(a) && alternateVersusAlternate(b)) return 0;
+  if (alternateVersusAlternate(a) && regularVersusRegular(b)) return -1;
+  if (regularVersusRegular(a) && alternateVersusRegular(b)) return 1;
+  if (regularVersusRegular(a) && alternateVersusAlternate(b)) return 1;
+  if (regularVersusRegular(a) && regularVersusRegular(b)) return 0;
+};
 
 module.exports = class Results {
 
@@ -38,6 +64,31 @@ module.exports = class Results {
     });
   }
 
+  checkAllDoneForPerformance(id) {
+    const client = db.createClient();
+    const sql = 'SELECT count(*) FROM results WHERE performanceid = $1 AND needsApproval';
+    let count;
+
+    return new Promise((resolve, reject) => {
+      client.connect();
+      client.on('error', (err) => reject(err));
+
+      const query = client.query(sql, [id]);
+
+      query.on('row', result => {
+        count = parseInt(result.count, 10);
+      });
+      query.on('end', () => {
+        client.end();
+        resolve(count === 0);
+      });
+      query.on('error', (err) => {
+        client.end();
+        reject(err);
+      });
+    });
+  }
+
   findAllForApproval() {
     const client = db.createClient();
     const sql = queries.resultsForApproval;
@@ -52,7 +103,6 @@ module.exports = class Results {
       query.on('row', (result) => results.push(this.parseForAdmin(result)));
       query.on('end', () => {
         client.end();
-        console.log(results);
         resolve(results);
       });
       query.on('error', (err) => {
@@ -137,6 +187,50 @@ module.exports = class Results {
         reject(err);
       });
     });
+  }
+
+  switchSpotsForPerformance(id) {
+    const client = db.createClient();
+    const resultsSql = queries.resultsForPerformance;
+    const switchSql = 'SELECT switch_spots_based_on_results($1)';
+    const oneUserSql = 'SELECT switch_spots_based_on_results_one_user($1)';
+    const results = [];
+    const onePersonResultIds = [];
+
+    client.connect();
+    client.on('error', err => console.error(err));
+
+    const resultsQuery = client.query(resultsSql, [id]);
+
+    resultsQuery.on('row', result => results.push(result));
+    resultsQuery.on('end', () => {
+      const filteredResults = results.filter(({ namenumbertwo }, i) => {
+        if (!namenumbertwo) {
+          onePersonResultIds.push(results[i].resultsid);
+        }
+        return namenumbertwo;
+      });
+      const filteredResultsIds = filteredResults.sort(resultsSort).map(({ resultsid }) => resultsid);
+
+      const switchQuery = client.query(switchSql, [filteredResultsIds]);
+
+      switchQuery.on('end', () => {
+        const oneUserQuery = client.query(oneUserSql, [onePersonResultIds]);
+
+        oneUserQuery.on('end', () => client.end());
+        oneUserQuery.on('error', err => {
+          client.end();
+          console.error(err);
+        });
+      });
+
+      switchQuery.on('error', err => {
+        client.end();
+        console.error(err);
+      });
+    });
+
+    resultsQuery.on('error', err => console.error(err));
   }
 
   update(attributes) {

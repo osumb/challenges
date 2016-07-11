@@ -6,7 +6,19 @@ function ResultsController() {
     const { ids } = req.body;
 
     Result.approve(ids)
-    .then(() => res.json({ message: 'success!' }))
+    .then(() => {
+      const { id } = req.session.currentPerformance;
+
+      res.json({ message: 'success!' });
+      Result.checkAllDoneForPerformance(id)
+      .then(done => {
+        if (done) {
+          console.log('Switching spots for performance id', id);
+          Result.switchSpotsForPerformance(id);
+        }
+      })
+      .catch(err => console.error(err));
+    })
     .catch((err) => {
       console.error(err);
       res.json({ err });

@@ -31,9 +31,30 @@ RETURNS void AS $$
 DECLARE performanceId int;
 BEGIN
   SELECT id INTO performanceId FROM performances WHERE now() < closeAt ORDER BY openAt ASC LIMIT 1;
-
   UPDATE performances SET current = FALSE WHERE id <> performanceId;
   UPDATE performances SET current = TRUE WHERE id = performanceId;
+END;
+$$ LANGUAGE plpgsql;
+
+DROP FUNCTION IF EXISTS switch_spots_based_on_results_one_user(resultIds int[]);
+CREATE OR REPLACE FUNCTION switch_spots_based_on_results_one_user(resultIds int[])
+RETURNS VOID AS $$
+DECLARE userOne varchar(256); userTwo varchar(256); spotOne char(3); winnerSpot char(3); rId int;
+BEGIN
+  FOREACH rId IN ARRAY resultIds
+  LOOP
+    SELECT firstNameNumber, spotId
+    INTO userOne, winnerSpot
+    FROM results
+    WHERE results.id = rId;
+
+    SELECT namenumber INTO userTwo FROM users WHERE spotId = winnerSpot;
+    SELECT spotId INTO spotOne FROM users WHERE namenumber = userOne;
+    UPDATE users SET spotId = winnerSpot WHERE namenumber = userOne;
+    UPDATE users SET spotId = spotOne WHERE namenumber = userTwo;
+  END LOOP;
+END;
+$$ LANGUAGE plpgsql;
 
 /*
   This function assumes that the array of resultIds has been sorted in a special order
@@ -46,23 +67,22 @@ DROP FUNCTION IF EXISTS switch_spots_based_on_results(resultIds int[]);
 CREATE OR REPLACE FUNCTION switch_spots_based_on_results(resultIds int[])
 RETURNS VOID AS $$
 DECLARE userOne varchar(256); userTwo varchar(256); winner varchar(256); spotOne char(3); spotTwo char(3);
-winnerSpot char(3); id int; userOneAlternate boolean; userTwoAlternate boolean; spotOpen boolean;
+winnerSpot char(3); rId int; userOneAlternate boolean; userTwoAlternate boolean;
 BEGIN
 
-  FOREACH id IN ARRAY resultIds
+  FOREACH rId IN ARRAY resultIds
   LOOP
     SELECT firstNameNumber, secondNameNumber, winnerId, spotId
     INTO userOne, userTwo, winner, winnerSpot
     FROM results
-    WHERE result.id = id;
+    WHERE results.id = rId;
 
     SELECT spotId, alternate INTO spotOne, userOneAlternate FROM users WHERE nameNumber = userOne;
     SELECT spotId, alternate INTO spotTwo, userTwoAlternate FROM users WHERE nameNumber = userTwo;
-    SELECT open INTO spotOpen FROM spots WHERE id = spotId;
 
     -- If it's an alternate vs regular for a non open spot, easy peasy :D
-    IF (userOneAlternate AND NOT userTwoAlternate AND NOT spotOpen) OR
-       (NOT userOneAlternate AND userTwoAlternate AND NOT spotOpen)
+    IF (userOneAlternate AND NOT userTwoAlternate) OR
+       (NOT userOneAlternate AND userTwoAlternate)
     THEN
       -- If the userOne won, but wasn't already in the spot won
       IF userOne = winner AND spotOne <> winnerSpot THEN
