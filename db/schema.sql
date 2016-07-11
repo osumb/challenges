@@ -31,9 +31,99 @@ RETURNS void AS $$
 DECLARE performanceId int;
 BEGIN
   SELECT id INTO performanceId FROM performances WHERE now() < closeAt ORDER BY openAt ASC LIMIT 1;
-
   UPDATE performances SET current = FALSE WHERE id <> performanceId;
   UPDATE performances SET current = TRUE WHERE id = performanceId;
+END;
+$$ LANGUAGE plpgsql;
+
+DROP FUNCTION IF EXISTS switch_spots_based_on_results_one_user(resultIds int[]);
+CREATE OR REPLACE FUNCTION switch_spots_based_on_results_one_user(resultIds int[])
+RETURNS VOID AS $$
+DECLARE userOne varchar(256); userTwo varchar(256); spotOne char(3); winnerSpot char(3); rId int;
+BEGIN
+  FOREACH rId IN ARRAY resultIds
+  LOOP
+    SELECT firstNameNumber, spotId
+    INTO userOne, winnerSpot
+    FROM results
+    WHERE results.id = rId;
+
+    SELECT namenumber INTO userTwo FROM users WHERE spotId = winnerSpot;
+    SELECT spotId INTO spotOne FROM users WHERE namenumber = userOne;
+    UPDATE users SET spotId = winnerSpot WHERE namenumber = userOne;
+    UPDATE users SET spotId = spotOne WHERE namenumber = userTwo;
+  END LOOP;
+END;
+$$ LANGUAGE plpgsql;
+
+/*
+  This function assumes that the array of resultIds has been sorted in a special order
+    - Regular vs Alternate
+    - Alternate vs Alternate
+    - Regular vs Regular
+  We're not going to worry about results where only one person is involved
+*/
+DROP FUNCTION IF EXISTS switch_spots_based_on_results(resultIds int[]);
+CREATE OR REPLACE FUNCTION switch_spots_based_on_results(resultIds int[])
+RETURNS VOID AS $$
+DECLARE userOne varchar(256); userTwo varchar(256); winner varchar(256); spotOne char(3); spotTwo char(3);
+winnerSpot char(3); rId int; userOneAlternate boolean; userTwoAlternate boolean;
+BEGIN
+
+  FOREACH rId IN ARRAY resultIds
+  LOOP
+    SELECT firstNameNumber, secondNameNumber, winnerId, spotId
+    INTO userOne, userTwo, winner, winnerSpot
+    FROM results
+    WHERE results.id = rId;
+
+    SELECT spotId, alternate INTO spotOne, userOneAlternate FROM users WHERE nameNumber = userOne;
+    SELECT spotId, alternate INTO spotTwo, userTwoAlternate FROM users WHERE nameNumber = userTwo;
+
+    -- If it's an alternate vs regular for a non open spot, easy peasy :D
+    IF (userOneAlternate AND NOT userTwoAlternate) OR
+       (NOT userOneAlternate AND userTwoAlternate)
+    THEN
+      -- If the userOne won, but wasn't already in the spot won
+      IF userOne = winner AND spotOne <> winnerSpot THEN
+        UPDATE users SET spotId = winnerSpot WHERE nameNumber = userOne;
+        UPDATE users SET spotId = spotOne WHERE nameNumber = userTwo;
+      ELSIF winner = userTwo AND spotTwo <> winnerSpot THEN
+        UPDATE users SET spotId = winnerSpot WHERE nameNumber = userTwo;
+        UPDATE users SET spotId = spotTwo WHERE nameNumber = userOne;
+      END IF;
+    END IF;
+
+    -- If two alternates were involved in the challenge
+    IF (userOneAlternate AND userTwoAlternate) THEN
+      IF userOne = winner THEN
+        -- The person who originally had the open spot gets the loser's spot
+        UPDATE users SET spotId = spotTwo WHERE spotId = winnerSpot;
+        UPDATE users SET spotId = winnerSpot WHERE nameNumber = userOne;
+      ELSE
+        -- The person who originally had the open spot gets the loser's spot
+        UPDATE users SET spotId = spotOne WHERE spotId = winnerSpot;
+        UPDATE users SET spotId = winnerSpot WHERE nameNumber = userTwo;
+      END IF;
+    END IF;
+
+    -- If two regulars were involved in the challenge
+    IF (NOT userOneAlternate AND NOT userTwoAlternate) THEN
+      IF userOne = winner AND spotOne <> winnerSpot THEN
+        UPDATE users SET spotId = winnerSpot WHERE nameNumber = userOne;
+        UPDATE users SET spotId = spotOne WHERE nameNumber = userTwo;
+      ELSIF userTwo = winner AND spotTwo <> winnerSpot THEN
+        UPDATE users SET spotId = winnerSpot WHERE nameNumber = userTwo;
+        UPDATE users SET spotId = spotTwo WHERE nameNumber = userOne;
+      END IF;
+    END IF;
+
+  END LOOP;
+
+  -- Set all things back to normal
+  UPDATE spots SET challengedCount = 0, open = FALSE;
+  UPDATE users SET eligible = TRUE WHERE alternate;
+  UPDATE users SET eligible = FALSE WHERE NOT alternate;
 END;
 $$ LANGUAGE plpgsql;
 
@@ -68,19 +158,10 @@ BEGIN
   INSERT INTO challenges (userNameNumber, performanceId, spotId) VALUES (uId, pId, sId);
   UPDATE spots SET challengedCount = challengedCount + 1 WHERE id = sId;
   UPDATE users SET eligible = FALSE WHERE nameNumber = uId;
-  -- If the spot is fully challenged, we're going to add to the results table
-  -- There are two ways we could grab the other user. If they're also challenging the spot
-  -- or if the spot isn't open, we need the current user associated with the spot
-  IF (spotOpen AND cCount + 1 = 2) THEN
-    INSERT INTO results (performanceId, spotId, firstNameNumber, secondNameNumber, pending)
-    VALUES (pId, sId, (SELECT userNameNumber FROM challenges WHERE performanceId = pId AND spotId = sId), uId, TRUE);
-  ELSIF (NOT spotOpen AND cCount + 1 = 1) THEN
-    INSERT INTO results (performanceId, spotId, firstNameNumber, secondNameNumber, pending, needsApproval)
-    VALUES (pId, sId, uId, (SELECT nameNumber FROM users WHERE spotId = sId), TRUE, FALSE);
-  END IF;
-	message:= '';
 
-	RETURN message;
+  message:= '';
+
+  RETURN message;
 END;
 $$ LANGUAGE plpgsql;
 
@@ -89,13 +170,13 @@ CREATE OR REPLACE FUNCTION get_user_result_comments(idOne varchar(256), comments
 RETURNS text AS $$
 DECLARE comments text;
 BEGIN
-	IF id = idOne THEN
-		comments := commentsOne;
-	ELSE
-		comments := commentsTwo;
-	END IF;
+  IF id = idOne THEN
+    comments := commentsOne;
+  ELSE
+    comments := commentsTwo;
+  END IF;
 
-	RETURN comments;
+  RETURN comments;
 END;
 $$ LANGUAGE plpgsql;
 
@@ -103,29 +184,29 @@ CREATE OR REPLACE FUNCTION get_other_user_id(idCompare varchar(256), idOne varch
 RETURNS varchar(256) AS $$
 DECLARE id varchar(256);
 BEGIN
-	IF id = idOne THEN
-		id := idOne;
-	ELSE
-		id := idTwo;
-	END IF;
+  IF id = idOne THEN
+    id := idOne;
+  ELSE
+    id := idTwo;
+  END IF;
 
-	RETURN id;
+  RETURN id;
 END;
 $$ LANGUAGE plpgsql;
 
 CREATE OR REPLACE FUNCTION created_stamp()
 RETURNS TRIGGER AS $$
 BEGIN
-	NEW.created_at = now();
-	RETURN NEW;
+  NEW.created_at = now();
+  RETURN NEW;
 END;
 $$ LANGUAGE plpgsql;
 
 CREATE OR REPLACE FUNCTION modified_stamp()
 RETURNS TRIGGER AS $$
 BEGIN
-	NEW.modified_at = now();
-	RETURN NEW;
+  NEW.modified_at = now();
+  RETURN NEW;
 END;
 $$ LANGUAGE plpgsql;
 
@@ -178,9 +259,9 @@ CREATE TABLE users (
   instrument instrument,
   part part,
   eligible boolean NOT NULL DEFAULT FALSE,
-	squadLeader boolean NOT NULL DEFAULT FALSE,
-	admin boolean NOT NULL DEFAULT FALSE,
-	alternate boolean NOT NULL DEFAULT FALSE,
+  squadLeader boolean NOT NULL DEFAULT FALSE,
+  admin boolean NOT NULL DEFAULT FALSE,
+  alternate boolean NOT NULL DEFAULT FALSE,
   created_at timestamp NOT NULL,
   modified_at timestamp NOT NULL
 );
@@ -196,7 +277,7 @@ FOR EACH ROW EXECUTE PROCEDURE modified_stamp();
 ----------------------------------------
 CREATE TABLE performances (
   id serial PRIMARY KEY,
-	name varchar(256) NOT NULL,
+  name varchar(256) NOT NULL,
   performDate timestamp NOT NULL,
   current boolean NOT NULL DEFAULT FALSE,
   openAt timestamp NOT NULL,
@@ -235,13 +316,13 @@ FOR EACH ROW EXECUTE PROCEDURE modified_stamp();
 CREATE TABLE results (
   id serial PRIMARY KEY,
   performanceId integer references performances(id) NOT NULL,
-	spotId varchar(3) references spots(id) NOT NULL,
+  spotId varchar(3) references spots(id) NOT NULL,
   firstNameNumber varchar(256) references users(nameNumber) NOT NULL,
-	secondNameNumber varchar(256) references users(nameNumber) NOT NULL,
+  secondNameNumber varchar(256) references users(nameNumber),
   firstComments text NOT NULL DEFAULT '',
-	secondComments text NOT NULL DEFAULT '',
-	winnerId varchar(256) references users(nameNumber),
-	pending boolean NOT NULL DEFAULT false,
+  secondComments text NOT NULL DEFAULT '',
+  winnerId varchar(256) references users(nameNumber),
+  pending boolean NOT NULL DEFAULT false,
   needsApproval boolean NOT NULL DEFAULT true,
   created_at timestamp NOT NULL,
   modified_at timestamp NOT NULL
