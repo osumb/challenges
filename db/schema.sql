@@ -159,9 +159,9 @@ BEGIN
   UPDATE spots SET challengedCount = challengedCount + 1 WHERE id = sId;
   UPDATE users SET eligible = FALSE WHERE nameNumber = uId;
 
-	message:= '';
+  message:= '';
 
-	RETURN message;
+  RETURN message;
 END;
 $$ LANGUAGE plpgsql;
 
@@ -170,13 +170,13 @@ CREATE OR REPLACE FUNCTION get_user_result_comments(idOne varchar(256), comments
 RETURNS text AS $$
 DECLARE comments text;
 BEGIN
-	IF id = idOne THEN
-		comments := commentsOne;
-	ELSE
-		comments := commentsTwo;
-	END IF;
+  IF id = idOne THEN
+    comments := commentsOne;
+  ELSE
+    comments := commentsTwo;
+  END IF;
 
-	RETURN comments;
+  RETURN comments;
 END;
 $$ LANGUAGE plpgsql;
 
@@ -184,29 +184,29 @@ CREATE OR REPLACE FUNCTION get_other_user_id(idCompare varchar(256), idOne varch
 RETURNS varchar(256) AS $$
 DECLARE id varchar(256);
 BEGIN
-	IF id = idOne THEN
-		id := idOne;
-	ELSE
-		id := idTwo;
-	END IF;
+  IF id = idOne THEN
+    id := idOne;
+  ELSE
+    id := idTwo;
+  END IF;
 
-	RETURN id;
+  RETURN id;
 END;
 $$ LANGUAGE plpgsql;
 
 CREATE OR REPLACE FUNCTION created_stamp()
 RETURNS TRIGGER AS $$
 BEGIN
-	NEW.created_at = now();
-	RETURN NEW;
+  NEW.created_at = now();
+  RETURN NEW;
 END;
 $$ LANGUAGE plpgsql;
 
 CREATE OR REPLACE FUNCTION modified_stamp()
 RETURNS TRIGGER AS $$
 BEGIN
-	NEW.modified_at = now();
-	RETURN NEW;
+  NEW.modified_at = now();
+  RETURN NEW;
 END;
 $$ LANGUAGE plpgsql;
 
@@ -259,9 +259,9 @@ CREATE TABLE users (
   instrument instrument,
   part part,
   eligible boolean NOT NULL DEFAULT FALSE,
-	squadLeader boolean NOT NULL DEFAULT FALSE,
-	admin boolean NOT NULL DEFAULT FALSE,
-	alternate boolean NOT NULL DEFAULT FALSE,
+  squadLeader boolean NOT NULL DEFAULT FALSE,
+  admin boolean NOT NULL DEFAULT FALSE,
+  alternate boolean NOT NULL DEFAULT FALSE,
   created_at timestamp NOT NULL,
   modified_at timestamp NOT NULL
 );
@@ -277,7 +277,7 @@ FOR EACH ROW EXECUTE PROCEDURE modified_stamp();
 ----------------------------------------
 CREATE TABLE performances (
   id serial PRIMARY KEY,
-	name varchar(256) NOT NULL,
+  name varchar(256) NOT NULL,
   performDate timestamp NOT NULL,
   current boolean NOT NULL DEFAULT FALSE,
   openAt timestamp NOT NULL,
@@ -316,13 +316,13 @@ FOR EACH ROW EXECUTE PROCEDURE modified_stamp();
 CREATE TABLE results (
   id serial PRIMARY KEY,
   performanceId integer references performances(id) NOT NULL,
-	spotId varchar(3) references spots(id) NOT NULL,
+  spotId varchar(3) references spots(id) NOT NULL,
   firstNameNumber varchar(256) references users(nameNumber) NOT NULL,
-	secondNameNumber varchar(256) references users(nameNumber),
+  secondNameNumber varchar(256) references users(nameNumber),
   firstComments text NOT NULL DEFAULT '',
-	secondComments text NOT NULL DEFAULT '',
-	winnerId varchar(256) references users(nameNumber),
-	pending boolean NOT NULL DEFAULT false,
+  secondComments text NOT NULL DEFAULT '',
+  winnerId varchar(256) references users(nameNumber),
+  pending boolean NOT NULL DEFAULT false,
   needsApproval boolean NOT NULL DEFAULT true,
   created_at timestamp NOT NULL,
   modified_at timestamp NOT NULL
