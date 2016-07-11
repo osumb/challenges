@@ -94,7 +94,7 @@ BEGIN
       END IF;
     END IF;
 
-    -- If two regulars were involved in the challenge
+    -- If two alternates were involved in the challenge
     IF (userOneAlternate AND userTwoAlternate) THEN
       IF userOne = winner THEN
         -- The person who originally had the open spot gets the loser's spot
