@@ -9,11 +9,10 @@ function ResultsController() {
     .then(() => {
       const { id } = req.session.currentPerformance;
 
-      res.json({ message: 'success!' });
+      res.json({ success: true });
       Result.checkAllDoneForPerformance(id)
       .then(done => {
         if (done) {
-          console.log('Switching spots for performance id', id);
           Result.switchSpotsForPerformance(id);
         }
       })
@@ -21,7 +20,7 @@ function ResultsController() {
     })
     .catch((err) => {
       console.error(err);
-      res.json({ err });
+      res.json({ success: false });
     });
   };
 

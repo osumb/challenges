@@ -230,7 +230,10 @@ module.exports = class Results {
       });
     });
 
-    resultsQuery.on('error', err => console.error(err));
+    resultsQuery.on('error', err => {
+      console.error(err);
+      client.end();
+    });
   }
 
   update(attributes) {
