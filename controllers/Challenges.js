@@ -15,7 +15,7 @@ function ChallengersController() {
           nameNumber: 'tareshawty.3', // TODO: actually email the real person
           performanceName: req.session.currentPerformance.name,
           spotId
-        })
+        });
         console.log(`${req.user.name} successfully challenged for ${spotId}`); //TODO: logging
         res.render('challenges/success', { user: req.user, spotId });
       })
