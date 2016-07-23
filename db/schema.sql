@@ -144,24 +144,26 @@ $$ LANGUAGE plpgsql;
 DROP FUNCTION IF EXISTS make_challenge(uId varchar(256), pId int, sId varchar(3));
 CREATE OR REPLACE FUNCTION make_challenge(uId varchar(256), pId int, sId varchar(3))
 RETURNS text as $$
-DECLARE message TEXT; spotOpen boolean; cCount int;
+DECLARE code INT; spotOpen boolean; cCount int;
 BEGIN
+  -- If the user has already made a challenge
   IF EXISTS (SELECT * FROM challenges WHERE userNameNumber = uId AND performanceId = pId) THEN
-    message := 'Challenge already made';
-    RETURN message;
+    code := 2;
+    RETURN code;
   END IF;
   SELECT spots.open, spots.challengedCount INTO spotOpen, cCount FROM spots WHERE id = sId;
+  -- If the spot has been fully challenged
   IF ((spotOpen AND cCount >= 2) OR (NOT spotOpen AND cCount >= 1)) THEN
-    message := 'Spot already challenged';
-    RETURN message;
+    code := 1;
+    RETURN code;
   END IF;
   INSERT INTO challenges (userNameNumber, performanceId, spotId) VALUES (uId, pId, sId);
   UPDATE spots SET challengedCount = challengedCount + 1 WHERE id = sId;
   UPDATE users SET eligible = FALSE WHERE nameNumber = uId;
 
-  message:= '';
+  code:= 0;
 
-  RETURN message;
+  RETURN code;
 END;
 $$ LANGUAGE plpgsql;
 
