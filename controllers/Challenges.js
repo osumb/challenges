@@ -16,7 +16,6 @@ function ChallengersController() {
           performanceName: req.session.currentPerformance.name,
           spotId
         })
-        .then(console.log);
         console.log(`${req.user.name} successfully challenged for ${spotId}`); //TODO: logging
         res.render('challenges/success', { user: req.user, spotId });
       })

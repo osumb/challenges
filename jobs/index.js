@@ -22,9 +22,6 @@ const sendChallengeListEmail = (performanceId) => {
   getChallengeCSV(performanceId)
   .then(csv => {
     sendChallengeList('atareshawty@gmail.com', csv)
-    .then(res => {
-      console.log(res);
-    })
     .catch(err => console.error(err));
   })
   .catch(err => console.error(err));
