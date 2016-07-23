@@ -15,10 +15,10 @@ $('.newPerformanceSubmit').on('click', () => {
       credentials: 'same-origin',
       method: 'post',
       body: JSON.stringify({
+        closeAt: new Date(inputs.closeAt.val()).toISOString(),
         performanceName: inputs.performanceName.val(),
         performanceDate: inputs.performanceDate.val(),
-        openAt: inputs.openAt.val(),
-        closeAt: inputs.closeAt.val()
+        openAt: new Date(inputs.openAt.val()).toISOString()
       })
     })
     .then(() => {

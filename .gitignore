@@ -41,3 +41,6 @@ spec/fixtures/~$*.xlsx
 
 # Output scss
 dist
+
+# Email Attachments
+jobs/*.csv

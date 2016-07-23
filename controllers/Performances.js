@@ -1,14 +1,21 @@
 const models = require('../models');
+const schedule = require('node-schedule');
+const { sendChallengeListEmail } = require('../jobs');
+
 const Performance = new models.Performance();
 
 function PerformanceController() {
+  // This assumes `openAt` and `closeAt` are already coming in ISO 8601 format as UTC time
   this.create = (req, res) => {
-    const { performanceName, performanceDate, openAt, closeAt } = req.body;
+    const { closeAt, performanceName, performanceDate, openAt } = req.body;
 
     Performance.create(performanceName, performanceDate, openAt, closeAt)
-    .then(() => {
-      // We'll eventually use { id } in this function to create the cron job
-      // TODO: create cron job
+    .then(({ id, utcCloseAt }) => {
+      const performanceWindowClose = new Date(utcCloseAt), minutesMultiplier = 60000;
+
+      schedule.scheduleJob(new Date(performanceWindowClose.getTime() + 5 * minutesMultiplier), () => {
+        sendChallengeListEmail(id);
+      });
       Performance.flagCurrent();
       res.json({ success: true });
     })
