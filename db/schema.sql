@@ -30,7 +30,7 @@ CREATE OR REPLACE FUNCTION flag_current_performance()
 RETURNS void AS $$
 DECLARE performanceId int;
 BEGIN
-  SELECT id INTO performanceId FROM performances WHERE now() < closeAt ORDER BY openAt ASC LIMIT 1;
+  SELECT id INTO performanceId FROM performances WHERE now() at time zone 'utc' < closeAt ORDER BY openAt ASC LIMIT 1;
   UPDATE performances SET current = FALSE WHERE id <> performanceId;
   UPDATE performances SET current = TRUE WHERE id = performanceId;
 END;

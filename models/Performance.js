@@ -21,27 +21,35 @@ module.exports = class Performance {
   create(name, performDate, openAt, closeAt) {
     return new Promise((resolve, reject) => {
       const client = utils.db.createClient();
-      const queryString = 'INSERT INTO performances (name, performDate, openAt, closeAt) VALUES ($1, $2, $3, $4) RETURNING id';
+      const queryString = 'INSERT INTO performances (name, performDate, openAt, closeAt) VALUES ($1, $2, $3, $4) RETURNING id, closeAt';
       let perfId;
 
-      client.connect();
-      client.on('error', err => reject(err));
+      if (
+        Number.isNaN(Date.parse(openAt)) ||
+        Number.isNaN(Date.parse(closeAt)) ||
+        Number.isNaN(Date.parse(performDate))
+      ) {
+        reject();
+      } else {
+        client.connect();
+        client.on('error', err => reject(err));
 
-      const query = client.query(queryString, [name, performDate, openAt, closeAt]);
+        const query = client.query(queryString, [name, performDate, openAt, closeAt]);
 
-      query.on('row', (id) => {
-        perfId = id;
-      });
+        query.on('row', ({ id }) => {
+          perfId = id;
+        });
 
-      query.on('end', () => {
-        client.end();
-        resolve(perfId);
-      });
+        query.on('end', () => {
+          client.end();
+          resolve({ id: perfId, utcCloseAt: closeAt });
+        });
 
-      query.on('error', (err) => {
-        client.end();
-        reject(err);
-      });
+        query.on('error', (err) => {
+          client.end();
+          reject(err);
+        });
+      }
     });
   }
 
@@ -115,7 +123,7 @@ module.exports = class Performance {
     return new Promise((resolve, reject) => {
       const client = utils.db.createClient();
       const queryString = 'SELECT * FROM performances WHERE openAt < $1 AND $2 < closeAt ORDER BY openAt desc LIMIT 1';
-      const now = new Date().toJSON();
+      const now = moment.utc(new Date().toJSON());
 
       client.connect();
       client.on('error', (err) => reject(err));
@@ -142,18 +150,18 @@ module.exports = class Performance {
       return null;
     }
     formatString = formatString || 'MMMM Do, h:mm:ss a'; // eslint-disable-line no-param-reassign
-    const now = new Date().toJSON();
+    const now = moment.utc(new Date().toJSON());
     const windowOpen =
       moment(performance.openat).isBefore(moment(now)) &&
       moment(now).isBefore(moment(performance.closeat));
 
     return {
-      closeAt: moment(performance.closeat).format(formatString),
+      closeAt: moment.utc(performance.closeat).local().format(formatString),
       current: performance.current,
       date: performance.performdate,
       id: performance.id,
       name: performance.name,
-      openAt: moment(performance.openat).format(formatString),
+      openAt: moment.utc(performance.openat).local().format(formatString),
       windowOpen
     };
   }
