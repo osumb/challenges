@@ -1,0 +1,16 @@
+<h2>People you can challenge</h2>
+<select class="ChallengeSelect form-control">
+  {{#each this.challengeableUsers}}
+        {{#if this.spotOpen}}
+          <option value="{{this.spotId}} open">
+            {{this.spotId}} (open)
+          </option>
+        {{else}}
+          <option value="{{this.spotId}} {{this.name}}">
+            {{this.spotId}}: {{this.name}}
+          </option>
+        {{/if}}
+  {{/each}}
+  <input type="submit" class="ChallengeSelect-submit btn btn-default" value="Challenge"/>
+</select>
+<script src="/public/js/challenges/challenge-select.js"></script>
