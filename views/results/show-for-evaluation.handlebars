@@ -1,15 +1,28 @@
 {{#if results}}
   {{#each results}}
-    <form action="/performances/:performanceId/results/{{this.resultId}}" method="post">
-      <p>{{this.spotId}}<input name="spotId" type="hidden" value={{this.spotId}} /></p>
-      <p><span>{{this.firstName}} </span><input type="radio" name="winner" value={{this.firstNameNumber}} checked/></p>
-      <p><span>{{this.secondName}} </span></span><input type="radio" name="winner" value={{this.secondNameNumber}} /></p>
-      <textarea name="firstComments"></textarea>
-      <textarea name="secondComments"></textarea>
-      <input type="submit" value="Submit" />
-    </form>
-    <hr />
+    <div class="ResultsEvaluation {{this.resultId}}">
+      <p class="ResultsEvaluation-spot {{this.spotId}}">
+        {{this.spotId}}
+      </p>
+      <p class="ResultsEvaluation-firstNameNumber {{this.resultId}}">
+        <span>{{this.firstName}} </span><input type="radio" name={{this.resultId}} value={{this.firstNameNumber}} checked/>
+      </p>
+      {{#if this.secondNameNumber}}
+        <p class="ResultsEvaluation-secondNameNumber {{this.resultId}}">
+          <span>{{this.secondName}} </span></span><input type="radio" name={{this.resultId}} value={{this.secondNameNumber}} />
+        </p>
+      {{/if}}
+      <textarea class="ResultsEvaluation-firstComments {{this.resultId}}"></textarea>
+      <textarea class="ResultsEvaluation-secondComments {{this.resultId}}"></textarea>
+      <input
+        class="ResultsEvaluation-submit {{this.spotId}} {{this.resultId}}"
+        type="submit"
+        value="Submit"
+        />
+      <hr />
+    </div>
   {{/each}}
 {{else}}
   <h2>There are no challenges for you to evaluate</h2>
 {{/if}}
+<script src="/public/js/results/evaluation.js"></script>
