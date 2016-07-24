@@ -53,7 +53,7 @@ router.setup = (app) => {
   app.post('/spots/open', ensureAdmin, Spots.open);
 
   //Users Controller
-  app.get('/:nameNumber', ensureAuthAndNameNumberRoute, Users.show);
+  app.get('/:nameNumber', [ensureAuthAndNameNumberRoute, currentPerformance], Users.show);
   app.get('/users/manage', ensureAdmin, Users.showManage);
   app.get('/users/search', ensureAdmin, Users.search);
   app.post('/users/makeineligible', ensureAdmin, Users.makeIneligible);

@@ -3,7 +3,6 @@ const moment = require('moment');
 const Models = require('../models');
 const Performance = new Models.Performance();
 
-
 function currentPerformanceWithinTimeFrame(performance) {
   const now = new Date().toJSON();
 
@@ -11,10 +10,13 @@ function currentPerformanceWithinTimeFrame(performance) {
 }
 
 const currentPerformance = (req, res, next) => {
-
   Performance.findCurrent()
   .then((performance) => {
-    req.session.currentPerformance = performance;
+    const now = moment(), { openat, closeat } = performance;
+
+    if (moment(openat).isBefore(now) && now.isBefore(moment(closeat))) {
+      req.session.currentPerformance = performance;
+    }
     next();
   })
   .catch((err) => {
