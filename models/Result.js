@@ -89,6 +89,17 @@ module.exports = class Results {
     });
   }
 
+  createWithClient(attributes, client) {
+    const { sql, values } = db.queryBuilder(Results, attributes);
+
+    return new Promise((resolve, reject) => {
+      const query = client.query(sql, values);
+
+      query.on('end', resolve);
+      query.on('error', reject);
+    });
+  }
+
   findAllForApproval() {
     const client = db.createClient();
     const sql = queries.resultsForApproval;
