@@ -1,4 +1,5 @@
 const Models = require('../models');
+const { logger } = require('../utils');
 const Challenge = new Models.Challenge();
 const Result = new Models.Result();
 const User = new Models.User();
@@ -8,7 +9,7 @@ function UsersController() {
     User.forfeitSpot(req.body.nameNumber)
     .then(() => res.json({ success: true }))
     .catch((err) => {
-      console.error(err);
+      logger.errorLog({ level: 2, message: `Users.forfeitSpot ${err}` });
       res.json({ success: false });
     });
   };
@@ -17,7 +18,7 @@ function UsersController() {
     User.makeIneligible(req.body.nameNumber)
     .then(() => res.json({ success: true }))
     .catch((err) => {
-      console.error(err);
+      logger.errorLog({ level: 2, message: `Users.makeIneligible ${err}` });
       res.json({ success: false });
     });
   };
@@ -43,7 +44,10 @@ function UsersController() {
             currentPerformance: req.session.currentPerformance
           });
         })
-        .catch(() => res.render('static-pages/error'));
+        .catch((err) => {
+          logger.errorLog({ level: 2, message: `Users.show ${err}` });
+          res.render('static-pages/error');
+        });
     }
   };
 

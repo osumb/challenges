@@ -1,6 +1,7 @@
 const moment = require('moment');
 
 const utils = require('../utils');
+const { logger } = require('../utils');
 
 const attributes = ['id', 'name', 'openAt', 'closeAt'];
 
@@ -58,14 +59,16 @@ module.exports = class Performance {
     const sql = 'SELECT flag_current_performance()';
 
     client.connect();
-    client.on('error', err => console.error('Error from models/Performance.flagCurrent', err));
+    client.on('error', (err) => {
+      logger.errorLog({ level: 3, message: `Performance.flagCurrent ${err}` });
+    });
 
     const query = client.query(sql);
 
     query.on('end', () => client.end());
     query.on('error', err => {
       client.end();
-      console.error('Error from models/Performance.flagCurrent', err);
+      logger.errorLog({ level: 3, message: `Performance.flagCurrent ${err}` });
     });
   }
 

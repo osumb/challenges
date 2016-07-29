@@ -1,4 +1,5 @@
 const Models = require('../models');
+const { logger } = require('../utils');
 const Spot = new Models.Spot();
 
 function SpotsController() {
@@ -6,7 +7,7 @@ function SpotsController() {
     Spot.open(req.body.spotId)
     .then(() => res.json({ success: true }))
     .catch((err) => {
-      console.error(err);
+      logger.errorLog({ level: 2, message: `Spots.open ${err}` });
       res.json({ success: false });
     });
   };

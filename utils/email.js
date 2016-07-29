@@ -4,25 +4,6 @@ const helper = sendGrid.mail;
 const sg = sendGrid.SendGrid(process.env.SENDGRID_API_KEY);
 const fromMail = new helper.Email('osumbit@gmail.com');
 
-const sendChallengeSuccessEmail = (options) => {
-  const { nameNumber, spotId, performanceName } = options;
-  const to = new helper.Email(`${nameNumber}@osu.edu`);
-  const subject = `Challenges for ${performanceName}`;
-  const content = new helper.Content('text/plain', `You're challenging the ${spotId} spot for the ${performanceName}`);
-  const requestBody = new helper.Mail(fromMail, subject, to, content).toJSON();
-
-  const request = sg.emptyRequest();
-
-  request.method = 'POST';
-  request.path = '/v3/mail/send';
-  request.body = requestBody;
-  return new Promise((resolve) => {
-    sg.API(request, (response) => {
-      resolve(response);
-    });
-  });
-};
-
 const sendChallengeList = (recipient, fileData) => {
   const request = sg.emptyRequest();
 
@@ -75,13 +56,45 @@ const sendChallengeList = (recipient, fileData) => {
   request.path = '/v3/mail/send';
 
   return new Promise(resolve => {
-    sg.API(request, response => {
-      resolve(response);
-    });
+    sg.API(request, resolve);
+  });
+};
+
+const sendChallengeSuccessEmail = (options) => {
+  const { nameNumber, spotId, performanceName } = options;
+  const to = new helper.Email(`${nameNumber}@osu.edu`);
+  const subject = `Challenges for ${performanceName}`;
+  const content = new helper.Content('text/plain', `You're challenging the ${spotId} spot for the ${performanceName}`);
+  const requestBody = new helper.Mail(fromMail, subject, to, content).toJSON();
+
+  const request = sg.emptyRequest();
+
+  request.method = 'POST';
+  request.path = '/v3/mail/send';
+  request.body = requestBody;
+  return new Promise((resolve) => {
+    sg.API(request, resolve);
+  });
+};
+
+const sendErrorEmail = (errMessage) => {
+  const to = new helper.Email('atareshawty@gmail.com');
+  const subject = 'Error From Challenge App';
+  const content = new helper.Content('text/plain', `${errMessage}`);
+  const requestBody = new helper.Mail(fromMail, subject, to, content).toJSON();
+
+  const request = sg.emptyRequest();
+
+  request.method = 'POST';
+  request.path = '/v3/mail/send';
+  request.body = requestBody;
+  sg.API(request, (response) => {
+    console.log('ERROR_EMAIL:', response);
   });
 };
 
 module.exports = {
   sendChallengeList,
-  sendChallengeSuccessEmail
+  sendChallengeSuccessEmail,
+  sendErrorEmail
 };
