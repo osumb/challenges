@@ -22,7 +22,7 @@ function PerformanceController() {
       res.json({ success: true });
     })
     .catch(err => {
-      logger.errorLog({ level: 2, message: `Performances.new ${err}` });
+      logger.errorLog(`Performances.new ${err}`);
       res.render('static-pages/error', { user: req.user });
     });
   };
@@ -35,7 +35,7 @@ function PerformanceController() {
     Performance.findAll('MMMM Do, h:mm:ss a')
       .then((performances) => res.json(performances))
       .catch((err) => {
-        logger.errorLog({ level: 2, message: `Performances.showAll ${err}` });
+        logger.errorLog(`Performances.showAll ${err}`);
         res.render('static-pages/error');
       });
   };

@@ -1,7 +1,7 @@
 const models = require('../models');
 const Challenge = new models.Challenge();
 const Result = new models.Result();
-const { db } = require('../utils');
+const { db, logger } = require('../utils');
 
 const client = db.createClient();
 let PERFORMANCEID;
@@ -51,11 +51,11 @@ const createEmptyResults = (performanceId) => {
   .then(insertChallengesAsResults)
   .then(() => {
     client.end();
-    console.log('Done');
+    logger.jobsLog('Create Empty Results Success');
   })
   .catch((err) => {
     client.end();
-    console.error(err);
+    logger.errorLog(`Create Empty Results ${err}`);
   });
 };
 

@@ -21,11 +21,12 @@ const sendChallengeListEmail = (performanceId) => {
   .then(csv => {
     sendChallengeList('atareshawty@gmail.com', csv) // TODO: Actually email to band office
     .catch((err) => {
-      logger.errorLog({ level: 3, message: `Jobs.sendChallengeListEmail ${err}` });
+      logger.errorLog(`Jobs.sendChallengeListEmail ${err}`);
     });
+    logger.jobsLog('Send Challenge List Email success');
   })
   .catch((err) => {
-    logger.errorLog({ level: 3, message: `Jobs.sendChallengeListEmail ${err}` });
+    logger.errorLog(`Jobs.sendChallengeListEmail ${err}`);
   });
 };
 

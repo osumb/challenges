@@ -18,11 +18,11 @@ function ResultsController() {
         }
       })
       .catch((err) => {
-        logger.errorLog({ level: 2, message: `Results.approve: Result.checkAllDoneForPerformance ${err}` });
+        logger.errorLog(`Results.approve: Result.checkAllDoneForPerformance ${err}`);
       });
     })
     .catch((err) => {
-      logger.errorLog({ level: 2, message: `Results.approve: Result.approve ${err}` });
+      logger.errorLog(`Results.approve: Result.approve ${err}`);
       res.json({ success: false });
     });
   };
@@ -33,7 +33,7 @@ function ResultsController() {
       res.render('results/approve', { user: req.user, currentPerformance: req.session.currentPerformance, results });
     })
     .catch((err) => {
-      logger.errorLog({ level: 2, message: `Results.getForApproval ${err}` });
+      logger.errorLog(`Results.getForApproval ${err}`);
       res.render('static-pages/error');
     });
   };
@@ -51,7 +51,7 @@ function ResultsController() {
       res.redirect('results/show-for-evaluation')
     )
     .catch((err) => {
-      logger.errorLog({ level: 2, message: `Results.evaluate ${err}` });
+      logger.errorLog(`Results.evaluate ${err}`);
       res.render('static-pages/error');
     });
   };
@@ -66,7 +66,7 @@ function ResultsController() {
         res.render('results/show-for-evaluation', { user: req.user, results });
       })
       .catch((err) => {
-        logger.errorLog({ level: 2, message: `Results.showForEvaluation ${err}` });
+        logger.errorLog(`Results.showForEvaluation ${err}`);
         res.render('static-pages/error');
       });
   };
@@ -75,7 +75,7 @@ function ResultsController() {
     Result.findAllForPerformance(req.params.performanceId)
     .then(results => res.render('results/show', { user: req.user, results }))
     .catch(err => {
-      logger.errorLog({ level: 2, message: `Results.showAll ${err}` });
+      logger.errorLog(`Results.showAll ${err}`);
       res.render('static-pages/error', { user: req.user });
     });
   };

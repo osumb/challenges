@@ -60,7 +60,7 @@ module.exports = class Performance {
 
     client.connect();
     client.on('error', (err) => {
-      logger.errorLog({ level: 3, message: `Performance.flagCurrent ${err}` });
+      logger.errorLog(`Performance.flagCurrent ${err}`);
     });
 
     const query = client.query(sql);
@@ -68,7 +68,7 @@ module.exports = class Performance {
     query.on('end', () => client.end());
     query.on('error', err => {
       client.end();
-      logger.errorLog({ level: 3, message: `Performance.flagCurrent ${err}` });
+      logger.errorLog(`Performance.flagCurrent ${err}`);
     });
   }
 

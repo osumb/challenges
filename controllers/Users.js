@@ -9,7 +9,7 @@ function UsersController() {
     User.forfeitSpot(req.body.nameNumber)
     .then(() => res.json({ success: true }))
     .catch((err) => {
-      logger.errorLog({ level: 2, message: `Users.forfeitSpot ${err}` });
+      logger.errorLog(`Users.forfeitSpot ${err}`);
       res.json({ success: false });
     });
   };
@@ -18,7 +18,7 @@ function UsersController() {
     User.makeIneligible(req.body.nameNumber)
     .then(() => res.json({ success: true }))
     .catch((err) => {
-      logger.errorLog({ level: 2, message: `Users.makeIneligible ${err}` });
+      logger.errorLog(`Users.makeIneligible ${err}`);
       res.json({ success: false });
     });
   };
@@ -45,7 +45,7 @@ function UsersController() {
           });
         })
         .catch((err) => {
-          logger.errorLog({ level: 2, message: `Users.show ${err}` });
+          logger.errorLog(`Users.show ${err}`);
           res.render('static-pages/error');
         });
     }
