@@ -1,4 +1,5 @@
 const email = require('../utils').email;
+const { logger } = require('../utils');
 const models = require('../models');
 const Challenge = new models.Challenge();
 
@@ -8,6 +9,7 @@ function ChallengersController() {
       spotId = req.body['challenge-form'],
       performanceId = req.params.performanceId;
 
+    logger.challengesLog(`${req.user.name} sent request to challenge ${spotId}`);
     Challenge.create(userId, spotId, performanceId)
       .then(() => {
         req.user.eligible = false;
@@ -16,11 +18,11 @@ function ChallengersController() {
           performanceName: req.session.currentPerformance.name,
           spotId
         });
-        console.log(`${req.user.name} successfully challenged for ${spotId}`); //TODO: logging
+        logger.challengesLog(`${req.user.name} successfully challenged for ${spotId}`);
         res.render('challenges/success', { user: req.user, spotId });
       })
       .catch((err) => {
-        console.error(err);
+        logger.errorLog({ level: 3, message: `Challenges.create ${err}` });
         res.render('challenges/failure', { user: req.user });
       });
   };
@@ -34,7 +36,10 @@ function ChallengersController() {
         nextPerformance: req.session.currentPerformance
       })
     )
-    .catch(() => res.render('static-pages/error'));
+    .catch((err) => {
+      logger.errorLog({ level: 1, message: `Challenges.new ${err}` });
+      res.render('static-pages/error');
+    });
   };
 }
 

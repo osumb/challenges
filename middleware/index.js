@@ -2,6 +2,7 @@ const moment = require('moment');
 
 const Models = require('../models');
 const Performance = new Models.Performance();
+const { logger } = require('../utils');
 
 function currentPerformanceWithinTimeFrame(performance) {
   const now = new Date().toJSON();
@@ -20,7 +21,7 @@ const currentPerformance = (req, res, next) => {
     next();
   })
   .catch((err) => {
-    console.error('Current Performance Middleware', err);
+    logger.errorLog({ level: 3, message: `Middleware.currentPerformance ${err}` });
     next();
   });
 };
@@ -38,7 +39,7 @@ const refreshCurrentPerformance = (req, res, next) => {
       next();
     })
     .catch((err) => {
-      console.error('Refresh Current Performance Error', err);
+      logger.errorLog({ level: 3, message: `Middleware.refreshCurrentPerformance ${err}` });
     });
   } else {
     return next();

@@ -1,6 +1,7 @@
 const models = require('../models');
 const Challenge = new models.Challenge();
 const { sendChallengeList } = require('../utils').email;
+const { logger } = require('../utils');
 
 const toCSV = (challenges) =>
   challenges.map(({ challengee, challenger, challengeespot, challengerspot, spotopen }) =>
@@ -19,9 +20,13 @@ const sendChallengeListEmail = (performanceId) => {
   getChallengeCSV(performanceId)
   .then(csv => {
     sendChallengeList('atareshawty@gmail.com', csv) // TODO: Actually email to band office
-    .catch(err => console.error(err));
+    .catch((err) => {
+      logger.errorLog({ level: 3, message: `Jobs.sendChallengeListEmail ${err}` });
+    });
   })
-  .catch(err => console.error(err));
+  .catch((err) => {
+    logger.errorLog({ level: 3, message: `Jobs.sendChallengeListEmail ${err}` });
+  });
 };
 
 module.exports = {

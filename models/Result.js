@@ -1,5 +1,5 @@
 const queries = require('../db/queries');
-const { db } = require('../utils');
+const { db, logger } = require('../utils');
 
 const modelAttributes = ['id', 'performanceId', 'spotId', 'firstNameNumber', 'secondNameNumber', 'firstComments', 'secondComments', 'winnerId', 'pending', 'needsApproval'];
 const alternateVersusRegular = result =>
@@ -58,7 +58,7 @@ module.exports = class Results {
         resolve();
       });
       query.on('error', (err) => {
-        console.error(err);
+        reject(err);
         client.end();
       });
     });
@@ -198,7 +198,9 @@ module.exports = class Results {
     const onePersonResultIds = [];
 
     client.connect();
-    client.on('error', err => console.error(err));
+    client.on('error', (err) => {
+      logger.errorLog({ level: 3, message: `Results.switchSpotsForPerformance ${err}` });
+    });
 
     const resultsQuery = client.query(resultsSql, [id]);
 
@@ -220,18 +222,18 @@ module.exports = class Results {
         oneUserQuery.on('end', () => client.end());
         oneUserQuery.on('error', err => {
           client.end();
-          console.error(err);
+          logger.errorLog({ level: 3, message: `Results.switchSpotsForPerformance: oneUserQuery ${err}` });
         });
       });
 
       switchQuery.on('error', err => {
         client.end();
-        console.error(err);
+        logger.errorLog({ level: 3, message: `Results.switchSpotsForPerformance: switchQuery ${err}` });
       });
     });
 
     resultsQuery.on('error', err => {
-      console.error(err);
+      logger.errorLog({ level: 3, message: `Results.switchSpotsForPerformance: ${err}` });
       client.end();
     });
   }

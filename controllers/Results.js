@@ -1,4 +1,5 @@
 const models = require('../models');
+const { logger } = require('../utils');
 const Result = new models.Result();
 
 function ResultsController() {
@@ -16,10 +17,12 @@ function ResultsController() {
           Result.switchSpotsForPerformance(id);
         }
       })
-      .catch(err => console.error(err));
+      .catch((err) => {
+        logger.errorLog({ level: 2, message: `Results.approve: Result.checkAllDoneForPerformance ${err}` });
+      });
     })
     .catch((err) => {
-      console.error(err);
+      logger.errorLog({ level: 2, message: `Results.approve: Result.approve ${err}` });
       res.json({ success: false });
     });
   };
@@ -30,7 +33,7 @@ function ResultsController() {
       res.render('results/approve', { user: req.user, currentPerformance: req.session.currentPerformance, results });
     })
     .catch((err) => {
-      console.error(err);
+      logger.errorLog({ level: 2, message: `Results.getForApproval ${err}` });
       res.render('static-pages/error');
     });
   };
@@ -48,7 +51,7 @@ function ResultsController() {
       res.redirect('results/show-for-evaluation')
     )
     .catch((err) => {
-      console.error(err);
+      logger.errorLog({ level: 2, message: `Results.evaluate ${err}` });
       res.render('static-pages/error');
     });
   };
@@ -63,7 +66,7 @@ function ResultsController() {
         res.render('results/show-for-evaluation', { user: req.user, results });
       })
       .catch((err) => {
-        console.error(err);
+        logger.errorLog({ level: 2, message: `Results.showForEvaluation ${err}` });
         res.render('static-pages/error');
       });
   };
@@ -72,7 +75,7 @@ function ResultsController() {
     Result.findAllForPerformance(req.params.performanceId)
     .then(results => res.render('results/show', { user: req.user, results }))
     .catch(err => {
-      console.error(err);
+      logger.errorLog({ level: 2, message: `Results.showAll ${err}` });
       res.render('static-pages/error', { user: req.user });
     });
   };

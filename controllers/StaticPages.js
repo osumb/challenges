@@ -1,4 +1,5 @@
 const models = require('../models');
+const { logger } = require('../utils');
 const Performance = new models.Performance();
 
 function StaticPagesController() {
@@ -9,7 +10,7 @@ function StaticPagesController() {
           performance: Performance.format(performance, 'MMMM Do, h:mm:ss a')
         }))
       .catch((err) => {
-        console.error(err);
+        logger.errorLog({ level: 2, message: `StaticPages.home ${err}` });
         res.render('static-pages/error');
       });
   };
