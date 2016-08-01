@@ -4,11 +4,11 @@ const challengesLog = (message) => {
   console.log(`CHALLENGES_LOG: ${message}`);
 };
 
-const errorLog = ({ level, message }) => {
-  if (level > 3) {
+const errorLog = (message) => {
+  if (process.env.NODE_ENV !== 'dev') {
     email.sendErrorEmail(message);
   }
-  console.error(`ERROR_LOG: LEVEL: ${level}, msg: ${message}`);
+  console.error(`ERROR_LOG: ${message}`);
 };
 
 const jobsLog = (message) => {

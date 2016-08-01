@@ -1,7 +1,7 @@
 const models = require('../models');
 const schedule = require('node-schedule');
-const { sendChallengeListEmail } = require('../jobs');
 const { logger } = require('../utils');
+const { sendChallengeListEmail, createEmptyResults } = require('../jobs');
 
 const Performance = new models.Performance();
 
@@ -16,12 +16,13 @@ function PerformanceController() {
 
       schedule.scheduleJob(new Date(performanceWindowClose.getTime() + 5 * minutesMultiplier), () => {
         sendChallengeListEmail(id);
+        createEmptyResults(id);
       });
       Performance.flagCurrent();
       res.json({ success: true });
     })
     .catch(err => {
-      logger.errorLog({ level: 2, message: `Performances.new ${err}` });
+      logger.errorLog(`Performances.new ${err}`);
       res.render('static-pages/error', { user: req.user });
     });
   };
@@ -34,7 +35,7 @@ function PerformanceController() {
     Performance.findAll('MMMM Do, h:mm:ss a')
       .then((performances) => res.json(performances))
       .catch((err) => {
-        logger.errorLog({ level: 2, message: `Performances.showAll ${err}` });
+        logger.errorLog(`Performances.showAll ${err}`);
         res.render('static-pages/error');
       });
   };

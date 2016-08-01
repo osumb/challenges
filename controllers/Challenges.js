@@ -22,7 +22,7 @@ function ChallengersController() {
         res.render('challenges/success', { user: req.user, spotId });
       })
       .catch((err) => {
-        logger.errorLog({ level: 3, message: `Challenges.create ${err}` });
+        logger.errorLog(`Challenges.create ${err}`);
         res.render('challenges/failure', { user: req.user });
       });
   };
@@ -37,7 +37,7 @@ function ChallengersController() {
       })
     )
     .catch((err) => {
-      logger.errorLog({ level: 1, message: `Challenges.new ${err}` });
+      logger.errorLog(`Challenges.new ${err}`);
       res.render('static-pages/error');
     });
   };

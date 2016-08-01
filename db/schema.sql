@@ -323,7 +323,7 @@ CREATE TABLE results (
   secondComments text NOT NULL DEFAULT '',
   winnerId varchar(256) references users(nameNumber),
   pending boolean NOT NULL DEFAULT false,
-  needsApproval boolean NOT NULL DEFAULT true,
+  needsApproval boolean NOT NULL DEFAULT false,
   created_at timestamp NOT NULL,
   modified_at timestamp NOT NULL
 );

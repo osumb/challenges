@@ -89,6 +89,17 @@ module.exports = class Results {
     });
   }
 
+  createWithClient(attributes, client) {
+    const { sql, values } = db.queryBuilder(Results, attributes);
+
+    return new Promise((resolve, reject) => {
+      const query = client.query(sql, values);
+
+      query.on('end', resolve);
+      query.on('error', reject);
+    });
+  }
+
   findAllForApproval() {
     const client = db.createClient();
     const sql = queries.resultsForApproval;
@@ -199,7 +210,7 @@ module.exports = class Results {
 
     client.connect();
     client.on('error', (err) => {
-      logger.errorLog({ level: 3, message: `Results.switchSpotsForPerformance ${err}` });
+      logger.errorLog(`Results.switchSpotsForPerformance ${err}`);
     });
 
     const resultsQuery = client.query(resultsSql, [id]);
@@ -222,18 +233,18 @@ module.exports = class Results {
         oneUserQuery.on('end', () => client.end());
         oneUserQuery.on('error', err => {
           client.end();
-          logger.errorLog({ level: 3, message: `Results.switchSpotsForPerformance: oneUserQuery ${err}` });
+          logger.errorLog(`Results.switchSpotsForPerformance: oneUserQuery ${err}`);
         });
       });
 
       switchQuery.on('error', err => {
         client.end();
-        logger.errorLog({ level: 3, message: `Results.switchSpotsForPerformance: switchQuery ${err}` });
+        logger.errorLog(`Results.switchSpotsForPerformance: switchQuery ${err}`);
       });
     });
 
     resultsQuery.on('error', err => {
-      logger.errorLog({ level: 3, message: `Results.switchSpotsForPerformance: ${err}` });
+      logger.errorLog(`Results.switchSpotsForPerformance: ${err}`);
       client.end();
     });
   }

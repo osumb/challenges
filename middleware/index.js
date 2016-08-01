@@ -21,7 +21,7 @@ const currentPerformance = (req, res, next) => {
     next();
   })
   .catch((err) => {
-    logger.errorLog({ level: 3, message: `Middleware.currentPerformance ${err}` });
+    logger.errorLog(`Middleware.currentPerformance ${err}`);
     next();
   });
 };
@@ -39,7 +39,7 @@ const refreshCurrentPerformance = (req, res, next) => {
       next();
     })
     .catch((err) => {
-      logger.errorLog({ level: 3, message: `Middleware.refreshCurrentPerformance ${err}` });
+      logger.errorLog(`Middleware.refreshCurrentPerformance ${err}`);
     });
   } else {
     return next();
