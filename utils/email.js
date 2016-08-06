@@ -1,5 +1,9 @@
-/* eslint-disable new-cap */
+/* eslint-disable new-cap, no-sync */
+const fs = require('fs');
+const Handlebars = require('handlebars');
+const path = require('path');
 const sendGrid = require('sendgrid');
+
 const helper = sendGrid.mail;
 const sg = sendGrid.SendGrid(process.env.SENDGRID_API_KEY);
 const fromMail = new helper.Email('osumbit@gmail.com');
@@ -64,7 +68,10 @@ const sendChallengeSuccessEmail = (options) => {
   const { nameNumber, spotId, performanceName } = options;
   const to = new helper.Email(`${nameNumber}@osu.edu`);
   const subject = `Challenges for ${performanceName}`;
-  const content = new helper.Content('text/plain', `You're challenging the ${spotId} spot for the ${performanceName}`);
+  const source = fs.readFileSync(path.resolve(__dirname, '../views/emails/challenge-signup-confirmation.handlebars'), 'utf8');
+  const template = Handlebars.compile(source);
+
+  const content = new helper.Content('text/html', template({ performanceName, spotId }));
   const requestBody = new helper.Mail(fromMail, subject, to, content).toJSON();
 
   const request = sg.emptyRequest();
