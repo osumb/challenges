@@ -16,4 +16,3 @@ fi
 
 echo "==> Installing node modules"
 npm install
-npm install nodemon -g
