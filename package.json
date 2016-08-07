@@ -8,7 +8,7 @@
   },
   "private": true,
   "scripts": {
-    "dev": "NODE_ENV=dev nodemon --use_strict ./bin/www",
+    "dev": "webpack && NODE_ENV=dev nodemon --use_strict ./bin/www",
     "lint": "eslint .",
     "start": "script/server",
     "postinstall": "bower cache clean && bower install",
@@ -34,6 +34,7 @@
     "morgan": "^1.7.0",
     "node-sass": "^3.7.0",
     "node-schedule": "^1.1.1",
+    "nodemon": "^1.10.0",
     "passport": "^0.3.2",
     "passport-local": "^1.0.0",
     "pg": "^4.5.1",
