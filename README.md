@@ -19,6 +19,10 @@ script/setup
 That's it! All your dependencies are ready to go
 
 ## Start the app
+`./script` has some scripts for setup/testing/etc. While it may be tempting to run those as stand-alone scripts, use
+npm commands to access any of the scripts you may want to run. All modules used for dev/server are installed in the `challenges` directory. [Required reading](https://nodejs.org/en/blog/npm/npm-1-0-global-vs-local-installation/). The goal is to be minimally intrusive on your local dev machine since there's no virtual machine setup or anything like that.
+
+That being said, run the dev server:
 ```bash
 npm run dev
 ```
