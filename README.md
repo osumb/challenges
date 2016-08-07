@@ -29,6 +29,9 @@ Open [http://localhost:3000](http://localhost:3000) and enjoy!
 ```bash
 npm test
 ```
+## Heroku
+The server lives on Heroku. @atareshawty has the logins. Ask him if you want the ability to deploy or have access to
+the Heroku git remotes
 
 ## Staging vs Production
 ### Staging
