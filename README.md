@@ -13,6 +13,14 @@ Inside your terminal, run the following commands to get the project up and runni
 ```bash
 git clone https://github.com/osumb/challenges.git
 cd challenges
+```
+
+Install [Node](https://nodejs.org/en/) through any means you see fit.
+
+__Make sure you're above v6 or the code won't run__
+
+Then run:
+```
 script/setup
 ```
 
