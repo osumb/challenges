@@ -28,24 +28,6 @@ function UsersController() {
     });
   };
 
-  this.forfeitSpot = (req, res) => {
-    User.forfeitSpot(req.body.nameNumber)
-    .then(() => res.json({ success: true }))
-    .catch((err) => {
-      logger.errorLog(`Users.forfeitSpot ${err}`);
-      res.json({ success: false });
-    });
-  };
-
-  this.makeIneligible = (req, res) => {
-    User.makeIneligible(req.body.nameNumber)
-    .then(() => res.json({ success: true }))
-    .catch((err) => {
-      logger.errorLog(`Users.makeIneligible ${err}`);
-      res.json({ success: false });
-    });
-  };
-
   this.manage = (req, res) => {
     const { nameNumber, performanceId, reason, spotId, voluntary } = req.body;
     const manageAttributes = {
