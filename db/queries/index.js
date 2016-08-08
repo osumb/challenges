@@ -3,6 +3,7 @@ const fs = require('fs');
 const path = require('path');
 
 module.exports = {
+  challengeablePeople: fs.readFileSync(path.resolve(__dirname, 'challengeable-people.sql')).toString(),
   challengesForCSV: fs.readFileSync(path.resolve(__dirname, 'challenges-for-csv.sql')).toString(),
   resultsForApproval: fs.readFileSync(path.resolve(__dirname, 'results-for-approval.sql')).toString(),
   resultsForEval: fs.readFileSync(path.resolve(__dirname, 'results-for-eval.sql')).toString(),

@@ -37,7 +37,7 @@ router.setup = (app) => {
   app.get('/performances/results/evaluate', ensureEvalAbility, Results.showForEvaluation);
   app.get('/performances/results/toapprove', ensureAdmin, Results.getForApproval);
   app.get('/performances/:performanceId/results', ensureAdmin, Results.showAll);
-  app.post('/performances/:performanceId/results/:resultId', ensureEvalAbility, Results.evaluate);
+  app.post('/performances/results/evaulate', ensureEvalAbility, Results.evaluate);
   app.post('/results/approve', ensureAdmin, Results.approve);
 
   //Static Pages Controllers

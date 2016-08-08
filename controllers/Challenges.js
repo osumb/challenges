@@ -5,9 +5,8 @@ const Challenge = new models.Challenge();
 
 function ChallengersController() {
   this.create = (req, res) => {
-    const userId = req.user.nameNumber,
-      spotId = req.body['challenge-form'],
-      performanceId = req.params.performanceId;
+    const { spotId } = req.body;
+    const userId = req.user.nameNumber, performanceId = req.params.performanceId;
 
     logger.challengesLog(`${req.user.name} sent request to challenge ${spotId}`);
     Challenge.create(userId, spotId, performanceId)
@@ -19,11 +18,11 @@ function ChallengersController() {
           spotId
         });
         logger.challengesLog(`${req.user.name} successfully challenged for ${spotId}`);
-        res.render('challenges/success', { user: req.user, spotId });
+        res.json({ code: 0 });
       })
       .catch((err) => {
         logger.errorLog(`Challenges.create ${err}`);
-        res.render('challenges/failure', { user: req.user });
+        res.status(400).send({ code: err });
       });
   };
 

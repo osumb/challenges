@@ -22,20 +22,19 @@ class Challenge {
 
     return new Promise((resolve, reject) => {
       const client = utils.db.createClient();
-      let challengeMessage = '';
+      let returnCode;
 
       client.connect();
       client.on('error', (err) => reject(err));
 
       const query = client.query(sql, [userId, performanceId, spotId]);
 
-      query.on('row', (message) => {
-        challengeMessage = message.make_challenge;
+      query.on('row', ({ make_challenge }) => {
+        returnCode = parseInt(make_challenge, 10);
       });
-
       query.on('end', () => {
         client.end();
-        return challengeMessage === '' ? resolve() : reject(challengeMessage);
+        return returnCode === 0 ? resolve() : reject(returnCode);
       });
       query.on('error', (err) => {
         client.end();
@@ -46,7 +45,7 @@ class Challenge {
 
   findAllChallengeablePeopleForUser(user) {
     // eslint-disable-next-line
-    const sql = `SELECT * FROM spots AS S, users AS U WHERE u.instrument = $1 AND u.part = $2 AND u.eligible = FALSE AND S.id = U.spotId ORDER BY (substring(s.id, '^[A-X]'), substring(s.id, '[0-9]+')::int)`;
+    const sql = queries.challengeablePeople;
 
     return new Promise((resolve, reject) => {
       const client = utils.db.createClient();
@@ -126,6 +125,7 @@ class Challenge {
   parseChallengeAblePerson(challenge) {
     return {
       challengedCount: challenge.challengedcount,
+      challengeFull: challenge.open ? challenge.challengedcount === 2 : challenge.challengedcount === 1,
       name: challenge.name,
       spotOpen: challenge.open,
       spotId: challenge.spotid

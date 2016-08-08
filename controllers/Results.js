@@ -40,19 +40,19 @@ function ResultsController() {
 
   this.evaluate = (req, res) => {
     Result.update({
-      id: req.params.resultId,
+      id: req.body.id,
       needsApproval: true,
       firstComments: req.body.firstComments,
       secondComments: req.body.secondComments,
       spotId: req.body.spotId,
-      winnerId: req.body.winner
+      winnerId: req.body.winnerId
     })
-    .then(() =>
-      res.redirect('results/show-for-evaluation')
-    )
+    .then(() => {
+      res.status(200).send({ success: true });
+    })
     .catch((err) => {
       logger.errorLog(`Results.evaluate ${err}`);
-      res.render('static-pages/error');
+      res.status(500).send({ success: false });
     });
   };
 
