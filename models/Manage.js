@@ -20,7 +20,6 @@ module.exports = class Manage {
       const client = db.createClient();
       const { sql, values } = db.queryBuilder(Manage, attributes);
 
-      console.log(sql, values);
       client.connect();
       client.on('error', (err) => reject(err));
 
