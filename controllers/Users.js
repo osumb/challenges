@@ -1,7 +1,10 @@
 const Models = require('../models');
 const { logger } = require('../utils');
 const Challenge = new Models.Challenge();
+const Manage = new Models.Manage();
+const Performance = new Models.Performance();
 const Result = new Models.Result();
+const Spot = new Models.Spot();
 const User = new Models.User();
 
 function UsersController() {
@@ -20,6 +23,30 @@ function UsersController() {
     .catch((err) => {
       logger.errorLog(`Users.makeIneligible ${err}`);
       res.json({ success: false });
+    });
+  };
+
+  this.manage = (req, res) => {
+    const { nameNumber, performanceId, reason, spotId, voluntary } = req.body;
+    const manageAttributes = {
+      performanceId,
+      userNameNumber: nameNumber,
+      reason: reason || 'Voluntarily Opened Spot',
+      voluntary
+    };
+
+    //If the manage was voluntarily taken by the user (elected to open spot), they're now eligible to challenge
+    Promise.all([
+      Manage.create(manageAttributes),
+      Spot.open(spotId),
+      User.setEligibility(nameNumber, voluntary)
+    ])
+    .then(() => {
+      res.json({ success: true });
+    })
+    .catch((err) => {
+      logger.errorLog(`Users.manage ${err}`);
+      res.status(500).send();
     });
   };
 
@@ -49,6 +76,22 @@ function UsersController() {
           res.render('static-pages/error');
         });
     }
+  };
+
+  this.showIndividualManage = (req, res) => {
+    Promise.all([User.findForIndividualManage(req.params.nameNumber), Performance.findAll()])
+    .then((data) => {
+      res.render('users/individual-manage', {
+        managedUserCurrent: data[0][0],
+        managedUserOld: data[0].slice(1),
+        performances: data[1],
+        user: req.user
+      });
+    })
+    .catch((err) => {
+      logger.errorLog(`Users.showIndividualManage ${err}`);
+      res.render('static-pages/error');
+    });
   };
 
   this.showManage = (req, res) => {

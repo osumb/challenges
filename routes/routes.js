@@ -55,7 +55,9 @@ router.setup = (app) => {
   //Users Controller
   app.get('/:nameNumber', [ensureAuthAndNameNumberRoute, currentPerformance], Users.show);
   app.get('/users/manage', ensureAdmin, Users.showManage);
+  app.get('/users/manage/:nameNumber', ensureAdmin, Users.showIndividualManage);
   app.get('/users/search', ensureAdmin, Users.search);
+  app.post('/users/manage', ensureAdmin, Users.manage);
   app.post('/users/makeineligible', ensureAdmin, Users.makeIneligible);
   app.post('/users/forfeitspot', ensureAdmin, Users.forfeitSpot);
 };
