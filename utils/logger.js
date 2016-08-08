@@ -1,5 +1,9 @@
 const { email } = require('./index');
 
+const adminActionLog = (message) => {
+  console.log(`ADMIN_ACTION_LOG: ${message}`);
+};
+
 const challengesLog = (message) => {
   console.log(`CHALLENGES_LOG: ${message}`);
 };
@@ -16,6 +20,7 @@ const jobsLog = (message) => {
 };
 
 module.exports = {
+  adminActionLog,
   challengesLog,
   errorLog,
   jobsLog

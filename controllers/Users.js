@@ -18,7 +18,10 @@ function UsersController() {
     };
 
     Promise.all([Manage.create(manageAttributes), Spot.close(spotId), User.setEligibility(nameNumber, true)])
-    .then(() => res.json({ success: true }))
+    .then(() => {
+      logger.adminActionLog(`close spot (${spotId}) for ${nameNumber} for performance id: ${performanceId}`);
+      res.json({ success: true });
+    })
     .catch((err) => {
       logger.errorLog(`Users.close ${err}`);
       res.status(500).send();
@@ -59,6 +62,7 @@ function UsersController() {
       User.setEligibility(nameNumber, voluntary)
     ])
     .then(() => {
+      logger.adminActionLog(`open spot (${spotId}) for ${nameNumber} for performance id: ${performanceId}. reason: ${manageAttributes.reason}`);
       res.json({ success: true });
     })
     .catch((err) => {
