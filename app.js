@@ -1,23 +1,22 @@
+const bodyParser = require('body-parser');
+const cookieParser = require('cookie-parser');
 const express = require('express');
-const path = require('path');
 const favicon = require('serve-favicon');
 const logger = require('morgan');
-const cookieParser = require('cookie-parser');
-const bodyParser = require('body-parser');
-const exphbs = require('express-handlebars');
+const path = require('path');
 const passport = require('./auth').passport;
-const session = require('express-session');
 const Redis = require('redis');
-const RedisStore = require('connect-redis')(session);
+const session = require('express-session');
 const url = require('url');
 
+const RedisStore = require('connect-redis')(session);
 const routes = require('./routes/routes');
+const setViewEngine = require('./views');
 const app = express();
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'handlebars');
-app.engine('handlebars', exphbs({ defaultLayout: 'main' }));
+setViewEngine(app);
 
 //session setup
 
