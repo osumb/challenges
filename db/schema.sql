@@ -7,6 +7,7 @@ DROP TABLE IF EXISTS challenges CASCADE;
 DROP TABLE IF EXISTS results CASCADE;
 DROP TABLE IF EXISTS spots CASCADE;
 DROP TABLE IF EXISTS performances CASCADE;
+DROP TABLE IF EXISTS manage CASCADE;
 DROP TYPE IF EXISTS part;
 DROP TYPE IF EXISTS instrument;
 DROP TYPE IF EXISTS role;
@@ -330,4 +331,23 @@ CREATE TRIGGER results_created_stamp BEFORE INSERT ON results
 FOR EACH ROW EXECUTE PROCEDURE created_stamp();
 
 CREATE TRIGGER results_modified_stamp BEFORE INSERT ON results
+FOR EACH ROW EXECUTE PROCEDURE modified_stamp();
+
+----------------------------------------
+-- MANAGE
+----------------------------------------
+CREATE TABLE manage (
+  id serial PRIMARY KEY,
+  performanceId integer references performances(id) NOT NULL,
+  userNameNumber varchar(256) references users(nameNumber) NOT NULL,
+  reason text NOT NULL DEFAULT '',
+  voluntary boolean NOT NULL default true,
+  created_at timestamp NOT NULL,
+  modified_at timestamp NOT NULL
+);
+
+CREATE TRIGGER manage_created_stamp BEFORE INSERT ON manage
+FOR EACH ROW EXECUTE PROCEDURE created_stamp();
+
+CREATE TRIGGER manage_modified_stamp BEFORE INSERT ON manage
 FOR EACH ROW EXECUTE PROCEDURE modified_stamp();
