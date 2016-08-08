@@ -8,7 +8,12 @@ module.exports = (app) => {
     defaultLayout: 'main',
     helpers: {
       usersIndividualManageActionItem: (name, reason, voluntary) => {
-        const action = voluntary ? `${name} opened their spot` : 'an admin opened the spot';
+        let action = voluntary ? `${name} opened their spot` : 'an admin opened the spot';
+
+        if ((reason || '').toLowerCase() === 'Closed Spot'.toLowerCase()) {
+          action = 'an admin closed the spot';
+        }
+
         const actionReason = voluntary ? '' : ` because <span style="font-weight: bold;">${reason}</span>`;
         const message = reason ? `${action} ${actionReason}` : 'No Current Action Item';
 

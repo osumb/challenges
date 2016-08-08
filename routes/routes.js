@@ -58,6 +58,7 @@ router.setup = (app) => {
   app.get('/users/manage/:nameNumber', ensureAdmin, Users.showIndividualManage);
   app.get('/users/search', ensureAdmin, Users.search);
   app.post('/users/manage', ensureAdmin, Users.manage);
+  app.post('/users/manage/close', ensureAdmin, Users.closeSpot);
   app.post('/users/makeineligible', ensureAdmin, Users.makeIneligible);
   app.post('/users/forfeitspot', ensureAdmin, Users.forfeitSpot);
 };

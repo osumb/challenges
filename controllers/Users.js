@@ -8,6 +8,23 @@ const Spot = new Models.Spot();
 const User = new Models.User();
 
 function UsersController() {
+  this.closeSpot = (req, res) => {
+    const { nameNumber, performanceId, spotId } = req.body;
+    const manageAttributes = {
+      performanceId,
+      userNameNumber: nameNumber,
+      reason: 'Closed Spot',
+      voluntary: false
+    };
+
+    Promise.all([Manage.create(manageAttributes), Spot.close(spotId), User.setEligibility(nameNumber, true)])
+    .then(() => res.json({ success: true }))
+    .catch((err) => {
+      logger.errorLog(`Users.close ${err}`);
+      res.status(500).send();
+    });
+  };
+
   this.forfeitSpot = (req, res) => {
     User.forfeitSpot(req.body.nameNumber)
     .then(() => res.json({ success: true }))

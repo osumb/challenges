@@ -14,8 +14,9 @@ FROM (
   WHERE users.nameNumber = $1
 ) userspot
 LEFT JOIN (
-  SELECT m.usernamenumber, m.reason, m.voluntary, p.current AS performancecurrent, p.id AS performanceid, p.name AS performancename
+  SELECT m.id AS manageid, m.usernamenumber, m.reason, m.voluntary, p.current AS performancecurrent, p.id AS performanceid, p.name AS performancename
   FROM performances AS p
   LEFT JOIN manage AS m ON p.id = m.performanceid WHERE p.current
 ) manageperformance
-ON userspot.namenumber = manageperformance.usernamenumber;
+ON userspot.namenumber = manageperformance.usernamenumber
+ORDER BY manageperformance.manageid DESC;

@@ -6,7 +6,7 @@
   <div class="IndividualManage-userInfo">
     <h2>Current Information:</h2>
     <h3>{{spotsIsOpen "" managedUserCurrent.spotOpen }}</h3>
-    <h3>Current manage action:
+    <h3>Most recent manage action:
       {{usersIndividualManageActionItem managedUserCurrent.name managedUserCurrent.reason managedUserCurrent.voluntary}}
     </h3>
     {{#unless managedUserCurrent.spotOpen }}
@@ -37,9 +37,24 @@
           {{/each}}
         </select>
       </div>
+    {{else}}
+      <button class="btn btn-primary IndividualManage-button-close">Close spot</button>
+      <div class="IndividualManage-performanceInfo">
+        For which performance is this action?
+        <select class="IndividualManage-performanceSelect form-control">
+          {{#each performances}}
+            <option class="IndividualManage-performanceSelectItem" value={{this.id}}>
+              {{this.name}}
+            </option>
+          {{/each}}
+        </select>
+      </div>
     {{/unless}}
   </div>
   <div class="IndividualManage-pastInfo">
+    {{#if managedUserOld.length }}
+      <h3>Previous Action Items: </h3>
+    {{/if}}
     {{#each managedUserOld }}
       <h4>For the {{ this.performanceName }}
         {{usersIndividualManageActionItem this.name this.reason this.voluntary}}

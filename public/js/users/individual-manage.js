@@ -1,13 +1,13 @@
+const closeButtonClass = '.IndividualManage-button-close';
 const mainClass = '.IndividualManage';
-const buttonClass = '.IndividualManage-button-open';
+const openButtonClass = '.IndividualManage-button-open';
+const openSpotReasonClass = '.IndividualManage-reason';
 const performanceSelectClass = '.IndividualManage-performanceSelect';
 const spotOptionClasses = ['IndividualManage-failed', 'IndividualManage-other', 'IndividualManage-volunteer'];
-const openSpotReasonClass = '.IndividualManage-reason';
 
-$(buttonClass).on('click', () => {
-  const select = $(performanceSelectClass);
-  const performanceId = parseInt(select.val(), 10);
-  const [nameNumber, spotId] = $(mainClass).attr('class').split(' ').slice(2);
+$(openButtonClass).on('click', () => {
+  const performanceId = getPerformanceId();
+  const [nameNumber, spotId] = getNameNumberSpotId();
   const apiUrl = '/users/manage';
   let reason;
 
@@ -55,6 +55,37 @@ $(buttonClass).on('click', () => {
   });
 });
 
+$(closeButtonClass).on('click', () => {
+  const performanceId = getPerformanceId();
+  const [nameNumber, spotId] = getNameNumberSpotId();
+  const apiUrl = '/users/manage/close';
+
+  fetch(apiUrl, {
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    },
+    credentials: 'same-origin',
+    method: 'post',
+    body: JSON.stringify({
+      nameNumber,
+      performanceId,
+      spotId
+    })
+  })
+  .then((response) => {
+    if (response.status > 300) {
+      throw new Error('Whoops');
+    }
+    window.location.reload(false);
+  })
+  .catch(() => {
+    banner('We\'re sorry! There was a problem with your request. We\'re working to resolve the issue');
+  });
+});
+
+const getPerformanceId = () => parseInt($(performanceSelectClass).val(), 10);
+const getNameNumberSpotId = () => $(mainClass).attr('class').split(' ').slice(2);
 const banner = (message) => {
   $('.bannerMessage').remove();
   $('.navbar').after(`<h3 class="bannerMessage">${message}</h3>`);
