@@ -1,3 +1,4 @@
+const queries = require('../db/queries');
 const utils = require('../utils');
 
 const attributes = ['nameNumber', 'spotId', 'name', 'password', 'instrument', 'part', 'eligible', 'squadLeader', 'admin', 'alternate'];
@@ -16,6 +17,33 @@ class User {
     return 'users';
   }
 
+  findForIndividualManage(nameNumber) {
+    return new Promise((resolve, reject) => {
+      const client = utils.db.createClient();
+      const sql = queries.findForIndividualManage;
+      const users = [];
+
+      client.connect();
+      client.on('error', reject);
+
+      const query = client.query(sql, [nameNumber]);
+
+      query.on('row', (user) => {
+        users.push(this.parseForManage(user));
+      });
+
+      query.on('end', () => {
+        client.end();
+        resolve(users);
+      });
+
+      query.on('error', (err) => {
+        reject(err);
+        client.end();
+      });
+    });
+  }
+
   findByNameNumber(nameNumber) {
     return new Promise((resolve, reject) => {
       const client = utils.db.createClient();
@@ -32,7 +60,6 @@ class User {
       });
       query.on('end', () => {
         client.end();
-        resolve(null);
       });
       query.on('error', (err) => {
         client.end();
@@ -125,6 +152,19 @@ class User {
     };
   }
 
+  parseForManage(user) {
+    return {
+      name: user.name,
+      nameNumber: user.namenumber,
+      performanceId: user.performanceid,
+      performanceName: user.performancename,
+      spotId: user.spotid,
+      spotOpen: user.spotopen,
+      reason: user.reason,
+      voluntary: user.voluntary
+    };
+  }
+
   parseForSearch(user) {
     const partiallyParsed = this.parse(user);
 
@@ -150,6 +190,28 @@ class User {
       query.on('end', () => {
         client.end();
         resolve(users);
+      });
+
+      query.on('error', (err) => {
+        client.end();
+        reject(err);
+      });
+    });
+  }
+
+  setEligibility(nameNumber, eligibility) {
+    return new Promise((resolve, reject) => {
+      const client = utils.db.createClient();
+      const queryString = 'UPDATE users SET eligible = $1 WHERE nameNumber = $2';
+
+      client.connect();
+      client.on('error', (err) => reject(err));
+
+      const query = client.query(queryString, [eligibility, nameNumber]);
+
+      query.on('end', () => {
+        client.end();
+        resolve();
       });
 
       query.on('error', (err) => {
