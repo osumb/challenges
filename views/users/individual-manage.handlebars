@@ -1,0 +1,65 @@
+<div class="IndividualManage  {{ managedUserCurrent.nameNumber }} {{ managedUserCurrent.spotId }}">
+  <div class="IndividualManage-title">
+    <h1>{{ managedUserCurrent.name }} ({{ managedUserCurrent.spotId }})</h1>
+    <hr />
+  </div>
+  <div class="IndividualManage-userInfo">
+    <h2>Current Information:</h2>
+    <h3>{{spotsIsOpen "" managedUserCurrent.spotOpen }}</h3>
+    <h3>Most recent manage action:
+      {{usersIndividualManageActionItem managedUserCurrent.name managedUserCurrent.performanceName managedUserCurrent.reason managedUserCurrent.voluntary}}
+    </h3>
+    {{#unless managedUserCurrent.spotOpen }}
+      <div class="IndividualManage-manage">
+        <button class="btn btn-primary IndividualManage-button-open">Open spot</button>
+        <label>For what reason?</label>
+        <p class="IndividualManage-openReasonOption">
+          <span>Failed Music Check </span>
+          <input checked class="IndividualManage-failed" type="radio" name="openSpotOptions" value="Failed Music Check" />
+        </p>
+        <p class="IndividualManage-openReasonOption">
+          <span>Voluntarily Opened Spot </span>
+          <input class="IndividualManage-volunteer" type="radio" name="openSpotOptions" value="Failed Music Check" />
+        </p>
+        <p class="IndividualManage-openReasonOption">
+          <span>Other </span>
+          <input class="IndividualManage-other" type="radio" name="openSpotOptions" value="Other" />
+          <input class="IndividualManage-reason" placeholder="Discipline reason"/>
+        </p>
+      </div>
+      <div class="IndividualManage-performanceInfo">
+        For which performance is this action?
+        <select class="IndividualManage-performanceSelect form-control">
+          {{#each performances}}
+            <option class="IndividualManage-performanceSelectItem" value={{this.id}}>
+              {{this.name}}
+            </option>
+          {{/each}}
+        </select>
+      </div>
+    {{else}}
+      <button class="btn btn-primary IndividualManage-button-close">Close spot</button>
+      <div class="IndividualManage-performanceInfo">
+        For which performance is this action?
+        <select class="IndividualManage-performanceSelect form-control">
+          {{#each performances}}
+            <option class="IndividualManage-performanceSelectItem" value={{this.id}}>
+              {{this.name}}
+            </option>
+          {{/each}}
+        </select>
+      </div>
+    {{/unless}}
+  </div>
+  <div class="IndividualManage-pastInfo">
+    {{#if managedUserOld.length }}
+      <h3>Previous Action Items: </h3>
+    {{/if}}
+    {{#each managedUserOld }}
+      <h4>
+        {{usersIndividualManageActionItem this.name this.performanceName this.reason this.voluntary}}
+      </h4>
+    {{/each}}
+  </div>
+</div>
+<script src="/public/js/users/individual-manage.js"></script>

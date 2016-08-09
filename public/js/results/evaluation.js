@@ -29,7 +29,7 @@ $(submitClass).on('click', (a) => {
     })
   })
   .then((response) => {
-    if (response.code > 300) {
+    if (response.status > 300) {
       throw new Error('Whoops');
     }
     $(`${divClass}.${resultId}`).remove();

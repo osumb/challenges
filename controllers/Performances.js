@@ -15,14 +15,14 @@ function PerformanceController() {
       const performanceWindowClose = new Date(utcCloseAt), minutesMultiplier = 60000;
 
       schedule.scheduleJob(new Date(performanceWindowClose.getTime() + 5 * minutesMultiplier), () => {
-        sendChallengeListEmail(id);
+        sendChallengeListEmail.sendChallengeListEmail(id);
         createEmptyResults(id);
       });
       Performance.flagCurrent();
       res.json({ success: true });
     })
     .catch(err => {
-      logger.errorLog(`Performances.new ${err}`);
+      logger.errorLog('Performances.new', err);
       res.render('static-pages/error', { user: req.user });
     });
   };
@@ -35,7 +35,7 @@ function PerformanceController() {
     Performance.findAll('MMMM Do, h:mm:ss a')
       .then((performances) => res.json(performances))
       .catch((err) => {
-        logger.errorLog(`Performances.showAll ${err}`);
+        logger.errorLog('Performances.showAll', err);
         res.render('static-pages/error');
       });
   };

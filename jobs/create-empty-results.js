@@ -55,7 +55,7 @@ const createEmptyResults = (performanceId) => {
   })
   .catch((err) => {
     client.end();
-    logger.errorLog(`Create Empty Results ${err}`);
+    logger.errorLog('Create Empty Results', err);
   });
 };
 

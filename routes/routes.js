@@ -18,7 +18,6 @@ const Challenges = new controllers.Challenges();
 const Performances = new controllers.Performances();
 const Results = new controllers.Results();
 const Sessions = new controllers.Sessions();
-const Spots = new controllers.Spots();
 const StaticPages = new controllers.StaticPages();
 const Users = new controllers.Users();
 
@@ -49,15 +48,13 @@ router.setup = (app) => {
   app.get('/login', Sessions.login);
   app.get('/logout', Sessions.logout);
 
-  //Spots Controller
-  app.post('/spots/open', ensureAdmin, Spots.open);
-
   //Users Controller
   app.get('/:nameNumber', [ensureAuthAndNameNumberRoute, currentPerformance], Users.show);
   app.get('/users/manage', ensureAdmin, Users.showManage);
+  app.get('/users/manage/:nameNumber', ensureAdmin, Users.showIndividualManage);
   app.get('/users/search', ensureAdmin, Users.search);
-  app.post('/users/makeineligible', ensureAdmin, Users.makeIneligible);
-  app.post('/users/forfeitspot', ensureAdmin, Users.forfeitSpot);
+  app.post('/users/manage', ensureAdmin, Users.manage);
+  app.post('/users/manage/close', ensureAdmin, Users.closeSpot);
 };
 
 module.exports = router;
