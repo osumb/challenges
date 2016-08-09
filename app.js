@@ -3,8 +3,8 @@ const cookieParser = require('cookie-parser');
 const express = require('express');
 const favicon = require('serve-favicon');
 const logger = require('morgan');
-const path = require('path');
 const passport = require('./auth').passport;
+const path = require('path');
 const Redis = require('redis');
 const session = require('express-session');
 const url = require('url');
@@ -12,6 +12,7 @@ const url = require('url');
 const RedisStore = require('connect-redis')(session);
 const routes = require('./routes/routes');
 const setViewEngine = require('./views');
+
 const app = express();
 
 // view engine setup
