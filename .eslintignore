@@ -1,4 +1,5 @@
 bower_components/*
+experiments/*
 node_modules/*
 bin/*
 spec/fixtures/*
