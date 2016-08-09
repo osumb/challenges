@@ -4,13 +4,37 @@ const Manage = new models.Manage();
 const { sendChallengeList } = require('../utils').email;
 const { logger } = require('../utils');
 
+const filterManageActions = (arr) => {
+  const filtered = [];
+
+  for (let i = 0; i < arr.length; i++) {
+    const { name, spotid } = arr[i];
+    let k = i + 1;
+
+    while (k < arr.length && spotid === arr[k].spotid) {
+      k += 1;
+    }
+
+    if (spotid === arr[k - 1].spotid && arr[k - 1].reason !== 'Closed Spot') {
+      filtered.push({
+        name,
+        spotid,
+        reason: arr[k - 1].reason
+      });
+    }
+    i = k - 1;
+  }
+
+  return filtered;
+};
+
 const challengesToCSV = (challenges) =>
   challenges.map(({ challengee, challenger, challengeespot, challengerspot, spotopen }) =>
     [challengerspot, challenger, challengeespot, spotopen ? 'Open Spot' : challengee]
   );
 
-const disciplineTOCSV = (discipline) =>
-  discipline.map(({ name, reason, spotid }) =>
+const manageActionsTOCSV = (manageActions) =>
+  filterManageActions(manageActions).map(({ name, reason, spotid }) =>
     [spotid, name, reason]
   );
 
@@ -18,9 +42,9 @@ const getChallengeCSV = (performanceId) =>
   Promise.all([Challenge.findAllForPerformanceCSV(performanceId), Manage.findAllForPerformanceCSV(performanceId)])
   .then((data) => {
     const challenges = challengesToCSV(data[0]).reduce((prev, curr) => `${prev}\n${curr.toString()}`, '');
-    const discipline = disciplineTOCSV(data[1]).reduce((prev, curr) => `${prev}\n${curr.toString()}`, '');
+    const manageActions = manageActionsTOCSV(data[1]).reduce((prev, curr) => `${prev}\n${curr.toString()}`, '');
 
-    return new Buffer(`OSUMB Challenges\nChallenges\n${challenges}\n\nOpen Spots/Automatic Alternates\n${discipline}`).toString('base64');
+    return new Buffer(`OSUMB Challenges\nChallenges\n${challenges}\n\nOpen Spots/Automatic Alternates\n${manageActions}`).toString('base64');
   })
   .then(challengeList => challengeList);
 
@@ -43,4 +67,7 @@ const sendChallengeListEmail = (performanceId) => {
   });
 };
 
-module.exports = sendChallengeListEmail;
+module.exports = {
+  filterManageActions,
+  sendChallengeListEmail
+};

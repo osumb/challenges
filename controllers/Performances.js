@@ -15,7 +15,7 @@ function PerformanceController() {
       const performanceWindowClose = new Date(utcCloseAt), minutesMultiplier = 60000;
 
       schedule.scheduleJob(new Date(performanceWindowClose.getTime() + 5 * minutesMultiplier), () => {
-        sendChallengeListEmail(id);
+        sendChallengeListEmail.sendChallengeListEmail(id);
         createEmptyResults(id);
       });
       Performance.flagCurrent();
