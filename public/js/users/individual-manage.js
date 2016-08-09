@@ -9,7 +9,7 @@ $(openButtonClass).on('click', () => {
   const performanceId = getPerformanceId();
   const [nameNumber, spotId] = getNameNumberSpotId();
   const apiUrl = '/users/manage';
-  let reason;
+  let reason, voluntary = false;
 
   for (const option of spotOptionClasses) {
     if (document.getElementsByClassName(option)[0].checked) {
@@ -23,6 +23,8 @@ $(openButtonClass).on('click', () => {
           reason = $(openSpotReasonClass).val();
           break;
         default:
+          reason = 'Voluntarily Opened Spot';
+          voluntary = true;
           break;
       }
       break;
@@ -41,7 +43,7 @@ $(openButtonClass).on('click', () => {
       performanceId,
       reason,
       spotId,
-      voluntary: !reason
+      voluntary
     })
   })
   .then((response) => {

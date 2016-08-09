@@ -34,7 +34,7 @@ function UsersController() {
     const manageAttributes = {
       performanceId,
       userNameNumber: nameNumber,
-      reason: reason || 'Voluntarily Opened Spot',
+      reason,
       spotId,
       voluntary
     };
