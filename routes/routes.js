@@ -18,7 +18,6 @@ const Challenges = new controllers.Challenges();
 const Performances = new controllers.Performances();
 const Results = new controllers.Results();
 const Sessions = new controllers.Sessions();
-const Spots = new controllers.Spots();
 const StaticPages = new controllers.StaticPages();
 const Users = new controllers.Users();
 
