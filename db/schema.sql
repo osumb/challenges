@@ -341,6 +341,7 @@ CREATE TABLE manage (
   performanceId integer references performances(id) NOT NULL,
   userNameNumber varchar(256) references users(nameNumber) NOT NULL,
   reason text NOT NULL DEFAULT '',
+  spotId varchar(3) references spots(id) NOT NULL,
   voluntary boolean NOT NULL default true,
   created_at timestamp NOT NULL,
   modified_at timestamp NOT NULL

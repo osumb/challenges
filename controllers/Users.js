@@ -14,6 +14,7 @@ function UsersController() {
       performanceId,
       userNameNumber: nameNumber,
       reason: 'Closed Spot',
+      spotId,
       voluntary: false
     };
 
@@ -34,6 +35,7 @@ function UsersController() {
       performanceId,
       userNameNumber: nameNumber,
       reason: reason || 'Voluntarily Opened Spot',
+      spotId,
       voluntary
     };
 

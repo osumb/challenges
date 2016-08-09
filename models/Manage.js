@@ -1,6 +1,6 @@
 const { db } = require('../utils');
 
-const modelAttributes = ['id', 'performanceId', 'userNameNumber', 'reason', 'voluntary'];
+const modelAttributes = ['id', 'performanceId', 'userNameNumber', 'reason', 'spotId', 'voluntary'];
 
 module.exports = class Manage {
   static getAttributes() {
