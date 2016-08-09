@@ -9,7 +9,6 @@ const currentPerformance = middleware.currentPerformance;
 const ensureAuthenticated = auth.ensureAuthenticated;
 const ensureAdmin = auth.ensureAdmin;
 const ensureAuthAndNameNumberRoute = auth.ensureAuthAndNameNumberRoute;
-const ensureEligible = auth.ensureEligible;
 const ensureEvalAbility = auth.ensureEvalAbility;
 const passport = auth.passport;
 const refreshCurrentPerformance = middleware.refreshCurrentPerformance;
@@ -23,9 +22,8 @@ const Users = new controllers.Users();
 
 router.setup = (app) => {
   //Challenges Controller
-  app.get('/performances/:performanceId/challenges/new', ensureEligible, Challenges.new);
-  // app.get('/performances/:performanceId/challenges', ensureAdmin, Challenges.showAll);
-  app.post('/performances/:performanceId/challenges', ensureEligible, Challenges.create);
+  app.get('/performances/challenges/new', [ensureAuthenticated, refreshCurrentPerformance], Challenges.new);
+  app.post('/performances/challenges', [ensureAuthenticated, refreshCurrentPerformance], Challenges.create);
 
   //Performance Controller
   app.get('/performances', ensureAuthenticated, Performances.showAll);

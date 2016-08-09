@@ -1,10 +1,4 @@
-{{#if user.eligible}}
-  {{#if currentPerformance}}
-    <li><a href="/performances/{{currentPerformance.id}}/challenges/new">Make A Challenge</a></li>
-  {{/if}}
-{{/if}}
+<li><a href="/performances/challenges/new">Make A Challenge</a></li>
 {{#if user.squadLeader}}
-  {{#unless user.eligible}}
-    <li><a href="/performances/results/evaluate">Evaluate Challenges</a></li>
-  {{/unless}}
+  <li><a href="/performances/results/evaluate">Evaluate Challenges</a></li>
 {{/if}}
