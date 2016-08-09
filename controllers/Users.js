@@ -18,7 +18,7 @@ function UsersController() {
       voluntary: false
     };
 
-    Promise.all([Manage.create(manageAttributes), Spot.close(spotId), User.setEligibility(nameNumber, true)])
+    Promise.all([Manage.create(manageAttributes), Spot.close(spotId), User.setEligibility(nameNumber, false)])
     .then(() => {
       logger.adminActionLog(`close spot (${spotId}) for ${nameNumber} for performance id: ${performanceId}`);
       res.json({ success: true });
