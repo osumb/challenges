@@ -7,7 +7,7 @@ function SpotsController() {
     Spot.open(req.body.spotId)
     .then(() => res.json({ success: true }))
     .catch((err) => {
-      logger.errorLog(`Spots.open ${err}`);
+      logger.errorLog('Spots.open', err);
       res.json({ success: false });
     });
   };

@@ -21,7 +21,7 @@ function ChallengersController() {
         res.json({ code: 0 });
       })
       .catch((err) => {
-        logger.errorLog(`Challenges.create ${err}`);
+        logger.errorLog('Challenges.create', err);
         res.status(400).send({ code: err });
       });
   };
@@ -36,7 +36,7 @@ function ChallengersController() {
       })
     )
     .catch((err) => {
-      logger.errorLog(`Challenges.new ${err}`);
+      logger.errorLog('Challenges.new', err);
       res.render('static-pages/error');
     });
   };

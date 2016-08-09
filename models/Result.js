@@ -210,7 +210,7 @@ module.exports = class Results {
 
     client.connect();
     client.on('error', (err) => {
-      logger.errorLog(`Results.switchSpotsForPerformance ${err}`);
+      logger.errorLog('Results.switchSpotsForPerformance', err);
     });
 
     const resultsQuery = client.query(resultsSql, [id]);
@@ -233,18 +233,18 @@ module.exports = class Results {
         oneUserQuery.on('end', () => client.end());
         oneUserQuery.on('error', err => {
           client.end();
-          logger.errorLog(`Results.switchSpotsForPerformance: oneUserQuery ${err}`);
+          logger.errorLog('Results.switchSpotsForPerformance: oneUserQuery', err);
         });
       });
 
       switchQuery.on('error', err => {
         client.end();
-        logger.errorLog(`Results.switchSpotsForPerformance: switchQuery ${err}`);
+        logger.errorLog('Results.switchSpotsForPerformance: switchQuery', err);
       });
     });
 
     resultsQuery.on('error', err => {
-      logger.errorLog(`Results.switchSpotsForPerformance: ${err}`);
+      logger.errorLog('Results.switchSpotsForPerformance', err);
       client.end();
     });
   }

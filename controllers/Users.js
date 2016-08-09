@@ -24,7 +24,7 @@ function UsersController() {
       res.json({ success: true });
     })
     .catch((err) => {
-      logger.errorLog(`Users.close ${err}`);
+      logger.errorLog('Users.close', err);
       res.status(500).send();
     });
   };
@@ -50,7 +50,7 @@ function UsersController() {
       res.json({ success: true });
     })
     .catch((err) => {
-      logger.errorLog(`Users.manage ${err}`);
+      logger.errorLog('Users.manage', err);
       res.status(500).send();
     });
   };
@@ -77,7 +77,7 @@ function UsersController() {
           });
         })
         .catch((err) => {
-          logger.errorLog(`Users.show ${err}`);
+          logger.errorLog('Users.show', err);
           res.render('static-pages/error');
         });
     }
@@ -94,7 +94,7 @@ function UsersController() {
       });
     })
     .catch((err) => {
-      logger.errorLog(`Users.showIndividualManage ${err}`);
+      logger.errorLog('Users.showIndividualManage', err);
       res.render('static-pages/error');
     });
   };
