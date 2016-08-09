@@ -18,7 +18,7 @@ function UsersController() {
       voluntary: false
     };
 
-    Promise.all([Manage.create(manageAttributes), Spot.close(spotId), User.setEligibility(nameNumber, false)])
+    Promise.all([Manage.create(manageAttributes), Spot.setOpenClose(spotId, false), User.setEligibility(nameNumber, false)])
     .then(() => {
       logger.adminActionLog(`close spot (${spotId}) for ${nameNumber} for performance id: ${performanceId}`);
       res.json({ success: true });
@@ -42,7 +42,7 @@ function UsersController() {
     //If the manage was voluntarily taken by the user (elected to open spot), they're now eligible to challenge
     Promise.all([
       Manage.create(manageAttributes),
-      Spot.open(spotId),
+      Spot.setOpenClose(spotId, true),
       User.setEligibility(nameNumber, voluntary)
     ])
     .then(() => {

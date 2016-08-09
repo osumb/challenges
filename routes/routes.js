@@ -49,9 +49,6 @@ router.setup = (app) => {
   app.get('/login', Sessions.login);
   app.get('/logout', Sessions.logout);
 
-  //Spots Controller
-  app.post('/spots/open', ensureAdmin, Spots.open);
-
   //Users Controller
   app.get('/:nameNumber', [ensureAuthAndNameNumberRoute, currentPerformance], Users.show);
   app.get('/users/manage', ensureAdmin, Users.showManage);
