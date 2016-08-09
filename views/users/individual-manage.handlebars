@@ -7,7 +7,7 @@
     <h2>Current Information:</h2>
     <h3>{{spotsIsOpen "" managedUserCurrent.spotOpen }}</h3>
     <h3>Most recent manage action:
-      {{usersIndividualManageActionItem managedUserCurrent.name managedUserCurrent.reason managedUserCurrent.voluntary}}
+      {{usersIndividualManageActionItem managedUserCurrent.name managedUserCurrent.performanceName managedUserCurrent.reason managedUserCurrent.voluntary}}
     </h3>
     {{#unless managedUserCurrent.spotOpen }}
       <div class="IndividualManage-manage">
@@ -56,8 +56,8 @@
       <h3>Previous Action Items: </h3>
     {{/if}}
     {{#each managedUserOld }}
-      <h4>For the {{ this.performanceName }}
-        {{usersIndividualManageActionItem this.name this.reason this.voluntary}}
+      <h4>
+        {{usersIndividualManageActionItem this.name this.performanceName this.reason this.voluntary}}
       </h4>
     {{/each}}
   </div>
