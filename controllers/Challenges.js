@@ -34,7 +34,7 @@ function ChallengersController() {
       res.render('challenges/new', {
         user: req.user,
         challengeableUsers: data,
-        nextPerformance: req.session.currentPerformance
+        performanceName: req.session.currentPerformance && req.session.currentPerformance.name
       })
     )
     .catch((err) => {
