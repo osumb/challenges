@@ -14,7 +14,10 @@ Great question! To be able to make a challenge, you must meet the following crit
 - [ ] The person you're challenging is on the same instrument and part as you
 - [ ] You aren't ineligible for any reason (disciplinary, failed music check, etc)
 
-_Note: Right now there is a distinction of part in the mellophone section, but parts don't matter for a mellophone challenge. That might change next year though_
+In sql terms, that means:
+- [ ] The user has already made a challenge AND
+- [ ] The user made a voluntary manage action (spot was opened on purpose) OR
+- [ ] The user is an alternate with not manage action or the last manage action was the closing of the user's spot
 
 ## Normal Challenge
 
