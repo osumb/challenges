@@ -11,7 +11,6 @@ const ensureAdmin = auth.ensureAdmin;
 const ensureAuthAndNameNumberRoute = auth.ensureAuthAndNameNumberRoute;
 const ensureEvalAbility = auth.ensureEvalAbility;
 const passport = auth.passport;
-const refreshCurrentPerformance = middleware.refreshCurrentPerformance;
 
 const Challenges = new controllers.Challenges();
 const Performances = new controllers.Performances();
@@ -22,8 +21,8 @@ const Users = new controllers.Users();
 
 router.setup = (app) => {
   //Challenges Controller
-  app.get('/performances/challenges/new', [ensureAuthenticated, refreshCurrentPerformance], Challenges.new);
-  app.post('/performances/challenge', [ensureAuthenticated, refreshCurrentPerformance], Challenges.create);
+  app.get('/performances/challenges/new', ensureAuthenticated, Challenges.new);
+  app.post('/performances/challenge', ensureAuthenticated, Challenges.create);
 
   //Performance Controller
   app.get('/performances', ensureAuthenticated, Performances.showAll);
@@ -38,7 +37,7 @@ router.setup = (app) => {
   app.post('/results/approve', ensureAdmin, Results.approve);
 
   //Static Pages Controllers
-  app.get('/', refreshCurrentPerformance, StaticPages.home);
+  app.get('/', StaticPages.home);
   app.get('/noauth', StaticPages.noAuth);
 
   //Sessions Controller
