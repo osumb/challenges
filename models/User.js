@@ -60,6 +60,7 @@ class User {
       });
       query.on('end', () => {
         client.end();
+        resolve(null);
       });
       query.on('error', (err) => {
         client.end();
