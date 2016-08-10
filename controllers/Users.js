@@ -62,18 +62,24 @@ function UsersController() {
   };
 
   this.show = (req, res) => {
+    const performanceId = req.session.currentPerformance && req.session.currentPerformance.id;
+
     if (req.user.admin) {
       res.render('users/admin', { user: req.user, currentPerformance: req.session.currentPerformance });
     } else {
-      Promise.all([Result.findAllForUser(req.user.nameNumber), Challenge.findForUser(req.user.nameNumber)])
+      Promise.all([
+        Challenge.findForUser(req.user.nameNumber),
+        Result.findAllForUser(req.user.nameNumber),
+        User.canChallengeForPerformance(req.user, performanceId)
+      ])
         .then(data => {
-          const results = data[0], challenge = data[1];
+          const canChallenge = data[2], challenge = data[0], results = data[1];
 
           res.render('users/show', {
-            user: req.user,
+            canChallenge,
             challenge,
             results,
-            currentPerformance: req.session.currentPerformance
+            user: req.user
           });
         })
         .catch((err) => {
