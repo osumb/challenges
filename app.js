@@ -3,6 +3,7 @@ const cookieParser = require('cookie-parser');
 const express = require('express');
 const favicon = require('serve-favicon');
 const logger = require('morgan');
+const middleware = require('./middleware');
 const passport = require('./auth').passport;
 const path = require('path');
 const Redis = require('redis');
@@ -55,6 +56,7 @@ app.use('/bower_components', express.static(path.join(__dirname, '/bower_compone
 //routing
 app.use('/', routes);
 
+app.use(middleware.refreshCurrentPerformance);
 routes.setup(app);
 
 // catch 404 and forward to error handler

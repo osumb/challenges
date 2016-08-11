@@ -43,10 +43,11 @@ class Challenge {
     });
   }
 
-  findAllChallengeablePeopleForUser(user) {
+  findAllChallengeablePeopleForUser(user, performanceId) {
     // eslint-disable-next-line
     const sql = queries.challengeablePeople;
 
+    console.log([user.instrument, user.part, user.spotId, user.nameNumber, performanceId]);
     return new Promise((resolve, reject) => {
       const client = utils.db.createClient();
       const users = [];
@@ -54,7 +55,7 @@ class Challenge {
       client.connect();
       client.on('error', (err) => reject(err));
 
-      const query = client.query(sql, [user.instrument, user.part]);
+      const query = client.query(sql, [user.instrument, user.part, user.spotId, user.nameNumber, performanceId]);
 
       query.on('row', (dbUser) => users.push(this.parseChallengeAblePerson(dbUser)));
       query.on('end', () => {

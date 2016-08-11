@@ -1,6 +1,33 @@
-{{#if nextPerformance}}
-  <h1>Who do you want to challenge for the {{nextPerformance.name}}?</h1>
-  {{> challenge-select}}
+{{#if this.challengeableUsers.length}}
+  <h1>Who do you want to challenge for the {{performanceName}}?</h1>
+  <h2>People you can challenge</h2>
+  <select class="ChallengeSelect form-control">
+    {{#each this.challengeableUsers}}
+          {{#if this.spotOpen}}
+            {{#unless this.challengeFull}}
+              <option value="{{this.spotId}} open">
+                {{this.spotId}} (open - challenged {{this.challengedCount}} time(s))
+              </option>
+            {{else}}
+              <option disabled>
+                {{this.spotId}} (open - challenged {{this.challengedCount}} time(s))
+              </option>
+            {{/unless}}
+          {{else}}
+            {{#unless this.challengeFull}}
+              <option value="{{this.spotId}} {{this.name}}">
+                {{this.spotId}}: {{this.name}}
+              </option>
+            {{else}}
+              <option disabled>
+                {{this.spotId}}: {{this.name}}
+              </option>
+            {{/unless}}
+          {{/if}}
+    {{/each}}
+    <input type="submit" class="ChallengeSelect-submit btn btn-default" value="Challenge"/>
+  </select>
+  <script src="/public/js/challenges/challenge-select.js"></script>
 {{else}}
-  <h1>Sorry! There is currently no performance for which to make a challenge</h1>
+  <h2>Sorry, you can't make a challenge right now!</h2>
 {{/if}}

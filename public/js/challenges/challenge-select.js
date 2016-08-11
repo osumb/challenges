@@ -6,7 +6,7 @@ $(submitButtonClass).on('click', () => {
   const spotId = optionVals[0], name = optionVals[1];
 
   $(submitButtonClass).prop('disabled', true);
-  fetch(endPointUrl(), {
+  fetch('performances/challenge', {
     headers: {
       'Accept': 'application/json',
       'Content-Type': 'application/json'
@@ -51,5 +51,3 @@ const banner = (message) => {
   $('.bannerMessage').remove();
   $('.navbar').after(`<h3 class="bannerMessage">${message}</h3>`);
 };
-
-const endPointUrl = () => `${window.location.pathname.split('/').splice(0, 3).join('/')}/challenges`;

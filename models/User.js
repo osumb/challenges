@@ -17,6 +17,35 @@ class User {
     return 'users';
   }
 
+  canChallengeForPerformance(user, performanceId) {
+    return new Promise((resolve, reject) => {
+      const client = utils.db.createClient();
+      const sql = queries.canChallengeForPerformance;
+
+      client.connect();
+      client.on('error', reject);
+
+      const query = client.query(sql, [user.nameNumber, performanceId, user.spotId]);
+
+      // With this query, no rows means that the user can't challenge, so if the row event
+      // Triggers, that means the user can challenge and we'll resolve true
+      query.on('row', () => {
+        client.end();
+        resolve(true);
+      });
+
+      query.on('end', () => {
+        client.end();
+        resolve(false);
+      });
+
+      query.on('error', (err) => {
+        reject(err);
+        client.end();
+      });
+    });
+  }
+
   findForIndividualManage(nameNumber) {
     return new Promise((resolve, reject) => {
       const client = utils.db.createClient();

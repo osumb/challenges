@@ -3,6 +3,7 @@ const fs = require('fs');
 const path = require('path');
 
 module.exports = {
+  canChallengeForPerformance: fs.readFileSync(path.resolve(__dirname, 'can-challenge-for-performance.sql')).toString(),
   challengeablePeople: fs.readFileSync(path.resolve(__dirname, 'challengeable-people.sql')).toString(),
   challengesForCSV: fs.readFileSync(path.resolve(__dirname, 'challenges-for-csv.sql')).toString(),
   findForIndividualManage: fs.readFileSync(path.resolve(__dirname, 'find-for-individual-manage.sql')).toString(),

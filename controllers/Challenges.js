@@ -6,7 +6,7 @@ const Challenge = new models.Challenge();
 function ChallengersController() {
   this.create = (req, res) => {
     const { spotId } = req.body;
-    const userId = req.user.nameNumber, performanceId = req.params.performanceId;
+    const userId = req.user.nameNumber, performanceId = req.session.currentPerformance.id;
 
     logger.challengesLog(`${req.user.name} sent request to challenge ${spotId}`);
     Challenge.create(userId, spotId, performanceId)
@@ -27,12 +27,14 @@ function ChallengersController() {
   };
 
   this.new = (req, res) => {
-    Challenge.findAllChallengeablePeopleForUser(req.user)
+    const performanceId = req.session.currentPerformance && req.session.currentPerformance.id;
+
+    Challenge.findAllChallengeablePeopleForUser(req.user, performanceId)
     .then((data) =>
       res.render('challenges/new', {
         user: req.user,
         challengeableUsers: data,
-        nextPerformance: req.session.currentPerformance
+        performanceName: req.session.currentPerformance && req.session.currentPerformance.name
       })
     )
     .catch((err) => {
