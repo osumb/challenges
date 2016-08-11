@@ -1,11 +1,9 @@
-bower_components/*
 experiments/*
 node_modules/*
 bin/*
 spec/fixtures/*
 spec/support/*
 LICENSE
-bower.json
 package.json
 README.md
 npm-debug.log
