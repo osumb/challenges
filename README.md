@@ -34,6 +34,10 @@ That being said, run the dev server:
 ```bash
 npm run dev
 ```
+If you want webpack to watch your public js/scss, run:
+```bash
+webpack --watch
+```
 
 Open [http://localhost:3000](http://localhost:3000) and enjoy!
 
