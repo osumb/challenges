@@ -1,3 +1,4 @@
+const banner = require('../utils/banner');
 const selectClass = '.ChallengeSelect';
 const submitButtonClass = '.ChallengeSelect-submit';
 
@@ -46,8 +47,3 @@ $(submitButtonClass).on('click', () => {
     banner(errorMessage);
   });
 });
-
-const banner = (message) => {
-  $('.bannerMessage').remove();
-  $('.navbar').after(`<h3 class="bannerMessage">${message}</h3>`);
-};

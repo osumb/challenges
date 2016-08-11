@@ -1,3 +1,4 @@
+const banner = require('../utils/banner');
 const inputs = {
   performanceName: $('.performanceName'),
   performanceDate: $('.performanceDate'),
@@ -40,11 +41,6 @@ const clearInput = () => {
   inputs.performanceDate.val('');
   inputs.openAt.val('');
   inputs.closeAt.val('');
-};
-
-const banner = (message) => {
-  $('.bannerMessage').remove();
-  $('.navbar').after(`<h3 class="bannerMessage">${message}</h3>`);
 };
 
 const validInput = () => {
