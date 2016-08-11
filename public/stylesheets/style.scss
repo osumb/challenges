@@ -24,6 +24,6 @@ a {
   flex-grow: 1;
 }
 
-@import './newPerformance.scss';
-@import './resultsApprove.scss';
+@import './performances/new.scss';
+@import './results/approve.scss';
 @import './users/make-ineligible.scss';
