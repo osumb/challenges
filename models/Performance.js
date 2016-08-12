@@ -122,7 +122,7 @@ module.exports = class Performance {
     });
   }
 
-  findNextOpenAt() {
+  findNextOrOpenWindow() {
     return new Promise((resolve, reject) => {
       const client = utils.db.createClient();
       const queryString = 'SELECT * FROM performances WHERE $1 < openAt OR (openAt < $1 AND $1 < closeAt) ORDER BY openAt DESC LIMIT 1';
