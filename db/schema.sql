@@ -323,6 +323,11 @@ CREATE TABLE manage (
   modified_at timestamp NOT NULL
 );
 
+CREATE TRIGGER manage_created_stamp BEFORE INSERT ON manage
+FOR EACH ROW EXECUTE PROCEDURE created_stamp();
+
+CREATE TRIGGER manage_modified_stamp BEFORE INSERT ON manage
+FOR EACH ROW EXECUTE PROCEDURE modified_stamp();
 ----------------------------------------
 -- ResultsApprovePermission
 ----------------------------------------
