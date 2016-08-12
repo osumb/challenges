@@ -1,3 +1,5 @@
+const banner = require('../utils/banner');
+
 const divClass = '.ResultsEvaluation';
 const firstNNClass = '.ResultsEvaluation-firstNameNumber';
 const secondNNClass = '.ResultsEvaluation-secondNameNumber';
@@ -39,8 +41,3 @@ $(submitClass).on('click', (a) => {
     banner('We\'re sorry! There was a problem with your request. We\'re working to resolve the issue');
   });
 });
-
-const banner = (message) => {
-  $('.bannerMessage').remove();
-  $('.navbar').after(`<h3 class="bannerMessage">${message}</h3>`);
-};

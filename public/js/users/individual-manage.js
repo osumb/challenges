@@ -1,3 +1,5 @@
+const banner = require('../utils/banner');
+
 const closeButtonClass = '.IndividualManage-button-close';
 const mainClass = '.IndividualManage';
 const openButtonClass = '.IndividualManage-button-open';
@@ -88,7 +90,3 @@ $(closeButtonClass).on('click', () => {
 
 const getPerformanceId = () => parseInt($(performanceSelectClass).val(), 10);
 const getNameNumberSpotId = () => $(mainClass).attr('class').split(' ').slice(2);
-const banner = (message) => {
-  $('.bannerMessage').remove();
-  $('.navbar').after(`<h3 class="bannerMessage">${message}</h3>`);
-};

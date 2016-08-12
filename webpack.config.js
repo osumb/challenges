@@ -6,11 +6,11 @@ var webpack = require('webpack');
 
 module.exports = {
   context: path.join(__dirname, 'public'),
-  entry: './stylesheets/style.scss',
+  entry: './index.js',
 
   output: {
     path: path.resolve(__dirname, 'dist'),
-    filename: 'style.css'
+    filename: 'bundle.js'
   },
 
   module: {
@@ -18,11 +18,26 @@ module.exports = {
       {
         test: /\.s?css$/,
         loader: ExtractTextPlugin.extract('style', 'css', 'autoprefixer', 'sass')
+      },
+      {
+        test: /\.js$/,
+        exclude: /(node_modules)/,
+        loader: 'babel',
+        query: {
+          presets: ['es2015']
+        }
       }
     ]
   },
 
   plugins: [
-    new ExtractTextPlugin('style.css')
+    new ExtractTextPlugin('style.css'),
+    new webpack.optimize.UglifyJsPlugin({
+      compress: { warnings: false}
+    }),
+    new webpack.ProvidePlugin({
+      $: 'jquery',
+      jQuery: 'jquery'
+    })
   ]
 };

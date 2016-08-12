@@ -1,7 +1,5 @@
 # Deploying Osumb Challenges
 
-When you merge a PR to the staging branch, it will trigger a build for the [staging app](osumbchallenges.herokuapp.com)
-
 When you merge a PR to the master branch it will trigger a build for the [production app](osumbchallenges.herokuapp.com)
 
 Easy Right? Heroku is cool like that.
