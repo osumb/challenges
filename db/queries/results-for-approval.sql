@@ -1,19 +1,34 @@
-SELECT t1.name AS nameOne, t2.name AS nameTwo, t1.spotId AS spotId, t1.id AS resultId, t1.nameNumber AS nameNumberOne,
-       t2.nameNumber AS nameNumberTwo, t1.comments AS firstComments, t2.comments AS secondComments, t1.winnerId,
-       t1.performanceId, t1.performanceName
-FROM
-  (
-    SELECT u1.name, r1.id, r1.spotId, u1.nameNumber, r1.firstComments AS comments, r1.winnerId, r1.pending,
-    p.id AS performanceId, p.name AS performanceName
-    FROM results AS r1, users AS u1, performances AS p
-    WHERE r1.firstNameNumber = u1.nameNumber AND r1.needsApproval AND r1.performanceId = p.id AND NOT r1.pending
-  ) t1
-LEFT JOIN
-  (
-    SELECT u2.name, r2.id, u2.nameNumber, r2.secondComments AS comments
-    FROM results AS r2, users AS u2
-    WHERE r2.secondNameNumber = u2.nameNumber
-  ) t2
-ON
-  t1.id = t2.id
-ORDER BY t1.performanceId;
+SELECT
+  user1.name AS nameone,
+  user2.name AS nametwo,
+  user1.spotid AS spotid,
+  user1.id AS resultid,
+  user1.namenumber AS namenumberone,
+  user2.namenumber AS namenumbertwo,
+  user1.comments AS firstcomments,
+  user2.comments AS secondcomments,
+  user1.winnerid,
+  user1.performanceid,
+  user1.performancename
+FROM (
+  SELECT
+    u1.name,
+    r1.id,
+    r1.spotid,
+    u1.namenumber,
+    r1.firstcomments AS comments,
+    r1.winnerid, p.id AS performanceid,
+    p.name AS performancename,
+    u1.instrument AS instrument,
+    u1.part AS part
+  FROM performances AS p, results AS r1, users AS u1
+  WHERE r1.firstnamenumber = u1.namenumber AND r1.performanceid = p.id AND r1.needsapproval AND NOT r1.pending
+) user1
+JOIN (
+  SELECT u2.name, r2.id, u2.nameNumber, r2.secondComments AS comments
+  FROM results AS r2, users AS u2
+  WHERE r2.secondNameNumber = u2.nameNumber
+) user2
+ON user1.id = user2.id
+WHERE (user1.instrument = $1 OR $1 = 'Any') AND (user1.part = $2 OR $2 = 'Any')
+ORDER BY user1.performanceId;

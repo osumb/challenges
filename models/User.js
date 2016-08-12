@@ -76,7 +76,7 @@ class User {
   findByNameNumber(nameNumber) {
     return new Promise((resolve, reject) => {
       const client = utils.db.createClient();
-      const queryString = 'SELECT * FROM users WHERE nameNumber = $1;';
+      const queryString = 'SELECT * FROM users LEFT OUTER JOIN results_approve ON users.nameNumber = results_approve.usernamenumber WHERE nameNumber = $1';
 
       client.connect();
       client.on('error', (err) => reject(err));
@@ -127,14 +127,14 @@ class User {
 
   parse(user) {
     return {
-      admin: user.admin,
-      eligible: user.eligible,
+      admin: user.role === 'Admin' || user.role === 'Director',
+      director: user.role === 'Director',
       instrument: user.instrument,
       name: user.name,
       nameNumber: user.namenumber,
       part: user.part,
       spotId: user.spotid,
-      squadLeader: user.squadleader
+      squadLeader: user.role === 'Squad Leader'
     };
   }
 

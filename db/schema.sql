@@ -8,6 +8,7 @@ DROP TABLE IF EXISTS results CASCADE;
 DROP TABLE IF EXISTS spots CASCADE;
 DROP TABLE IF EXISTS performances CASCADE;
 DROP TABLE IF EXISTS manage CASCADE;
+DROP TABLE IF EXISTS results_approve CASCADE;
 DROP TYPE IF EXISTS part;
 DROP TYPE IF EXISTS instrument;
 DROP TYPE IF EXISTS role;
@@ -15,28 +16,6 @@ DROP TYPE IF EXISTS role;
 ----------------------------------------
 -- FUNCTIONS
 ----------------------------------------
-DROP FUNCTION IF EXISTS forfeit_spot(userNameNumber varchar(256));
-CREATE OR REPLACE FUNCTION forfeit_spot(userNameNumber varchar(256))
-RETURNS void AS $$
-DECLARE sId char(3);
-BEGIN
-  SELECT spotId INTO sId FROM users WHERE nameNumber = userNameNumber;
-  UPDATE spots SET open = TRUE WHERE id = sId;
-  UPDATE users SET eligible = TRUE WHERE nameNumber = userNameNumber;
-END;
-$$ LANGUAGE plpgsql;
-
-DROP FUNCTION IF EXISTS flag_current_performance();
-CREATE OR REPLACE FUNCTION flag_current_performance()
-RETURNS void AS $$
-DECLARE performanceId int;
-BEGIN
-  SELECT id INTO performanceId FROM performances WHERE now() at time zone 'utc' < closeAt ORDER BY openAt ASC LIMIT 1;
-  UPDATE performances SET current = FALSE WHERE id <> performanceId;
-  UPDATE performances SET current = TRUE WHERE id = performanceId;
-END;
-$$ LANGUAGE plpgsql;
-
 DROP FUNCTION IF EXISTS switch_spots_based_on_results_one_user(resultIds int[]);
 CREATE OR REPLACE FUNCTION switch_spots_based_on_results_one_user(resultIds int[])
 RETURNS VOID AS $$
@@ -213,21 +192,21 @@ $$ LANGUAGE plpgsql;
 -- PARTS
 ----------------------------------------
 CREATE TYPE part AS ENUM (
-  'First', 'Second', 'Solo', 'Efer', 'Flugel', 'Bass'
+  'Any', 'Bass', 'Cymbals', 'Efer', 'First', 'Flugel', 'Second', 'Snare', 'Solo', 'Tenor'
 );
 
 ----------------------------------------
 -- INSTRUMENTS
 ----------------------------------------
 CREATE TYPE instrument AS ENUM (
-  'Trumpet', 'Mellophone', 'Trombone', 'Baritone', 'Snare', 'Tenor', 'Cymbals', 'Bass', 'Sousaphone'
+  'Any', 'Baritone', 'Mellophone', 'Percussion', 'Sousaphone', 'Trombone', 'Trumpet'
 );
 
 ----------------------------------------
 -- ROLES
 ----------------------------------------
 CREATE TYPE role AS ENUM (
-  'Member', 'Admin', 'Director', 'StudentStaff', 'SquadLeader'
+  'Admin', 'Director', 'Member', 'Squad Leader'
 );
 
 ----------------------------------------
@@ -252,15 +231,12 @@ FOR EACH ROW EXECUTE PROCEDURE modified_stamp();
 ----------------------------------------
 CREATE TABLE users (
   nameNumber varchar(256) PRIMARY KEY,
-  spotId varchar(3) references spots(id),
-  name varchar(256) NOT NULL,
-  password varchar(256) NOT NULL,
   instrument instrument,
+  name varchar(256) NOT NULL,
   part part,
-  eligible boolean NOT NULL DEFAULT FALSE,
-  squadLeader boolean NOT NULL DEFAULT FALSE,
-  admin boolean NOT NULL DEFAULT FALSE,
-  alternate boolean NOT NULL DEFAULT FALSE,
+  password varchar(256) NOT NULL,
+  role role,
+  spotId varchar(3) references spots(id),
   created_at timestamp NOT NULL,
   modified_at timestamp NOT NULL
 );
@@ -347,8 +323,20 @@ CREATE TABLE manage (
   modified_at timestamp NOT NULL
 );
 
-CREATE TRIGGER manage_created_stamp BEFORE INSERT ON manage
+----------------------------------------
+-- ResultsApprovePermission
+----------------------------------------
+CREATE TABLE results_approve (
+  id serial PRIMARY KEY,
+  userNameNumber varchar(256) references users(nameNumber) NOT NULL,
+  instrument instrument,
+  part part,
+  created_at timestamp NOT NULL,
+  modified_at timestamp NOT NULL
+);
+
+CREATE TRIGGER results_approve_created_stamp BEFORE INSERT ON results_approve
 FOR EACH ROW EXECUTE PROCEDURE created_stamp();
 
-CREATE TRIGGER manage_modified_stamp BEFORE INSERT ON manage
+CREATE TRIGGER results_approve_modified_stamp BEFORE INSERT ON results_approve
 FOR EACH ROW EXECUTE PROCEDURE modified_stamp();
