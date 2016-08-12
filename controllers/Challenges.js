@@ -11,7 +11,6 @@ function ChallengersController() {
     logger.challengesLog(`${req.user.name} sent request to challenge ${spotId}`);
     Challenge.create(userId, spotId, performanceId)
       .then(() => {
-        req.user.eligible = false;
         email.sendChallengeSuccessEmail({
           nameNumber: 'tareshawty.3', // TODO: actually email the real person
           performanceName: req.session.currentPerformance.name,

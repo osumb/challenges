@@ -63,16 +63,8 @@ function ensureAdmin(req, res, next) {
   return res.redirect('/noauth');
 }
 
-function ensureEligible(req, res, next) {
-  if (isAuthenticated(req) && req.user.eligible) {
-    return next();
-  } else {
-    return res.redirect('/');
-  }
-}
-
 function ensureEvalAbility(req, res, next) {
-  if (isAuthenticated(req) && (req.user.squadLeader && !req.user.eligible) || req.user.admin) {
+  if (isAuthenticated(req) && (req.user.squadLeader) || req.user.admin) {
     return next();
   } else {
     return res.redirect('/');
@@ -82,7 +74,6 @@ module.exports = {
   ensureAuthenticated,
   ensureAdmin,
   ensureAuthAndNameNumberRoute,
-  ensureEligible,
   ensureEvalAbility,
   passport
 };

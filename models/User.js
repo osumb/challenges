@@ -127,14 +127,14 @@ class User {
 
   parse(user) {
     return {
-      admin: user.admin,
-      eligible: user.eligible,
+      admin: user.role === 'Admin' || user.role === 'Director',
+      director: user.role === 'Director',
       instrument: user.instrument,
       name: user.name,
       nameNumber: user.namenumber,
       part: user.part,
       spotId: user.spotid,
-      squadLeader: user.squadleader
+      squadLeader: user.role === 'Squad Leader'
     };
   }
 
