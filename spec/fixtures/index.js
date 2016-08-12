@@ -5,10 +5,11 @@
 const fakeChallengeList = require('./fakeChallengeList.js');
 const fakePerformances = require('./fakePerformances.js');
 const fakeResults = require('./fakeResults.js');
+const fakeResultsApprove = require('./fakeResultPermission.js');
 const fakeSpots = require('./fakeSpots.js');
 const fakeUsers = require('./fakeUsers.js');
 
-//the order of columns in execl file is Spot, Name, Instrument, Part, Name.#, Eligible, squadLeader, admin, password
+// the order of columns in execl file is Spot, Name, Instrument, Part, Name.#, Eligible, squadLeader, admin, password
 // function getUsersFromExcelFile(filePath) {
 //   filePath = filePath || path.resolve(__dirname, 'FakeUsers.xlsx');
 //   const parseObj = xlsx.parse(filePath);
@@ -24,21 +25,14 @@ const fakeUsers = require('./fakeUsers.js');
 //       UserObj.instrument = e[2];
 //       UserObj.part = e[3];
 //       UserObj.nameNumber = e[4];
-//       UserObj.eligible = e[5] || false;
-//       UserObj.squadLeader = e[6] || false;
-//       UserObj.admin = e[7] || false;
-//       if (UserObj.spotId && UserObj.spotId.match(/[A-Z]+|[1-9]+/g)[1] > 12) {
-//         UserObj.alternate = true;
-//       } else {
-//         UserObj.alternate = false;
-//       }
-//       UserObj.password = bcrypt.hashSync(e[8], bcrypt.genSaltSync(1)); // eslint-disable-line no-sync
+//       UserObj.role = e[5];
+//       UserObj.password = bcrypt.hashSync(e[6], bcrypt.genSaltSync(1)); // eslint-disable-line no-sync
 //       userArr.push(UserObj);
 //     }
 //   });
 //   return userArr;
 // }
-//
+
 // function getSpotsFromExcelFile(filePath) {
 //   const path = filePath || config.db.fakeSpotDataPath;
 //   const parseObj = xlsx.parse(path);
@@ -104,6 +98,7 @@ module.exports = {
   fakeChallengeList,
   fakePerformances,
   fakeResults,
+  fakeResultsApprove,
   fakeUsers,
   fakeSpots
 };

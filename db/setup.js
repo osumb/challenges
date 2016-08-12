@@ -12,13 +12,15 @@ client.connect();
 const challenges = mockData.fakeChallengeList;
 const performances = mockData.fakePerformances;
 const results = mockData.fakeResults;
+const resultsApprove = mockData.fakeResultsApprove;
 const spots = mockData.fakeSpots;
 const users = mockData.fakeUsers;
 const insertChallengeQueryString = 'INSERT INTO challenges (performanceId, userNameNumber, spotId) VALUES($1, $2, $3)';
 const insertPerformanceQueryString = 'INSERT INTO performances (name, openAt, closeAt, performDate, current) VALUES($1, $2, $3, $4, $5)';
 const insertResultQueryString = 'INSERT INTO results (performanceId, spotId, firstNameNumber, secondNameNumber, firstComments, secondComments, winnerId, pending) VALUES($1, $2, $3, $4, $5, $6, $7, $8)';
+const insertResultsApproveQueryString = 'INSERT INTO results_approve (userNameNumber, instrument, part) VALUES($1, $2, $3)';
 const insertSpotQueryString = 'INSERT INTO spots VALUES ($1, $2, $3)';
-const insertUserQueryString = 'INSERT INTO users VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)';
+const insertUserQueryString = 'INSERT INTO users VALUES ($1, $2, $3, $4, $5, $6, $7)';
 
 function createDb(value, cb) {
   const sql = fs.readFileSync(path.resolve(__dirname, 'schema.sql')).toString(); // eslint-disable-line no-sync
@@ -48,6 +50,12 @@ function insertResult(result, cb) {
   });
 }
 
+function insertResultsApprove(user, cb) {
+  client.query(insertResultsApproveQueryString, [user.userNameNumber, user.instrument, user.part], (err) => {
+    cb(err);
+  });
+}
+
 function insertSpot(spot, cb) {
   client.query(insertSpotQueryString, [spot.id, spot.open, spot.challengedAmount], (err) => {
     cb(err);
@@ -56,7 +64,7 @@ function insertSpot(spot, cb) {
 
 function insertUser(user, cb) {
   client.query(insertUserQueryString,
-    [user.nameNumber, user.spotId, user.name, user.password, user.instrument, user.part, user.eligible, user.squadLeader, user.admin, user.alternate],
+    [user.nameNumber, user.instrument, user.name, user.part, user.password, user.role, user.spotId],
     (err) => {
       cb(err);
     }
@@ -96,6 +104,12 @@ async.map(challenges, insertChallenge, (err) => {
 async.map(results, insertResult, (err) => {
   if (err) {
     console.log('Error inserting results', err);
+  }
+});
+
+async.map(resultsApprove, insertResultsApprove, (err) => {
+  if (err) {
+    console.log('Error inserting resultsApprove', err);
   }
   client.end();
 });
