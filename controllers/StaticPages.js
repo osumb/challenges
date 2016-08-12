@@ -11,7 +11,7 @@ function StaticPagesController() {
         }))
       .catch((err) => {
         logger.errorLog('StaticPages.home', err);
-        res.render('static-pages/error');
+        res.render('static-pages/error', { user: req.user });
       });
   };
 

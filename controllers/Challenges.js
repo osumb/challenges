@@ -38,7 +38,7 @@ function ChallengersController() {
     )
     .catch((err) => {
       logger.errorLog('Challenges.new', err);
-      res.render('static-pages/error');
+      res.render('static-pages/error', { user: req.user });
     });
   };
 }
