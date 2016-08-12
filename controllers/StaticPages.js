@@ -4,7 +4,7 @@ const Performance = new models.Performance();
 
 function StaticPagesController() {
   this.home = (req, res) => {
-    Performance.findNextWithinWindow()
+    Performance.findNextOpenAt()
       .then((performance) => res.render('static-pages/home',
         { user: req.user,
           performance: Performance.format(performance, 'MMMM Do, h:mm:ss a')
