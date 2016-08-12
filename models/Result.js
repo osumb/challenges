@@ -100,7 +100,7 @@ module.exports = class Results {
     });
   }
 
-  findAllForApproval() {
+  findAllForApproval(user) {
     const client = db.createClient();
     const sql = queries.resultsForApproval;
     const results = [];
@@ -109,7 +109,7 @@ module.exports = class Results {
       client.connect();
       client.on('error', (err) => reject(err));
 
-      const query = client.query(sql);
+      const query = client.query(sql, [user.instrument, user.part]);
 
       query.on('row', (result) => results.push(this.parseForAdmin(result)));
       query.on('end', () => {
