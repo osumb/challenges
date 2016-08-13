@@ -80,7 +80,7 @@ function UsersController() {
         })
         .catch((err) => {
           logger.errorLog('Users.show', err);
-          res.render('static-pages/error');
+          res.render('static-pages/error', { user: req.user });
         });
     }
   };
@@ -97,7 +97,7 @@ function UsersController() {
     })
     .catch((err) => {
       logger.errorLog('Users.showIndividualManage', err);
-      res.render('static-pages/error');
+      res.render('static-pages/error', { user: req.user });
     });
   };
 

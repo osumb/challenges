@@ -34,7 +34,7 @@ function ResultsController() {
     })
     .catch((err) => {
       logger.errorLog('Results.getForApproval', err);
-      res.render('static-pages/error');
+      res.render('static-pages/error', { user: req.user });
     });
   };
 
@@ -67,7 +67,7 @@ function ResultsController() {
       })
       .catch((err) => {
         logger.errorLog('Results.showForEvaluation', err);
-        res.render('static-pages/error');
+        res.render('static-pages/error', { user: req.user });
       });
   };
 

@@ -75,8 +75,9 @@ if (app.get('env') === 'development') {
   app.use((err, req, res) => {
     res.status(err.status || 500);
     res.render('static-pages/error', {
+      error: err,
       message: err.message,
-      error: err
+      user: req.user
     });
   });
 }
@@ -86,8 +87,9 @@ if (app.get('env') === 'development') {
 app.use((err, req, res) => {
   res.status(err.status || 500);
   res.render('static-pages/error', {
+    error: {},
     message: err.message,
-    error: {}
+    user: req.user
   });
 });
 

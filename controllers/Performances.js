@@ -36,7 +36,7 @@ function PerformanceController() {
       .then((performances) => res.json(performances))
       .catch((err) => {
         logger.errorLog('Performances.showAll', err);
-        res.render('static-pages/error');
+        res.render('static-pages/error', { user: req.user });
       });
   };
 }
