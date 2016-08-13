@@ -76,7 +76,18 @@ class User {
   findByNameNumber(nameNumber) {
     return new Promise((resolve, reject) => {
       const client = utils.db.createClient();
-      const queryString = 'SELECT * FROM users LEFT OUTER JOIN results_approve ON users.nameNumber = results_approve.usernamenumber WHERE nameNumber = $1';
+      const queryString = `
+        SELECT
+          name,
+          namenumber,
+          COALESCE(u.instrument, ra.instrument) AS instrument,
+          COALESCE(u.part, ra.part) AS part,
+          password,
+          role,
+          spotid
+        FROM users AS u LEFT OUTER JOIN results_approve AS ra ON u.nameNumber = ra.usernamenumber
+        WHERE nameNumber = $1
+      `;
 
       client.connect();
       client.on('error', (err) => reject(err));
