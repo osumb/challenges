@@ -1,7 +1,7 @@
 const queries = require('../db/queries');
 const utils = require('../utils');
 
-const attributes = ['nameNumber', 'spotId', 'name', 'password', 'instrument', 'part', 'eligible', 'squadLeader', 'admin', 'alternate'];
+const attributes = ['nameNumber', 'instrument', 'name', 'part', 'password', 'role', 'spotId'];
 
 class User {
 
