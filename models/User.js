@@ -1,7 +1,7 @@
 const queries = require('../db/queries');
 const utils = require('../utils');
 
-const attributes = ['nameNumber', 'spotId', 'name', 'password', 'instrument', 'part', 'eligible', 'squadLeader', 'admin', 'alternate'];
+const attributes = ['nameNumber', 'instrument', 'name', 'part', 'password', 'role', 'spotId'];
 
 class User {
 
@@ -76,7 +76,18 @@ class User {
   findByNameNumber(nameNumber) {
     return new Promise((resolve, reject) => {
       const client = utils.db.createClient();
-      const queryString = 'SELECT * FROM users LEFT OUTER JOIN results_approve ON users.nameNumber = results_approve.usernamenumber WHERE nameNumber = $1';
+      const queryString = `
+        SELECT
+          name,
+          namenumber,
+          COALESCE(u.instrument, ra.instrument) AS instrument,
+          COALESCE(u.part, ra.part) AS part,
+          password,
+          role,
+          spotid
+        FROM users AS u LEFT OUTER JOIN results_approve AS ra ON u.nameNumber = ra.usernamenumber
+        WHERE nameNumber = $1
+      `;
 
       client.connect();
       client.on('error', (err) => reject(err));
@@ -176,28 +187,6 @@ class User {
       query.on('end', () => {
         client.end();
         resolve(users);
-      });
-
-      query.on('error', (err) => {
-        client.end();
-        reject(err);
-      });
-    });
-  }
-
-  setEligibility(nameNumber, eligibility) {
-    return new Promise((resolve, reject) => {
-      const client = utils.db.createClient();
-      const queryString = 'UPDATE users SET eligible = $1 WHERE nameNumber = $2';
-
-      client.connect();
-      client.on('error', (err) => reject(err));
-
-      const query = client.query(queryString, [eligibility, nameNumber]);
-
-      query.on('end', () => {
-        client.end();
-        resolve();
       });
 
       query.on('error', (err) => {

@@ -8,12 +8,14 @@ WHERE
   substring(u.spotId, 2)::integer <= 12 AND
   (
     (NOT EXISTS (SELECT * FROM challenges WHERE userNamenumber = $4 AND performanceid = $5)) AND
-    (SELECT voluntary FROM manage AS m WHERE m.usernamenumber = $4 AND m.performanceid = $5 ORDER BY id DESC LIMIT 1) OR
     (
-      SELECT substring($3, 2)::integer > 12 AND
+      (SELECT voluntary FROM manage AS m WHERE m.usernamenumber = $4 AND m.performanceid = $5 ORDER BY id DESC LIMIT 1) OR
       (
-        NOT EXISTS (SELECT * FROM manage AS m WHERE m.usernamenumber = $4 AND m.performanceid = $5 ORDER BY id DESC LIMIT 1) OR
-        (SELECT reason = 'Closed Spot' FROM manage AS m WHERE m.usernamenumber = $4 AND m.performanceid = $5 ORDER BY id DESC LIMIT 1)
+        SELECT substring($3, 2)::integer > 12 AND
+        (
+          NOT EXISTS (SELECT * FROM manage AS m WHERE m.usernamenumber = $4 AND m.performanceid = $5 ORDER BY id DESC LIMIT 1) OR
+          (SELECT reason = 'Closed Spot' FROM manage AS m WHERE m.usernamenumber = $4 AND m.performanceid = $5 ORDER BY id DESC LIMIT 1)
+        )
       )
     )
   )

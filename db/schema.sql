@@ -102,8 +102,6 @@ BEGIN
 
   -- Set all things back to normal
   UPDATE spots SET challengedCount = 0, open = FALSE;
-  UPDATE users SET eligible = TRUE WHERE alternate;
-  UPDATE users SET eligible = FALSE WHERE NOT alternate;
 END;
 $$ LANGUAGE plpgsql;
 
@@ -137,7 +135,6 @@ BEGIN
   END IF;
   INSERT INTO challenges (userNameNumber, performanceId, spotId) VALUES (uId, pId, sId);
   UPDATE spots SET challengedCount = challengedCount + 1 WHERE id = sId;
-  UPDATE users SET eligible = FALSE WHERE nameNumber = uId;
 
   RETURN 0;
 END;
@@ -323,6 +320,11 @@ CREATE TABLE manage (
   modified_at timestamp NOT NULL
 );
 
+CREATE TRIGGER manage_created_stamp BEFORE INSERT ON manage
+FOR EACH ROW EXECUTE PROCEDURE created_stamp();
+
+CREATE TRIGGER manage_modified_stamp BEFORE INSERT ON manage
+FOR EACH ROW EXECUTE PROCEDURE modified_stamp();
 ----------------------------------------
 -- ResultsApprovePermission
 ----------------------------------------

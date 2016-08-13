@@ -47,7 +47,6 @@ class Challenge {
     // eslint-disable-next-line
     const sql = queries.challengeablePeople;
 
-    console.log([user.instrument, user.part, user.spotId, user.nameNumber, performanceId]);
     return new Promise((resolve, reject) => {
       const client = utils.db.createClient();
       const users = [];

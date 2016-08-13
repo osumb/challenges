@@ -9,7 +9,7 @@ const fakeResultsApprove = require('./fakeResultPermission.js');
 const fakeSpots = require('./fakeSpots.js');
 const fakeUsers = require('./fakeUsers.js');
 
-// the order of columns in execl file is Spot, Name, Instrument, Part, Name.#, Eligible, squadLeader, admin, password
+// the order of columns in execl file is SpotId, name, instrument, part, name.number, role, password
 // function getUsersFromExcelFile(filePath) {
 //   filePath = filePath || path.resolve(__dirname, 'FakeUsers.xlsx');
 //   const parseObj = xlsx.parse(filePath);
