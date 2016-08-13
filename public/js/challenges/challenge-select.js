@@ -7,7 +7,7 @@ $(submitButtonClass).on('click', () => {
   const spotId = optionVals[0], name = optionVals[1];
 
   $(submitButtonClass).prop('disabled', true);
-  fetch('performances/challenge', {
+  fetch('/performances/challenge', {
     headers: {
       'Accept': 'application/json',
       'Content-Type': 'application/json'
