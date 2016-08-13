@@ -1,15 +1,17 @@
 <div class="IndividualManage  {{ managedUserCurrent.nameNumber }} {{ managedUserCurrent.spotId }}">
   <div class="IndividualManage-title">
-    <h1>{{ managedUserCurrent.name }} ({{ managedUserCurrent.spotId }})</h1>
+    <h1 class="IndividualManage-performanceInfo {{performance.id}}">Manage User For The {{performance.name}}</h1>
+    <h2>{{ managedUserCurrent.name }} ({{ managedUserCurrent.spotId }})</h2>
     <hr />
   </div>
   <div class="IndividualManage-userInfo">
-    <h2>Current Information:</h2>
-    <h3>{{spotsIsOpen "" managedUserCurrent.spotOpen }}</h3>
-    <h3>Most recent manage action:
+    <h4>Current Information:</h4>
+    <h4>{{spotsIsOpen "" managedUserCurrent.spotOpen }}</h4>
+    <h4>Most recent manage action:
       {{usersIndividualManageActionItem managedUserCurrent.name managedUserCurrent.performanceName managedUserCurrent.reason managedUserCurrent.voluntary}}
-    </h3>
+    </h4>
     {{#unless managedUserCurrent.spotOpen }}
+      <hr />
       <div class="IndividualManage-manage">
         <button class="btn btn-primary IndividualManage-button-open">Open spot</button>
         <label>For what reason?</label>
@@ -27,38 +29,18 @@
           <input class="IndividualManage-reason" placeholder="Discipline reason"/>
         </p>
       </div>
-      <div class="IndividualManage-performanceInfo">
-        For which performance is this action?
-        <select class="IndividualManage-performanceSelect form-control">
-          {{#each performances}}
-            <option class="IndividualManage-performanceSelectItem" value={{this.id}}>
-              {{this.name}}
-            </option>
-          {{/each}}
-        </select>
-      </div>
     {{else}}
       <button class="btn btn-primary IndividualManage-button-close">Close spot</button>
-      <div class="IndividualManage-performanceInfo">
-        For which performance is this action?
-        <select class="IndividualManage-performanceSelect form-control">
-          {{#each performances}}
-            <option class="IndividualManage-performanceSelectItem" value={{this.id}}>
-              {{this.name}}
-            </option>
-          {{/each}}
-        </select>
-      </div>
     {{/unless}}
   </div>
   <div class="IndividualManage-pastInfo">
     {{#if managedUserOld.length }}
-      <h3>Previous Action Items: </h3>
+      <h4>Previous Action Items: </h4>
     {{/if}}
     {{#each managedUserOld }}
-      <h4>
+      <h5>
         {{usersIndividualManageActionItem this.name this.performanceName this.reason this.voluntary}}
-      </h4>
+      </h5>
     {{/each}}
   </div>
 </div>

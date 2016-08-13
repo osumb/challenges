@@ -4,13 +4,14 @@ const closeButtonClass = '.IndividualManage-button-close';
 const mainClass = '.IndividualManage';
 const openButtonClass = '.IndividualManage-button-open';
 const openSpotReasonClass = '.IndividualManage-reason';
-const performanceSelectClass = '.IndividualManage-performanceSelect';
+const performanceInfoClass = '.IndividualManage-performanceInfo';
 const spotOptionClasses = ['IndividualManage-failed', 'IndividualManage-other', 'IndividualManage-volunteer'];
 
 $(openButtonClass).on('click', () => {
+  const apiUrl = '/users/manage';
   const performanceId = getPerformanceId();
   const [nameNumber, spotId] = getNameNumberSpotId();
-  const apiUrl = '/users/manage';
+
   let reason, voluntary = false;
 
   for (const option of spotOptionClasses) {
@@ -60,9 +61,9 @@ $(openButtonClass).on('click', () => {
 });
 
 $(closeButtonClass).on('click', () => {
+  const apiUrl = '/users/manage/close';
   const performanceId = getPerformanceId();
   const [nameNumber, spotId] = getNameNumberSpotId();
-  const apiUrl = '/users/manage/close';
 
   fetch(apiUrl, {
     headers: {
@@ -88,5 +89,5 @@ $(closeButtonClass).on('click', () => {
   });
 });
 
-const getPerformanceId = () => parseInt($(performanceSelectClass).val(), 10);
 const getNameNumberSpotId = () => $(mainClass).attr('class').split(' ').slice(2);
+const getPerformanceId = () => parseInt($(performanceInfoClass)[0].className.split(' ')[1], 10);
