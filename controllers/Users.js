@@ -18,7 +18,7 @@ function UsersController() {
       voluntary: false
     };
 
-    Promise.all([Manage.create(manageAttributes), Spot.setOpenClose(spotId, false), User.setEligibility(nameNumber, false)])
+    Promise.all([Manage.create(manageAttributes), Spot.setOpenClose(spotId, false)])
     .then(() => {
       logger.adminActionLog(`close spot (${spotId}) for ${nameNumber} for performance id: ${performanceId}`);
       res.json({ success: true });
@@ -40,11 +40,7 @@ function UsersController() {
     };
 
     //If the manage was voluntarily taken by the user (elected to open spot), they're now eligible to challenge
-    Promise.all([
-      Manage.create(manageAttributes),
-      Spot.setOpenClose(spotId, true),
-      User.setEligibility(nameNumber, voluntary)
-    ])
+    Promise.all([Manage.create(manageAttributes), Spot.setOpenClose(spotId, true)])
     .then(() => {
       logger.adminActionLog(`open spot (${spotId}) for ${nameNumber} for performance id: ${performanceId}. reason: ${manageAttributes.reason}`);
       res.json({ success: true });
@@ -90,12 +86,12 @@ function UsersController() {
   };
 
   this.showIndividualManage = (req, res) => {
-    Promise.all([User.findForIndividualManage(req.params.nameNumber), Performance.findAll()])
+    Promise.all([User.findForIndividualManage(req.params.nameNumber), Performance.findNextOrOpenWindow()])
     .then((data) => {
       res.render('users/individual-manage', {
         managedUserCurrent: data[0][0],
         managedUserOld: data[0].slice(1),
-        performances: data[1],
+        performance: data[1],
         user: req.user
       });
     })

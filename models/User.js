@@ -184,28 +184,6 @@ class User {
       });
     });
   }
-
-  setEligibility(nameNumber, eligibility) {
-    return new Promise((resolve, reject) => {
-      const client = utils.db.createClient();
-      const queryString = 'UPDATE users SET eligible = $1 WHERE nameNumber = $2';
-
-      client.connect();
-      client.on('error', (err) => reject(err));
-
-      const query = client.query(queryString, [eligibility, nameNumber]);
-
-      query.on('end', () => {
-        client.end();
-        resolve();
-      });
-
-      query.on('error', (err) => {
-        client.end();
-        reject(err);
-      });
-    });
-  }
 }
 
 module.exports = User;
