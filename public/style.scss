@@ -1,0 +1,22 @@
+html {
+  height: 100%;
+}
+
+body {
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  height: 100%;
+}
+
+.App {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+}
+
+@import './stylesheets/body.scss';
+@import './stylesheets/navbar.scss';
+@import './stylesheets/title.scss';
+@import './stylesheets/performances/new.scss';
+@import './stylesheets/results/approve.scss';
+@import './stylesheets/users/search.scss';
+@import './stylesheets/static-pages/no-auth.scss';
