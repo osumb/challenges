@@ -22,10 +22,6 @@ function StaticPagesController() {
         res.render('static-pages/error', { user: req.user });
       });
   };
-
-  this.noAuth = (req, res) => {
-    res.render('static-pages/no-auth');
-  };
 }
 
 module.exports = StaticPagesController;
