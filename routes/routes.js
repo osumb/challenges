@@ -42,7 +42,6 @@ router.setup = (app) => {
 
   //Sessions Controller
   app.post('/login', [passport.authenticate('local', { failureRedirect: '/login?auth=false' }), currentPerformance], Sessions.redirect);
-  app.get('/login', Sessions.login);
   app.get('/logout', Sessions.logout);
 
   //Users Controller
