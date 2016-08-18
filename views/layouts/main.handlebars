@@ -10,12 +10,13 @@
   </head>
   <body>
 
-    <div class="container">
+    <div class="App">
+      {{> page/title}}
       {{> page/navbar}}
-
-      {{{body}}}
+      <div class="Body">
+        {{{body}}}
+      </div>
     </div>
-
   </body>
   <script src="/dist/bundle.js"></script>
 </html>

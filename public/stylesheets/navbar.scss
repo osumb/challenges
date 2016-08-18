@@ -1,0 +1,32 @@
+.Navbar {
+  align-items: center;
+  background-color: #bfbfbf;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  min-height: 35px;
+}
+
+.Navbar-home {
+  color: black;
+  font-size: 20px;
+}
+
+.Navbar-item {
+  flex: 1;
+
+  color: black;
+  padding-left: 5px;
+}
+
+.Navbar-link {
+  color: black;
+  font-size: 18px;
+  padding-left: 30px;
+}
+
+.Navbar-logout {
+  color: black;
+  font-size: 18px;
+  padding-right: 5px;
+}
