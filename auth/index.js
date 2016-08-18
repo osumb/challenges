@@ -10,7 +10,7 @@ passport.use(new Strategy((username, password, done) => {
       if (!user) {
         return done(null, false);
       }
-      if (!user.password && !bcrypt.compareSync(password, user.password)) { // eslint-disable-line no-sync
+      if (!bcrypt.compareSync(password, user.password)) { // eslint-disable-line no-sync
         return done(null, false);
       }
       return done(null, User.parse(user));
