@@ -3,27 +3,18 @@ html {
 }
 
 body {
-  display: flex;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
   height: 100%;
-  padding: 20px;
 }
 
-a {
-  color: #00B7FF;
-}
-
-.osumb-logo {
-  width: 50%;
-  height: 100%;
-}
-
-.conatiner {
+.App {
   display: flex;
+  width: 100%;
   flex-direction: column;
-  flex-grow: 1;
 }
 
+@import './navbar.scss';
+@import './static-pages/title.scss';
 @import './performances/new.scss';
 @import './results/approve.scss';
 @import './users/search.scss';
