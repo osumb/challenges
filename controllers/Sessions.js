@@ -1,14 +1,4 @@
 function SessionsController() {
-  this.login = (req, res) => {
-    let message;
-
-    //query.auth is a string, not a bool...
-    if (req.query.auth === 'false') {
-      message = 'Username or password is incorrect';
-    }
-    res.render('sessions/login', { message });
-  };
-
   this.redirect = (req, res) => {
     res.redirect(`/${req.user.nameNumber}`);
   };
