@@ -32,3 +32,41 @@
 .Profile-title-spot-text {
   align-self: center;
 }
+
+@media (max-width: 769px) {
+  .ResultTable-performance-name, .ResultTable-performance-date {
+    font-size: 20px;
+  }
+
+  .ResultTable-opponent h2, .ResultTable-winner h2, .ResultTable-comments h2 {
+    font-size: 20px;
+  }
+}
+
+@media (max-width: 415px) {
+  .CurrentChallenge {
+    font-size: 18px;
+  }
+
+  .Profile-title-spot {
+    font-size: 20px;
+    height: 60px;
+    width: 60px;
+  }
+
+  .ResultTable-header {
+    font-size: 18px;
+  }
+
+  .Profile-title-name {
+    font-size: 20px;
+  }
+
+  .ResultTable-performance-name, .ResultTable-performance-date {
+    font-size: 15px;
+  }
+
+  .ResultTable-opponent h2, .ResultTable-winner h2, .ResultTable-comments h2 {
+    font-size: 15px;
+  }
+}

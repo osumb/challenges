@@ -1,7 +1,7 @@
 {{#if challenge}}
-<h2>You're currently signed up to challenge spot {{challenge.spotId}} for the {{challenge.performanceName}}</h2>
+<h2 class="CurrentChallenge">You're currently signed up to challenge spot {{challenge.spotId}} for the {{challenge.performanceName}}</h2>
 {{else}}
   {{#if canChallenge}}
-    <h2>You need to make a challenge! Head to Make A Challenge to do that</h2>
+    <h2 class="CurrentChallenge">You need to make a challenge! Head to Make A Challenge to do that</h2>
   {{/if}}
 {{/if}}
