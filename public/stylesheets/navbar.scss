@@ -31,3 +31,47 @@
   font-size: 18px;
   padding-right: 5px;
 }
+
+@media (max-width: 737px) {
+  .Navbar-link {
+    padding-left: 5px;
+  }
+
+  .Navbar-link-performance span {
+    display: none;
+  }
+
+  .Navbar-link-performance::after {
+    content: 'Performance'
+  }
+
+  .Navbar-link-results span {
+    display: none;
+  }
+
+  .Navbar-link-results::after {
+    content: 'Results';
+  }
+
+  .Navbar-link-users span {
+    display: none;
+  }
+
+  .Navbar-link-users::after {
+    content: 'Users'
+  }
+}
+
+@media (max-width: 668px) {
+  .Navbar-home {
+    font-size: 16px;
+  }
+
+  .Navbar-link {
+    font-size: 14px;
+  }
+
+  .Navbar-logout {
+    font-size: 14px;
+  }
+}
