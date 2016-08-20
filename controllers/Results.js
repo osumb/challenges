@@ -57,7 +57,7 @@ function ResultsController() {
   };
 
   this.showForEvaluation = (req, res) => {
-    Result.findAllForEval(req.user.instrument, req.user.part, req.session.currentPerformance.id, req.user.nameNumber)
+    Result.findAllForEval(req.user.instrument, req.user.part, req.user.nameNumber)
       .then((results) => {
         if (results.length === 0) {
           results = null; // eslint-disable-line no-param-reassign

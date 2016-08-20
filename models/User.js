@@ -19,6 +19,10 @@ class User {
 
   canChallengeForPerformance(user, performanceId) {
     return new Promise((resolve, reject) => {
+      if (!performanceId) {
+        resolve(false);
+      }
+
       const client = utils.db.createClient();
       const sql = queries.canChallengeForPerformance;
 
