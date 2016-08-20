@@ -48,6 +48,10 @@ class Challenge {
     const sql = queries.challengeablePeople;
 
     return new Promise((resolve, reject) => {
+      if (!performanceId) {
+        resolve(null);
+      }
+
       const client = utils.db.createClient();
       const users = [];
 
