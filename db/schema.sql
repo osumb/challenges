@@ -159,10 +159,10 @@ CREATE OR REPLACE FUNCTION get_other_user_id(idCompare varchar(256), idOne varch
 RETURNS varchar(256) AS $$
 DECLARE id varchar(256);
 BEGIN
-  IF id = idOne THEN
-    id := idOne;
-  ELSE
+  IF idCompare = idOne THEN
     id := idTwo;
+  ELSE
+    id := idOne;
   END IF;
 
   RETURN id;
