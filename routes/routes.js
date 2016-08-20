@@ -40,7 +40,7 @@ router.setup = (app) => {
   app.get('/', StaticPages.home);
 
   //Sessions Controller
-  app.post('/login', [passport.authenticate('local', { failureRedirect: '/login?auth=false' }), currentPerformance], Sessions.redirect);
+  app.post('/login', [passport.authenticate('local', { failureRedirect: '/?auth=false' }), currentPerformance], Sessions.redirect);
   app.get('/logout', Sessions.logout);
 
   //Users Controller
