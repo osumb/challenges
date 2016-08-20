@@ -8,19 +8,18 @@
       {{#each results}}
         <div class="ResultsApproveList-item {{this.id}}">
           <div class="ResultsApproveList-item-header">
-            <p class="ResultsApproveList-item-header-item">{{this.spotId}}:</p>
-            <p class="ResultsApproveList-item-header-item">{{this.winner}}</p>
-            <div class="ResultsApproveList-item-header-item">
+            <p class="ResultsApproveList-item-header-item">{{this.spotId}}</p>
+            <p class="ResultsApproveList-item-header-item ResultsApproveList-item-header-winner">{{this.winner}}</p>
+            <div class="ResultsApproveList-item-header-checkbox">
               <input type="checkbox" class="ResultsApprove-checkbox {{this.id}}" value="Approve" />
             </div>
           </div>
-          For performance: {{this.performanceName}}
           <div class="ResultsApproveList-item-body">
-            <div class="ResultsApproveList-item-body-item">
+            <div class="ResultsApproveList-item-body-left">
               <p>{{this.firstName}}</p>
               <p>{{this.firstComments}}</p>
             </div>
-            <div class="ResultsApproveList-item-body-item">
+            <div class="ResultsApproveList-item-body-right">
               <p>{{this.secondName}}</p>
               <p>{{this.secondComments}}</p>
             </div>

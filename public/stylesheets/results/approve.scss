@@ -3,6 +3,7 @@
   flex-direction: column;
   flex-grow: 1;
   height: 100%;
+  padding-top: 10px;
   width: 80%;
 }
 
@@ -14,6 +15,7 @@
 }
 
 .ResultsApproveList-item {
+  border: 1px solid black;
   display: flex;
   flex-direction: column;
   flex-grow: 1;
@@ -23,8 +25,20 @@
 }
 
 .ResultsApproveList-item-header {
+  background-color: #e6e6e6;
+  border-bottom: 1px solid black;
   display: flex;
   flex-direction: row;
+  padding-bottom: 4px;
+}
+
+.ResultsApproveList-item-header-winner {
+  font-weight: bold;
+}
+
+.ResultsApproveList-item-header-checkbox {
+  height: 100%;
+  margin: 5px;
 }
 
 .ResultsApproveList-item-header-item {
@@ -36,10 +50,17 @@
 .ResultsApproveList-item-body {
   display: flex;
   flex-direction: row;
+  flex-wrap: nowrap;
+  height: 100%;
 }
 
-.ResultsApproveList-item-body-item {
-  flex-grow: 1;
+.ResultsApproveList-item-body-left {
+  border-right: 1px solid black;
+  flex: 1;
+  margin: 4px;
+}
 
+.ResultsApproveList-item-body-right {
+  flex: 1;
   margin: 4px;
 }
