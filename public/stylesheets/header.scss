@@ -1,6 +1,22 @@
 .Header {
   background-color: #b30000;
+  display: flex;
+  flex-wrap: nowrap;
+  max-height: 120px;
   text-shadow: 1px 1px 0 #444;
+}
+
+.Header-image {
+  height: 110px;
+  width: 200px;
+
+  padding: 5px 5px 0 0;
+}
+
+.Header-title {
+  display: flex;
+  flex: 2;
+  flex-direction: column;
 }
 
 .Header-main {
