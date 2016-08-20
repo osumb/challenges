@@ -57,8 +57,11 @@ BEGIN
     FROM results
     WHERE results.id = rId;
 
-    SELECT spotId, alternate INTO spotOne, userOneAlternate FROM users WHERE nameNumber = userOne;
-    SELECT spotId, alternate INTO spotTwo, userTwoAlternate FROM users WHERE nameNumber = userTwo;
+    SELECT spotId INTO spotOne FROM users WHERE nameNumber = userOne;
+    SELECT spotId INTO spotTwo FROM users WHERE nameNumber = userTwo;
+
+    userOneAlternate = substring(spotOne, 2)::integer > 12;
+    userTwoAlternate = substring(spotTwo, 2)::integer > 12;
 
     -- If it's an alternate vs regular for a non open spot, easy peasy :D
     IF (userOneAlternate AND NOT userTwoAlternate) OR
@@ -294,7 +297,7 @@ CREATE TABLE results (
   firstComments text NOT NULL DEFAULT '',
   secondComments text NOT NULL DEFAULT '',
   winnerId varchar(256) references users(nameNumber),
-  pending boolean NOT NULL DEFAULT false,
+  pending boolean NOT NULL DEFAULT true,
   needsApproval boolean NOT NULL DEFAULT false,
   created_at timestamp NOT NULL,
   modified_at timestamp NOT NULL
