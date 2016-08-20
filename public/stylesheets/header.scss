@@ -1,3 +1,17 @@
+@media (max-width: 850px) {
+  .Header-main span {
+    display: none;
+  }
+
+  .Header-main::after {
+    content: 'OSUMB'
+  }
+
+  .Header-sub {
+    font-size: 22px;
+  }
+}
+
 .Header {
   background-color: #b30000;
   display: flex;
