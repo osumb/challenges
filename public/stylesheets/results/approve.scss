@@ -1,18 +1,19 @@
-.resultsApprove {
+.ResultsApprove {
   display: flex;
   flex-direction: column;
   flex-grow: 1;
   height: 100%;
+  width: 80%;
 }
 
-.resultsApproveList {
+.ResultsApproveList {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
   padding-top: 5px;
 }
 
-.resultsApproveList-item {
+.ResultsApproveList-item {
   display: flex;
   flex-direction: column;
   flex-grow: 1;
@@ -21,23 +22,23 @@
   min-width: 350px;
 }
 
-.resultsApproveList-item-header {
+.ResultsApproveList-item-header {
   display: flex;
   flex-direction: row;
 }
 
-.resultsApproveList-item-header-item {
+.ResultsApproveList-item-header-item {
   flex-grow: 1;
   margin: 5px;
   height: 100%;
 }
 
-.resultsApproveList-item-body {
+.ResultsApproveList-item-body {
   display: flex;
   flex-direction: row;
 }
 
-.resultsApproveList-item-body-item {
+.ResultsApproveList-item-body-item {
   flex-grow: 1;
 
   margin: 4px;
