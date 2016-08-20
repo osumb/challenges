@@ -45,7 +45,8 @@ module.exports = class Results {
 
   approve(ids) {
     const client = db.createClient();
-    const sql = 'UPDATE results SET needsApproval = FALSE WHERE id = ANY($1)';
+    const sql = 'UPDATE results SET needsApproval = FALSE, pending = FALSE WHERE id = ANY($1) RETURNING performanceId';
+    let performanceId;
 
     return new Promise((resolve, reject) => {
       client.connect();
@@ -53,9 +54,13 @@ module.exports = class Results {
 
       const query = client.query(sql, [ids]);
 
+      query.on('row', ({ performanceid }) => {
+        performanceId = performanceid;
+      });
+
       query.on('end', () => {
         client.end();
-        resolve();
+        resolve(performanceId);
       });
       query.on('error', (err) => {
         reject(err);

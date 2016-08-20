@@ -7,14 +7,12 @@ function ResultsController() {
     const { ids } = req.body;
 
     Result.approve(ids)
-    .then(() => {
-      const { id } = req.session.currentPerformance;
-
+    .then((performanceId) => {
       res.json({ success: true });
-      Result.checkAllDoneForPerformance(id)
+      Result.checkAllDoneForPerformance(performanceId)
       .then(done => {
         if (done) {
-          Result.switchSpotsForPerformance(id);
+          Result.switchSpotsForPerformance(performanceId);
         }
       })
       .catch((err) => {
