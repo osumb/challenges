@@ -1,3 +1,12 @@
-<h1>{{user.spotId}}, {{user.name}}</h1>
-{{> currentChallenge}}
-{{> results}}
+<div class="Profile">
+  <div class="Profile-title">
+    <div class="Profile-title-spot">
+      <div class="Profile-title-spot-text">
+        {{user.spotId}}
+      </div>
+    </div>
+    <h1 class="Profile-title-name">{{user.name}}</h1>
+  </div>
+  {{> currentChallenge}}
+  {{> results}}
+</div>
