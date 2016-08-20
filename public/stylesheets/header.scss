@@ -4,27 +4,24 @@
   }
 
   .Header-main::after {
-    content: 'OSUMB'
-  }
-
-  .Header-sub {
-    font-size: 22px;
+    content: 'OSUMB';
   }
 }
 
 .Header {
-  background-color: #b30000;
+  background-color: #333333;
+  border-bottom: 6px solid #bb0000;
   display: flex;
   flex-wrap: nowrap;
-  max-height: 120px;
+  max-height: 70px;
   text-shadow: 1px 1px 0 #444;
 }
 
 .Header-image {
-  height: 110px;
-  width: 200px;
+  height: 65px;
+  width: 130px;
 
-  padding: 5px 5px 0 0;
+  padding: 5px 5px 5px 0;
 }
 
 .Header-title {
@@ -35,11 +32,7 @@
 
 .Header-main {
   color: white;
+  font-family: times;
   margin: 0 0 10px 0;
   padding: 5px 5px 0 5px;
-}
-
-.Header-sub {
-  color: white;
-  padding: 0 0 5px 5px;
 }
