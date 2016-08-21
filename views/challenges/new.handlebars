@@ -1,7 +1,6 @@
 {{#if this.challengeableUsers.length}}
   <h1>Who do you want to challenge for the {{performanceName}}?</h1>
-  <h2>People you can challenge</h2>
-  <select class="ChallengeSelect form-control">
+  <select class="ChallengeSelect">
     {{#each this.challengeableUsers}}
           {{#if this.spotOpen}}
             {{#unless this.challengeFull}}
@@ -25,7 +24,7 @@
             {{/unless}}
           {{/if}}
     {{/each}}
-    <input type="submit" class="ChallengeSelect-submit btn btn-default" value="Challenge"/>
+    <input type="submit" class="ChallengeSelect-submit" value="Challenge"/>
   </select>
 {{else}}
   <h2>Sorry, you can't make a challenge right now!</h2>
