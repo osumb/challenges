@@ -5,14 +5,20 @@
       <div class="ResultsEvaluation {{this.resultId}}">
         <div class="ResultsEvaluation-header">
           <p class="ResultsEvaluation-firstNameNumber {{this.resultId}}">
-            <span>{{this.firstName}} </span><input type="radio" name={{this.resultId}} value={{this.firstNameNumber}} checked/>
+            <label>
+              {{this.firstName}}
+              <input class="ResultsEvaluation-firstNameNumber-button {{this.resultId}}" type="radio" name={{this.resultId}} value={{this.firstNameNumber}} checked/>
+            </label>
           </p>
           <p class="ResultsEvaluation-spot {{this.spotId}}">
             {{this.spotId}}
           </p>
           {{#if this.secondNameNumber}}
             <p class="ResultsEvaluation-secondNameNumber {{this.resultId}}">
-              <span class="ResultsEvaluation-secondName">{{this.secondName}} </span><input type="radio" name={{this.resultId}} value={{this.secondNameNumber}} />
+              <label class="ResultsEvaluation-secondName">
+                {{this.secondName}}
+                <input class="ResultsEvaluation-secondNameNumber-button {{this.resultId}}" type="radio" name={{this.resultId}} value={{this.secondNameNumber}} />
+              </label>
             </p>
           {{/if}}
         </div>
