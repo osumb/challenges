@@ -51,7 +51,6 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use('/dist', express.static(path.join(__dirname, '/dist')));
 app.use('/public/images', express.static(path.join(__dirname, '/public/images')));
-app.use('/node_modules/bootstrap', express.static(path.join(__dirname, '/node_modules/bootstrap')));
 
 //routing
 app.use('/', routes);
