@@ -1,4 +1,4 @@
-<div class="IndividualManage  {{ managedUserCurrent.nameNumber }} {{ managedUserCurrent.spotId }}">
+<div class="IndividualManage {{ managedUserCurrent.nameNumber }} {{ managedUserCurrent.spotId }}">
   <div class="IndividualManage-title">
     <h1 class="IndividualManage-performanceInfo {{performance.id}}">Manage User For The {{performance.name}}</h1>
     <h2>{{ managedUserCurrent.name }} ({{ managedUserCurrent.spotId }})</h2>
@@ -13,7 +13,7 @@
     {{#unless managedUserCurrent.spotOpen }}
       <hr />
       <div class="IndividualManage-manage">
-        <button class="btn btn-primary IndividualManage-button-open">Open spot</button>
+        <button class="ChallengesButton IndividualManage-button-open">Open spot</button>
         <label>For what reason?</label>
         <p class="IndividualManage-openReasonOption">
           <span>Failed Music Check </span>
@@ -30,7 +30,7 @@
         </p>
       </div>
     {{else}}
-      <button class="btn btn-primary IndividualManage-button-close">Close spot</button>
+      <button class="ChallengesButton IndividualManage-button-close">Close spot</button>
     {{/unless}}
   </div>
   <div class="IndividualManage-pastInfo">
