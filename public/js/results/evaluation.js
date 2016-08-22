@@ -35,7 +35,6 @@ $(submitClass).on('click', (a) => {
       throw new Error('Whoops');
     }
     $(`${divClass}.${resultId}`).remove();
-    banner('Success!');
   })
   .catch(() => {
     banner('We\'re sorry! There was a problem with your request. We\'re working to resolve the issue');
