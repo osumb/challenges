@@ -18,5 +18,5 @@ LEFT JOIN
   ) t2
 ON
   t1.id = t2.id
-JOIN performances AS p ON t1.performanceid = p.id
-WHERE p.closeat < now();
+-- JOIN performances AS p ON t1.performanceid = p.id
+-- WHERE p.closeat < now();
