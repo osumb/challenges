@@ -24,7 +24,8 @@ services:
 
 before_script:
   - psql -c 'create database challenges_dev;' -U postgres
-  - npm run mock-data
+  - ./node_modules/db-migrate/bin/db-migrate up --config config/database.json -m db/migrations
+  - npm run seed
   - npm install -g eslint
 script:
   - "npm test"
