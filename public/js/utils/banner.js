@@ -1,6 +1,6 @@
 const banner = (message) => {
-  $('.bannerMessage').remove();
-  $('.navbar').after(`<h3 class="bannerMessage">${message}</h3>`);
+  $('.BannerMessage').remove();
+  $('.Navbar').after(`<h3 class="BannerMessage">**${message}**</h3>`);
 };
 
 module.exports = banner;
