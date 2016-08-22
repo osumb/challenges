@@ -6,6 +6,7 @@ set -e
 
 cd "$(dirname "$0")/.."
 
-echo "==> Setting Up Test Database..."
-node --use_strict db/setup.js
+echo "==> Seeding data for development database..."
+node --use_strict db/seed.js
+
 echo "==> Done!"
