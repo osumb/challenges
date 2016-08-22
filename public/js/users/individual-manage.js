@@ -89,5 +89,5 @@ $(closeButtonClass).on('click', () => {
   });
 });
 
-const getNameNumberSpotId = () => $(mainClass).attr('class').split(' ').slice(2);
+const getNameNumberSpotId = () => $(mainClass).attr('class').split(' ').slice(1);
 const getPerformanceId = () => parseInt($(performanceInfoClass)[0].className.split(' ')[1], 10);
