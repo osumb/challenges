@@ -1,13 +1,15 @@
 <div class="Profile">
-  <div class="Profile-title">
-    <div class="Profile-title-spot">
-      <div class="Profile-title-spot-text">
-        {{user.spotId}}
+  <div class="Profile-container">
+    <div class="Profile-title">
+      <div class="Profile-title-spot">
+        <div class="Profile-title-spot-text">
+          {{user.spotId}}
+        </div>
       </div>
+      <h1 class="Profile-title-name">{{user.name}}</h1>
     </div>
-    <h1 class="Profile-title-name">{{user.name}}</h1>
+    {{> challenge-window}}
+    {{> currentChallenge}}
+    {{> results}}
   </div>
-  {{> challenge-window}}
-  {{> currentChallenge}}
-  {{> results}}
 </div>

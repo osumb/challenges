@@ -1,8 +1,15 @@
 .Profile {
-  align-items: flex-start;
+  align-items: center;
   display: flex;
   flex-direction: column;
   width: 70%;
+}
+
+.Profile-container {
+  align-items: flex-start;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
 }
 
 .Profile-title {
