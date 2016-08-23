@@ -1,6 +1,7 @@
 experiments/*
 node_modules/*
 bin/*
+db/*
 spec/fixtures/*
 spec/support/*
 LICENSE

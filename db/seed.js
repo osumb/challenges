@@ -22,14 +22,6 @@ const insertResultsApproveQueryString = 'INSERT INTO results_approve (userNameNu
 const insertSpotQueryString = 'INSERT INTO spots VALUES ($1, $2, $3)';
 const insertUserQueryString = 'INSERT INTO users VALUES ($1, $2, $3, $4, $5, $6, $7)';
 
-function createDb(value, cb) {
-  const sql = fs.readFileSync(path.resolve(__dirname, 'schema.sql')).toString(); // eslint-disable-line no-sync
-
-  client.query(sql, [], (err) => {
-    cb(err);
-  });
-}
-
 function insertChallenge(challenge, cb) {
   client.query(insertChallengeQueryString, [challenge.PerformanceId, challenge.UserNameNumber, challenge.SpotId],
     (err) => {
@@ -70,12 +62,6 @@ function insertUser(user, cb) {
     }
   );
 }
-
-async.map(['blah'], createDb, (err) => {
-  if (err) {
-    console.log('Error creating db', err);
-  }
-});
 
 async.map(performances, insertPerformance, (err) => {
   if (err) {

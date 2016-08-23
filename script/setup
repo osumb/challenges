@@ -15,12 +15,25 @@ fi
 script/bootstrap
 
 if psql -lqt | cut -d \| -f 1 | grep -w challenges_dev; then
-  echo "Database already exists"
-else
-  echo "===> Setting up DB..."
-  createdb challenges_dev
+  echo "Development database already exists, dropping"
+  dropdb challenges_dev
 fi
-script/mock-data
 
+echo "===> Setting up development database..."
+createdb challenges_dev
+
+echo "==> Migrating development"
+./node_modules/db-migrate/bin/db-migrate up --config config/database.json -m db/migrations
+
+if psql -lqt | cut -d \| -f 1 | grep -w challenges_test; then
+  echo "Testing database already exists, dropping"
+  dropdb challenges_test
+fi
+
+echo "===> Setting up testing database..."
+createdb challenges_test
+
+echo "Testing database already exists, dropping"
+./node_modules/db-migrate/bin/db-migrate up --config config/database.json -m db/migrations --env test
 
 echo "==> App is now ready to go!"

@@ -1,23 +1,28 @@
 ----------------------------------------
--- CLEAN UP
+-- PARTS
 ----------------------------------------
+CREATE TYPE part AS ENUM (
+  'Any', 'Bass', 'Cymbals', 'Efer', 'First', 'Flugel', 'Second', 'Snare', 'Solo', 'Tenor'
+);
 
-DROP TABLE IF EXISTS users CASCADE;
-DROP TABLE IF EXISTS challenges CASCADE;
-DROP TABLE IF EXISTS results CASCADE;
-DROP TABLE IF EXISTS spots CASCADE;
-DROP TABLE IF EXISTS performances CASCADE;
-DROP TABLE IF EXISTS manage CASCADE;
-DROP TABLE IF EXISTS results_approve CASCADE;
-DROP TYPE IF EXISTS part;
-DROP TYPE IF EXISTS instrument;
-DROP TYPE IF EXISTS role;
+----------------------------------------
+-- INSTRUMENTS
+----------------------------------------
+CREATE TYPE instrument AS ENUM (
+  'Any', 'Baritone', 'Mellophone', 'Percussion', 'Sousaphone', 'Trombone', 'Trumpet'
+);
+
+----------------------------------------
+-- ROLES
+----------------------------------------
+CREATE TYPE role AS ENUM (
+  'Admin', 'Director', 'Member', 'Squad Leader'
+);
 
 ----------------------------------------
 -- FUNCTIONS
 ----------------------------------------
-DROP FUNCTION IF EXISTS switch_spots_based_on_results_one_user(resultIds int[]);
-CREATE OR REPLACE FUNCTION switch_spots_based_on_results_one_user(resultIds int[])
+CREATE FUNCTION switch_spots_based_on_results_one_user(resultIds int[])
 RETURNS VOID AS $$
 DECLARE userOne varchar(256); userTwo varchar(256); spotOne char(3); winnerSpot char(3); rId int;
 BEGIN
@@ -43,8 +48,7 @@ $$ LANGUAGE plpgsql;
     - Regular vs Regular
   We're not going to worry about results where only one person is involved
 */
-DROP FUNCTION IF EXISTS switch_spots_based_on_results(resultIds int[]);
-CREATE OR REPLACE FUNCTION switch_spots_based_on_results(resultIds int[])
+CREATE FUNCTION switch_spots_based_on_results(resultIds int[])
 RETURNS VOID AS $$
 DECLARE userOne varchar(256); userTwo varchar(256); winner varchar(256); spotOne char(3); spotTwo char(3);
 winnerSpot char(3); rId int; userOneAlternate boolean; userTwoAlternate boolean;
@@ -108,8 +112,7 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
-DROP FUNCTION IF EXISTS can_sl_eval(instrumentA varchar(256), instrumentB varchar(256), partA varchar(256), partB varchar(256));
-CREATE OR REPLACE FUNCTION can_sl_eval(instrumentA varchar(256), instrumentB varchar(256), partA varchar(256), partB varchar(256))
+CREATE FUNCTION can_sl_eval(instrumentA varchar(256), instrumentB varchar(256), partA varchar(256), partB varchar(256))
 RETURNS boolean as $$
 BEGIN
 
@@ -122,8 +125,7 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
-DROP FUNCTION IF EXISTS make_challenge(uId varchar(256), pId int, sId varchar(3));
-CREATE OR REPLACE FUNCTION make_challenge(uId varchar(256), pId int, sId varchar(3))
+CREATE FUNCTION make_challenge(uId varchar(256), pId int, sId varchar(3))
 RETURNS int as $$
 DECLARE spotOpen boolean; cCount int;
 BEGIN
@@ -144,7 +146,7 @@ END;
 $$ LANGUAGE plpgsql;
 
 
-CREATE OR REPLACE FUNCTION get_user_result_comments(idOne varchar(256), commentsOne text, commentsTwo text, id varchar(256))
+CREATE FUNCTION get_user_result_comments(idOne varchar(256), commentsOne text, commentsTwo text, id varchar(256))
 RETURNS text AS $$
 DECLARE comments text;
 BEGIN
@@ -158,7 +160,7 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
-CREATE OR REPLACE FUNCTION get_other_user_id(idCompare varchar(256), idOne varchar(256), idTwo varchar(256))
+CREATE FUNCTION get_other_user_id(idCompare varchar(256), idOne varchar(256), idTwo varchar(256))
 RETURNS varchar(256) AS $$
 DECLARE id varchar(256);
 BEGIN
@@ -172,7 +174,7 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
-CREATE OR REPLACE FUNCTION created_stamp()
+CREATE FUNCTION created_stamp()
 RETURNS TRIGGER AS $$
 BEGIN
   NEW.created_at = now();
@@ -180,7 +182,7 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
-CREATE OR REPLACE FUNCTION modified_stamp()
+CREATE FUNCTION modified_stamp()
 RETURNS TRIGGER AS $$
 BEGIN
   NEW.modified_at = now();
@@ -189,28 +191,7 @@ END;
 $$ LANGUAGE plpgsql;
 
 ----------------------------------------
--- PARTS
-----------------------------------------
-CREATE TYPE part AS ENUM (
-  'Any', 'Bass', 'Cymbals', 'Efer', 'First', 'Flugel', 'Second', 'Snare', 'Solo', 'Tenor'
-);
-
-----------------------------------------
--- INSTRUMENTS
-----------------------------------------
-CREATE TYPE instrument AS ENUM (
-  'Any', 'Baritone', 'Mellophone', 'Percussion', 'Sousaphone', 'Trombone', 'Trumpet'
-);
-
-----------------------------------------
--- ROLES
-----------------------------------------
-CREATE TYPE role AS ENUM (
-  'Admin', 'Director', 'Member', 'Squad Leader'
-);
-
-----------------------------------------
--- Spots
+-- SPOTS
 ----------------------------------------
 CREATE TABLE spots (
   id varchar(3) PRIMARY KEY,
