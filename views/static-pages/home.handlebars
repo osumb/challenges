@@ -1,2 +1,10 @@
-<h1>Welcome to OSUMB Challenge Manager</h1>
-{{> challengeWindow}}
+{{#if message}}
+<p class="Login-failed">{{message}}</p>
+{{/if}}
+<form class="Login" name="loginForm" id="loginForm" action="/login" method="post">
+  <label for='username'>Username</label>
+  <input type="text", name='username', placeholder="name.#" autofocus>
+  <label for='password'>Password</label>
+  <input type="password", name='password', placeholder="Password">
+  <input class="Login-button ChallengesButton" type="submit" value="Submit" class="">
+</form>

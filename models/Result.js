@@ -1,3 +1,5 @@
+const moment = require('moment');
+
 const queries = require('../db/queries');
 const { db, logger } = require('../utils');
 
@@ -280,6 +282,7 @@ module.exports = class Results {
     return {
       comments: result.comments,
       opponentName: result.opponentname,
+      performanceDate: moment(result.performdate).format('MMMM D, YYYY'),
       performanceName: result.name,
       spotId: result.spotid,
       winner: nameNumber === result.winnerid

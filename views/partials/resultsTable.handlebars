@@ -1,24 +1,27 @@
-<table class="table">
-  <thead>
-      <tr>
-        <th>Performance</th>
-        <th>Opponent</th>
-        <th>For Spot</th>
-        <th>Won?</th>
-        <th>Comments</th>
-      </tr>
-  </thead>
+<div class="ResultTable-container">
+  <h2 class="ResultTable-header">Previous Challenge Results:</h2>
   {{#each results}}
-    <tr id="row-id-"{{@index}}>
-      <td>{{this.performanceName}}</td>
-      <td>{{this.opponentName}}</td>
-      <td>{{this.spotId}}</td>
-      {{#if this.winner}}
-        <td><img style="height: 1.5em; width: 1.5em;"src="/public/images/emoji/trophy.png" /></td>
-      {{else}}
-        <td><img style="height: 1.5em; width: 1.5em;"src="/public/images/emoji/crying-cat-face.png" /></td>
-      {{/if}}
-      <td>{{this.comments}}</td>
-    </tr>
+    <div class="ResultTable">
+      <div class="ResultTable-performance">
+        <h2 class="ResultTable-performance-name">{{this.performanceName}}</h2>
+        <h2 class="ResultTable-performance-date">{{this.performanceDate}}</h2>
+      </div>
+      <div class="ResultTable-opponent">
+        <h2>Opponent: {{this.opponentName}} ({{this.spotId}})</h2>
+      </div>
+      <div class="ResultTable-winner">
+        <h2>
+          Result:
+          {{#if this.winner}}
+            <img style="height: 1.5em; width: 1.5em;" src="/public/images/emoji/trophy.png" />
+          {{else}}
+            <img style="height: 1.5em; width: 1.5em;" src="/public/images/emoji/crying-cat-face.png" />
+          {{/if}}
+        </h2>
+      </div>
+      <div class="ResultTable-comments">
+        <h2>Comments: {{this.comments}}</h2>
+      </div>
+    </div>
   {{/each}}
-</table>
+</div>

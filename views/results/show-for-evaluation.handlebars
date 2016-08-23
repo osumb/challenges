@@ -1,27 +1,41 @@
 {{#if results}}
-  {{#each results}}
-    <div class="ResultsEvaluation {{this.resultId}}">
-      <p class="ResultsEvaluation-spot {{this.spotId}}">
-        {{this.spotId}}
-      </p>
-      <p class="ResultsEvaluation-firstNameNumber {{this.resultId}}">
-        <span>{{this.firstName}} </span><input type="radio" name={{this.resultId}} value={{this.firstNameNumber}} checked/>
-      </p>
-      {{#if this.secondNameNumber}}
-        <p class="ResultsEvaluation-secondNameNumber {{this.resultId}}">
-          <span>{{this.secondName}} </span><input type="radio" name={{this.resultId}} value={{this.secondNameNumber}} />
-        </p>
-      {{/if}}
-      <textarea class="ResultsEvaluation-firstComments {{this.resultId}}"></textarea>
-      <textarea class="ResultsEvaluation-secondComments {{this.resultId}}"></textarea>
-      <input
-        class="ResultsEvaluation-submit {{this.spotId}} {{this.resultId}}"
-        type="submit"
-        value="Submit"
+  <h2>**Select the winner by clicking**</h2>
+  <div class="ResultEvaluations">
+    {{#each results}}
+      <div class="ResultsEvaluation {{this.resultId}}">
+        <div class="ResultsEvaluation-header">
+          <p class="ResultsEvaluation-firstNameNumber {{this.resultId}}">
+            <label>
+              {{this.firstName}}
+              <input class="ResultsEvaluation-firstNameNumber-button {{this.resultId}}" type="radio" name={{this.resultId}} value={{this.firstNameNumber}} checked/>
+            </label>
+          </p>
+          <p class="ResultsEvaluation-spot {{this.spotId}}">
+            {{this.spotId}}
+          </p>
+          {{#if this.secondNameNumber}}
+            <p class="ResultsEvaluation-secondNameNumber {{this.resultId}}">
+              <label class="ResultsEvaluation-secondName">
+                {{this.secondName}}
+                <input class="ResultsEvaluation-secondNameNumber-button {{this.resultId}}" type="radio" name={{this.resultId}} value={{this.secondNameNumber}} />
+              </label>
+            </p>
+          {{/if}}
+        </div>
+        <div class="ResultsEvaluation-comments">
+          <textarea class="ResultsEvaluation-firstComments {{this.resultId}}" placeholder="Comments For {{this.firstName}}"></textarea>
+          {{#if this.secondNameNumber}}
+            <textarea class="ResultsEvaluation-secondComments {{this.resultId}}" placeholder="Comments For {{this.secondName}}"></textarea>
+          {{/if}}
+        </div>
+        <input
+          class="ChallengesButton {{this.spotId}} {{this.resultId}} ResultsEvaluation-submit"
+          type="submit"
+          value="Submit"
         />
-      <hr />
-    </div>
-  {{/each}}
+      </div>
+    {{/each}}
+  </div>
 {{else}}
   <h2>There are no challenges for you to evaluate</h2>
 {{/if}}

@@ -1,8 +1,8 @@
 const banner = require('../utils/banner');
 
 const divClass = '.ResultsEvaluation';
-const firstNNClass = '.ResultsEvaluation-firstNameNumber';
-const secondNNClass = '.ResultsEvaluation-secondNameNumber';
+const firstNNButtonClass = '.ResultsEvaluation-firstNameNumber-button';
+const secondNNButtonClass = '.ResultsEvaluation-secondNameNumber-button';
 const firstCommentsClass = '.ResultsEvaluation-firstComments';
 const secondCommentsClass = '.ResultsEvaluation-secondComments';
 const submitClass = '.ResultsEvaluation-submit';
@@ -10,8 +10,8 @@ const submitClass = '.ResultsEvaluation-submit';
 $(submitClass).on('click', (a) => {
   const spotId = a.target.className.split(' ')[1];
   const resultId = a.target.className.split(' ')[2];
-  const firstNN = $($(`${firstNNClass}.${resultId}`).children()[1])[0];
-  const secondNN = $($(`${secondNNClass}.${resultId}`).children()[1])[0];
+  const firstNNButton = $(`${firstNNButtonClass}.${resultId}`)[0];
+  const secondNNButton = $(`${secondNNButtonClass}.${resultId}`)[0];
   const firstComments = $(`${firstCommentsClass}.${resultId}`).val();
   const secondComments = $(`${secondCommentsClass}.${resultId}`).val();
 
@@ -27,7 +27,7 @@ $(submitClass).on('click', (a) => {
       firstComments,
       secondComments,
       spotId,
-      winnerId: firstNN.checked ? firstNN.value : secondNN.value
+      winnerId: firstNNButton.checked ? firstNNButton.value : secondNNButton.value
     })
   })
   .then((response) => {
@@ -35,7 +35,6 @@ $(submitClass).on('click', (a) => {
       throw new Error('Whoops');
     }
     $(`${divClass}.${resultId}`).remove();
-    banner('Success!');
   })
   .catch(() => {
     banner('We\'re sorry! There was a problem with your request. We\'re working to resolve the issue');

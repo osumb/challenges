@@ -1,0 +1,22 @@
+.AdminProfile {
+  display: flex;
+  flex-direction: column;
+}
+
+.AdminProfile-header {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+}
+
+.AdminProfile-name {
+  align-self: center;
+  padding-left: 10px;
+}
+
+.AdminProfile-title {
+  align-self: center;
+  background-color: #b30000;
+  color: white;
+  font-size: 30px;
+}

@@ -10,7 +10,7 @@ passport.use(new Strategy((username, password, done) => {
       if (!user) {
         return done(null, false);
       }
-      if (!user.password && !bcrypt.compareSync(password, user.password)) { // eslint-disable-line no-sync
+      if (!bcrypt.compareSync(password, user.password)) { // eslint-disable-line no-sync
         return done(null, false);
       }
       return done(null, User.parse(user));
@@ -38,7 +38,7 @@ function ensureAuthenticated(req, res, next) {
   if (isAuthenticated(req)) {
     return next();
   } else {
-    return res.redirect('/noauth');
+    return res.render('static-pages/no-auth');
   }
 }
 
@@ -46,7 +46,7 @@ function ensureAuthAndNameNumberRoute(req, res, next) {
   if (isAuthenticated(req) && req.params.nameNumber === req.user.nameNumber) {
     return next();
   } else {
-    return res.redirect('/noauth');
+    return res.render('static-pages/no-auth');
   }
 }
 
@@ -60,7 +60,7 @@ function ensureAdmin(req, res, next) {
       return res.redirect('/notAdmin');
     }
   }
-  return res.redirect('/noauth');
+  return res.render('static-pages/no-auth');
 }
 
 function ensureEvalAbility(req, res, next) {

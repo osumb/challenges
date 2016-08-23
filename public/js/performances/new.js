@@ -1,12 +1,12 @@
 const banner = require('../utils/banner');
 const inputs = {
-  performanceName: $('.performanceName'),
-  performanceDate: $('.performanceDate'),
+  performanceName: $('.PerformanceName'),
+  performanceDate: $('.PerformanceDate'),
   openAt: $('.openAt'),
   closeAt: $('.closeAt')
 };
 
-$('.newPerformanceSubmit').on('click', () => {
+$('.NewPerformanceSubmit').on('click', () => {
   if (validInput()) {
     fetch('/performances/create', {
       headers: {

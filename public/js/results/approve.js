@@ -1,4 +1,10 @@
-$('.approveSubmitAll').on('click', () => {
+const resultsListCheckboxClass = '.ResultsApprove-checkbox';
+const resultListItemClass = '.ResultsApproveList-item';
+const submitAllButton = '.ResultsApproveSubmitAll';
+const submitCheckedButton = '.ResultsApproveSubmitChecked';
+const url = '/results/approve';
+
+$(submitAllButton).on('click', () => {
   const ids = getAllResultIds();
 
   sendApprovals(ids)
@@ -8,7 +14,7 @@ $('.approveSubmitAll').on('click', () => {
   .catch((err) => console.error(err));
 });
 
-$('.approveSubmitChecked').on('click', () => {
+$(submitCheckedButton).on('click', () => {
   const ids = getAllCheckedIds();
 
   removeIds(ids);
@@ -20,7 +26,7 @@ $('.approveSubmitChecked').on('click', () => {
 });
 
 const sendApprovals = (ids) => {
-  return fetch('/results/approve', {
+  return fetch(url, {
     headers: {
       'Accept': 'application/json',
       'Content-Type': 'application/json'
@@ -33,7 +39,7 @@ const sendApprovals = (ids) => {
 
 const removeIds = (ids) => {
   ids.forEach((id) => {
-    $(`.resultsApproveList-item.${id}`).remove();
+    $(`${resultListItemClass}.${id}`).remove();
   });
   window.location.reload(false);
 };
@@ -47,13 +53,13 @@ const getIdFromElement = element => {
 };
 
 const getAllResultIds = () => {
-  const divs = $('.resultsApproveList-item').toArray();
+  const divs = $(`${resultListItemClass}`).toArray();
 
   return divs.map(getIdFromElement);
 };
 
 const getAllCheckedIds = () => {
-  const divs = $('.resultsApprove-checkbox').toArray();
+  const divs = $(`${resultsListCheckboxClass}`).toArray();
 
   return divs.filter(div => div.checked).map(div => getIdFromElement(div));
 };
