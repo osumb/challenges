@@ -152,7 +152,7 @@ module.exports = class Performance {
     if (!performance) {
       return null;
     }
-    formatString = formatString || 'MMMM Do, h:mm:ss a'; // eslint-disable-line no-param-reassign
+    formatString = formatString || 'MMMM Do, h:mm:ss A'; // eslint-disable-line no-param-reassign
     const now = moment.utc(new Date().toJSON());
     const windowOpen =
       moment(performance.openat).isBefore(moment(now)) &&
