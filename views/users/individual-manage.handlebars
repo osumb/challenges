@@ -1,8 +1,15 @@
 <div class="IndividualManage {{ managedUserCurrent.nameNumber }} {{ managedUserCurrent.spotId }}">
   <div class="IndividualManage-title">
-    <h1 class="IndividualManage-performanceInfo {{performance.id}}">Manage User For The {{performance.name}}</h1>
-    <h2>{{ managedUserCurrent.name }} ({{ managedUserCurrent.spotId }})</h2>
-    <hr />
+    {{#if performance }}
+      <h1 class="IndividualManage-performanceInfo {{performance.id}}">Manage User For The {{performance.name}}</h1>
+      <h2>{{ managedUserCurrent.name }} ({{ managedUserCurrent.spotId }})</h2>
+      <hr />
+    {{else}}
+      <h1 class="IndividualManage-performanceInfo">Manage User</h1>
+      <h2>{{ managedUserCurrent.name }} ({{ managedUserCurrent.spotId }})</h2>
+      <h2>There is currently no upcoming performance, so no user management can take place</h2>
+      <hr />
+    {{/if}}
   </div>
   <div class="IndividualManage-userInfo">
     <h4>Current Information:</h4>
@@ -10,28 +17,30 @@
     <h4>Most recent manage action:
       {{usersIndividualManageActionItem managedUserCurrent.name managedUserCurrent.performanceName managedUserCurrent.reason managedUserCurrent.voluntary}}
     </h4>
-    {{#unless managedUserCurrent.spotOpen }}
-      <hr />
-      <div class="IndividualManage-manage">
-        <button class="ChallengesButton IndividualManage-button-open">Open spot</button>
-        <label>For what reason?</label>
-        <p class="IndividualManage-openReasonOption">
-          <span>Failed Music Check </span>
-          <input checked class="IndividualManage-failed" type="radio" name="openSpotOptions" value="Failed Music Check" />
-        </p>
-        <p class="IndividualManage-openReasonOption">
-          <span>Voluntarily Opened Spot </span>
-          <input class="IndividualManage-volunteer" type="radio" name="openSpotOptions" value="Failed Music Check" />
-        </p>
-        <p class="IndividualManage-openReasonOption">
-          <span>Other </span>
-          <input class="IndividualManage-other" type="radio" name="openSpotOptions" value="Other" />
-          <input class="IndividualManage-reason" placeholder="Discipline reason"/>
-        </p>
-      </div>
-    {{else}}
-      <button class="ChallengesButton IndividualManage-button-close">Close spot</button>
-    {{/unless}}
+    {{#if performance}}
+      {{#unless managedUserCurrent.spotOpen }}
+        <hr />
+        <div class="IndividualManage-manage">
+          <button class="ChallengesButton IndividualManage-button-open">Open spot</button>
+          <label>For what reason?</label>
+          <p class="IndividualManage-openReasonOption">
+            <span>Failed Music Check </span>
+            <input checked class="IndividualManage-failed" type="radio" name="openSpotOptions" value="Failed Music Check" />
+          </p>
+          <p class="IndividualManage-openReasonOption">
+            <span>Voluntarily Opened Spot </span>
+            <input class="IndividualManage-volunteer" type="radio" name="openSpotOptions" value="Failed Music Check" />
+          </p>
+          <p class="IndividualManage-openReasonOption">
+            <span>Other </span>
+            <input class="IndividualManage-other" type="radio" name="openSpotOptions" value="Other" />
+            <input class="IndividualManage-reason" placeholder="Discipline reason"/>
+          </p>
+        </div>
+      {{else}}
+        <button class="ChallengesButton IndividualManage-button-close">Close spot</button>
+      {{/unless}}
+    {{/if}}
   </div>
   <div class="IndividualManage-pastInfo">
     {{#if managedUserOld.length }}
