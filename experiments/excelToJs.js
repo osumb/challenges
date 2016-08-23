@@ -5,9 +5,9 @@
 // const fs = require('fs');
 // const path = require('path');
 //
-// const mockData = require('../spec/fixtures');
+// const fixtures = require('../spec/fixtures');
 //
-// const fakeUsers = mockData.getUsersFromExcelFile();
+// const fakeUsers = fixtures.utils.getTestUsersFromExcelFile();
 //
-// fs.writeFileSync(path.resolve(__dirname, '../spec/fixtures/fakeUsers.js'), 'module.exports = ');
-// fs.appendFileSync(path.resolve(__dirname, '../spec/fixtures/fakeUsers.js'), JSON.stringify(fakeUsers));
+// fs.writeFileSync(path.resolve(__dirname, '../spec/fixtures/test-data/test-users.js'), 'module.exports = ');
+// fs.appendFileSync(path.resolve(__dirname, '../spec/fixtures/test-data/test-users.js'), JSON.stringify(fakeUsers));
