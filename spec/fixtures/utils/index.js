@@ -49,6 +49,10 @@ function getSpotsFromExcelFile(filePath) {
   return spotArr;
 }
 
+function getTestSpotsFromExcelFile() {
+  return getSpotsFromExcelFile(path.resolve(__dirname, '../test-data/test-spots.xlsx'));
+}
+
 function getFakeResults(filePath) {
   const path = filePath || config.db.fakeResultsDataPath;
   const parseObj = xlsx.parse(path);
@@ -95,6 +99,7 @@ function getTestChallengesFromExcelFile() {
 module.exports = {
   getMockUsersFromExcelFile,
   getTestChallengesFromExcelFile,
+  getTestSpotsFromExcelFile,
   getTestUsersFromExcelFile,
   getSpotsFromExcelFile,
   getMockChallengesList,
