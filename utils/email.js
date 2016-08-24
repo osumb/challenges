@@ -65,23 +65,26 @@ const sendChallengeList = (recipient, fileData) => {
 };
 
 const sendChallengeSuccessEmail = (options) => {
-  const { nameNumber, spotId, performanceName } = options;
-  const to = new helper.Email(`${nameNumber}@osu.edu`);
-  const subject = `Challenges for ${performanceName}`;
-  const source = fs.readFileSync(path.resolve(__dirname, '../views/emails/challenge-signup-confirmation.handlebars'), 'utf8');
-  const template = Handlebars.compile(source);
+  if (process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'staging') {
+    const { nameNumber, spotId, performanceName } = options;
+    const to = new helper.Email(`${nameNumber}@osu.edu`);
+    const subject = `Challenges for ${performanceName}`;
+    const source = fs.readFileSync(path.resolve(__dirname, '../views/emails/challenge-signup-confirmation.handlebars'), 'utf8');
+    const template = Handlebars.compile(source);
 
-  const content = new helper.Content('text/html', template({ performanceName, spotId }));
-  const requestBody = new helper.Mail(fromMail, subject, to, content).toJSON();
+    const content = new helper.Content('text/html', template({ performanceName, spotId }));
+    const requestBody = new helper.Mail(fromMail, subject, to, content).toJSON();
 
-  const request = sg.emptyRequest();
+    const request = sg.emptyRequest();
 
-  request.method = 'POST';
-  request.path = '/v3/mail/send';
-  request.body = requestBody;
-  return new Promise((resolve) => {
-    sg.API(request, resolve);
-  });
+    request.method = 'POST';
+    request.path = '/v3/mail/send';
+    request.body = requestBody;
+    return new Promise((resolve) => {
+      sg.API(request, resolve);
+    });
+  }
+  return new Promise((resolve) => resolve());
 };
 
 const sendErrorEmail = (errMessage) => {
