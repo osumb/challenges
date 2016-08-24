@@ -86,6 +86,7 @@ function getMockChallengesList(filePath) {
     challengeObj.UserNameNumber = e[1];
     challengeObj.PerformanceId = 1;
     challengeObj.SpotId = e[2];
+    challengeObj.ErrorCode = e[3];
     challengeList.push(challengeObj);
   });
   return challengeList;
