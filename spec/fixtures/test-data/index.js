@@ -1,4 +1,5 @@
 module.exports = {
-  testPerformance: require('./test-performance')
+  testChallenges: require('./test-challenges'),
+  testPerformance: require('./test-performance'),
   testUsers: require('./test-users')
 };

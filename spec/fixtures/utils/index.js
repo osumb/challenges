@@ -88,8 +88,13 @@ function getMockChallengesList(filePath) {
   return challengeList;
 }
 
+function getTestChallengesFromExcelFile() {
+  return getMockChallengesList(path.resolve(__dirname, '../test-data/test-challenges.xlsx'));
+}
+
 module.exports = {
   getMockUsersFromExcelFile,
+  getTestChallengesFromExcelFile,
   getTestUsersFromExcelFile,
   getSpotsFromExcelFile,
   getMockChallengesList,
