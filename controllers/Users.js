@@ -77,13 +77,13 @@ function UsersController() {
         User.canChallengeForPerformance(req.user, performanceId)
       ])
         .then(data => {
-          const canChallenge = data[3], challenge = data[0], performance = data[2], results = data[1];
+          const canChallenge = data[3], challenge = data[0], performance = Performance.format(data[2]), results = data[1];
 
           res.render('users/show', {
-            canChallenge,
+            canChallenge: canChallenge && (performance && performance.windowOpen),
             challenge,
             results,
-            performance: Performance.format(performance),
+            performance,
             user: req.user
           });
         })
