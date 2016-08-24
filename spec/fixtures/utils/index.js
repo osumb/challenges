@@ -9,7 +9,6 @@ function getMockUsersFromExcelFile(filePath) {
   const userArr = [];
   let UserObj = {};
 
-  console.log(parseObj[0].data);
   parseObj[0].data.forEach((e, index) => {
     //first line of file is column names
     if (index !== 0) {
