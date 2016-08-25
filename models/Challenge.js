@@ -34,7 +34,7 @@ class Challenge {
       });
       query.on('end', () => {
         client.end();
-        return returnCode === 0 ? resolve() : reject(returnCode);
+        resolve(returnCode);
       });
       query.on('error', (err) => {
         client.end();
