@@ -14,6 +14,8 @@ const { testData } = fixtures;
 
 const { testChallenges, testPerformance } = testData;
 
+console.log('==> MAKE TEST CHALLENGES');
+
 /* MAKE CHALLENGES */
 describe('Make Challenges', () => {
   const res = {
