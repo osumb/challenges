@@ -3,6 +3,7 @@ const moment = require('moment');
 const formatString = 'YYYY-MM-DD HH:mm:ss';
 module.exports = {
   current: true,
+  id: 1,
   name: 'Bowling Green Game',
   openAt: moment().format(formatString),
   closeAt: moment().add({ minutes: 5 }).format(formatString),
