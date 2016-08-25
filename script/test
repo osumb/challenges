@@ -11,9 +11,9 @@ eslint .
 echo "==> Done!"
 
 # We'll do some integration tests later
-# echo "==> Setting Up Test Database..."
-# node models/setup.js
-# echo "==> Done!"
+echo "==> Setting Up Test Database..."
+node db/load-test-data.js
+echo "==> Done!"
 
 echo "==> Running tests..."
 jasmine
