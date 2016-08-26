@@ -93,6 +93,30 @@ class Challenge {
     });
   }
 
+  findAllRawForPerformance(performanceId) {
+    const sql = 'SELECT * FROM challenges WHERE performanceId = $1';
+
+    return new Promise((resolve, reject) => {
+      const client = utils.db.createClient();
+      const challenges = [];
+
+      client.connect();
+      client.on('error', err => reject(err));
+
+      const query = client.query(sql, [performanceId]);
+
+      query.on('row', challenge => challenges.push(challenge));
+      query.on('end', () => {
+        client.end();
+        resolve(challenges);
+      });
+      query.on('error', err => {
+        client.end();
+        reject(err);
+      });
+    });
+  }
+
   findForUser(nameNumber) {
     const sql = 'SELECT * FROM challenges AS C, performances AS P WHERE userNameNumber = $1 AND C.performanceId = P.id ORDER BY C.id LIMIT 1';
 
