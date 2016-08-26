@@ -180,6 +180,30 @@ module.exports = class Results {
     });
   }
 
+  findAllRawForPerformance(performanceId) {
+    const client = db.createClient();
+    const sql = 'SELECT * FROM results WHERE performanceId = $1';
+    const results = [];
+
+    return new Promise((resolve, reject) => {
+      client.connect();
+      client.on('error', reject);
+
+      const query = client.query(sql, [performanceId]);
+
+      query.on('row', (result) => results.push(this.parseForAdmin(result)));
+
+      query.on('end', () => {
+        client.end();
+        resolve(results);
+      });
+
+      query.on('error', (err) => {
+        client.end();
+        reject(err);
+      });
+    });
+  }
   findAllForUser(nameNumber) {
     const client = db.createClient();
     const sql = queries.resultsForUser;
@@ -294,11 +318,13 @@ module.exports = class Results {
       id: result.resultid,
       firstComments: result.firstcomments,
       firstName: result.nameone,
+      firstNameNumber: result.firstnamenumber,
       pending: result.pending,
       performanceId: result.performanceid,
       performanceName: result.performancename,
       secondComments: result.secondcomments,
       secondName: result.nametwo,
+      secondNameNumber: result.secondnamenumber,
       spotId: result.spotid,
       winner: result.winnerid === result.namenumberone ? result.nameone : result.nametwo
     };
