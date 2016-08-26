@@ -13,7 +13,7 @@ const reduce = (challenges) => {
   const reducedChallenges = [];
 
   for (let i = 0; i < challenges.length; i++) {
-    if (i < challenges.length - 1 && challenges[i].challengeespot === challenges[i + 1].challengeespot) {
+    if (challenges[i].spotopen && i < challenges.length - 1 && challenges[i].challengeespot === challenges[i + 1].challengeespot) {
       reducedChallenges.push(Object.assign({}, {
         firstNameNumber: challenges[i].namenumberone,
         performanceId: PERFORMANCEID,
@@ -21,7 +21,14 @@ const reduce = (challenges) => {
         spotId: challenges[i].challengeespot
       }));
       i += 1;
-    } else if (i < challenges.length) {
+    } else if (challenges[i].spotopen && i < challenges.length - 1 && challenges[i].challengeespot !== challenges[i + 1].challengeespot) {
+      reducedChallenges.push(Object.assign({}, {
+        firstNameNumber: challenges[i].namenumberone,
+        performanceId: PERFORMANCEID,
+        secondNameNumber: null,
+        spotId: challenges[i].challengeespot
+      }));
+    } else {
       reducedChallenges.push(Object.assign({}, {
         firstNameNumber: challenges[i].namenumberone,
         performanceId: PERFORMANCEID,
@@ -45,18 +52,18 @@ const createEmptyResults = (performanceId) => {
   client.connect();
   client.on('error', console.error);
 
-  Challenge.findAllForPerformanceCSV(performanceId)
-  .then(sort)
-  .then(reduce)
-  .then(insertChallengesAsResults)
-  .then(() => {
-    client.end();
-    logger.jobsLog('Create Empty Results Success');
-  })
-  .catch((err) => {
-    client.end();
-    logger.errorLog('Create Empty Results', err);
-  });
+  return Challenge.findAllForPerformanceCSV(performanceId)
+    .then(sort)
+    .then(reduce)
+    .then(insertChallengesAsResults)
+    .then(() => {
+      client.end();
+      logger.jobsLog('Create Empty Results Success');
+    })
+    .catch((err) => {
+      client.end();
+      logger.errorLog('Create Empty Results', err);
+    });
 };
 
 module.exports = createEmptyResults;
