@@ -75,6 +75,10 @@ function getFakeResults(filePath) {
   return resultsArray;
 }
 
+function getTestResultsFromExcelFile() {
+  return getFakeResults(path.resolve(__dirname, '../test-data/test-results.xlsx'));
+}
+
 function getMockChallengesList(filePath) {
   const path = filePath || config.db.fakeChallengeListPath;
   const parseObj = xlsx.parse(path);
@@ -99,6 +103,7 @@ function getTestChallengesFromExcelFile() {
 module.exports = {
   getMockUsersFromExcelFile,
   getTestChallengesFromExcelFile,
+  getTestResultsFromExcelFile,
   getTestSpotsFromExcelFile,
   getTestUsersFromExcelFile,
   getSpotsFromExcelFile,
