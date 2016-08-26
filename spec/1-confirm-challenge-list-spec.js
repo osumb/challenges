@@ -72,7 +72,7 @@ describe('Make Challenges', () => {
 
 describe('Created Challenges Are Valid', () => {
   it('Should have the same challenges in the db as the valid test challenges', (done) => {
-    Challenge.findAllForPerformanceCSV(testPerformance.id)
+    Challenge.findAllRawForPerformance(testPerformance.id)
     .then((challenges) => {
       expect(challenges.length).toEqual(testValidChallenges.length);
       jasmine.addCustomEqualityTester(challengeArraysAreEqual);
@@ -83,10 +83,10 @@ describe('Created Challenges Are Valid', () => {
 });
 
 const challengeArraysAreEqual = (actual, expected) => {
-  actual.sort((a, b) => a.challengeespot.localeCompare(b.challengeespot));
+  actual.sort((a, b) => a.spotid.localeCompare(b.spotid));
   expected.sort((a, b) => a.SpotId.localeCompare(b.SpotId));
 
-  return expected.some(({ UserNameNumber, SpotId }, i) =>
-    UserNameNumber === actual[i].namenumberone && SpotId === actual[i].challengeespot
+  return expected.every(({ UserNameNumber, SpotId }, i) =>
+    UserNameNumber === actual[i].usernamenumber && SpotId === actual[i].spotid
   );
 };
