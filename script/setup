@@ -22,5 +22,12 @@ else
 fi
 script/mock-data
 
+if redis-cli ping | grep PONG; then
+  echo "Redis server is running"
+else
+  echo "===> Setting up Redis server..."
+  ln -sfv /usr/local/opt/redis/*.plist ~/Library/LaunchAgents
+  launchctl load ~/Library/LaunchAgents/homebrew.mxcl.redis.plist
+fi
 
 echo "==> App is now ready to go!"
