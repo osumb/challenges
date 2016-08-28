@@ -1,5 +1,9 @@
 const email = require('./email.js');
 
+const actionLog = (message, obj = '') => {
+  console.log(`ACTION_LOG: ${message}`, obj);
+};
+
 const adminActionLog = (message, obj = '') => {
   console.log(`ADMIN_ACTION_LOG: ${message}`, obj);
 };
@@ -20,6 +24,7 @@ const jobsLog = (message, obj = '') => {
 };
 
 module.exports = {
+  actionLog,
   adminActionLog,
   challengesLog,
   errorLog,
