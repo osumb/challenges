@@ -302,6 +302,28 @@ module.exports = class Results {
     });
   }
 
+  updateForTestsOnly(firstNameNumber, comments1, comments2, winnerId) {
+    const client = db.createClient();
+    const sql = 'UPDATE results SET firstComments = $1, secondComments = $2, winnerId = $3 WHERE firstNameNumber = $4';
+
+    return new Promise((resolve, reject) => {
+      client.connect();
+      client.on('error', reject);
+
+      const query = client.query(sql, [comments1, comments2 || null, winnerId, firstNameNumber]);
+
+      query.on('end', () => {
+        client.end();
+        resolve();
+      });
+
+      query.on('error', (err) => {
+        client.end();
+        reject(err);
+      });
+    });
+  }
+
   parse(result, nameNumber) {
     return {
       comments: result.comments,
