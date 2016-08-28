@@ -108,17 +108,17 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
-DROP FUNCTION IF EXISTS can_sl_eval(instrumentA varchar(256), instrumentB varchar(256), partA varchar(256), partB varchar(256));
-CREATE OR REPLACE FUNCTION can_sl_eval(instrumentA varchar(256), instrumentB varchar(256), partA varchar(256), partB varchar(256))
+DROP FUNCTION IF EXISTS can_sl_eval(sLRow varchar(3), resultRow varchar(3), nameNumberOne varchar(256), nameNumberTwo varchar(256));
+CREATE OR REPLACE FUNCTION can_sl_eval(sLRow varchar(3), resultRow varchar(3), nameNumberOne varchar(256), nameNumberTwo varchar(256))
 RETURNS boolean as $$
+DECLARE rowOne varchar(1); rowTwo varchar(1);
 BEGIN
 
-  -- We'll probably have to do some fancier things here for trumpet challenge evals
-  IF (instrumentA = 'Trumpet') THEN
-    RETURN instrumentA = instrumentB AND partA = partB;
-  END IF;
+  -- Squad Leaders can see challenges that are either into their row, or results involving someone in their row
+  SELECT substring(spotId, 1, 1) INTO rowOne FROM users WHERE nameNumber = nameNumberOne;
+  SELECT substring(spotId, 1, 1) INTO rowTwo FROM users WHERE nameNumber = nameNumberTwo;
 
-  RETURN instrumentA = instrumentB;
+  RETURN sLRow = rowOne OR sLRow = rowTwo OR sLRow = resultRow;
 END;
 $$ LANGUAGE plpgsql;
 
