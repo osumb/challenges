@@ -55,7 +55,7 @@ class User {
   changePassword(nameNumber, newPassword) {
     return new Promise((resolve, reject) => {
       const client = utils.db.createClient();
-      const sql = 'UPDATE users SET password = $1 WHERE nameNumber = $2';
+      const sql = 'UPDATE users SET password = $1, new = false WHERE nameNumber = $2';
       const password = bcrypt.hashSync(newPassword, bcrypt.genSaltSync(1)); // eslint-disable-line no-sync
 
       client.connect();
@@ -63,7 +63,10 @@ class User {
 
       const query = client.query(sql, [password, nameNumber]);
 
-      query.on('end', resolve);
+      query.on('end', () => {
+        client.end();
+        resolve(password);
+      });
       query.on('error', (err) => {
         client.end();
         reject(err);
@@ -105,6 +108,7 @@ class User {
         SELECT
           name,
           namenumber,
+          new,
           COALESCE(u.instrument, ra.instrument) AS instrument,
           COALESCE(u.part, ra.part) AS part,
           password,
@@ -168,6 +172,7 @@ class User {
       instrument: user.instrument,
       name: user.name,
       nameNumber: user.namenumber,
+      new: user.new,
       part: user.part,
       password: user.password,
       spotId: user.spotid,

@@ -1,5 +1,9 @@
 <div class="Settings">
-  <h1 class="Settings-title">Settings</h1>
+  {{#if message}}
+    <h2>{{message}}</h2>
+  {{else}}
+    <h1 class="Settings-title">Settings</h1>
+  {{/if}}
   <h2>Change Password</h2>
   <label>Old Password</label>
   <input class="ChangePassword-old" type="password" />
