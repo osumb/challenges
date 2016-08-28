@@ -1,8 +1,6 @@
 # OSUMB Challenges
 [![Build Status](https://travis-ci.org/osumb/challenges.svg?branch=master)](https://travis-ci.org/osumb/challenges)
 
-![alt text](./public/images/OSUMBlogo.jpg)
-
 Application for members of the OSUMB to signup for challenges
 
 ## Installation and setup
@@ -51,9 +49,11 @@ the Heroku git remotes
 
 ## Staging vs Production
 ### Staging
-The staging branch is protected just like master. To test a feature, make a pull request to this branch. We have a
-staging [Heroku instance](https://osumbchallengesdev.herokuapp.com). When a PR to staging is merged, it will a trigger a
-build on that instance. Give it a minute after merging as it has to go through CI again.
+The staging instance is used to test new features, specifically ones that have made it into PRs. There is no staging
+branch anymore. I've just been doing a deploy to staging from the branch I want to test. The staging url is still
+[the same](https://osumbchallengesdev.herokuapp.com)
 
 ### Production
-Working on it... Waiting for approval to get a domain to get all of that figured out
+When code gets merged into master, it triggers a deploy to (prod)[https://osumbchallenges.herokuapp.com]. The master
+branch is protected from force pushes and PR's must pass CI in order to get merged. **AGAIN... merges into master get
+AUTOMATICALLY DEPLOYED TO PROD** so be careful when merging to master!
