@@ -57,6 +57,7 @@ const sendChallengeListEmail = (performanceId) => {
         throw data;
       }
       logger.jobsLog('Send Challenge List Email success', data);
+      return data;
     })
     .catch((err) => {
       logger.errorLog('Jobs.sendChallengeListEmail', err);
