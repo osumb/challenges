@@ -6,10 +6,13 @@ const controllers = require('../controllers');
 const middleware = require('../middleware');
 
 const currentPerformance = middleware.currentPerformance;
-const ensureAuthenticated = auth.ensureAuthenticated;
-const ensureAdmin = auth.ensureAdmin;
-const ensureAuthAndNameNumberRoute = auth.ensureAuthAndNameNumberRoute;
-const ensureEvalAbility = auth.ensureEvalAbility;
+const {
+  ensureAuthenticated,
+  ensureAdmin,
+  ensureAuthAndNameNumberRoute,
+  ensureEvalAbility,
+  ensureNotFirstLogin
+} = auth;
 const passport = auth.passport;
 
 const Challenges = new controllers.Challenges();
@@ -44,10 +47,12 @@ router.setup = (app) => {
   app.get('/logout', Sessions.logout);
 
   //Users Controller
-  app.get('/:nameNumber', [ensureAuthAndNameNumberRoute, currentPerformance], Users.show);
+  app.get('/:nameNumber', [ensureAuthAndNameNumberRoute, currentPerformance, ensureNotFirstLogin], Users.show);
+  app.get('/:nameNumber/settings', ensureAuthAndNameNumberRoute, Users.settings);
   app.get('/users/manage', ensureAdmin, Users.showManage);
   app.get('/users/manage/:nameNumber', ensureAdmin, Users.showIndividualManage);
   app.get('/users/search', ensureAdmin, Users.search);
+  app.post('/users/changePassword', ensureAuthenticated, Users.changePassword);
   app.post('/users/manage', ensureAdmin, Users.manage);
   app.post('/users/manage/close', ensureAdmin, Users.closeSpot);
 };

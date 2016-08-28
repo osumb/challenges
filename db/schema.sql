@@ -233,6 +233,7 @@ CREATE TABLE users (
   nameNumber varchar(256) PRIMARY KEY,
   instrument instrument,
   name varchar(256) NOT NULL,
+  new boolean NOT NULL DEFAULT TRUE,
   part part,
   password varchar(256) NOT NULL,
   role role,
