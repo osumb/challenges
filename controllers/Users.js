@@ -15,7 +15,10 @@ function UsersController() {
 
     if (bcrypt.compareSync(oldPassword, req.user.password)) { // eslint-disable-line no-sync
       User.changePassword(req.user.nameNumber, newPassword)
-      .then(() => res.json({ success: true }))
+      .then(() => {
+        req.user.new = false;
+        res.json({ success: true });
+      })
       .catch((err) => {
         logger.errorLog('Users.changePassword', err);
         res.json({ success: false, error: true });
