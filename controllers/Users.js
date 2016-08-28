@@ -1,3 +1,5 @@
+const bcrypt = require('bcrypt');
+
 const Models = require('../models');
 const { logger } = require('../utils');
 const Challenge = new Models.Challenge();
@@ -8,6 +10,21 @@ const Spot = new Models.Spot();
 const User = new Models.User();
 
 function UsersController() {
+  this.changePassword = (req, res) => {
+    const { oldPassword, newPassword } = req.body;
+
+    if (bcrypt.compareSync(oldPassword, req.user.password)) { // eslint-disable-line no-sync
+      User.changePassword(req.user.nameNumber, newPassword)
+      .then(() => res.json({ success: true }))
+      .catch((err) => {
+        logger.errorLog('Users.changePassword', err);
+        res.json({ success: false, error: true });
+      });
+    } else {
+      res.json({ success: false, error: false });
+    }
+  };
+
   this.closeSpot = (req, res) => {
     const { nameNumber, performanceId, spotId } = req.body;
     const manageAttributes = {
