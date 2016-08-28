@@ -169,6 +169,7 @@ class User {
       name: user.name,
       nameNumber: user.namenumber,
       part: user.part,
+      password: user.password,
       spotId: user.spotid,
       squadLeader: user.role === 'Squad Leader'
     };
