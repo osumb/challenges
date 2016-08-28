@@ -42,7 +42,7 @@ $(changePasswordButtonClass).on('click', () => {
       banner('Sorry, there was an error on our end. We\'re aware of and working on the issue');
     });
   } else {
-    banner('Invalid Input');
+    banner('New passwords don\'t match');
   }
 });
 
