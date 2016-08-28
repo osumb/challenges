@@ -45,7 +45,7 @@ router.setup = (app) => {
 
   //Users Controller
   app.get('/:nameNumber', [ensureAuthAndNameNumberRoute, currentPerformance], Users.show);
-  app.get('/:nameNumber/settings', [ensureAuthAndNameNumberRoute], Users.settings);
+  app.get('/:nameNumber/settings', ensureAuthAndNameNumberRoute, Users.settings);
   app.get('/users/manage', ensureAdmin, Users.showManage);
   app.get('/users/manage/:nameNumber', ensureAdmin, Users.showIndividualManage);
   app.get('/users/search', ensureAdmin, Users.search);
