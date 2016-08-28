@@ -70,10 +70,24 @@ function ensureEvalAbility(req, res, next) {
     return res.redirect('/');
   }
 }
+
+function ensureNotFirstLogin(req, res, next) {
+  console.log('Ensure Not First Login', req.user);
+  if (req.user.new) {
+    return res.render('users/settings', {
+      message: 'This is your first time logging in. Please make a new password',
+      user: req.user
+    });
+  } else {
+    return next();
+  }
+}
+
 module.exports = {
   ensureAuthenticated,
   ensureAdmin,
   ensureAuthAndNameNumberRoute,
   ensureEvalAbility,
+  ensureNotFirstLogin,
   passport
 };
