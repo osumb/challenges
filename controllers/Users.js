@@ -57,6 +57,10 @@ function UsersController() {
     .catch(err => res.status(500).json({ message: err }));
   };
 
+  this.settings = (req, res) => {
+    res.render('users/settings', { user: req.user });
+  };
+
   this.show = (req, res) => {
     const performanceId = req.session.currentPerformance && req.session.currentPerformance.id;
 
