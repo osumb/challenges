@@ -130,7 +130,7 @@ module.exports = class Results {
     });
   }
 
-  findAllForEval(instrument, part, userNameNumber) {
+  findAllForEval(nameNumber, row) {
     const client = db.createClient();
     const sql = queries.resultsForEval;
     const results = [];
@@ -139,7 +139,7 @@ module.exports = class Results {
       client.connect();
       client.on('error', (err) => reject(err));
 
-      const query = client.query(sql, [instrument, part, userNameNumber]);
+      const query = client.query(sql, [nameNumber, row]);
 
       query.on('row', (result) => results.push(this.parseForEval(result)));
 

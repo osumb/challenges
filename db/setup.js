@@ -20,7 +20,7 @@ const insertPerformanceQueryString = 'INSERT INTO performances (name, openAt, cl
 const insertResultQueryString = 'INSERT INTO results (performanceId, spotId, firstNameNumber, secondNameNumber, firstComments, secondComments, winnerId, pending) VALUES($1, $2, $3, $4, $5, $6, $7, $8)';
 const insertResultsApproveQueryString = 'INSERT INTO results_approve (userNameNumber, instrument, part) VALUES($1, $2, $3)';
 const insertSpotQueryString = 'INSERT INTO spots VALUES ($1, $2, $3)';
-const insertUserQueryString = 'INSERT INTO users VALUES ($1, $2, $3, $4, $5, $6, $7)';
+const insertUserQueryString = 'INSERT INTO users (nameNumber, instrument, name, part, password, role, spotId) VALUES ($1, $2, $3, $4, $5, $6, $7)';
 
 function createDb(value, cb) {
   const sql = fs.readFileSync(path.resolve(__dirname, 'schema.sql')).toString(); // eslint-disable-line no-sync
