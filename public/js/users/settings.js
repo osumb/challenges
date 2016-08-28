@@ -30,6 +30,9 @@ $(changePasswordButtonClass).on('click', () => {
     })
     .then(({ success, error }) => {
       if (success) {
+        if (window.location.pathname.split('/')[2] !== 'settings') {
+          window.location.reload(true);
+        }
         banner('Your password has successfully changed!');
       } else if (error) {
         throw error;
