@@ -13,4 +13,4 @@ LEFT JOIN
   ) t2
 ON
   t1.challengeespot = t2.spotId
-ORDER BY t1.challengerspot;
+ORDER BY (substring(t1.challengerspot, 0, 2), substring(t1.challengerspot, 2)::int)
