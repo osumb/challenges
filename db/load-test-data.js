@@ -16,7 +16,7 @@ const testUsers = fixtures.testData.testUsers;
 const insertManageActionQuery = 'INSERT INTO manage (performanceId, usernamenumber, reason, spotId, voluntary) VALUES($1, $2, $3, $4, $5)';
 const insertPerformanceQueryString = 'INSERT INTO performances (name, openAt, closeAt, performDate, current) VALUES($1, $2, $3, $4, $5)';
 const insertSpotQueryString = 'INSERT INTO spots VALUES ($1, $2, $3)';
-const insertUserQueryString = 'INSERT INTO users VALUES ($1, $2, $3, $4, $5, $6, $7)';
+const insertUserQueryString = 'INSERT INTO users (nameNumber, instrument, name, part, password, role, spotId) VALUES ($1, $2, $3, $4, $5, $6, $7)';
 
 function createDb(value, cb) {
   const sql = fs.readFileSync(path.resolve(__dirname, 'schema.sql')).toString(); // eslint-disable-line no-sync
