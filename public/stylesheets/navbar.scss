@@ -32,6 +32,12 @@
   padding-right: 5px;
 }
 
+.Navbar-settings {
+  color: black;
+  font-size: 18px;
+  padding-right: 5px;
+}
+
 @media (max-width: 737px) {
   .Navbar-link {
     padding-left: 5px;
@@ -72,6 +78,10 @@
   }
 
   .Navbar-logout {
+    font-size: 14px;
+  }
+
+  .Navbar-settings {
     font-size: 14px;
   }
 }

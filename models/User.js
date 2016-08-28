@@ -1,3 +1,5 @@
+const bcrypt = require('bcrypt');
+
 const queries = require('../db/queries');
 const utils = require('../utils');
 
@@ -46,6 +48,25 @@ class User {
       query.on('error', (err) => {
         reject(err);
         client.end();
+      });
+    });
+  }
+
+  changePassword(nameNumber, newPassword) {
+    return new Promise((resolve, reject) => {
+      const client = utils.db.createClient();
+      const sql = 'UPDATE users SET password = $1 WHERE nameNumber = $2';
+      const password = bcrypt.hashSync(newPassword, bcrypt.genSaltSync(1)); // eslint-disable-line no-sync
+
+      client.connect();
+      client.on('error', reject);
+
+      const query = client.query(sql, [password, nameNumber]);
+
+      query.on('end', resolve);
+      query.on('error', (err) => {
+        client.end();
+        reject(err);
       });
     });
   }
@@ -148,6 +169,7 @@ class User {
       name: user.name,
       nameNumber: user.namenumber,
       part: user.part,
+      password: user.password,
       spotId: user.spotid,
       squadLeader: user.role === 'Squad Leader'
     };
