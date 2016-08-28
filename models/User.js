@@ -63,7 +63,10 @@ class User {
 
       const query = client.query(sql, [password, nameNumber]);
 
-      query.on('end', resolve);
+      query.on('end', () => {
+        client.end();
+        resolve(password);
+      });
       query.on('error', (err) => {
         client.end();
         reject(err);
