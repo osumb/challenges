@@ -5,6 +5,7 @@ const models = require('../models');
 const Result = new models.Result();
 const { testResults } = testData;
 
+console.log('==> EVAULATE RESULTS');
 describe('Evaluate Results', () => {
   testResults.forEach(({ firstNameNumber, winnerId, comments1, comments2 }) => {
     it('Should evaluate all of the results', (done) => {

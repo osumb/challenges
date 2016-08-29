@@ -6,6 +6,7 @@ const Result = new models.Result();
 const User = new models.User();
 const { testFinalSpots, testPerformance, testResults } = testData;
 
+console.log('==> APPROVE RESULTS');
 describe('Approve Results', () => {
   it('Should approve the results', (done) => {
     Result.approve([...Array(testResults.length + 1).keys()])
@@ -15,6 +16,7 @@ describe('Approve Results', () => {
   });
 });
 
+console.log('==> SWITCH SPOTS');
 describe('Switch Spots', () => {
   it('Should switch spots', (done) => {
     Result.switchSpotsForPerformance(testPerformance.id)
