@@ -15,7 +15,7 @@ const challengesLog = (message, obj = '') => {
 };
 
 const errorLog = (message, err = '') => {
-  if (process.env.NODE_ENV && process.env.NODE_ENV !== 'dev') {
+  if (process.env.NODE_ENV && process.env.NODE_ENV !== 'dev' && process.env.NODE_ENV !== 'test') {
     email.sendErrorEmail(message);
   }
   console.error(`ERROR_LOG: ${message}`, err);
