@@ -1,4 +1,4 @@
-SELECT t1.name AS nameOne, t2.name AS nameTwo, t1.spotId AS spotId, t1.id AS resultsId, t1.nameNumber AS nameNumberOne,
+SELECT t1.name AS nameOne, t2.name AS nameTwo, t1.spotId AS spotId, t1.id AS resultId, t1.nameNumber AS nameNumberOne,
        t2.nameNumber AS nameNumberTwo, t1.comments AS firstComments, t2.comments AS secondComments, t1.winnerId,
        t1.alternate AS userOneAlternate, t2.alternate AS userTwoAlternate
 FROM

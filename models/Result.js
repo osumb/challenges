@@ -252,11 +252,11 @@ module.exports = class Results {
       resultsQuery.on('end', () => {
         const filteredResults = results.filter(({ namenumbertwo }, i) => {
           if (!namenumbertwo) {
-            onePersonResultIds.push(results[i].resultsid);
+            onePersonResultIds.push(results[i].resultid);
           }
           return namenumbertwo;
         });
-        const filteredResultsIds = filteredResults.sort(resultsSort).map(({ resultsid }) => resultsid);
+        const filteredResultsIds = filteredResults.sort(resultsSort).map(({ resultid }) => resultid);
 
         const switchQuery = client.query(switchSql, [filteredResultsIds]);
 
@@ -270,7 +270,7 @@ module.exports = class Results {
           oneUserQuery.on('error', err => {
             client.end();
             logger.errorLog('Results.switchSpotsForPerformance: oneUserQuery', err);
-            resolve();
+            reject(err);
           });
         });
 
