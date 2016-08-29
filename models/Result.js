@@ -239,44 +239,55 @@ module.exports = class Results {
     const results = [];
     const onePersonResultIds = [];
 
-    client.connect();
-    client.on('error', (err) => {
-      logger.errorLog('Results.switchSpotsForPerformance', err);
-    });
-
-    const resultsQuery = client.query(resultsSql, [id]);
-
-    resultsQuery.on('row', result => results.push(result));
-    resultsQuery.on('end', () => {
-      const filteredResults = results.filter(({ namenumbertwo }, i) => {
-        if (!namenumbertwo) {
-          onePersonResultIds.push(results[i].resultsid);
-        }
-        return namenumbertwo;
+    return new Promise((resolve, reject) => {
+      client.connect();
+      client.on('error', (err) => {
+        logger.errorLog('Results.switchSpotsForPerformance', err);
+        reject(err);
       });
-      const filteredResultsIds = filteredResults.sort(resultsSort).map(({ resultsid }) => resultsid);
 
-      const switchQuery = client.query(switchSql, [filteredResultsIds]);
+      const resultsQuery = client.query(resultsSql, [id]);
 
-      switchQuery.on('end', () => {
-        const oneUserQuery = client.query(oneUserSql, [onePersonResultIds]);
+      resultsQuery.on('row', result => results.push(result));
+      resultsQuery.on('end', () => {
+        const filteredResults = results.filter(({ namenumbertwo }, i) => {
+          if (!namenumbertwo) {
+            onePersonResultIds.push(results[i].resultsid);
+          }
+          return namenumbertwo;
+        });
+        const filteredResultsIds = filteredResults.sort(resultsSort).map(({ resultsid }) => resultsid);
 
-        oneUserQuery.on('end', () => client.end());
-        oneUserQuery.on('error', err => {
+        console.log(filteredResults);
+        console.log(onePersonResultIds);
+        const switchQuery = client.query(switchSql, [filteredResultsIds]);
+
+        switchQuery.on('end', () => {
+          const oneUserQuery = client.query(oneUserSql, [onePersonResultIds]);
+
+          oneUserQuery.on('end', () => {
+            client.end();
+            resolve();
+          });
+          oneUserQuery.on('error', err => {
+            client.end();
+            logger.errorLog('Results.switchSpotsForPerformance: oneUserQuery', err);
+            resolve();
+          });
+        });
+
+        switchQuery.on('error', err => {
           client.end();
-          logger.errorLog('Results.switchSpotsForPerformance: oneUserQuery', err);
+          logger.errorLog('Results.switchSpotsForPerformance: switchQuery', err);
+          reject(err);
         });
       });
 
-      switchQuery.on('error', err => {
+      resultsQuery.on('error', err => {
+        logger.errorLog('Results.switchSpotsForPerformance', err);
         client.end();
-        logger.errorLog('Results.switchSpotsForPerformance: switchQuery', err);
+        reject(err);
       });
-    });
-
-    resultsQuery.on('error', err => {
-      logger.errorLog('Results.switchSpotsForPerformance', err);
-      client.end();
     });
   }
 
