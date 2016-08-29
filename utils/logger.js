@@ -5,7 +5,9 @@ const adminActionLog = (message, obj = '') => {
 };
 
 const challengesLog = (message, obj = '') => {
-  console.log(`CHALLENGES_LOG: ${message}`, obj);
+  if (process.env.NODE_ENV !== 'test') {
+    console.log(`CHALLENGES_LOG: ${message}`, obj);
+  }
 };
 
 const errorLog = (message, err = '') => {
@@ -16,7 +18,9 @@ const errorLog = (message, err = '') => {
 };
 
 const jobsLog = (message, obj = '') => {
-  console.log(`JOBS_LOG: ${message}`, obj);
+  if (process.env.NODE_ENV !== 'test') {
+    console.log(`JOBS_LOG: ${message}`, obj);
+  }
 };
 
 module.exports = {

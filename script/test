@@ -6,6 +6,8 @@ set -e
 
 cd "$(dirname "$0")/.."
 
+export NODE_ENV="test"
+
 echo "==> Linting..."
 eslint .
 echo "==> Done!"
