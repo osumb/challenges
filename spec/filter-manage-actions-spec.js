@@ -2,6 +2,7 @@
 /* filterManageActions should filter out all actions for a spotId if the last action is 'Closed Spot' */
 const { filterManageActions } = require('../jobs').sendChallengeListEmail;
 
+console.log('==> FILTER MANAGE ACTIONS');
 describe('filterManageActions', () => {
   it('Simple', () => {
     const actions = [

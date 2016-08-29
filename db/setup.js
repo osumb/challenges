@@ -3,18 +3,18 @@ const fs = require('fs');
 const path = require('path');
 
 const db = require('../utils').db;
-const mockData = require('../spec/fixtures');
+const fixtures = require('../spec/fixtures');
 
 const client = db.createClient();
 
 client.connect();
 
-const challenges = mockData.fakeChallengeList;
-const performances = mockData.fakePerformances;
-const results = mockData.fakeResults;
-const resultsApprove = mockData.fakeResultsApprove;
-const spots = mockData.fakeSpots;
-const users = mockData.fakeUsers;
+const challenges = fixtures.mockData.fakeChallengeList;
+const performances = fixtures.mockData.fakePerformances;
+const results = fixtures.mockData.fakeResults;
+const resultsApprove = fixtures.mockData.fakeResultsApprove;
+const spots = fixtures.mockData.fakeSpots;
+const users = fixtures.mockData.fakeUsers;
 const insertChallengeQueryString = 'INSERT INTO challenges (performanceId, userNameNumber, spotId) VALUES($1, $2, $3)';
 const insertPerformanceQueryString = 'INSERT INTO performances (name, openAt, closeAt, performDate, current) VALUES($1, $2, $3, $4, $5)';
 const insertResultQueryString = 'INSERT INTO results (performanceId, spotId, firstNameNumber, secondNameNumber, firstComments, secondComments, winnerId, pending) VALUES($1, $2, $3, $4, $5, $6, $7, $8)';

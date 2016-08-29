@@ -80,12 +80,12 @@ BEGIN
     -- If two alternates were involved in the challenge
     IF (userOneAlternate AND userTwoAlternate) THEN
       IF userOne = winner THEN
-        -- The person who originally had the open spot gets the loser's spot
-        UPDATE users SET spotId = spotTwo WHERE spotId = winnerSpot;
+        -- The person who originally had the open spot gets the winner's old spot
+        UPDATE users SET spotId = spotOne WHERE spotId = winnerSpot;
         UPDATE users SET spotId = winnerSpot WHERE nameNumber = userOne;
       ELSE
-        -- The person who originally had the open spot gets the loser's spot
-        UPDATE users SET spotId = spotOne WHERE spotId = winnerSpot;
+        -- The person who originally had the open spot gets the winner's old spot
+        UPDATE users SET spotId = spotTwo WHERE spotId = winnerSpot;
         UPDATE users SET spotId = winnerSpot WHERE nameNumber = userTwo;
       END IF;
     END IF;

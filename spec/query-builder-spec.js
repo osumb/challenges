@@ -5,6 +5,7 @@ const Challenge = models.Challenge;
 const Result = models.Result;
 const User = models.User;
 
+console.log('==> QUERY BUILDER');
 describe('UPDATE', () => {
   it('should print the correct results query', () => {
     const needsApproval = true, firstComments = 'test', secondComments = 'blah', spotId = 'R10', winnerId = 'Koop.960', id = 1;

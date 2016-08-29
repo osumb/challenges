@@ -125,13 +125,12 @@ module.exports = class Performance {
   findNextOrOpenWindow() {
     return new Promise((resolve, reject) => {
       const client = utils.db.createClient();
-      const queryString = 'SELECT * FROM performances WHERE $1 < openAt OR (openAt < $1 AND $1 < closeAt) ORDER BY openAt DESC LIMIT 1';
-      const now = moment.utc(new Date().toJSON());
+      const queryString = 'SELECT * FROM performances WHERE now() < openAt OR (openAt < now() AND now() < closeAt) ORDER BY openAt DESC LIMIT 1';
 
       client.connect();
       client.on('error', (err) => reject(err));
 
-      const query = client.query(queryString, [now]);
+      const query = client.query(queryString);
 
       query.on('row', (result) => {
         client.end();
@@ -167,5 +166,14 @@ module.exports = class Performance {
       openAt: moment.utc(performance.openat).local().format(formatString),
       windowOpen
     };
+  }
+
+  inPerformanceWindow(performance) {
+    if (!performance) {
+      return false;
+    }
+    const now = moment.utc(new Date().toJSON());
+
+    return moment(performance.openat).isBefore(moment(now)) && moment(now).isBefore(moment(performance.closeat));
   }
 };

@@ -180,6 +180,30 @@ module.exports = class Results {
     });
   }
 
+  findAllRawForPerformance(performanceId) {
+    const client = db.createClient();
+    const sql = 'SELECT * FROM results WHERE performanceId = $1';
+    const results = [];
+
+    return new Promise((resolve, reject) => {
+      client.connect();
+      client.on('error', reject);
+
+      const query = client.query(sql, [performanceId]);
+
+      query.on('row', (result) => results.push(this.parseForAdmin(result)));
+
+      query.on('end', () => {
+        client.end();
+        resolve(results);
+      });
+
+      query.on('error', (err) => {
+        client.end();
+        reject(err);
+      });
+    });
+  }
   findAllForUser(nameNumber) {
     const client = db.createClient();
     const sql = queries.resultsForUser;
@@ -215,44 +239,53 @@ module.exports = class Results {
     const results = [];
     const onePersonResultIds = [];
 
-    client.connect();
-    client.on('error', (err) => {
-      logger.errorLog('Results.switchSpotsForPerformance', err);
-    });
-
-    const resultsQuery = client.query(resultsSql, [id]);
-
-    resultsQuery.on('row', result => results.push(result));
-    resultsQuery.on('end', () => {
-      const filteredResults = results.filter(({ namenumbertwo }, i) => {
-        if (!namenumbertwo) {
-          onePersonResultIds.push(results[i].resultsid);
-        }
-        return namenumbertwo;
+    return new Promise((resolve, reject) => {
+      client.connect();
+      client.on('error', (err) => {
+        logger.errorLog('Results.switchSpotsForPerformance', err);
+        reject(err);
       });
-      const filteredResultsIds = filteredResults.sort(resultsSort).map(({ resultsid }) => resultsid);
 
-      const switchQuery = client.query(switchSql, [filteredResultsIds]);
+      const resultsQuery = client.query(resultsSql, [id]);
 
-      switchQuery.on('end', () => {
-        const oneUserQuery = client.query(oneUserSql, [onePersonResultIds]);
+      resultsQuery.on('row', result => results.push(result));
+      resultsQuery.on('end', () => {
+        const filteredResults = results.filter(({ namenumbertwo }, i) => {
+          if (!namenumbertwo) {
+            onePersonResultIds.push(results[i].resultid);
+          }
+          return namenumbertwo;
+        });
+        const filteredResultsIds = filteredResults.sort(resultsSort).map(({ resultid }) => resultid);
 
-        oneUserQuery.on('end', () => client.end());
-        oneUserQuery.on('error', err => {
+        const switchQuery = client.query(switchSql, [filteredResultsIds]);
+
+        switchQuery.on('end', () => {
+          const oneUserQuery = client.query(oneUserSql, [onePersonResultIds]);
+
+          oneUserQuery.on('end', () => {
+            client.end();
+            resolve();
+          });
+          oneUserQuery.on('error', err => {
+            client.end();
+            logger.errorLog('Results.switchSpotsForPerformance: oneUserQuery', err);
+            reject(err);
+          });
+        });
+
+        switchQuery.on('error', err => {
           client.end();
-          logger.errorLog('Results.switchSpotsForPerformance: oneUserQuery', err);
+          logger.errorLog('Results.switchSpotsForPerformance: switchQuery', err);
+          reject(err);
         });
       });
 
-      switchQuery.on('error', err => {
+      resultsQuery.on('error', err => {
+        logger.errorLog('Results.switchSpotsForPerformance', err);
         client.end();
-        logger.errorLog('Results.switchSpotsForPerformance: switchQuery', err);
+        reject(err);
       });
-    });
-
-    resultsQuery.on('error', err => {
-      logger.errorLog('Results.switchSpotsForPerformance', err);
-      client.end();
     });
   }
 
@@ -278,6 +311,28 @@ module.exports = class Results {
     });
   }
 
+  updateForTestsOnly(firstNameNumber, comments1, comments2, winnerId) {
+    const client = db.createClient();
+    const sql = 'UPDATE results SET firstComments = $1, secondComments = $2, winnerId = $3 WHERE firstNameNumber = $4';
+
+    return new Promise((resolve, reject) => {
+      client.connect();
+      client.on('error', reject);
+
+      const query = client.query(sql, [comments1, comments2 || null, winnerId, firstNameNumber]);
+
+      query.on('end', () => {
+        client.end();
+        resolve();
+      });
+
+      query.on('error', (err) => {
+        client.end();
+        reject(err);
+      });
+    });
+  }
+
   parse(result, nameNumber) {
     return {
       comments: result.comments,
@@ -294,11 +349,13 @@ module.exports = class Results {
       id: result.resultid,
       firstComments: result.firstcomments,
       firstName: result.nameone,
+      firstNameNumber: result.firstnamenumber,
       pending: result.pending,
       performanceId: result.performanceid,
       performanceName: result.performancename,
       secondComments: result.secondcomments,
       secondName: result.nametwo,
+      secondNameNumber: result.secondnamenumber,
       spotId: result.spotid,
       winner: result.winnerid === result.namenumberone ? result.nameone : result.nametwo
     };

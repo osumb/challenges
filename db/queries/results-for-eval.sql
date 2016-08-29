@@ -6,7 +6,6 @@ FROM
     FROM results AS r1, users AS u1
     WHERE r1.firstNameNumber = u1.nameNumber AND NOT
     r1.needsApproval AND
-    u1.nameNumber != $1 AND
     r1.pending
   ) t1
 LEFT JOIN
@@ -18,4 +17,7 @@ LEFT JOIN
 ON
   t1.id = t2.id
 JOIN performances AS p ON t1.performanceid = p.id
-WHERE p.closeAt < now() AND can_sl_eval($2, substring(t1.spotId, 1, 1), t1.nameNumber, t2.nameNumber);
+WHERE p.closeAt < now() AND
+  t1.nameNumber != $1 AND
+  (t2.nameNumber is NULL OR t2.nameNumber != $1) AND
+  can_sl_eval($2, substring(t1.spotId, 1, 1), t1.nameNumber, t2.nameNumber);

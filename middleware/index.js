@@ -29,17 +29,18 @@ const currentPerformance = (req, res, next) => {
 /* eslint-disable consistent-return */
 const refreshCurrentPerformance = (req, res, next) => {
   if (
-    req.session &&
-    req.session.currentPerformance &&
+    !req.session.currentPerformance ||
     !currentPerformanceWithinTimeFrame(req.session.currentPerformance)
   ) {
     Performance.findCurrent()
     .then((performance) => {
       req.session.currentPerformance = performance;
+      req.session.save();
       next();
     })
     .catch((err) => {
       logger.errorLog('Middleware.refreshCurrentPerformance', err);
+      next();
     });
   } else {
     return next();

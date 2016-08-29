@@ -34,7 +34,7 @@ class Challenge {
       });
       query.on('end', () => {
         client.end();
-        return returnCode === 0 ? resolve() : reject(returnCode);
+        resolve(returnCode);
       });
       query.on('error', (err) => {
         client.end();
@@ -71,6 +71,30 @@ class Challenge {
 
   findAllForPerformanceCSV(performanceId) {
     const sql = queries.challengesForCSV;
+
+    return new Promise((resolve, reject) => {
+      const client = utils.db.createClient();
+      const challenges = [];
+
+      client.connect();
+      client.on('error', err => reject(err));
+
+      const query = client.query(sql, [performanceId]);
+
+      query.on('row', challenge => challenges.push(challenge));
+      query.on('end', () => {
+        client.end();
+        resolve(challenges);
+      });
+      query.on('error', err => {
+        client.end();
+        reject(err);
+      });
+    });
+  }
+
+  findAllRawForPerformance(performanceId) {
+    const sql = 'SELECT * FROM challenges WHERE performanceId = $1';
 
     return new Promise((resolve, reject) => {
       const client = utils.db.createClient();

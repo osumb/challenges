@@ -1,6 +1,7 @@
 /* eslint-disable new-cap, no-sync */
 const fs = require('fs');
 const Handlebars = require('handlebars');
+const moment = require('moment');
 const path = require('path');
 const sendGrid = require('sendgrid');
 
@@ -8,7 +9,7 @@ const helper = sendGrid.mail;
 const sg = sendGrid.SendGrid(process.env.SENDGRID_API_KEY);
 const fromMail = new helper.Email('osumbit@gmail.com');
 
-const sendChallengeList = (recipient, fileData) => {
+const sendChallengeList = (recipients, fileData) => {
   const request = sg.emptyRequest();
 
   request.body = {
@@ -17,7 +18,7 @@ const sendChallengeList = (recipient, fileData) => {
         content: fileData,
         content_id: 'ii_139db99fdb5c3704',
         disposition: 'inline',
-        filename: 'challenge-list.xlsx',
+        filename: `challenge-list-${moment().format('YYYY-MM-DD')}.csv`,
         type: 'csv'
       }
     ],
@@ -32,10 +33,6 @@ const sendChallengeList = (recipient, fileData) => {
       name: 'Challenge App'
     },
     mail_settings: {
-      bcc: {
-        email: 'tareshawty.3@osu.edu',
-        enable: true
-      },
       footer: {
         enable: true,
         html: '<p>Sincerely, The Challenge App Team</p>'
@@ -44,12 +41,7 @@ const sendChallengeList = (recipient, fileData) => {
     },
     personalizations: [
       {
-        to: [
-          {
-            email: recipient,
-            name: 'OSUMB Office'
-          }
-        ],
+        to: recipients,
         subject: 'Challenge List'
       }
     ],
@@ -65,23 +57,26 @@ const sendChallengeList = (recipient, fileData) => {
 };
 
 const sendChallengeSuccessEmail = (options) => {
-  const { nameNumber, spotId, performanceName } = options;
-  const to = new helper.Email(`${nameNumber}@osu.edu`);
-  const subject = `Challenges for ${performanceName}`;
-  const source = fs.readFileSync(path.resolve(__dirname, '../views/emails/challenge-signup-confirmation.handlebars'), 'utf8');
-  const template = Handlebars.compile(source);
+  if (process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'staging') {
+    const { nameNumber, spotId, performanceName } = options;
+    const to = new helper.Email(`${nameNumber}@osu.edu`);
+    const subject = `Challenges for ${performanceName}`;
+    const source = fs.readFileSync(path.resolve(__dirname, '../views/emails/challenge-signup-confirmation.handlebars'), 'utf8');
+    const template = Handlebars.compile(source);
 
-  const content = new helper.Content('text/html', template({ performanceName, spotId }));
-  const requestBody = new helper.Mail(fromMail, subject, to, content).toJSON();
+    const content = new helper.Content('text/html', template({ performanceName, spotId }));
+    const requestBody = new helper.Mail(fromMail, subject, to, content).toJSON();
 
-  const request = sg.emptyRequest();
+    const request = sg.emptyRequest();
 
-  request.method = 'POST';
-  request.path = '/v3/mail/send';
-  request.body = requestBody;
-  return new Promise((resolve) => {
-    sg.API(request, resolve);
-  });
+    request.method = 'POST';
+    request.path = '/v3/mail/send';
+    request.body = requestBody;
+    return new Promise((resolve) => {
+      sg.API(request, resolve);
+    });
+  }
+  return new Promise((resolve) => resolve());
 };
 
 const sendErrorEmail = (errMessage) => {

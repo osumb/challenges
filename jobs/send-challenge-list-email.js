@@ -4,6 +4,32 @@ const Manage = new models.Manage();
 const { sendChallengeList } = require('../utils').email;
 const { logger } = require('../utils');
 
+const recipients = (process.env.NODE_ENV === 'test' || process.env.NODE_ENV === 'dev') ?
+[
+  {
+    email: 'tareshawty.3@osu.edu',
+    name: 'Alex Tareshawty'
+  }
+] :
+[
+  {
+    email: 'green.1128@osu.edu',
+    name: 'Tess Green'
+  },
+  {
+    email: 'hoch.4@osu.edu',
+    name: 'Chris Hoch'
+  },
+  {
+    email: 'osumb@osu.edu',
+    name: 'Band Office'
+  },
+  {
+    email: 'tareshawty.3@osu.edu',
+    name: 'Alex Tareshawty'
+  }
+];
+
 const filterManageActions = (arr) => {
   const filtered = [];
 
@@ -51,12 +77,13 @@ const getChallengeCSV = (performanceId) =>
 const sendChallengeListEmail = (performanceId) => {
   return getChallengeCSV(performanceId)
   .then(csv => {
-    sendChallengeList('atareshawty@gmail.com', csv) // TODO: Actually email to band office
+    sendChallengeList(recipients, csv)
     .then((data) => {
       if (data.statusCode > 300) {
         throw data;
       }
       logger.jobsLog('Send Challenge List Email success', data);
+      return data;
     })
     .catch((err) => {
       logger.errorLog('Jobs.sendChallengeListEmail', err);
