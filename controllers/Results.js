@@ -46,6 +46,7 @@ function ResultsController() {
       winnerId: req.body.winnerId
     })
     .then(() => {
+      logger.actionLog(`${req.user.name} evaulated result ${req.body.id}. ${req.body.winnerId} won`);
       res.status(200).send({ success: true });
     })
     .catch((err) => {
