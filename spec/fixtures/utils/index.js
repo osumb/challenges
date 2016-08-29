@@ -100,9 +100,27 @@
 //   return getMockChallengesList(path.resolve(__dirname, '../test-data/test-challenges.xlsx'));
 // }
 //
+// function getTestFinalSpotsFromExcelFile() {
+//   const fileLocation = path.resolve(__dirname, '../test-data/test-final-spots.xlsx');
+//   const parseObj = xlsx.parse(fileLocation);
+//   const spotsList = [];
+//
+//   parseObj[0].data.forEach(([nameNumber, spotId], i) => {
+//     if (i !== 0) {
+//       spotsList.push({
+//         nameNumber,
+//         spotId
+//       });
+//     }
+//   });
+//
+//   return spotsList;
+// }
+//
 // module.exports = {
 //   getMockUsersFromExcelFile,
 //   getTestChallengesFromExcelFile,
+//   getTestFinalSpotsFromExcelFile,
 //   getTestResultsFromExcelFile,
 //   getTestSpotsFromExcelFile,
 //   getTestUsersFromExcelFile,
