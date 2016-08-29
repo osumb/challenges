@@ -258,8 +258,6 @@ module.exports = class Results {
         });
         const filteredResultsIds = filteredResults.sort(resultsSort).map(({ resultsid }) => resultsid);
 
-        console.log(filteredResults);
-        console.log(onePersonResultIds);
         const switchQuery = client.query(switchSql, [filteredResultsIds]);
 
         switchQuery.on('end', () => {
