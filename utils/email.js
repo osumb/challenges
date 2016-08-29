@@ -58,8 +58,8 @@ const sendChallengeList = (recipients, fileData) => {
 
 const sendChallengeSuccessEmail = (options) => {
   if (process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'staging') {
-    const { nameNumber, spotId, performanceName } = options;
-    const to = new helper.Email(`${nameNumber}@osu.edu`);
+    const { email, spotId, performanceName } = options;
+    const to = new helper.Email(email);
     const subject = `Challenges for ${performanceName}`;
     const source = fs.readFileSync(path.resolve(__dirname, '../views/emails/challenge-signup-confirmation.handlebars'), 'utf8');
     const template = Handlebars.compile(source);
