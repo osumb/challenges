@@ -11,6 +11,8 @@ const fromMail = new helper.Email('osumbit@gmail.com');
 
 const sendChallengeList = (recipients, fileData) => {
   const request = sg.emptyRequest();
+  const source = fs.readFileSync(path.resolve(__dirname, '../views/emails/challenge-list.handlebars'), 'utf8');
+  const template = Handlebars.compile(source);
 
   request.body = {
     attachments: [
@@ -25,7 +27,7 @@ const sendChallengeList = (recipients, fileData) => {
     content: [
       {
         type: 'text/html',
-        value: '<html><p>Here is the Challenge List This Week!</p></html>'
+        value: template()
       }
     ],
     from: {
@@ -33,11 +35,7 @@ const sendChallengeList = (recipients, fileData) => {
       name: 'Challenge App'
     },
     mail_settings: {
-      footer: {
-        enable: true,
-        html: '<p>Sincerely, The Challenge App Team</p>'
-      },
-      subject: 'Challenge List'
+      subject: `Challenge List For ${moment().format('YYYY-MM-DD')}`
     },
     personalizations: [
       {
