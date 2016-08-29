@@ -1,6 +1,7 @@
 /* eslint-disable new-cap, no-sync */
 const fs = require('fs');
 const Handlebars = require('handlebars');
+const moment = require('moment');
 const path = require('path');
 const sendGrid = require('sendgrid');
 
@@ -17,7 +18,7 @@ const sendChallengeList = (recipients, fileData) => {
         content: fileData,
         content_id: 'ii_139db99fdb5c3704',
         disposition: 'inline',
-        filename: 'challenge-list.xlsx',
+        filename: `challenge-list-${moment().format('YYYY-MM-DD')}.csv`,
         type: 'csv'
       }
     ],
