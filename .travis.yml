@@ -24,7 +24,5 @@ services:
 
 before_script:
   - psql -c 'create database challenges_dev;' -U postgres
-  - npm run mock-data
-  - npm install -g eslint
 script:
   - "npm test"
