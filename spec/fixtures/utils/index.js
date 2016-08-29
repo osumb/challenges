@@ -20,6 +20,7 @@
 //       UserObj.nameNumber = e[4];
 //       UserObj.role = e[5];
 //       UserObj.password = bcrypt.hashSync(e[6], bcrypt.genSaltSync(1)); // eslint-disable-line no-sync
+//       UserObj.email = 'osumbit@gmail.com';
 //       userArr.push(UserObj);
 //     }
 //   });

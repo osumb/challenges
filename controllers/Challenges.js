@@ -13,7 +13,7 @@ function ChallengersController() {
     return Challenge.create(userId, spotId, performanceId)
       .then((code) => {
         email.sendChallengeSuccessEmail({
-          nameNumber: 'tareshawty.3', // TODO: actually email the real person
+          email: req.user.email,
           performanceName: req.session.currentPerformance.name,
           spotId
         });

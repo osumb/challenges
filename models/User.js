@@ -106,6 +106,7 @@ class User {
       const client = utils.db.createClient();
       const queryString = `
         SELECT
+          email,
           name,
           namenumber,
           new,
@@ -169,6 +170,7 @@ class User {
     return {
       admin: user.role === 'Admin' || user.role === 'Director',
       director: user.role === 'Director',
+      email: user.email,
       instrument: user.instrument,
       name: user.name,
       nameNumber: user.namenumber,

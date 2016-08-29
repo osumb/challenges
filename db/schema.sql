@@ -12,6 +12,7 @@ DROP TABLE IF EXISTS results_approve CASCADE;
 DROP TYPE IF EXISTS part;
 DROP TYPE IF EXISTS instrument;
 DROP TYPE IF EXISTS role;
+CREATE EXTENSION IF NOT EXISTS citext;
 
 ----------------------------------------
 -- FUNCTIONS
@@ -231,6 +232,7 @@ FOR EACH ROW EXECUTE PROCEDURE modified_stamp();
 ----------------------------------------
 CREATE TABLE users (
   nameNumber varchar(256) PRIMARY KEY,
+  email citext NOT NULL,
   instrument instrument,
   name varchar(256) NOT NULL,
   new boolean NOT NULL DEFAULT TRUE,
