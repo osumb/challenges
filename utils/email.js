@@ -8,7 +8,7 @@ const helper = sendGrid.mail;
 const sg = sendGrid.SendGrid(process.env.SENDGRID_API_KEY);
 const fromMail = new helper.Email('osumbit@gmail.com');
 
-const sendChallengeList = (recipient, fileData) => {
+const sendChallengeList = (recipients, fileData) => {
   const request = sg.emptyRequest();
 
   request.body = {
@@ -32,10 +32,6 @@ const sendChallengeList = (recipient, fileData) => {
       name: 'Challenge App'
     },
     mail_settings: {
-      bcc: {
-        email: 'tareshawty.3@osu.edu',
-        enable: true
-      },
       footer: {
         enable: true,
         html: '<p>Sincerely, The Challenge App Team</p>'
@@ -44,12 +40,7 @@ const sendChallengeList = (recipient, fileData) => {
     },
     personalizations: [
       {
-        to: [
-          {
-            email: recipient,
-            name: 'OSUMB Office'
-          }
-        ],
+        to: recipients,
         subject: 'Challenge List'
       }
     ],
