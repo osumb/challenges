@@ -19,7 +19,7 @@ module.exports = (app) => {
 
         return new Handlebars.SafeString(message);
       },
-      spotsIsOpen: (id, open) => new Handlebars.SafeString(`Spot ${id} ${open ? 'is' : 'isn\'t'} open`)
+      spotIsOpen: (id, open) => new Handlebars.SafeString(`Spot ${id} ${open ? 'is' : 'isn\'t'} open`)
     }
   }));
 };
