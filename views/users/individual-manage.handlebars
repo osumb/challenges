@@ -1,19 +1,16 @@
 <div class="IndividualManage {{ managedUserCurrent.nameNumber }} {{ managedUserCurrent.spotId }}">
   <div class="IndividualManage-title">
     {{#if performance }}
-      <h1 class="IndividualManage-performanceInfo {{performance.id}}">Manage User For The {{performance.name}}</h1>
-      <h2>{{ managedUserCurrent.name }} ({{ managedUserCurrent.spotId }})</h2>
+      <h1 class="IndividualManage-performanceInfo {{performance.id}}">Manage {{ managedUserCurrent.name }} For The {{performance.name}}</h1>
       <hr />
     {{else}}
-      <h1 class="IndividualManage-performanceInfo">Manage User</h1>
-      <h2>{{ managedUserCurrent.name }} ({{ managedUserCurrent.spotId }})</h2>
+      <h1 class="IndividualManage-performanceInfo">Manage {{ managedUserCurrent.name }}</h1>
       <h2>There is currently no upcoming performance, so no user management can take place</h2>
       <hr />
     {{/if}}
   </div>
   <div class="IndividualManage-userInfo">
-    <h4>Current Information:</h4>
-    <h4>{{spotsIsOpen "" managedUserCurrent.spotOpen }}</h4>
+    <h4>Current Information: {{spotIsOpen managedUserCurrent.spotId managedUserCurrent.spotOpen }}</h4>
     <h4>Most recent manage action:
       {{usersIndividualManageActionItem managedUserCurrent.name managedUserCurrent.performanceName managedUserCurrent.reason managedUserCurrent.voluntary}}
     </h4>

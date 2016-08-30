@@ -1,20 +1,21 @@
 <h2>Create New Performance</h2>
-<h3 style="color: red;">Please be careful to type the correct information as this is permanent</h3>
+<h3 class="NewPerformance-warning">Please be careful to type the correct information as this is permanent</h3>
 <div class="NewPerformanceForm">
   <div class="NewPerformanceForm-item">
-    <input type="text" class="PerformanceName" autofocus placeholder="Name" />
+    <label>Performance Name</label>
+    <input type="text" class="PerformanceName NewPerformanceForm-input" autofocus placeholder="Name" />
   </div>
   <div class="NewPerformanceForm-item">
     <label>Date of performance</label>
-    <input type="text" id="PerformanceDate" class="PerformanceDate" placeholder="2016-09-03"/>
+    <input type="text" id="PerformanceDate" class="PerformanceDate NewPerformanceForm-input" placeholder="2016-09-03"/>
   </div>
   <div class="NewPerformanceForm-item">
     <label>When does the challenge window open?</label>
-    <input type="text" id="openAt" class="openAt" placeholder="2016-09-03 1:00 PM"/>
+    <input type="text" id="openAt" class="openAt NewPerformanceForm-input" placeholder="2016-09-03 1:00 PM"/>
   </div>
   <div class="NewPerformanceForm-item">
     <label>When does the challenge window close?</label>
-    <input type="text" class="closeAt" placeholder="2016-09-03 4:10 PM"/>
+    <input type="text" class="closeAt NewPerformanceForm-input" placeholder="2016-09-03 4:10 PM"/>
   </div>
   <div class="NewPerformanceForm-item">
     <input type="submit" class="NewPerformanceSubmit ChallengesButton" value="Submit" />

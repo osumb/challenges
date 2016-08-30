@@ -1,7 +1,19 @@
 .Login {
   padding: 10px 0 0 0;
+  font-size: 20px;
 }
 
 .Login-failed {
   color: red;
+}
+
+.Login-input {
+  font-size: 14px;
+}
+
+@media (max-width: 414px) {
+  .Login-input-wrapper {
+    display: block;
+    padding-bottom: 5px;
+  }
 }
