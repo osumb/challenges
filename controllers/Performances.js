@@ -18,7 +18,6 @@ function PerformanceController() {
         sendChallengeListEmail.sendChallengeListEmail(id);
         createEmptyResults(id);
       });
-      Performance.flagCurrent();
       res.json({ success: true });
     })
     .catch(err => {

@@ -1,7 +1,6 @@
 const moment = require('moment');
 
 const utils = require('../utils');
-const { logger } = require('../utils');
 
 const attributes = ['id', 'name', 'openAt', 'closeAt'];
 
@@ -54,24 +53,6 @@ module.exports = class Performance {
     });
   }
 
-  flagCurrent() {
-    const client = utils.db.createClient();
-    const sql = 'SELECT flag_current_performance()';
-
-    client.connect();
-    client.on('error', (err) => {
-      logger.errorLog('Performance.flagCurrent', err);
-    });
-
-    const query = client.query(sql);
-
-    query.on('end', () => client.end());
-    query.on('error', err => {
-      client.end();
-      logger.errorLog('Performance.flagCurrent', err);
-    });
-  }
-
   findAll(formatString) {
     return new Promise((resolve, reject) => {
       const client = utils.db.createClient();
@@ -89,31 +70,6 @@ module.exports = class Performance {
       query.on('end', () => {
         client.end();
         resolve(performances);
-      });
-      query.on('error', (err) => {
-        client.end();
-        reject(err);
-      });
-    });
-  }
-
-  findCurrent() {
-    return new Promise((resolve, reject) => {
-      const client = utils.db.createClient();
-      const queryString = 'SELECT * FROM performances WHERE current LIMIT 1';
-
-      client.connect();
-      client.on('error', (err) => reject(err));
-
-      const query = client.query(queryString);
-
-      query.on('row', (result) => {
-        client.end();
-        resolve(result);
-      });
-      query.on('end', () => {
-        client.end();
-        resolve(null);
       });
       query.on('error', (err) => {
         client.end();
@@ -154,16 +110,16 @@ module.exports = class Performance {
     formatString = formatString || 'MMMM Do, h:mm:ss A'; // eslint-disable-line no-param-reassign
     const now = moment.utc(new Date().toJSON());
     const windowOpen =
-      moment(performance.openat).isBefore(moment(now)) &&
-      moment(now).isBefore(moment(performance.closeat));
+      moment(new Date(performance.openat)).isBefore(moment(now)) &&
+      moment(now).isBefore(moment(new Date(performance.closeat)));
 
     return {
-      closeAt: moment.utc(performance.closeat).local().format(formatString),
+      closeAt: moment(performance.closeat).local().format(formatString),
       current: performance.current,
       date: performance.performdate,
       id: performance.id,
       name: performance.name,
-      openAt: moment.utc(performance.openat).local().format(formatString),
+      openAt: moment(performance.openat).local().format(formatString),
       windowOpen
     };
   }
@@ -174,6 +130,6 @@ module.exports = class Performance {
     }
     const now = moment.utc(new Date().toJSON());
 
-    return moment(performance.openat).isBefore(moment(now)) && moment(now).isBefore(moment(performance.closeat));
+    return moment(new Date(performance.openat)).isBefore(moment(now)) && moment(now).isBefore(moment(new Date(performance.closeat)));
   }
 };

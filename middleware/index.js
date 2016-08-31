@@ -4,14 +4,8 @@ const Models = require('../models');
 const Performance = new Models.Performance();
 const { logger } = require('../utils');
 
-function currentPerformanceWithinTimeFrame(performance) {
-  const now = new Date().toJSON();
-
-  return moment(performance.closeAt).add({ days: 1 }).isBefore(moment(now));
-}
-
 const currentPerformance = (req, res, next) => {
-  Performance.findCurrent()
+  Performance.findNextOrOpenWindow()
   .then((performance) => {
     const now = moment(), { openat, closeat } = performance;
 
@@ -28,11 +22,8 @@ const currentPerformance = (req, res, next) => {
 
 /* eslint-disable consistent-return */
 const refreshCurrentPerformance = (req, res, next) => {
-  if (
-    !req.session.currentPerformance ||
-    !currentPerformanceWithinTimeFrame(req.session.currentPerformance)
-  ) {
-    Performance.findCurrent()
+  if (!req.session.currentPerformance) {
+    Performance.findNextOrOpenWindow()
     .then((performance) => {
       req.session.currentPerformance = performance;
       req.session.save();
