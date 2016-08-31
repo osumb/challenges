@@ -114,7 +114,7 @@ module.exports = class Performance {
       moment(now).isBefore(moment(new Date(performance.closeat)));
 
     return {
-      closeAt: moment(performance.closeat).local().format(formatString),
+      closeAt: moment(performance.closeat).utcOffset(-240).format(formatString),
       current: performance.current,
       date: performance.performdate,
       id: performance.id,
