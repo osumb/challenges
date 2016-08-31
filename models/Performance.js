@@ -107,19 +107,15 @@ module.exports = class Performance {
     if (!performance) {
       return null;
     }
-    formatString = formatString || 'MMMM Do, h:mm:ss A'; // eslint-disable-line no-param-reassign
-    const now = moment.utc(new Date().toJSON());
-    const windowOpen =
-      moment(new Date(performance.openat)).isBefore(moment(now)) &&
-      moment(now).isBefore(moment(new Date(performance.closeat)));
+    const windowOpen = this.inPerformanceWindow(performance);
 
     return {
-      closeAt: moment(performance.closeat).utcOffset(-240).format(formatString),
+      closeAt: moment.utc(performance.closeat).format(formatString),
       current: performance.current,
       date: performance.performdate,
       id: performance.id,
       name: performance.name,
-      openAt: moment(performance.openat).local().format(formatString),
+      openAt: moment.utc(performance.openat).format(formatString),
       windowOpen
     };
   }
