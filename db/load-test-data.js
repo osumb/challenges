@@ -14,7 +14,7 @@ const testPerformance = [fixtures.testData.testPerformance];
 const testSpots = fixtures.testData.testSpots;
 const testUsers = fixtures.testData.testUsers;
 const insertManageActionQuery = 'INSERT INTO manage (performanceId, usernamenumber, reason, spotId, voluntary) VALUES($1, $2, $3, $4, $5)';
-const insertPerformanceQueryString = 'INSERT INTO performances (name, openAt, closeAt, performDate, current) VALUES($1, $2, $3, $4, $5)';
+const insertPerformanceQueryString = 'INSERT INTO performances (name, openAt, closeAt, performDate) VALUES($1, $2, $3, $4)';
 const insertSpotQueryString = 'INSERT INTO spots VALUES ($1, $2, $3)';
 const insertUserQueryString = 'INSERT INTO users (nameNumber, instrument, name, part, password, role, spotId, email) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)';
 
@@ -33,7 +33,7 @@ function insertManageAction(action, cb) {
 }
 
 function insertPerformance(performance, cb) {
-  client.query(insertPerformanceQueryString, [performance.name, performance.openAt, performance.closeAt, performance.performDate, performance.current], (err) => {
+  client.query(insertPerformanceQueryString, [performance.name, performance.openAt, performance.closeAt, performance.performDate], (err) => {
     cb(err);
   });
 }
