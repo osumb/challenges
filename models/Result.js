@@ -338,6 +338,7 @@ module.exports = class Results {
       comments: result.comments,
       opponentName: result.opponentname,
       performanceDate: moment(result.performdate).format('MMMM D, YYYY'),
+      performanceId: result.performanceid,
       performanceName: result.name,
       spotId: result.spotid,
       winner: nameNumber === result.winnerid

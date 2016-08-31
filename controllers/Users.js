@@ -104,12 +104,26 @@ function UsersController() {
       .then(data => {
         const canChallenge = data[3], challenge = data[0], performance = data[2], results = data[1];
 
+<<<<<<< eaf0d64e8721a3562e9bd2873d71517b8c2eacc0
         res.render('users/show', {
           canChallenge: canChallenge && (performance && performance.inPerformanceWindow()),
           challenge,
           results,
           performance: performance && performance.toJSON(),
           user: req.user
+=======
+          res.render('users/show', {
+            canChallenge: canChallenge && (performance && performance.windowOpen),
+            challenge: challengeAlreadyInResults(challenge, results) && challenge,
+            results,
+            performance,
+            user: req.user
+          });
+        })
+        .catch((err) => {
+          logger.errorLog('Users.show', err);
+          res.render('static-pages/error', { user: req.user });
+>>>>>>> Filter current challenge if already in result
         });
       })
       .catch((err) => {
@@ -139,5 +153,12 @@ function UsersController() {
     res.render('users/manage', { user: req.user });
   };
 }
+
+const challengeAlreadyInResults =
+  (challenge, results) => results.some(({ performanceId }) => {
+    console.log(performanceId, challenge);
+    console.log(results);
+    return challenge.performanceId === performanceId;
+  });
 
 module.exports = UsersController;
