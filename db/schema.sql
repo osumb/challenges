@@ -257,7 +257,6 @@ CREATE TABLE performances (
   id serial PRIMARY KEY,
   name varchar(256) NOT NULL,
   performDate timestamptz NOT NULL,
-  current boolean NOT NULL DEFAULT FALSE,
   openAt timestamptz NOT NULL,
   closeAt timestamptz NOT NULL,
   created_at timestamptz NOT NULL,
