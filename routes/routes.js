@@ -3,7 +3,6 @@ const router = express.Router(); // eslint-disable-line new-cap
 
 const auth = require('../auth');
 const controllers = require('../controllers');
-const { refreshCurrentPerformance } = require('../middleware');
 
 const {
   ensureAuthenticated,
@@ -23,8 +22,8 @@ const Users = new controllers.Users();
 
 router.setup = (app) => {
   //Challenges Controller
-  app.get('/performances/challenges/new', [ensureAuthenticated, refreshCurrentPerformance], Challenges.new);
-  app.post('/performances/challenge', [ensureAuthenticated, refreshCurrentPerformance], Challenges.create);
+  app.get('/performances/challenges/new', ensureAuthenticated, Challenges.new);
+  app.post('/performances/challenge', ensureAuthenticated, Challenges.create);
 
   //Performance Controller
   app.get('/performances', ensureAuthenticated, Performances.showAll);
@@ -46,7 +45,7 @@ router.setup = (app) => {
   app.get('/logout', Sessions.logout);
 
   //Users Controller
-  app.get('/:nameNumber', [ensureAuthAndNameNumberRoute, ensureNotFirstLogin, refreshCurrentPerformance], Users.show);
+  app.get('/:nameNumber', [ensureAuthAndNameNumberRoute, ensureNotFirstLogin], Users.show);
   app.get('/:nameNumber/settings', ensureAuthAndNameNumberRoute, Users.settings);
   app.get('/users/manage', ensureAdmin, Users.showManage);
   app.get('/users/manage/:nameNumber', ensureAdmin, Users.showIndividualManage);

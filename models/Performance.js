@@ -2,6 +2,8 @@ const utils = require('../utils');
 
 const attributes = ['id', 'name', 'openAt', 'closeAt', 'performDate'];
 
+let cachedCurrentPerformance;
+
 module.exports = class Performance {
 
   constructor(id, name, openAt, closeAt, performDate) {
@@ -87,6 +89,9 @@ module.exports = class Performance {
   }
 
   static findNextOrOpenWindow() {
+    if (cachedCurrentPerformance && Date.now() < cachedCurrentPerformance.closeAt) {
+      return Promise.resolve(cachedCurrentPerformance);
+    }
     return new Promise((resolve, reject) => {
       const client = utils.db.createClient();
       const queryString = 'SELECT * FROM performances WHERE now() < closeAt ORDER BY openAt ASC LIMIT 1';
@@ -110,6 +115,9 @@ module.exports = class Performance {
         client.end();
         reject(err);
       });
+    }).then((currentPerformance) => {
+      cachedCurrentPerformance = currentPerformance;
+      return currentPerformance;
     });
   }
 
