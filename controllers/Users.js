@@ -141,10 +141,6 @@ function UsersController() {
 }
 
 const challengeAlreadyInResults =
-  (challenge, results) => results.some(({ performanceId }) => {
-    console.log(performanceId, challenge);
-    console.log(results);
-    return challenge.performanceId === performanceId;
-  });
+  (challenge, results) => results.some(({ performanceId }) => challenge.performanceId === performanceId);
 
 module.exports = UsersController;
