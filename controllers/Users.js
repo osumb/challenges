@@ -106,7 +106,7 @@ function UsersController() {
 
         res.render('users/show', {
           canChallenge: canChallenge && (performance && performance.inPerformanceWindow()),
-          challenge,
+          challenge: !challengeAlreadyInResults(challenge, results) && challenge,
           results,
           performance: performance && performance.toJSON(),
           user: req.user
@@ -139,5 +139,8 @@ function UsersController() {
     res.render('users/manage', { user: req.user });
   };
 }
+
+const challengeAlreadyInResults =
+  (challenge, results) => results.some(({ performanceId }) => challenge.performanceId === performanceId);
 
 module.exports = UsersController;
