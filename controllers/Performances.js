@@ -3,7 +3,7 @@ const schedule = require('node-schedule');
 const { logger } = require('../utils');
 const { sendChallengeListEmail, createEmptyResults } = require('../jobs');
 
-const Performance = new models.Performance();
+const Performance = models.Performance;
 
 function PerformanceController() {
   // This assumes `openAt` and `closeAt` are already coming in ISO 8601 format as UTC time
@@ -11,12 +11,12 @@ function PerformanceController() {
     const { closeAt, performanceName, performanceDate, openAt } = req.body;
 
     Performance.create(performanceName, performanceDate, openAt, closeAt)
-    .then(({ id, utcCloseAt }) => {
-      const performanceWindowClose = new Date(utcCloseAt), minutesMultiplier = 60000;
+    .then((performance) => {
+      const minutesMultiplier = 60000;
 
-      schedule.scheduleJob(new Date(performanceWindowClose.getTime() + 5 * minutesMultiplier), () => {
-        sendChallengeListEmail.sendChallengeListEmail(id);
-        createEmptyResults(id);
+      schedule.scheduleJob(new Date(performance.closeAt.getTime() + 5 * minutesMultiplier), () => {
+        sendChallengeListEmail.sendChallengeListEmail(performance.id);
+        createEmptyResults(performance.id);
       });
       res.json({ success: true });
     })
@@ -32,11 +32,11 @@ function PerformanceController() {
 
   this.showAll = (req, res) => {
     Performance.findAll('MMMM Do, h:mm:ss a')
-      .then((performances) => res.json(performances))
-      .catch((err) => {
-        logger.errorLog('Performances.showAll', err);
-        res.render('static-pages/error', { user: req.user });
-      });
+    .then((performances) => res.json(performances))
+    .catch((err) => {
+      logger.errorLog('Performances.showAll', err);
+      res.render('static-pages/error', { user: req.user });
+    });
   };
 }
 

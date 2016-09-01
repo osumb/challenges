@@ -1,13 +1,13 @@
 const bcrypt = require('bcrypt');
 
-const Models = require('../models');
+const models = require('../models');
 const { logger } = require('../utils');
-const Challenge = new Models.Challenge();
-const Manage = new Models.Manage();
-const Performance = new Models.Performance();
-const Result = new Models.Result();
-const Spot = new Models.Spot();
-const User = new Models.User();
+const Challenge = new models.Challenge();
+const Manage = new models.Manage();
+const Performance = models.Performance;
+const Result = new models.Result();
+const Spot = new models.Spot();
+const User = new models.User();
 
 function UsersController() {
   this.changePassword = (req, res) => {
@@ -88,7 +88,7 @@ function UsersController() {
     if (req.user.admin) {
       Performance.findNextOrOpenWindow()
       .then((performance) => {
-        res.render('users/admin', { user: req.user, performance: Performance.format(performance) });
+        res.render('users/admin', { user: req.user, performance: performance && performance.toJSON() });
       })
       .catch((err) => {
         logger.errorLog('Users.show', err);
@@ -102,13 +102,13 @@ function UsersController() {
         User.canChallengeForPerformance(req.user, performanceId)
       ])
         .then(data => {
-          const canChallenge = data[3], challenge = data[0], performance = Performance.format(data[2]), results = data[1];
+          const canChallenge = data[3], challenge = data[0], performance = data[2], results = data[1];
 
           res.render('users/show', {
-            canChallenge: canChallenge && (performance && performance.windowOpen),
+            canChallenge: canChallenge && (performance && performance.inPerformanceWindow()),
             challenge,
             results,
-            performance,
+            performance: performance && performance.toJSON(),
             user: req.user
           });
         })

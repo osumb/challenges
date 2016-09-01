@@ -1,13 +1,13 @@
-const Models = require('../models');
-const Performance = new Models.Performance();
+const models = require('../models');
+const Performance = models.Performance;
 const { logger } = require('../utils');
 
 /* eslint-disable consistent-return */
 const refreshCurrentPerformance = (req, res, next) => {
-  if (!Performance.inPerformanceWindow(req.session.currentPerformance)) {
+  if (req.session.currentPerformance && req.session.currentPerformance.inPerformanceWindow()) {
     Performance.findNextOrOpenWindow()
     .then((performance) => {
-      if (Performance.inPerformanceWindow(performance)) {
+      if (performance.inPerformanceWindow()) {
         req.session.currentPerformance = performance;
       } else {
         delete req.session.currentPerformance;
