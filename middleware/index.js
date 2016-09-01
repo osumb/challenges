@@ -4,7 +4,7 @@ const { logger } = require('../utils');
 
 /* eslint-disable consistent-return */
 const refreshCurrentPerformance = (req, res, next) => {
-  if (req.session.currentPerformance && req.session.currentPerformance.inPerformanceWindow()) {
+  if (!req.session.currentPerformance || req.session.currentPerformance.inPerformanceWindow()) {
     Performance.findNextOrOpenWindow()
     .then((performance) => {
       if (performance.inPerformanceWindow()) {
