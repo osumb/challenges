@@ -83,8 +83,6 @@ function UsersController() {
   };
 
   this.show = (req, res) => {
-    const performanceId = req.session.currentPerformance && req.session.currentPerformance.id;
-
     if (req.user.admin) {
       Performance.findNextOrOpenWindow()
       .then((performance) => {
@@ -98,24 +96,26 @@ function UsersController() {
       Promise.all([
         Challenge.findForUser(req.user.nameNumber),
         Result.findAllForUser(req.user.nameNumber),
-        Performance.findNextOrOpenWindow(),
-        User.canChallengeForPerformance(req.user, performanceId)
+        Performance.findNextOrOpenWindow()
       ])
-        .then(data => {
-          const canChallenge = data[3], challenge = data[0], performance = data[2], results = data[1];
+      .then(([challenge, results, currentPerformance]) =>
+        Promise.all([challenge, results, currentPerformance, User.canChallengeForPerformance(req.user, currentPerformance.id)])
+      )
+      .then(data => {
+        const canChallenge = data[3], challenge = data[0], performance = data[2], results = data[1];
 
-          res.render('users/show', {
-            canChallenge: canChallenge && (performance && performance.inPerformanceWindow()),
-            challenge,
-            results,
-            performance: performance && performance.toJSON(),
-            user: req.user
-          });
-        })
-        .catch((err) => {
-          logger.errorLog('Users.show', err);
-          res.render('static-pages/error', { user: req.user });
+        res.render('users/show', {
+          canChallenge: canChallenge && (performance && performance.inPerformanceWindow()),
+          challenge,
+          results,
+          performance: performance && performance.toJSON(),
+          user: req.user
         });
+      })
+      .catch((err) => {
+        logger.errorLog('Users.show', err);
+        res.render('static-pages/error', { user: req.user });
+      });
     }
   };
 
