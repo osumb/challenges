@@ -43,3 +43,5 @@ dist
 
 # Email Attachments
 jobs/*.csv
+
+.DS_Store

@@ -16,8 +16,6 @@ LEFT JOIN
   ) t2
 ON
   t1.id = t2.id
-JOIN performances AS p ON t1.performanceid = p.id
-WHERE p.closeAt < now() AND
-  t1.nameNumber != $1 AND
+WHERE t1.nameNumber != $1 AND
   (t2.nameNumber is NULL OR t2.nameNumber != $1) AND
   can_sl_eval($2, substring(t1.spotId, 1, 1), t1.nameNumber, t2.nameNumber);

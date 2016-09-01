@@ -217,8 +217,8 @@ CREATE TABLE spots (
   id varchar(3) PRIMARY KEY,
   open boolean DEFAULT FALSE,
   challengedCount int DEFAULT 0,
-  created_at timestamp NOT NULL,
-  modified_at timestamp NOT NULL
+  created_at timestamptz NOT NULL,
+  modified_at timestamptz NOT NULL
 );
 
 CREATE TRIGGER spots_created_stamp BEFORE INSERT ON spots
@@ -240,8 +240,8 @@ CREATE TABLE users (
   password varchar(256) NOT NULL,
   role role,
   spotId varchar(3) references spots(id),
-  created_at timestamp NOT NULL,
-  modified_at timestamp NOT NULL
+  created_at timestamptz NOT NULL,
+  modified_at timestamptz NOT NULL
 );
 
 CREATE TRIGGER users_created_stamp BEFORE INSERT ON users
@@ -256,12 +256,11 @@ FOR EACH ROW EXECUTE PROCEDURE modified_stamp();
 CREATE TABLE performances (
   id serial PRIMARY KEY,
   name varchar(256) NOT NULL,
-  performDate timestamp NOT NULL,
-  current boolean NOT NULL DEFAULT FALSE,
-  openAt timestamp NOT NULL,
-  closeAt timestamp NOT NULL,
-  created_at timestamp NOT NULL,
-  modified_at timestamp NOT NULL
+  performDate timestamptz NOT NULL,
+  openAt timestamptz NOT NULL,
+  closeAt timestamptz NOT NULL,
+  created_at timestamptz NOT NULL,
+  modified_at timestamptz NOT NULL
 );
 
 CREATE TRIGGER performances_created_stamp BEFORE INSERT ON performances
@@ -278,8 +277,8 @@ CREATE TABLE challenges (
   performanceId integer references performances(id) NOT NULL,
   userNameNumber varchar(256) references users(nameNumber) NOT NULL,
   spotId varchar(3) references spots(id) NOT NULL,
-  created_at timestamp NOT NULL,
-  modified_at timestamp NOT NULL
+  created_at timestamptz NOT NULL,
+  modified_at timestamptz NOT NULL
 );
 
 CREATE TRIGGER challenges_created_stamp BEFORE INSERT ON challenges
@@ -302,8 +301,8 @@ CREATE TABLE results (
   winnerId varchar(256) references users(nameNumber),
   pending boolean NOT NULL DEFAULT true,
   needsApproval boolean NOT NULL DEFAULT false,
-  created_at timestamp NOT NULL,
-  modified_at timestamp NOT NULL
+  created_at timestamptz NOT NULL,
+  modified_at timestamptz NOT NULL
 );
 
 CREATE TRIGGER results_created_stamp BEFORE INSERT ON results
@@ -322,8 +321,8 @@ CREATE TABLE manage (
   reason text NOT NULL DEFAULT '',
   spotId varchar(3) references spots(id) NOT NULL,
   voluntary boolean NOT NULL default true,
-  created_at timestamp NOT NULL,
-  modified_at timestamp NOT NULL
+  created_at timestamptz NOT NULL,
+  modified_at timestamptz NOT NULL
 );
 
 CREATE TRIGGER manage_created_stamp BEFORE INSERT ON manage
@@ -331,6 +330,7 @@ FOR EACH ROW EXECUTE PROCEDURE created_stamp();
 
 CREATE TRIGGER manage_modified_stamp BEFORE INSERT ON manage
 FOR EACH ROW EXECUTE PROCEDURE modified_stamp();
+
 ----------------------------------------
 -- ResultsApprovePermission
 ----------------------------------------
@@ -339,8 +339,8 @@ CREATE TABLE results_approve (
   userNameNumber varchar(256) references users(nameNumber) NOT NULL,
   instrument instrument,
   part part,
-  created_at timestamp NOT NULL,
-  modified_at timestamp NOT NULL
+  created_at timestamptz NOT NULL,
+  modified_at timestamptz NOT NULL
 );
 
 CREATE TRIGGER results_approve_created_stamp BEFORE INSERT ON results_approve

@@ -16,7 +16,7 @@ const resultsApprove = fixtures.mockData.fakeResultsApprove;
 const spots = fixtures.mockData.fakeSpots;
 const users = fixtures.mockData.fakeUsers;
 const insertChallengeQueryString = 'INSERT INTO challenges (performanceId, userNameNumber, spotId) VALUES($1, $2, $3)';
-const insertPerformanceQueryString = 'INSERT INTO performances (name, openAt, closeAt, performDate, current) VALUES($1, $2, $3, $4, $5)';
+const insertPerformanceQueryString = 'INSERT INTO performances (name, openAt, closeAt, performDate) VALUES($1, $2, $3, $4)';
 const insertResultQueryString = 'INSERT INTO results (performanceId, spotId, firstNameNumber, secondNameNumber, firstComments, secondComments, winnerId, pending) VALUES($1, $2, $3, $4, $5, $6, $7, $8)';
 const insertResultsApproveQueryString = 'INSERT INTO results_approve (userNameNumber, instrument, part) VALUES($1, $2, $3)';
 const insertSpotQueryString = 'INSERT INTO spots VALUES ($1, $2, $3)';
@@ -39,7 +39,7 @@ function insertChallenge(challenge, cb) {
 }
 
 function insertPerformance(performance, cb) {
-  client.query(insertPerformanceQueryString, [performance.name, performance.openAt, performance.closeAt, performance.performDate, performance.current], (err) => {
+  client.query(insertPerformanceQueryString, [performance.name, performance.openAt, performance.closeAt, performance.performDate], (err) => {
     cb(err);
   });
 }

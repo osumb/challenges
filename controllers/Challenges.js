@@ -2,42 +2,47 @@ const email = require('../utils').email;
 const { logger } = require('../utils');
 const models = require('../models');
 const Challenge = new models.Challenge();
-const Performance = new models.Performance();
+const Performance = models.Performance;
 
 function ChallengersController() {
   this.create = (req, res) => {
     const { spotId } = req.body;
-    const userId = req.user.nameNumber, performanceId = req.session.currentPerformance.id;
+    const userId = req.user.nameNumber;
 
-    logger.challengesLog(`${req.user.name} sent request to challenge ${spotId}`);
-    return Challenge.create(userId, spotId, performanceId)
-      .then((code) => {
-        email.sendChallengeSuccessEmail({
-          email: req.user.email,
-          performanceName: req.session.currentPerformance.name,
-          spotId
-        });
-        logger.challengesLog(`${req.user.name} successfully challenged for ${spotId}`);
-        res.json({ code });
-      })
-      .catch((err) => {
-        logger.errorLog('Challenges.create', err);
-        res.status(400).send(err);
-      });
+    return Performance.findNextOrOpenWindow()
+            .then((performance) => Promise.all([performance, Challenge.create(userId, spotId, performance && performance.id)]))
+            .then(([performance, code]) => {
+              if (!performance) {
+                res.json({ code: 4 });
+              }
+              if (!code) {
+                email.sendChallengeSuccessEmail({
+                  email: req.user.email,
+                  performanceName: performance.name,
+                  spotId
+                });
+                logger.challengesLog(`${req.user.name} successfully challenged for ${spotId}`);
+              } else {
+                logger.challengesLog(`${req.user.name} failed to challenge for ${spotId} for code ${code}`);
+              }
+              res.json({ code });
+            })
+            .catch((err) => {
+              logger.errorLog('Challenges.create', err);
+              res.status(400).send(err);
+            });
   };
 
   this.new = (req, res) => {
-    const performanceId = req.session.currentPerformance && req.session.currentPerformance.id;
-    const windowOpen = Performance.inPerformanceWindow(req.session.currentPerformance);
-
-    Challenge.findAllChallengeablePeopleForUser(req.user, performanceId)
-    .then((data) =>
+    Performance.findNextOrOpenWindow()
+    .then((performance) => Promise.all([performance, Challenge.findAllChallengeablePeopleForUser(performance && performance.id)]))
+    .then(([performance, challengeAbleUsers]) => {
       res.render('challenges/new', {
-        user: req.user,
-        challengeableUsers: windowOpen && data,
-        performanceName: req.session.currentPerformance && req.session.currentPerformance.name
-      })
-    )
+        challengeAbleUsers: (performance && performance.inPerformanceWindow()) && challengeAbleUsers,
+        performance,
+        user: req.user
+      });
+    })
     .catch((err) => {
       logger.errorLog('Challenges.new', err);
       res.render('static-pages/error', { user: req.user });

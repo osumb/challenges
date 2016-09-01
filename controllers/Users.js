@@ -1,13 +1,13 @@
 const bcrypt = require('bcrypt');
 
-const Models = require('../models');
+const models = require('../models');
 const { logger } = require('../utils');
-const Challenge = new Models.Challenge();
-const Manage = new Models.Manage();
-const Performance = new Models.Performance();
-const Result = new Models.Result();
-const Spot = new Models.Spot();
-const User = new Models.User();
+const Challenge = new models.Challenge();
+const Manage = new models.Manage();
+const Performance = models.Performance;
+const Result = new models.Result();
+const Spot = new models.Spot();
+const User = new models.User();
 
 function UsersController() {
   this.changePassword = (req, res) => {
@@ -83,12 +83,10 @@ function UsersController() {
   };
 
   this.show = (req, res) => {
-    const performanceId = req.session.currentPerformance && req.session.currentPerformance.id;
-
     if (req.user.admin) {
       Performance.findNextOrOpenWindow()
       .then((performance) => {
-        res.render('users/admin', { user: req.user, performance: Performance.format(performance) });
+        res.render('users/admin', { user: req.user, performance: performance && performance.toJSON() });
       })
       .catch((err) => {
         logger.errorLog('Users.show', err);
@@ -98,24 +96,26 @@ function UsersController() {
       Promise.all([
         Challenge.findForUser(req.user.nameNumber),
         Result.findAllForUser(req.user.nameNumber),
-        Performance.findNextOrOpenWindow(),
-        User.canChallengeForPerformance(req.user, performanceId)
+        Performance.findNextOrOpenWindow()
       ])
-        .then(data => {
-          const canChallenge = data[3], challenge = data[0], performance = Performance.format(data[2]), results = data[1];
+      .then(([challenge, results, currentPerformance]) =>
+        Promise.all([challenge, results, currentPerformance, User.canChallengeForPerformance(req.user, currentPerformance && currentPerformance.id)])
+      )
+      .then(data => {
+        const canChallenge = data[3], challenge = data[0], performance = data[2], results = data[1];
 
-          res.render('users/show', {
-            canChallenge: canChallenge && (performance && performance.windowOpen),
-            challenge,
-            results,
-            performance,
-            user: req.user
-          });
-        })
-        .catch((err) => {
-          logger.errorLog('Users.show', err);
-          res.render('static-pages/error', { user: req.user });
+        res.render('users/show', {
+          canChallenge: canChallenge && (performance && performance.inPerformanceWindow()),
+          challenge,
+          results,
+          performance: performance && performance.toJSON(),
+          user: req.user
         });
+      })
+      .catch((err) => {
+        logger.errorLog('Users.show', err);
+        res.render('static-pages/error', { user: req.user });
+      });
     }
   };
 

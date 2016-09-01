@@ -3,9 +3,7 @@ const router = express.Router(); // eslint-disable-line new-cap
 
 const auth = require('../auth');
 const controllers = require('../controllers');
-const middleware = require('../middleware');
 
-const currentPerformance = middleware.currentPerformance;
 const {
   ensureAuthenticated,
   ensureAdmin,
@@ -43,7 +41,7 @@ router.setup = (app) => {
   app.get('/', StaticPages.home);
 
   //Sessions Controller
-  app.post('/login', [passport.authenticate('local', { failureRedirect: '/?auth=false' }), currentPerformance], Sessions.redirect);
+  app.post('/login', passport.authenticate('local', { failureRedirect: '/?auth=false' }), Sessions.redirect);
   app.get('/logout', Sessions.logout);
 
   //Users Controller
