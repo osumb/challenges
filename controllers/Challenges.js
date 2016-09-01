@@ -35,10 +35,10 @@ function ChallengersController() {
 
   this.new = (req, res) => {
     Performance.findNextOrOpenWindow()
-    .then((performance) => Promise.all([performance, Challenge.findAllChallengeablePeopleForUser(performance && performance.id)]))
-    .then(([performance, challengeAbleUsers]) => {
+    .then((performance) => Promise.all([performance, Challenge.findAllChallengeablePeopleForUser(req.user, performance && performance.id)]))
+    .then(([performance, challengeableUsers]) => {
       res.render('challenges/new', {
-        challengeAbleUsers: (performance && performance.inPerformanceWindow()) && challengeAbleUsers,
+        challengeableUsers: (performance && performance.inPerformanceWindow()) && challengeableUsers,
         performance,
         user: req.user
       });
