@@ -3,20 +3,27 @@ const utils = require('../utils');
 const attributes = ['id', 'open', 'challengedCount'];
 
 module.exports = class Spot {
-  static getAttributes() {
+
+  constructor(id, open, challengedCount) {
+    this._id = id;
+    this._open = open;
+    this._challengedCount = challengedCount;
+  }
+
+  static get attributes() {
     return attributes;
   }
 
-  static getIdName() {
+  static get idName() {
     return 'id';
   }
 
-  static getTableName() {
+  static get tableName() {
     return 'spots';
   }
 
   // true is open, false is closed
-  setOpenClose(spotId, open) {
+  static setOpenClose(spotId, open) {
     return new Promise((resolve, reject) => {
       const client = utils.db.createClient();
       const queryString = 'UPDATE spots SET open = $1 WHERE id = $2';
@@ -36,5 +43,17 @@ module.exports = class Spot {
         reject(err);
       });
     });
+  }
+
+  get id() {
+    return this._id;
+  }
+
+  get challengedCount() {
+    return this._challengedCount;
+  }
+
+  get open() {
+    return this._open;
   }
 };

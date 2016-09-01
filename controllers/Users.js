@@ -6,7 +6,7 @@ const Challenge = new models.Challenge();
 const Manage = new models.Manage();
 const Performance = models.Performance;
 const Result = new models.Result();
-const Spot = new models.Spot();
+const Spot = models.Spot;
 const User = new models.User();
 
 function UsersController() {
