@@ -1,5 +1,3 @@
-const moment = require('moment');
-
 const banner = require('../utils/banner');
 const inputs = {
   performanceName: $('.PerformanceName'),
@@ -18,10 +16,10 @@ $('.NewPerformanceSubmit').on('click', () => {
       credentials: 'same-origin',
       method: 'post',
       body: JSON.stringify({
-        closeAt: moment.utc(new Date(inputs.closeAt.val())).format(),
+        closeAt: new Date(inputs.closeAt.val()).toISOString(),
         performanceName: inputs.performanceName.val(),
         performanceDate: inputs.performanceDate.val(),
-        openAt: moment.utc(new Date(inputs.openAt.val())).format()
+        openAt: new Date(inputs.openAt.val()).toISOString()
       })
     })
     .then(() => {
