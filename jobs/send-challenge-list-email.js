@@ -1,6 +1,6 @@
 const models = require('../models');
 const Challenge = new models.Challenge();
-const Manage = new models.Manage();
+const Manage = models.Manage;
 const { sendChallengeList } = require('../utils').email;
 const { logger } = require('../utils');
 
@@ -34,17 +34,17 @@ const filterManageActions = (arr) => {
   const filtered = [];
 
   for (let i = 0; i < arr.length; i++) {
-    const { name, spotid } = arr[i];
+    const { userName, spotId } = arr[i];
     let k = i + 1;
 
-    while (k < arr.length && spotid === arr[k].spotid) {
+    while (k < arr.length && spotId === arr[k].spotId) {
       k += 1;
     }
 
-    if (spotid === arr[k - 1].spotid && arr[k - 1].reason !== 'Closed Spot') {
+    if (spotId === arr[k - 1].spotId && arr[k - 1].reason !== 'Closed Spot') {
       filtered.push({
-        name,
-        spotid,
+        userName,
+        spotId,
         reason: arr[k - 1].reason
       });
     }
@@ -60,8 +60,8 @@ const challengesToCSV = (challenges) =>
   );
 
 const manageActionsTOCSV = (manageActions) =>
-  filterManageActions(manageActions).map(({ name, reason, spotid }) =>
-    [spotid, name, reason]
+  filterManageActions(manageActions).map(({ userName, reason, spotId }) =>
+    [spotId, userName, reason]
   );
 
 const getChallengeCSV = (performanceId) =>
