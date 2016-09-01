@@ -99,7 +99,7 @@ function UsersController() {
         Performance.findNextOrOpenWindow()
       ])
       .then(([challenge, results, currentPerformance]) =>
-        Promise.all([challenge, results, currentPerformance, User.canChallengeForPerformance(req.user, currentPerformance.id)])
+        Promise.all([challenge, results, currentPerformance, User.canChallengeForPerformance(req.user, currentPerformance && currentPerformance.id)])
       )
       .then(data => {
         const canChallenge = data[3], challenge = data[0], performance = data[2], results = data[1];
