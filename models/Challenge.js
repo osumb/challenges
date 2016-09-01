@@ -145,6 +145,7 @@ class Challenge {
 
   parseChallenge(challenge) {
     return {
+      performanceId: challenge.performanceid,
       spotId: challenge.spotid,
       performanceName: challenge.name
     };

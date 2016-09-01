@@ -106,7 +106,7 @@ function UsersController() {
 
         res.render('users/show', {
           canChallenge: canChallenge && (performance && performance.inPerformanceWindow()),
-          challenge: challengeAlreadyInResults(challenge, results) && challenge,
+          challenge: !challengeAlreadyInResults(challenge, results) && challenge,
           results,
           performance: performance && performance.toJSON(),
           user: req.user
