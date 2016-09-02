@@ -5,7 +5,7 @@ const { logger } = require('../utils');
 const Challenge = new models.Challenge();
 const Manage = models.Manage;
 const Performance = models.Performance;
-const Result = new models.Result();
+const Result = models.Result;
 const Spot = models.Spot;
 const User = new models.User();
 
@@ -107,7 +107,7 @@ function UsersController() {
         res.render('users/show', {
           canChallenge: canChallenge && (performance && performance.inPerformanceWindow()),
           challenge: !challengeAlreadyInResults(challenge, results) && challenge,
-          results,
+          results: results.map((result) => result.toJSONForUser(req.user.nameNumber)),
           performance: performance && performance.toJSON(),
           user: req.user
         });

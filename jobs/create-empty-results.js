@@ -1,6 +1,6 @@
 const models = require('../models');
 const Challenge = new models.Challenge();
-const Result = new models.Result();
+const Result = models.Result;
 const { db, logger } = require('../utils');
 
 const client = db.createClient();
