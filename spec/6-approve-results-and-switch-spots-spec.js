@@ -3,7 +3,7 @@ const { testData } = require('../spec/fixtures');
 const models = require('../models');
 
 const Result = models.Result;
-const User = new models.User();
+const User = models.User;
 const { testFinalSpots, testPerformance, testResults } = testData;
 
 console.log('==> APPROVE RESULTS');
@@ -28,8 +28,8 @@ describe('Switch Spots', () => {
   testFinalSpots.forEach(({ nameNumber, spotId }) => {
     it('Should switch spots correctly', (done) => {
       User.findByNameNumber(nameNumber)
-      .then(({ spotid }) => {
-        expect(spotid).toEqual(spotId);
+      .then(({ spotId: userSpotId }) => {
+        expect(userSpotId).toEqual(spotId);
         done();
       });
     });

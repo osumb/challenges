@@ -60,7 +60,6 @@ class Challenge {
         resolve(null);
       }
 
-      console.log(user.instrument, user.part, user.spotId, user.nameNumber);
       const client = utils.db.createClient();
       const users = [];
 

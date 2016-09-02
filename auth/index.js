@@ -1,7 +1,7 @@
 const passport = require('passport');
 const Strategy = require('passport-local').Strategy;
-const Models = require('../models');
-const User = new Models.User();
+const models = require('../models');
+const User = models.User;
 const bcrypt = require('bcrypt');
 
 passport.use(new Strategy((username, password, done) => {
@@ -13,7 +13,7 @@ passport.use(new Strategy((username, password, done) => {
       if (!bcrypt.compareSync(password, user.password)) { // eslint-disable-line no-sync
         return done(null, false);
       }
-      return done(null, User.parse(user));
+      return done(null, user);
     })
     .catch((err) => done(err));
 }));
@@ -27,6 +27,7 @@ passport.deserializeUser((user, done) => {
 });
 
 function isAuthenticated(req) {
+  console.log(req.user);
   if (req.isAuthenticated && req.isAuthenticated()) {
     return true;
   } else {

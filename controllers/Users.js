@@ -7,7 +7,7 @@ const Manage = models.Manage;
 const Performance = models.Performance;
 const Result = models.Result;
 const Spot = models.Spot;
-const User = new models.User();
+const User = models.User;
 
 function UsersController() {
   this.changePassword = (req, res) => {
