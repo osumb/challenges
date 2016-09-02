@@ -417,7 +417,6 @@ class Result {
   }
 }
 
-// id, fC, fNN, nA, opponentName, pending, perfDate, perfName, perfId, sC, sNN, spotId, winnerId
 const instanceFromDBRow = ({
   id,
   firstcomments,
