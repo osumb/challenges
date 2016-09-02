@@ -7,19 +7,34 @@ const attributes = ['nameNumber', 'instrument', 'name', 'part', 'password', 'rol
 
 class User {
 
-  static getAttributes() {
+  constructor(email, instrument, name, nameNumber, isNew, part, password, role, spotId, spotOpen = false) {
+    this._admin = role === 'Admin' || role === 'Director';
+    this._director = role === 'Director';
+    this._email = email;
+    this._instrument = instrument;
+    this._name = name;
+    this._nameNumber = nameNumber;
+    this._new = isNew;
+    this._part = part;
+    this._password = password;
+    this._spotId = spotId;
+    this._spotOpen = spotOpen;
+    this._squadLeader = role === 'Squad Leader';
+  }
+
+  static get attributes() {
     return attributes;
   }
 
-  static getIdName() {
+  static get idName() {
     return 'nameNumber';
   }
 
-  static getTableName() {
+  static get tableName() {
     return 'users';
   }
 
-  canChallengeForPerformance(user, performanceId) {
+  static canChallengeForPerformance(user, performanceId) {
     return new Promise((resolve, reject) => {
       if (!performanceId) {
         resolve(false);
@@ -52,7 +67,7 @@ class User {
     });
   }
 
-  changePassword(nameNumber, newPassword) {
+  static changePassword(nameNumber, newPassword) {
     return new Promise((resolve, reject) => {
       const client = utils.db.createClient();
       const sql = 'UPDATE users SET password = $1, new = false WHERE nameNumber = $2';
@@ -74,7 +89,7 @@ class User {
     });
   }
 
-  findForIndividualManage(nameNumber) {
+  static findForIndividualManage(nameNumber) {
     return new Promise((resolve, reject) => {
       const client = utils.db.createClient();
       const sql = queries.findForIndividualManage;
@@ -85,8 +100,8 @@ class User {
 
       const query = client.query(sql, [nameNumber]);
 
-      query.on('row', (user) => {
-        users.push(this.parseForManage(user));
+      query.on('row', ({ name, namenumber, performanceid, perfname, spotid, spotopen, reason, voluntary }) => {
+        users.push(new UserForIndividualManage(name, namenumber, performanceid, perfname, spotid, spotopen, reason, voluntary));
       });
 
       query.on('end', () => {
@@ -101,7 +116,7 @@ class User {
     });
   }
 
-  findByNameNumber(nameNumber) {
+  static findByNameNumber(id) {
     return new Promise((resolve, reject) => {
       const client = utils.db.createClient();
       const queryString = `
@@ -122,16 +137,18 @@ class User {
       client.connect();
       client.on('error', (err) => reject(err));
 
-      const query = client.query(queryString, [nameNumber]);
+      const query = client.query(queryString, [id]);
 
-      query.on('row', (result) => {
+      query.on('row', ({ email, instrument, name, namenumber, new: isNew, part, password, role, spotid }) => {
         client.end();
-        resolve(result);
+        resolve(new User(email, instrument, name, namenumber, isNew, part, password, role, spotid));
       });
+
       query.on('end', () => {
         client.end();
         resolve(null);
       });
+
       query.on('error', (err) => {
         client.end();
         reject(err);
@@ -139,7 +156,7 @@ class User {
     });
   }
 
-  findAll() {
+  static findAll() {
     return new Promise((resolve, reject) => {
       const client = utils.db.createClient();
       const queryString = 'SELECT * FROM users';
@@ -150,8 +167,8 @@ class User {
 
       const query = client.query(queryString);
 
-      query.on('row', (result) => {
-        users.push(this.parse(result));
+      query.on('row', ({ email, instrument, name, namenumber, new: isNew, part, password, role, spotid }) => {
+        users.push(new User(email, instrument, name, namenumber, isNew, part, password, role, spotid));
       });
 
       query.on('end', () => {
@@ -166,35 +183,6 @@ class User {
     });
   }
 
-  parse(user) {
-    return {
-      admin: user.role === 'Admin' || user.role === 'Director',
-      director: user.role === 'Director',
-      email: user.email,
-      instrument: user.instrument,
-      name: user.name,
-      nameNumber: user.namenumber,
-      new: user.new,
-      part: user.part,
-      password: user.password,
-      spotId: user.spotid,
-      squadLeader: user.role === 'Squad Leader'
-    };
-  }
-
-  parseForManage(user) {
-    return {
-      name: user.name,
-      nameNumber: user.namenumber,
-      performanceId: user.performanceid,
-      performanceName: user.performancename,
-      spotId: user.spotid,
-      spotOpen: user.spotopen,
-      reason: user.reason,
-      voluntary: user.voluntary
-    };
-  }
-
   parseForSearch(user) {
     const partiallyParsed = this.parse(user);
 
@@ -202,7 +190,7 @@ class User {
     return partiallyParsed;
   }
 
-  search(searchQuery) {
+  static search(searchQuery) {
     return new Promise((resolve, reject) => {
       const client = utils.db.createClient();
       const queryString = 'SELECT * FROM users AS u, spots AS s WHERE lower(name) LIKE \'%\' || lower($1) || \'%\' and u.spotId = s.id';
@@ -213,8 +201,8 @@ class User {
 
       const query = client.query(queryString, [searchQuery]);
 
-      query.on('row', (result) => {
-        users.push(this.parseForSearch(result));
+      query.on('row', ({ email, instrument, name, namenumber, new: isNew, part, password, role, spotid, open: spotOpen }) => {
+        users.push(new User(email, instrument, name, namenumber, isNew, part, password, role, spotid, spotOpen));
       });
 
       query.on('end', () => {
@@ -228,6 +216,108 @@ class User {
       });
     });
   }
+
+  get email() {
+    return this._email;
+  }
+
+  get instrument() {
+    return this._instrument;
+  }
+
+  get name() {
+    return this._name;
+  }
+
+  get nameNumber() {
+    return this._nameNumber;
+
+  }
+
+  get isNew() {
+    return this._new;
+  }
+
+  get part() {
+    return this._part;
+  }
+
+  get password() {
+    return this._password;
+  }
+
+  get role() {
+    return this._role;
+  }
+
+  get spotId() {
+    return this._spotId;
+  }
+
+  toJSON() {
+    return {
+      admin: this._admin,
+      director: this._director,
+      email: this._email,
+      instrument: this._instrument,
+      name: this._name,
+      nameNumber: this._nameNumber,
+      new: this._new,
+      part: this._part,
+      password: this._password,
+      spotId: this._spotId,
+      spotOpen: this._spotOpen,
+      squadLeader: this._squadLeader
+    };
+  }
+}
+
+class UserForIndividualManage {
+
+  constructor(name, nameNumber, performanceId, performanceName, spotId, spotOpen, reason, voluntary) {
+    this._name = name;
+    this._nameNumber = nameNumber;
+    this._performanceId = performanceId;
+    this._performanceName = performanceName;
+    this._spotId = spotId;
+    this._spotOpen = spotOpen;
+    this._reason = reason;
+    this._voluntary = voluntary;
+  }
+
+  get name() {
+    return this._name;
+  }
+
+  get nameNumber() {
+    return this._nameNumber;
+
+  }
+
+  get performanceId() {
+    return this._performanceId;
+  }
+
+  get performanceName() {
+    return this._performanceName;
+  }
+
+  get spotId() {
+    return this._spotId;
+  }
+
+  get spotOpen() {
+    return this._spotOpen;
+  }
+
+  get reason() {
+    return this._reason;
+  }
+
+  get voluntary() {
+    return this._voluntary;
+  }
+
 }
 
 module.exports = User;
