@@ -68,8 +68,8 @@ class Challenge {
 
       const query = client.query(sql, [user.instrument, user.part, user.spotId, user.nameNumber, performanceId]);
 
-      query.on('row', ({ challengedcount, name, spotid, spotopen }) => {
-        users.push(new ChallengeableUser(challengedcount, name, spotid, spotopen));
+      query.on('row', ({ challengedcount, name, spotid, open }) => {
+        users.push(new ChallengeableUser(challengedcount, name, spotid, open));
       });
 
       query.on('end', () => {
@@ -245,7 +245,7 @@ class ChallengeableUser {
     this._spotOpen = spotOpen;
   }
 
-  get challengedFull() {
+  get challengeFull() {
     return this._spotOpen ? this._challengedCount >= 2 : this._challengedCount >= 1;
   }
 

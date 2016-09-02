@@ -37,6 +37,7 @@ function ChallengersController() {
     Performance.findCurrent()
     .then((performance) => Promise.all([performance, Challenge.findAllChallengeablePeopleForUser(req.user, performance && performance.id)]))
     .then(([performance, challengeableUsers]) => {
+      console.log(challengeableUsers);
       res.render('challenges/new', {
         challengeableUsers: (performance && performance.inPerformanceWindow()) && challengeableUsers,
         performance,
