@@ -55,8 +55,8 @@ const filterManageActions = (arr) => {
 };
 
 const challengesToCSV = (challenges) =>
-  challenges.map(({ challengee, challenger, challengeespot, challengerspot, spotopen }) =>
-    [challengerspot, challenger, challengeespot, spotopen ? 'Open Spot' : challengee]
+  challenges.map(({ challengee, challenger, challengeeSpot, challengerSpot, spotOpen }) =>
+    [challengerSpot, challenger, challengeeSpot, spotOpen ? 'Open Spot' : challengee]
   );
 
 const manageActionsTOCSV = (manageActions) =>
