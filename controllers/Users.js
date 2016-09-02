@@ -84,7 +84,7 @@ function UsersController() {
 
   this.show = (req, res) => {
     if (req.user.admin) {
-      Performance.findNextOrOpenWindow()
+      Performance.findCurrent()
       .then((performance) => {
         res.render('users/admin', { user: req.user, performance: performance && performance.toJSON() });
       })
@@ -96,7 +96,7 @@ function UsersController() {
       Promise.all([
         Challenge.findForUser(req.user.nameNumber),
         Result.findAllForUser(req.user.nameNumber),
-        Performance.findNextOrOpenWindow()
+        Performance.findCurrent()
       ])
       .then(([challenge, results, currentPerformance]) =>
         Promise.all([challenge, results, currentPerformance, User.canChallengeForPerformance(req.user, currentPerformance && currentPerformance.id)])
@@ -120,7 +120,7 @@ function UsersController() {
   };
 
   this.showIndividualManage = (req, res) => {
-    Promise.all([User.findForIndividualManage(req.params.nameNumber), Performance.findNextOrOpenWindow()])
+    Promise.all([User.findForIndividualManage(req.params.nameNumber), Performance.findCurrent()])
     .then((data) => {
       res.render('users/individual-manage', {
         managedUserCurrent: data[0][0],

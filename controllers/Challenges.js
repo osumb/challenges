@@ -9,7 +9,7 @@ function ChallengersController() {
     const { spotId } = req.body;
     const userId = req.user.nameNumber;
 
-    return Performance.findNextOrOpenWindow()
+    return Performance.findCurrent()
             .then((performance) => Promise.all([performance, Challenge.create(userId, spotId, performance && performance.id)]))
             .then(([performance, code]) => {
               if (!performance) {
@@ -34,7 +34,7 @@ function ChallengersController() {
   };
 
   this.new = (req, res) => {
-    Performance.findNextOrOpenWindow()
+    Performance.findCurrent()
     .then((performance) => Promise.all([performance, Challenge.findAllChallengeablePeopleForUser(req.user, performance && performance.id)]))
     .then(([performance, challengeableUsers]) => {
       res.render('challenges/new', {
