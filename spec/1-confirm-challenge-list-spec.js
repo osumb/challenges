@@ -3,7 +3,7 @@ const controllers = require('../controllers');
 const fixtures = require('../spec/fixtures');
 const models = require('../models');
 
-const Challenge = new models.Challenge();
+const Challenge = models.Challenge;
 const Challenges = new controllers.Challenges();
 
 const { testData } = fixtures;

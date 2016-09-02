@@ -1,5 +1,5 @@
 const models = require('../models');
-const Challenge = new models.Challenge();
+const Challenge = models.Challenge;
 const Manage = models.Manage;
 const { sendChallengeList } = require('../utils').email;
 const { logger } = require('../utils');

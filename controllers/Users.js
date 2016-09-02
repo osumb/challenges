@@ -2,7 +2,7 @@ const bcrypt = require('bcrypt');
 
 const models = require('../models');
 const { logger } = require('../utils');
-const Challenge = new models.Challenge();
+const Challenge = models.Challenge;
 const Manage = models.Manage;
 const Performance = models.Performance;
 const Result = models.Result;

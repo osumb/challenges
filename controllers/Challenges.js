@@ -1,7 +1,7 @@
 const email = require('../utils').email;
 const { logger } = require('../utils');
 const models = require('../models');
-const Challenge = new models.Challenge();
+const Challenge = models.Challenge;
 const Performance = models.Performance;
 
 function ChallengersController() {
