@@ -2,7 +2,7 @@ SELECT * FROM
   (
     SELECT
       R1.id,
-      get_user_result_comments(R1.firstNameNumber, R1.firstComments, R1.secondComments, $1) AS comments,
+      get_user_result_comments(R1.firstNameNumber, R1.firstComments, R1.secondComments, $1) AS firstcomments,
       P.id AS performanceId,
       P.name,
       R1.winnerId,
