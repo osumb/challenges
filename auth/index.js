@@ -27,7 +27,6 @@ passport.deserializeUser((user, done) => {
 });
 
 function isAuthenticated(req) {
-  console.log(req.user);
   if (req.isAuthenticated && req.isAuthenticated()) {
     return true;
   } else {

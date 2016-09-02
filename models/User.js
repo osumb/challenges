@@ -100,8 +100,8 @@ class User {
 
       const query = client.query(sql, [nameNumber]);
 
-      query.on('row', ({ name, namenumber, performanceid, perfname, spotid, spotopen, reason, voluntary }) => {
-        users.push(new UserForIndividualManage(name, namenumber, performanceid, perfname, spotid, spotopen, reason, voluntary));
+      query.on('row', ({ name, namenumber, performanceid, performancename, spotid, spotopen, reason, voluntary }) => {
+        users.push(new UserForIndividualManage(name, namenumber, performanceid, performancename, spotid, spotopen, reason, voluntary));
       });
 
       query.on('end', () => {
