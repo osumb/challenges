@@ -177,6 +177,18 @@ class Challenge {
     });
   }
 
+  get performanceId() {
+    return this._performanceId;
+  }
+
+  get performanceName() {
+    return this._performanceName;
+  }
+
+  get spotId() {
+    return this._spotId;
+  }
+
 }
 
 class ChallengeForCSV {
