@@ -418,7 +418,7 @@ class Result {
 
 class ResultForAdmin {
 
-  constructor(id, fC, fN, fNN, pending, perfId, perfName, sC, sN, sNN, spotId, winner) {
+  constructor(id, fC, fN, fNN, pending, perfId, perfName, sC, sN, sNN, spotId, winnerId) {
     this._firstComments = fC;
     this._firstName = fN;
     this._firstNameNumber = fNN;
@@ -430,7 +430,7 @@ class ResultForAdmin {
     this._secondName = sN;
     this._secondNameNumber = sNN;
     this._spotId = spotId;
-    this._winner = winner;
+    this._winnerId = winnerId;
   }
 
   get firstComments() {
@@ -478,7 +478,7 @@ class ResultForAdmin {
   }
 
   get winner() {
-    return this._winner;
+    return this._winnerId === this._firstNameNumber ? this._firstName : this._secondName;
   }
 
 }
