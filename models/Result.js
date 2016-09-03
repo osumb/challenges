@@ -136,9 +136,7 @@ class Result {
 
       const query = client.query(sql, [user.instrument, user.part]);
 
-      query.on('row', (resultRow) =>
-        results.push(instanceFromDBRow(resultRow))
-      );
+      query.on('row', (result) => results.push(resultForAdminFromDBRow(result)));
 
       query.on('end', () => {
         client.end();
@@ -163,7 +161,7 @@ class Result {
 
       const query = client.query(sql, [nameNumber, row]);
 
-      query.on('row', (resultRow) => results.push(instanceFromDBRow(resultRow)));
+      query.on('row', (result) => results.push(resultForEvaluationFromDBRow(result)));
 
       query.on('end', () => {
         client.end();
@@ -188,7 +186,7 @@ class Result {
 
       const query = client.query(sql, [performanceId]);
 
-      query.on('row', (resultRow) => results.push(instanceFromDBRow(resultRow)));
+      query.on('row', (result) => results.push(resultForAdminFromDBRow(result)));
 
       query.on('end', () => {
         client.end();
@@ -213,7 +211,7 @@ class Result {
 
       const query = client.query(sql, [performanceId]);
 
-      query.on('row', (resultRow) => results.push(instanceFromDBRow(resultRow)));
+      query.on('row', (result) => results.push(resultForAdminFromDBRow(result)));
 
       query.on('end', () => {
         client.end();
@@ -238,8 +236,9 @@ class Result {
 
       const query = client.query(sql, [nameNumber]);
 
-      query.on('row', (resultRow) => {
-        results.push(instanceFromDBRow(resultRow));
+      query.on('row', ({ comments, opponentname, performdate, performanceid, name, spotid, winnerid }) => {
+        console.log(comments, opponentname, performdate, performanceid, name, spotid, nameNumber, winnerid);
+        results.push(new ResultForUser(comments, opponentname, performdate, performanceid, name, spotid, nameNumber, winnerid));
       });
 
       query.on('end', () => {
@@ -416,6 +415,189 @@ class Result {
     };
   }
 }
+
+class ResultForAdmin {
+
+  constructor(id, fC, fN, fNN, pending, perfId, perfName, sC, sN, sNN, spotId, winner) {
+    this._firstComments = fC;
+    this._firstName = fN;
+    this._firstNameNumber = fNN;
+    this._id = id;
+    this._pending = pending;
+    this._performanceId = perfId;
+    this._performanceName = perfName;
+    this._secondComments = sC;
+    this._secondName = sN;
+    this._secondNameNumber = sNN;
+    this._spotId = spotId;
+    this._winner = winner;
+  }
+
+  get firstComments() {
+    return this._firstComments;
+  }
+
+  get firstName() {
+    return this._firstName;
+  }
+
+  get firstNameNumber() {
+    return this._firstNameNumber;
+  }
+
+  get id() {
+    return this._id;
+  }
+
+  get pending() {
+    return this._pending;
+  }
+
+  get performanceId() {
+    return this._performanceId;
+  }
+
+  get performanceName() {
+    return this._performanceName;
+  }
+
+  get secondComments() {
+    return this._secondComments;
+  }
+
+  get secondName() {
+    return this._secondName;
+  }
+
+  get secondNameNumber() {
+    return this._secondNameNumber;
+  }
+
+  get spotId() {
+    return this._spotId;
+  }
+
+  get winner() {
+    return this._winner;
+  }
+
+}
+
+class ResultForEvaluation {
+
+  constructor(firstName, firstNameNumber, id, secondName, secondNameNumber, spotId) {
+    this._firstName = firstName;
+    this._firstNameNumber = firstNameNumber;
+    this._id = id;
+    this._secondName = secondName;
+    this._secondNameNumber = secondNameNumber;
+    this._spotId = spotId;
+  }
+
+  get firstName() {
+    return this._firstName;
+  }
+
+  get firstNameNumber() {
+    return this._firstNameNumber;
+  }
+
+  get resultId() {
+    return this._id;
+  }
+
+  get secondName() {
+    return this._secondName;
+  }
+
+  get secondNameNumber() {
+    return this._secondNameNumber;
+  }
+
+  get spotId() {
+    return this._spotId;
+  }
+
+}
+
+class ResultForUser {
+
+  constructor(comments, opponentName, performanceDate, performanceId, performanceName, spotId, userNameNumber, winner) {
+    this._comments = comments;
+    this._opponentName = opponentName;
+    this._performanceDate = moment(performanceDate).format('MMMM D, YYYY');
+    this._performanceId = performanceId;
+    this._performanceName = performanceName;
+    this._spotId = spotId;
+    this._winner = winner === userNameNumber;
+  }
+
+  get comments() {
+    return this._comments;
+  }
+
+  get opponentName() {
+    return this._opponentName;
+  }
+
+  get performanceDate() {
+    return this._performanceDate;
+  }
+
+  get performanceId() {
+    return this._performanceId;
+  }
+
+  get performanceName() {
+    return this._performanceName;
+  }
+
+  get spotId() {
+    return this._spotId;
+  }
+
+  get winner() {
+    return this._winner;
+  }
+
+}
+
+const resultForAdminFromDBRow = ({
+  resultid,
+  firstcomments,
+  nameone,
+  firstnamenumber,
+  pending,
+  performanceid,
+  performancename,
+  secondcomments,
+  nametwo,
+  secondnamenumber,
+  spotid,
+  winnerid
+}) => new ResultForAdmin(
+  resultid,
+  firstcomments,
+  nameone,
+  firstnamenumber,
+  pending,
+  performanceid,
+  performancename,
+  secondcomments,
+  nametwo,
+  secondnamenumber,
+  spotid,
+  winnerid
+);
+
+const resultForEvaluationFromDBRow = ({
+  nameone,
+  firstnamenumber,
+  resultid,
+  nametwo,
+  secondnamenumber,
+  spotid
+}) => new ResultForEvaluation(nameone, firstnamenumber, resultid, nametwo, secondnamenumber, spotid);
 
 const instanceFromDBRow = ({
   id,
