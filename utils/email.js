@@ -9,10 +9,14 @@ const helper = sendGrid.mail;
 const sg = sendGrid.SendGrid(process.env.SENDGRID_API_KEY);
 const fromMail = new helper.Email('osumbit@gmail.com');
 
+const challengeListSource = fs.readFileSync(path.resolve(__dirname, '../views/emails/challenge-list.handlebars'), 'utf8');
+const userCreateSource = fs.readFileSync(path.resolve(__dirname, '../views/emails/user-create.handlebars'), 'utf8');
+
+const challengeListTemplate = Handlebars.compile(challengeListSource);
+const userCreateTemplate = Handlebars.compile(userCreateSource);
+
 const sendChallengeList = (recipients, fileData) => {
   const request = sg.emptyRequest();
-  const source = fs.readFileSync(path.resolve(__dirname, '../views/emails/challenge-list.handlebars'), 'utf8');
-  const template = Handlebars.compile(source);
 
   request.body = {
     attachments: [
@@ -27,7 +31,7 @@ const sendChallengeList = (recipients, fileData) => {
     content: [
       {
         type: 'text/html',
-        value: template()
+        value: challengeListTemplate()
       }
     ],
     from: {
@@ -93,8 +97,25 @@ const sendErrorEmail = (errMessage) => {
   });
 };
 
+const sendUserCreateEmail = (email, nameNumber, password) => {
+  const to = new helper.Email(email);
+  const subject = 'OSUMB Challenge Manager Account';
+  const content = new helper.Content('text/html', userCreateTemplate({ nameNumber, password }));
+  const requestBody = new helper.Mail(fromMail, subject, to, content).toJSON();
+
+  const request = sg.emptyRequest();
+
+  request.method = 'POST';
+  request.path = '/v3/mail/send';
+  request.body = requestBody;
+  sg.API(request, (response) => {
+    console.log('ERROR_EMAIL:', response);
+  });
+};
+
 module.exports = {
   sendChallengeList,
   sendChallengeSuccessEmail,
-  sendErrorEmail
+  sendErrorEmail,
+  sendUserCreateEmail
 };
