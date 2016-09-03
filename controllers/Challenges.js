@@ -9,6 +9,7 @@ function ChallengersController() {
     const { spotId } = req.body;
     const userId = req.user.nameNumber;
 
+    logger.challengesLog(`${req.user.name} request to challenge ${spotId}`);
     return Performance.findCurrent()
             .then((performance) => Promise.all([performance, Challenge.create(userId, spotId, performance && performance.id)]))
             .then(([performance, code]) => {
