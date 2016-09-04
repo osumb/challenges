@@ -1,7 +1,7 @@
 const moment = require('moment');
 
 const queries = require('../db/queries');
-const { db, logger } = require('../utils');
+const { db } = require('../utils');
 
 const modelAttributes = ['id', 'performanceId', 'spotId', 'firstNameNumber', 'secondNameNumber', 'firstComments', 'secondComments', 'winnerId', 'pending', 'needsApproval'];
 const alternateVersusRegular = result =>
@@ -64,53 +64,22 @@ class Result {
   }
 
   static approve(ids) {
-    const client = db.createClient();
-    const sql = 'UPDATE results SET needsApproval = FALSE, pending = FALSE WHERE id = ANY($1) RETURNING performanceId';
-    let performanceId;
-
     return new Promise((resolve, reject) => {
-      client.connect();
-      client.on('error', (err) => reject(err));
+      const sql = 'UPDATE results SET needsApproval = FALSE, pending = FALSE WHERE id = ANY($1) RETURNING performanceId';
 
-      const query = client.query(sql, [ids]);
-
-      query.on('row', ({ performanceid }) => {
-        performanceId = performanceid;
-      });
-
-      query.on('end', () => {
-        client.end();
-        resolve(performanceId);
-      });
-      query.on('error', (err) => {
-        reject(err);
-        client.end();
-      });
+      db.query(sql, [ids])
+      .then(resolve)
+      .catch(reject);
     });
   }
 
   static checkAllDoneForPerformance(id) {
-    const client = db.createClient();
-    const sql = 'SELECT count(*) FROM results WHERE performanceid = $1 AND needsApproval';
-    let count;
-
     return new Promise((resolve, reject) => {
-      client.connect();
-      client.on('error', (err) => reject(err));
+      const sql = 'SELECT count(*) FROM results WHERE performanceid = $1 AND needsApproval';
 
-      const query = client.query(sql, [id]);
-
-      query.on('row', result => {
-        count = parseInt(result.count, 10);
-      });
-      query.on('end', () => {
-        client.end();
-        resolve(count === 0);
-      });
-      query.on('error', (err) => {
-        client.end();
-        reject(err);
-      });
+      db.query(sql, [id], ({ count }) => parseInt(count, 10))
+      .then(resolve)
+      .catch(reject);
     });
   }
 
@@ -126,152 +95,64 @@ class Result {
   }
 
   static findAllForApproval(user) {
-    const client = db.createClient();
-    const sql = queries.resultsForApproval;
-    const results = [];
-
     return new Promise((resolve, reject) => {
-      client.connect();
-      client.on('error', (err) => reject(err));
+      const sql = queries.resultsForApproval;
 
-      const query = client.query(sql, [user.instrument, user.part]);
-
-      query.on('row', (result) => results.push(resultForAdminFromDBRow(result)));
-
-      query.on('end', () => {
-        client.end();
-        resolve(results);
-      });
-
-      query.on('error', (err) => {
-        client.end();
-        reject(err);
-      });
+      db.query(sql, [user.instrument, user.part], instanceFromRowResultForAdmin)
+      .then(resolve)
+      .catch(reject);
     });
   }
 
   static findAllForEval(nameNumber, row) {
-    const client = db.createClient();
-    const sql = queries.resultsForEval;
-    const results = [];
-
     return new Promise((resolve, reject) => {
-      client.connect();
-      client.on('error', (err) => reject(err));
+      const sql = queries.resultsForEval;
 
-      const query = client.query(sql, [nameNumber, row]);
-
-      query.on('row', (result) => results.push(resultForEvaluationFromDBRow(result)));
-
-      query.on('end', () => {
-        client.end();
-        resolve(results);
-      });
-
-      query.on('error', (err) => {
-        client.end();
-        reject(err);
-      });
+      db.query(sql, [nameNumber, row], instanceFromRowResultForEval)
+      .then(resolve)
+      .catch(reject);
     });
   }
 
   static findAllForPerformance(performanceId) {
-    const client = db.createClient();
-    const sql = queries.resultsForPerformance;
-    const results = [];
-
     return new Promise((resolve, reject) => {
-      client.connect();
-      client.on('error', (err) => reject(err));
+      const sql = queries.resultsForPerformance;
 
-      const query = client.query(sql, [performanceId]);
-
-      query.on('row', (result) => results.push(resultForAdminFromDBRow(result)));
-
-      query.on('end', () => {
-        client.end();
-        resolve(results);
-      });
-
-      query.on('error', (err) => {
-        client.end();
-        reject(err);
-      });
+      db.query(sql, [performanceId], instanceFromRowResultForAdmin)
+      .then(resolve)
+      .catch(reject);
     });
   }
 
   static findAllRawForPerformance(performanceId) {
-    const client = db.createClient();
-    const sql = 'SELECT * FROM results WHERE performanceId = $1';
-    const results = [];
-
     return new Promise((resolve, reject) => {
-      client.connect();
-      client.on('error', reject);
+      const sql = 'SELECT * FROM results WHERE performanceId = $1';
 
-      const query = client.query(sql, [performanceId]);
-
-      query.on('row', (result) => results.push(resultForAdminFromDBRow(result)));
-
-      query.on('end', () => {
-        client.end();
-        resolve(results);
-      });
-
-      query.on('error', (err) => {
-        client.end();
-        reject(err);
-      });
+      db.query(sql, [performanceId], instanceFromRowResultForAdmin)
+      .then(resolve)
+      .catch(reject);
     });
   }
 
   static findAllForUser(nameNumber) {
-    const client = db.createClient();
-    const sql = queries.resultsForUser;
-    const results = [];
-
     return new Promise((resolve, reject) => {
-      client.connect();
-      client.on('error', (err) => reject(err));
+      const sql = queries.resultsForUser;
 
-      const query = client.query(sql, [nameNumber]);
-
-      query.on('row', ({ comments, opponentname, performdate, performanceid, name, spotid, winnerid }) => {
-        console.log(comments, opponentname, performdate, performanceid, name, spotid, nameNumber, winnerid);
-        results.push(new ResultForUser(comments, opponentname, performdate, performanceid, name, spotid, nameNumber, winnerid));
-      });
-
-      query.on('end', () => {
-        client.end();
-        resolve(results);
-      });
-
-      query.on('error', (err) => {
-        client.end();
-        reject(err);
-      });
+      db.query(sql, [nameNumber], instanceFromRowResultForUser(nameNumber))
+      .then(resolve)
+      .catch(reject);
     });
   }
 
   static switchSpotsForPerformance(id) {
-    const client = db.createClient();
-    const resultsSql = queries.resultsForPerformance;
-    const switchSql = 'SELECT switch_spots_based_on_results($1)';
-    const oneUserSql = 'SELECT switch_spots_based_on_results_one_user($1)';
-    const results = [];
-    const onePersonResultIds = [];
-
     return new Promise((resolve, reject) => {
-      client.connect();
-      client.on('error', (err) => {
-        logger.errorLog('Results.switchSpotsForPerformance', err);
-        reject(err);
-      });
+      const resultsSql = queries.resultsForPerformance;
+      const switchSql = 'SELECT switch_spots_based_on_results($1)';
+      const oneUserSql = 'SELECT switch_spots_based_on_results_one_user($1)';
+      const onePersonResultIds = [];
 
-      const resultsQuery = client.query(resultsSql, [id]);
-
-      resultsQuery.on('row', resultRow => results.push(instanceFromDBRow(resultRow)));
-      resultsQuery.on('end', () => {
+      db.query(resultsSql, [id], instanceFromForResult)
+      .then((results) => {
         const filteredResults = results.filter(({ secondNameNumber }, i) => {
           if (!secondNameNumber) {
             onePersonResultIds.push(results[i].id);
@@ -280,44 +161,20 @@ class Result {
         });
         const filteredResultsIds = filteredResults.sort(resultsSort).map(({ id: resultId }) => resultId);
 
-        const switchQuery = client.query(switchSql, [filteredResultsIds]);
-
-        switchQuery.on('end', () => {
-          const oneUserQuery = client.query(oneUserSql, [onePersonResultIds]);
-
-          oneUserQuery.on('end', () => {
-            client.end();
-            resolve();
-          });
-          oneUserQuery.on('error', err => {
-            client.end();
-            logger.errorLog('Results.switchSpotsForPerformance: oneUserQuery', err);
-            reject(err);
-          });
-        });
-
-        switchQuery.on('error', err => {
-          client.end();
-          logger.errorLog('Results.switchSpotsForPerformance: switchQuery', err);
-          reject(err);
-        });
-      });
-
-      resultsQuery.on('error', err => {
-        logger.errorLog('Results.switchSpotsForPerformance', err);
-        client.end();
-        reject(err);
-      });
+        db.query(switchSql, [filteredResultsIds])
+        .then(() => {
+          db.query(oneUserSql, [onePersonResultIds])
+          .then(resolve)
+          .catch(reject);
+        })
+        .catch(reject);
+      })
+      .catch(reject);
     });
   }
 
   static update(attributes) {
-    const client = db.createClient();
-
     return new Promise((resolve, reject) => {
-      client.connect();
-      client.on('error', (err) => reject(err));
-
       const id = attributes.id;
 
       if (typeof id === 'undefined') {
@@ -326,32 +183,20 @@ class Result {
 
       delete attributes.id;
       const { sql, values } = db.queryBuilder(Result, attributes, { statement: 'UPDATE', id });
-      const query = client.query(sql, values);
 
-      query.on('end', () => resolve());
-      query.on('error', (err) => reject(err));
+      db.query(sql, values)
+      .then(resolve)
+      .catch(reject);
     });
   }
 
   static updateForTestsOnly(firstNameNumber, comments1, comments2, winnerId) {
-    const client = db.createClient();
-    const sql = 'UPDATE results SET firstComments = $1, secondComments = $2, winnerId = $3 WHERE firstNameNumber = $4';
-
     return new Promise((resolve, reject) => {
-      client.connect();
-      client.on('error', reject);
+      const sql = 'UPDATE results SET firstComments = $1, secondComments = $2, winnerId = $3 WHERE firstNameNumber = $4';
 
-      const query = client.query(sql, [comments1, comments2 || null, winnerId, firstNameNumber]);
-
-      query.on('end', () => {
-        client.end();
-        resolve();
-      });
-
-      query.on('error', (err) => {
-        client.end();
-        reject(err);
-      });
+      db.query(sql, [comments1, comments2 || null, winnerId, firstNameNumber])
+      .then(resolve)
+      .catch(reject);
     });
   }
 
@@ -562,7 +407,7 @@ class ResultForUser {
 
 }
 
-const resultForAdminFromDBRow = ({
+const instanceFromRowResultForAdmin = ({
   resultid,
   firstcomments,
   nameone,
@@ -590,7 +435,7 @@ const resultForAdminFromDBRow = ({
   winnerid
 );
 
-const resultForEvaluationFromDBRow = ({
+const instanceFromRowResultForEval = ({
   nameone,
   firstnamenumber,
   resultid,
@@ -599,7 +444,11 @@ const resultForEvaluationFromDBRow = ({
   spotid
 }) => new ResultForEvaluation(nameone, firstnamenumber, resultid, nametwo, secondnamenumber, spotid);
 
-const instanceFromDBRow = ({
+const instanceFromRowResultForUser = (nameNumber) =>
+  ({ comments, opponentname, performdate, performanceid, name, spotid, winnerid }) =>
+    new ResultForUser(comments, opponentname, performdate, performanceid, name, spotid, nameNumber, winnerid);
+
+const instanceFromForResult = ({
   id,
   firstcomments,
   firstnamenumber,
