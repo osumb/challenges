@@ -1,10 +1,10 @@
-const utils = require('../utils');
+const { db } = require('../utils');
 
 const attributes = ['id', 'name', 'openAt', 'closeAt', 'performDate'];
 
 let cachedCurrentPerformance;
 
-module.exports = class Performance {
+class Performance {
 
   constructor(id, name, openAt, closeAt, performDate) {
     this._id = id;
@@ -27,95 +27,37 @@ module.exports = class Performance {
   }
 
   static create(name, performDate, openAt, closeAt) {
-    return new Promise((resolve, reject) => {
-      const client = utils.db.createClient();
-      const queryString = 'INSERT INTO performances (name, performDate, openAt, closeAt) VALUES ($1, $2, $3, $4) RETURNING id, closeAt';
-      let perfId;
+    const sql = 'INSERT INTO performances (name, performDate, openAt, closeAt) VALUES ($1, $2, $3, $4) RETURNING id, closeAt';
 
-      if (
-        Number.isNaN(Date.parse(openAt)) ||
-        Number.isNaN(Date.parse(closeAt)) ||
-        Number.isNaN(Date.parse(performDate))
-      ) {
-        reject();
-      } else {
-        client.connect();
-        client.on('error', err => reject(err));
-
-        const query = client.query(queryString, [name, performDate, openAt, closeAt]);
-
-        query.on('row', ({ id }) => {
-          perfId = id;
-        });
-
-        query.on('end', () => {
-          client.end();
-          resolve(new Performance(perfId, name, openAt, closeAt, performDate));
-        });
-
-        query.on('error', (err) => {
-          client.end();
-          reject(err);
-        });
-      }
-    });
+    if (
+      Number.isNaN(Date.parse(openAt)) ||
+      Number.isNaN(Date.parse(closeAt)) ||
+      Number.isNaN(Date.parse(performDate))
+    ) {
+      return Promise.reject();
+    } else {
+      return db.query(
+        sql,
+        [name, performDate, openAt, closeAt],
+        instanceFromRowPerformanceWithoutId(name, openAt, closeAt, performDate)
+      );
+    }
   }
 
   static findAll() {
-    return new Promise((resolve, reject) => {
-      const client = utils.db.createClient();
-      const queryString = 'SELECT * FROM performances';
-      const performances = [];
+    const sql = 'SELECT * FROM performances';
 
-      client.connect();
-      client.on('error', (err) => reject(err));
-
-      const query = client.query(queryString);
-
-      query.on('row', ({ name, openat, closeat, performdate }) => {
-        performances.push(new Performance(name, openat, closeat, performdate));
-      });
-
-      query.on('end', () => {
-        client.end();
-        resolve(performances);
-      });
-
-      query.on('error', (err) => {
-        client.end();
-        reject(err);
-      });
-    });
+    return db.query(sql, [], instanceFromRowPerformance);
   }
 
   static findCurrent() {
     if (cachedCurrentPerformance && Date.now() < cachedCurrentPerformance.closeAt) {
       return Promise.resolve(cachedCurrentPerformance);
     }
-    return new Promise((resolve, reject) => {
-      const client = utils.db.createClient();
-      const queryString = 'SELECT * FROM performances WHERE now() < closeAt ORDER BY openAt ASC LIMIT 1';
+    const sql = 'SELECT * FROM performances WHERE now() < closeAt ORDER BY openAt ASC LIMIT 1';
 
-      client.connect();
-      client.on('error', (err) => reject(err));
-
-      const query = client.query(queryString);
-
-      query.on('row', ({ id, name, openat, closeat, performdate }) => {
-        client.end();
-        resolve(new Performance(id, name, openat, closeat, performdate));
-      });
-
-      query.on('end', () => {
-        client.end();
-        resolve(null);
-      });
-
-      query.on('error', (err) => {
-        client.end();
-        reject(err);
-      });
-    }).then((currentPerformance) => {
+    return db.query(sql, [], instanceFromRowPerformance)
+    .then((currentPerformance) => {
       cachedCurrentPerformance = currentPerformance;
       return currentPerformance;
     });
@@ -152,4 +94,12 @@ module.exports = class Performance {
     };
   }
 
-};
+}
+
+const instanceFromRowPerformance = ({ id, name, openat, closeat, performdate }) =>
+  new Performance(id, name, openat, closeat, performdate);
+
+const instanceFromRowPerformanceWithoutId = (name, openAt, closeAt, performDate) =>
+  ({ id }) => new Performance(id, name, openAt, closeAt, performDate);
+
+module.exports = Performance;

@@ -1,4 +1,4 @@
-const utils = require('../utils');
+const { db } = require('../utils');
 
 const attributes = ['id', 'open', 'challengedCount'];
 
@@ -24,25 +24,9 @@ module.exports = class Spot {
 
   // true is open, false is closed
   static setOpenClose(spotId, open) {
-    return new Promise((resolve, reject) => {
-      const client = utils.db.createClient();
-      const queryString = 'UPDATE spots SET open = $1 WHERE id = $2';
+    const sql = 'UPDATE spots SET open = $1 WHERE id = $2';
 
-      client.connect();
-      client.on('error', (err) => reject(err));
-
-      const query = client.query(queryString, [open, spotId]);
-
-      query.on('end', () => {
-        client.end();
-        resolve();
-      });
-
-      query.on('error', (err) => {
-        client.end();
-        reject(err);
-      });
-    });
+    return db.query(sql, [open, spotId]);
   }
 
   get id() {

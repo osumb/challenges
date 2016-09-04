@@ -1,7 +1,7 @@
 const bcrypt = require('bcrypt');
 
 const queries = require('../db/queries');
-const utils = require('../utils');
+const { db } = require('../utils');
 
 const attributes = ['nameNumber', 'instrument', 'name', 'part', 'password', 'role', 'spotId'];
 
@@ -35,212 +35,66 @@ class User {
   }
 
   static create(name, nN, instrument, part, role, spotId, email, password) {
-    return new Promise((resolve, reject) => {
-      const client = utils.db.createClient();
-      const sql = `
-        INSERT INTO users
-        (name, namenumber, instrument, part, role, spotId, email, password)
-        VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
-        `;
+    const sql = `
+      INSERT INTO users
+      (name, namenumber, instrument, part, role, spotId, email, password)
+      VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
+      `;
 
-      client.connect();
-      client.on('error', reject);
-
-      const query = client.query(sql, [name, nN, instrument, part, role, spotId, email, password]);
-
-      query.on('error', (err) => {
-        client.end();
-        reject(err);
-      });
-
-      query.on('end', () => {
-        client.end();
-        resolve();
-      });
-    });
+    return db.query(sql, [name, nN, instrument, part, role, spotId, email, password]);
   }
 
-  canChallengeForPerformance(user, performanceId) {
-    return new Promise((resolve, reject) => {
-      if (!performanceId) {
-        resolve(false);
-      }
+  static canChallengeForPerformance(user, performanceId) {
+    if (!performanceId) {
+      return Promise.resolve(false);
+    }
+    const sql = queries.canChallengeForPerformance;
 
-      const client = utils.db.createClient();
-      const sql = queries.canChallengeForPerformance;
-
-      client.connect();
-      client.on('error', reject);
-
-      const query = client.query(sql, [user.nameNumber, performanceId, user.spotId]);
-
-      // With this query, no rows means that the user can't challenge, so if the row event
-      // Triggers, that means the user can challenge and we'll resolve true
-      query.on('row', () => {
-        client.end();
-        resolve(true);
-      });
-
-      query.on('end', () => {
-        client.end();
-        resolve(false);
-      });
-
-      query.on('error', (err) => {
-        reject(err);
-        client.end();
-      });
-    });
+    return db.query(sql, [user.nameNumber, performanceId, user.spotId]);
   }
 
   static changePassword(nameNumber, newPassword) {
-    return new Promise((resolve, reject) => {
-      const client = utils.db.createClient();
-      const sql = 'UPDATE users SET password = $1, new = false WHERE nameNumber = $2';
-      const password = bcrypt.hashSync(newPassword, bcrypt.genSaltSync(1)); // eslint-disable-line no-sync
+    const sql = 'UPDATE users SET password = $1, new = false WHERE nameNumber = $2';
+    const password = bcrypt.hashSync(newPassword, bcrypt.genSaltSync(1)); // eslint-disable-line no-sync
 
-      client.connect();
-      client.on('error', reject);
-
-      const query = client.query(sql, [password, nameNumber]);
-
-      query.on('end', () => {
-        client.end();
-        resolve(password);
-      });
-      query.on('error', (err) => {
-        client.end();
-        reject(err);
-      });
-    });
+    return db.query(sql, [password, nameNumber]);
   }
 
   static findForIndividualManage(nameNumber) {
-    return new Promise((resolve, reject) => {
-      const client = utils.db.createClient();
-      const sql = queries.findForIndividualManage;
-      const users = [];
+    const sql = queries.findForIndividualManage;
 
-      client.connect();
-      client.on('error', reject);
-
-      const query = client.query(sql, [nameNumber]);
-
-      query.on('row', ({ name, namenumber, performanceid, performancename, spotid, spotopen, reason, voluntary }) => {
-        users.push(new UserForIndividualManage(name, namenumber, performanceid, performancename, spotid, spotopen, reason, voluntary));
-      });
-
-      query.on('end', () => {
-        client.end();
-        resolve(users);
-      });
-
-      query.on('error', (err) => {
-        reject(err);
-        client.end();
-      });
-    });
+    return db.query(sql, [nameNumber], instanceFromRowUserIndividualManage);
   }
 
   static findByNameNumber(id) {
-    return new Promise((resolve, reject) => {
-      const client = utils.db.createClient();
-      const queryString = `
-        SELECT
-          email,
-          name,
-          namenumber,
-          new,
-          COALESCE(u.instrument, ra.instrument) AS instrument,
-          COALESCE(u.part, ra.part) AS part,
-          password,
-          role,
-          spotid
-        FROM users AS u LEFT OUTER JOIN results_approve AS ra ON u.nameNumber = ra.usernamenumber
-        WHERE nameNumber = $1
-      `;
+    const sql = `
+      SELECT
+        email,
+        name,
+        namenumber,
+        new,
+        COALESCE(u.instrument, ra.instrument) AS instrument,
+        COALESCE(u.part, ra.part) AS part,
+        password,
+        role,
+        spotid
+      FROM users AS u LEFT OUTER JOIN results_approve AS ra ON u.nameNumber = ra.usernamenumber
+      WHERE nameNumber = $1
+    `;
 
-      client.connect();
-      client.on('error', (err) => reject(err));
-
-      const query = client.query(queryString, [id]);
-
-      query.on('row', ({ email, instrument, name, namenumber, new: isNew, part, password, role, spotid }) => {
-        client.end();
-        resolve(new User(email, instrument, name, namenumber, isNew, part, password, role, spotid));
-      });
-
-      query.on('end', () => {
-        client.end();
-        resolve(null);
-      });
-
-      query.on('error', (err) => {
-        client.end();
-        reject(err);
-      });
-    });
+    return db.query(sql, [id], instanceFromRowUser).then(([user]) => user);
   }
 
   static findAll() {
-    return new Promise((resolve, reject) => {
-      const client = utils.db.createClient();
-      const queryString = 'SELECT * FROM users';
-      const users = [];
+    const sql = 'SELECT * FROM users';
 
-      client.connect();
-      client.on('error', (err) => reject(err));
-
-      const query = client.query(queryString);
-
-      query.on('row', ({ email, instrument, name, namenumber, new: isNew, part, password, role, spotid }) => {
-        users.push(new User(email, instrument, name, namenumber, isNew, part, password, role, spotid));
-      });
-
-      query.on('end', () => {
-        client.end();
-        resolve(users);
-      });
-
-      query.on('error', (err) => {
-        client.end();
-        reject(err);
-      });
-    });
-  }
-
-  parseForSearch(user) {
-    const partiallyParsed = this.parse(user);
-
-    partiallyParsed.spotOpen = user.open;
-    return partiallyParsed;
+    return db.query(sql, [], instanceFromRowUser);
   }
 
   static search(searchQuery) {
-    return new Promise((resolve, reject) => {
-      const client = utils.db.createClient();
-      const queryString = 'SELECT * FROM users AS u, spots AS s WHERE lower(name) LIKE \'%\' || lower($1) || \'%\' and u.spotId = s.id';
-      const users = [];
+    const sql = 'SELECT * FROM users AS u, spots AS s WHERE lower(name) LIKE \'%\' || lower($1) || \'%\' and u.spotId = s.id';
 
-      client.connect();
-      client.on('error', (err) => reject(err));
-
-      const query = client.query(queryString, [searchQuery]);
-
-      query.on('row', ({ email, instrument, name, namenumber, new: isNew, part, password, role, spotid, open: spotOpen }) => {
-        users.push(new User(email, instrument, name, namenumber, isNew, part, password, role, spotid, spotOpen));
-      });
-
-      query.on('end', () => {
-        client.end();
-        resolve(users);
-      });
-
-      query.on('error', (err) => {
-        client.end();
-        reject(err);
-      });
-    });
+    return db.query(sql, [searchQuery], instanceFromRowUser);
   }
 
   get email() {
@@ -345,5 +199,11 @@ class UserForIndividualManage {
   }
 
 }
+
+const instanceFromRowUser = ({ email, instrument, name, namenumber, new: isNew, part, password, role, spotid }) =>
+  new User(email, instrument, name, namenumber, isNew, part, password, role, spotid);
+
+const instanceFromRowUserIndividualManage = ({ name, namenumber, performanceid, performancename, spotid, spotopen, reason, voluntary }) =>
+  new UserForIndividualManage(name, namenumber, performanceid, performancename, spotid, spotopen, reason, voluntary);
 
 module.exports = User;

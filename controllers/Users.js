@@ -85,7 +85,7 @@ function UsersController() {
   this.show = (req, res) => {
     if (req.user.admin) {
       Performance.findCurrent()
-      .then((performance) => {
+      .then(([performance]) => {
         res.render('users/admin', { user: req.user, performance: performance && performance.toJSON() });
       })
       .catch((err) => {
@@ -102,7 +102,7 @@ function UsersController() {
         Promise.all([challenge, results, currentPerformance, User.canChallengeForPerformance(req.user, currentPerformance && currentPerformance.id)])
       )
       .then(data => {
-        const canChallenge = data[3], challenge = data[0], performance = data[2], results = data[1];
+        const canChallenge = data[3], challenge = data[0][0], performance = data[2][0], results = data[1];
 
         res.render('users/show', {
           canChallenge: canChallenge && (performance && performance.inPerformanceWindow()),
@@ -125,7 +125,7 @@ function UsersController() {
       res.render('users/individual-manage', {
         managedUserCurrent: data[0][0],
         managedUserOld: data[0].slice(1),
-        performance: data[1],
+        performance: data[1][0],
         user: req.user
       });
     })
