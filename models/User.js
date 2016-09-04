@@ -34,7 +34,33 @@ class User {
     return 'users';
   }
 
-  static canChallengeForPerformance(user, performanceId) {
+  static create(name, nN, instrument, part, role, spotId, email, password) {
+    return new Promise((resolve, reject) => {
+      const client = utils.db.createClient();
+      const sql = `
+        INSERT INTO users
+        (name, namenumber, instrument, part, role, spotId, email, password)
+        VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
+        `;
+
+      client.connect();
+      client.on('error', reject);
+
+      const query = client.query(sql, [name, nN, instrument, part, role, spotId, email, password]);
+
+      query.on('error', (err) => {
+        client.end();
+        reject(err);
+      });
+
+      query.on('end', () => {
+        client.end();
+        resolve();
+      });
+    });
+  }
+
+  canChallengeForPerformance(user, performanceId) {
     return new Promise((resolve, reject) => {
       if (!performanceId) {
         resolve(false);
