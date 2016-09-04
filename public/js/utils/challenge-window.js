@@ -6,4 +6,6 @@ const openAtElement = document.getElementsByClassName('ChallengeWindow-openAt')[
 if (closeAtElement && openAtElement) {
   closeAtElement.innerHTML = moment(closeAtElement.innerHTML).format('MMM, Do h:mm A');
   openAtElement.innerHTML = moment(openAtElement.innerHTML).format('MMM, Do h:mm A');
+} else if (closeAtElement) {
+  closeAtElement.innerHTML = moment(closeAtElement.innerHTML).format('MMM, Do h:mm A');
 }

@@ -1,6 +1,8 @@
 {{#if performance}}
   {{#if performance.windowOpen}}
-    <h2 class="ChallengeWindow">Challenges for {{performance.name}} are open now!</h2>
+    <h2 class="ChallengeWindow">Challenges for {{performance.name}} are open now! <br />
+      It closes at <span class="ChallengeWindow-closeAt">{{performance.closeAt}}</span>
+    </h2>
   {{else}}
     <h2 class="ChallengeWindow">Challenge signup for {{performance.name}} <br />
       Opens:  <span class="ChallengeWindow-openAt">{{performance.openAt}}</span> <br />
