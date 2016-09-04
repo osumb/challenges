@@ -108,8 +108,8 @@ const sendUserCreateEmail = (email, nameNumber, password) => {
   request.method = 'POST';
   request.path = '/v3/mail/send';
   request.body = requestBody;
-  sg.API(request, (response) => {
-    console.log('ERROR_EMAIL:', response);
+  sg.API(request, (data) => {
+    console.log('EMAIL: user create', data);
   });
 };
 
