@@ -42,7 +42,7 @@ class User {
         client.end();
         resolve();
       });
-    }
+    });
   }
 
   canChallengeForPerformance(user, performanceId) {
