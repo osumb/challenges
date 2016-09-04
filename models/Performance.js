@@ -1,10 +1,10 @@
-const utils = require('../utils');
+const { db } = require('../utils');
 
 const attributes = ['id', 'name', 'openAt', 'closeAt', 'performDate'];
 
 let cachedCurrentPerformance;
 
-module.exports = class Performance {
+class Performance {
 
   constructor(id, name, openAt, closeAt, performDate) {
     this._id = id;
@@ -28,9 +28,7 @@ module.exports = class Performance {
 
   static create(name, performDate, openAt, closeAt) {
     return new Promise((resolve, reject) => {
-      const client = utils.db.createClient();
-      const queryString = 'INSERT INTO performances (name, performDate, openAt, closeAt) VALUES ($1, $2, $3, $4) RETURNING id, closeAt';
-      let perfId;
+      const sql = 'INSERT INTO performances (name, performDate, openAt, closeAt) VALUES ($1, $2, $3, $4) RETURNING id, closeAt';
 
       if (
         Number.isNaN(Date.parse(openAt)) ||
@@ -39,52 +37,20 @@ module.exports = class Performance {
       ) {
         reject();
       } else {
-        client.connect();
-        client.on('error', err => reject(err));
-
-        const query = client.query(queryString, [name, performDate, openAt, closeAt]);
-
-        query.on('row', ({ id }) => {
-          perfId = id;
-        });
-
-        query.on('end', () => {
-          client.end();
-          resolve(new Performance(perfId, name, openAt, closeAt, performDate));
-        });
-
-        query.on('error', (err) => {
-          client.end();
-          reject(err);
-        });
+        db.query(sql, [name, performDate, openAt, closeAt], instanceFromRowPerformanceWithoutId(name, openAt, closeAt, performDate))
+        .then(resolve)
+        .catch(reject);
       }
     });
   }
 
   static findAll() {
     return new Promise((resolve, reject) => {
-      const client = utils.db.createClient();
-      const queryString = 'SELECT * FROM performances';
-      const performances = [];
+      const sql = 'SELECT * FROM performances';
 
-      client.connect();
-      client.on('error', (err) => reject(err));
-
-      const query = client.query(queryString);
-
-      query.on('row', ({ name, openat, closeat, performdate }) => {
-        performances.push(new Performance(name, openat, closeat, performdate));
-      });
-
-      query.on('end', () => {
-        client.end();
-        resolve(performances);
-      });
-
-      query.on('error', (err) => {
-        client.end();
-        reject(err);
-      });
+      db.query(sql, [], instanceFromRowPerformance)
+      .then(resolve)
+      .catch(reject);
     });
   }
 
@@ -93,28 +59,12 @@ module.exports = class Performance {
       return Promise.resolve(cachedCurrentPerformance);
     }
     return new Promise((resolve, reject) => {
-      const client = utils.db.createClient();
-      const queryString = 'SELECT * FROM performances WHERE now() < closeAt ORDER BY openAt ASC LIMIT 1';
+      const sql = 'SELECT * FROM performances WHERE now() < closeAt ORDER BY openAt ASC LIMIT 1';
 
-      client.connect();
-      client.on('error', (err) => reject(err));
+      db.query(sql, [], instanceFromRowPerformance)
+      .then(resolve)
+      .catch(reject);
 
-      const query = client.query(queryString);
-
-      query.on('row', ({ id, name, openat, closeat, performdate }) => {
-        client.end();
-        resolve(new Performance(id, name, openat, closeat, performdate));
-      });
-
-      query.on('end', () => {
-        client.end();
-        resolve(null);
-      });
-
-      query.on('error', (err) => {
-        client.end();
-        reject(err);
-      });
     }).then((currentPerformance) => {
       cachedCurrentPerformance = currentPerformance;
       return currentPerformance;
@@ -152,4 +102,12 @@ module.exports = class Performance {
     };
   }
 
-};
+}
+
+const instanceFromRowPerformance = ({ id, name, openat, closeat, performdate }) =>
+  new Performance(id, name, openat, closeat, performdate);
+
+const instanceFromRowPerformanceWithoutId = (name, openAt, closeAt, performDate) =>
+  ({ id }) => new Performance(id, name, openAt, closeAt, performDate);
+
+module.exports = Performance;

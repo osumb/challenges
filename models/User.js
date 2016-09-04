@@ -48,7 +48,7 @@ class User {
     });
   }
 
-  canChallengeForPerformance(user, performanceId) {
+  static canChallengeForPerformance(user, performanceId) {
     return new Promise((resolve, reject) => {
       if (!performanceId) {
         resolve(false);
