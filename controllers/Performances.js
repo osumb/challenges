@@ -11,7 +11,7 @@ function PerformanceController() {
     const { closeAt, performanceName, performanceDate, openAt } = req.body;
 
     Performance.create(performanceName, performanceDate, openAt, closeAt)
-    .then((performance) => {
+    .then(([performance]) => {
       const minutesMultiplier = 60000;
 
       schedule.scheduleJob(new Date(performance.closeAt.getTime() + 5 * minutesMultiplier), () => {
