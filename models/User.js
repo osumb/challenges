@@ -35,111 +35,66 @@ class User {
   }
 
   static create(name, nN, instrument, part, role, spotId, email, password) {
-    return new Promise((resolve, reject) => {
-      const sql = `
-        INSERT INTO users
-        (name, namenumber, instrument, part, role, spotId, email, password)
-        VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
-        `;
+    const sql = `
+      INSERT INTO users
+      (name, namenumber, instrument, part, role, spotId, email, password)
+      VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
+      `;
 
-      db.query(sql, [name, nN, instrument, part, role, spotId, email, password])
-      .then(resolve)
-      .catch(reject);
-    });
+    return db.query(sql, [name, nN, instrument, part, role, spotId, email, password]);
   }
 
   static canChallengeForPerformance(user, performanceId) {
-    return new Promise((resolve, reject) => {
-      if (!performanceId) {
-        resolve(false);
-      }
-      const sql = queries.canChallengeForPerformance;
+    if (!performanceId) {
+      return Promise.resolve(false);
+    }
+    const sql = queries.canChallengeForPerformance;
 
-      db.query(sql, [user.nameNumber, performanceId, user.spotId])
-      .then(resolve)
-      .catch(reject);
-    });
+    return db.query(sql, [user.nameNumber, performanceId, user.spotId]);
   }
 
   static changePassword(nameNumber, newPassword) {
-    return new Promise((resolve, reject) => {
-      const sql = 'UPDATE users SET password = $1, new = false WHERE nameNumber = $2';
-      const password = bcrypt.hashSync(newPassword, bcrypt.genSaltSync(1)); // eslint-disable-line no-sync
+    const sql = 'UPDATE users SET password = $1, new = false WHERE nameNumber = $2';
+    const password = bcrypt.hashSync(newPassword, bcrypt.genSaltSync(1)); // eslint-disable-line no-sync
 
-      db.query(sql, [password, nameNumber])
-      .then(resolve)
-      .catch(reject);
-    });
+    return db.query(sql, [password, nameNumber]);
   }
 
   static findForIndividualManage(nameNumber) {
-    return new Promise((resolve, reject) => {
-      const sql = queries.findForIndividualManage;
+    const sql = queries.findForIndividualManage;
 
-      db.query(sql, [nameNumber], instanceFromRowUserIndividualManage)
-      .then(resolve)
-      .catch(reject);
-    });
+    return db.query(sql, [nameNumber], instanceFromRowUserIndividualManage);
   }
 
   static findByNameNumber(id) {
-    return new Promise((resolve, reject) => {
-      const sql = `
-        SELECT
-          email,
-          name,
-          namenumber,
-          new,
-          COALESCE(u.instrument, ra.instrument) AS instrument,
-          COALESCE(u.part, ra.part) AS part,
-          password,
-          role,
-          spotid
-        FROM users AS u LEFT OUTER JOIN results_approve AS ra ON u.nameNumber = ra.usernamenumber
-        WHERE nameNumber = $1
-      `;
+    const sql = `
+      SELECT
+        email,
+        name,
+        namenumber,
+        new,
+        COALESCE(u.instrument, ra.instrument) AS instrument,
+        COALESCE(u.part, ra.part) AS part,
+        password,
+        role,
+        spotid
+      FROM users AS u LEFT OUTER JOIN results_approve AS ra ON u.nameNumber = ra.usernamenumber
+      WHERE nameNumber = $1
+    `;
 
-      db.query(sql, [id], instanceFromRowUser)
-      .then((user) => resolve(user[0] || null))
-      .catch(reject);
-    });
+    return db.query(sql, [id], instanceFromRowUser);
   }
 
   static findAll() {
-    return new Promise((resolve, reject) => {
-      const sql = 'SELECT * FROM users';
+    const sql = 'SELECT * FROM users';
 
-      db.query(sql, [], instanceFromRowUser)
-      .then(resolve)
-      .catch(reject);
-    });
+    return db.query(sql, [], instanceFromRowUser);
   }
 
   static search(searchQuery) {
-    return new Promise((resolve, reject) => {
-      const client = db.createClient();
-      const queryString = 'SELECT * FROM users AS u, spots AS s WHERE lower(name) LIKE \'%\' || lower($1) || \'%\' and u.spotId = s.id';
-      const users = [];
+    const sql = 'SELECT * FROM users AS u, spots AS s WHERE lower(name) LIKE \'%\' || lower($1) || \'%\' and u.spotId = s.id';
 
-      client.connect();
-      client.on('error', (err) => reject(err));
-
-      const query = client.query(queryString, [searchQuery]);
-
-      query.on('row', ({ email, instrument, name, namenumber, new: isNew, part, password, role, spotid, open: spotOpen }) => {
-        users.push(new User(email, instrument, name, namenumber, isNew, part, password, role, spotid, spotOpen));
-      });
-
-      query.on('end', () => {
-        client.end();
-        resolve(users);
-      });
-
-      query.on('error', (err) => {
-        client.end();
-        reject(err);
-      });
-    });
+    return db.query(sql, [searchQuery], instanceFromRowUser);
   }
 
   get email() {

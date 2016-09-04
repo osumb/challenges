@@ -24,56 +24,40 @@ class Challenge {
   }
 
   static create(userId, spotId, performanceId) {
-    return new Promise((resolve, reject) => {
-      const sql = 'SELECT make_challenge($1, $2, $3)';
+    const sql = 'SELECT make_challenge($1, $2, $3)';
 
-      db.query(sql, [userId, performanceId, spotId], codeFromRow)
-      .then(resolve)
-      .catch(reject);
-    });
+    return db.query(sql, [userId, performanceId, spotId], codeFromRow);
   }
 
   static findAllChallengeablePeopleForUser(user, performanceId) {
-    return new Promise((resolve, reject) => {
-      if (!performanceId) {
-        resolve(null);
-      }
-      const sql = queries.challengeablePeople;
+    if (!performanceId) {
+      return Promise.resolve(null);
+    }
+    const sql = queries.challengeablePeople;
 
-      db.query(sql, [user.instrument, user.part, user.spotId, user.nameNumber, performanceId], instanceFromRowChallengeableUser)
-      .then(resolve)
-      .catch(reject);
-    });
+    return db.query(
+      sql,
+      [user.instrument, user.part, user.spotId, user.nameNumber, performanceId],
+      instanceFromRowChallengeableUser
+    );
   }
 
   static findAllForPerformanceCSV(performanceId) {
-    return new Promise((resolve, reject) => {
-      const sql = queries.challengesForCSV;
+    const sql = queries.challengesForCSV;
 
-      db.query(sql, [performanceId], instanceFromRowChallengeForCSV)
-      .then(resolve)
-      .catch(reject);
-    });
+    return db.query(sql, [performanceId], instanceFromRowChallengeForCSV);
   }
 
   static findAllRawForPerformance(performanceId) {
-    return new Promise((resolve, reject) => {
-      const sql = 'SELECT * FROM challenges WHERE performanceId = $1';
+    const sql = 'SELECT * FROM challenges WHERE performanceId = $1';
 
-      db.query(sql, [performanceId])
-      .then(resolve)
-      .catch(reject);
-    });
+    return db.query(sql, [performanceId]);
   }
 
   static findForUser(nameNumber) {
-    return new Promise((resolve, reject) => {
-      const sql = 'SELECT * FROM challenges AS C, performances AS P WHERE userNameNumber = $1 AND C.performanceId = P.id ORDER BY C.id LIMIT 1';
+    const sql = 'SELECT * FROM challenges AS C, performances AS P WHERE userNameNumber = $1 AND C.performanceId = P.id ORDER BY C.id LIMIT 1';
 
-      db.query(sql, [nameNumber], instanceFromRowChallenge)
-      .then(resolve)
-      .catch(reject);
-    });
+    return db.query(sql, [nameNumber], instanceFromRowChallenge);
   }
 
   get performanceId() {

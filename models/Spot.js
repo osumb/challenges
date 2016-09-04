@@ -24,13 +24,9 @@ module.exports = class Spot {
 
   // true is open, false is closed
   static setOpenClose(spotId, open) {
-    return new Promise((resolve, reject) => {
-      const sql = 'UPDATE spots SET open = $1 WHERE id = $2';
+    const sql = 'UPDATE spots SET open = $1 WHERE id = $2';
 
-      db.query(sql, [open, spotId])
-      .then(resolve)
-      .catch(reject);
-    });
+    return db.query(sql, [open, spotId]);
   }
 
   get id() {

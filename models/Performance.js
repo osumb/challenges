@@ -27,45 +27,37 @@ class Performance {
   }
 
   static create(name, performDate, openAt, closeAt) {
-    return new Promise((resolve, reject) => {
-      const sql = 'INSERT INTO performances (name, performDate, openAt, closeAt) VALUES ($1, $2, $3, $4) RETURNING id, closeAt';
+    const sql = 'INSERT INTO performances (name, performDate, openAt, closeAt) VALUES ($1, $2, $3, $4) RETURNING id, closeAt';
 
-      if (
-        Number.isNaN(Date.parse(openAt)) ||
-        Number.isNaN(Date.parse(closeAt)) ||
-        Number.isNaN(Date.parse(performDate))
-      ) {
-        reject();
-      } else {
-        db.query(sql, [name, performDate, openAt, closeAt], instanceFromRowPerformanceWithoutId(name, openAt, closeAt, performDate))
-        .then(resolve)
-        .catch(reject);
-      }
-    });
+    if (
+      Number.isNaN(Date.parse(openAt)) ||
+      Number.isNaN(Date.parse(closeAt)) ||
+      Number.isNaN(Date.parse(performDate))
+    ) {
+      return Promise.reject();
+    } else {
+      return db.query(
+        sql,
+        [name, performDate, openAt, closeAt],
+        instanceFromRowPerformanceWithoutId(name, openAt, closeAt, performDate)
+      );
+    }
   }
 
   static findAll() {
-    return new Promise((resolve, reject) => {
-      const sql = 'SELECT * FROM performances';
+    const sql = 'SELECT * FROM performances';
 
-      db.query(sql, [], instanceFromRowPerformance)
-      .then(resolve)
-      .catch(reject);
-    });
+    return db.query(sql, [], instanceFromRowPerformance);
   }
 
   static findCurrent() {
     if (cachedCurrentPerformance && Date.now() < cachedCurrentPerformance.closeAt) {
       return Promise.resolve(cachedCurrentPerformance);
     }
-    return new Promise((resolve, reject) => {
-      const sql = 'SELECT * FROM performances WHERE now() < closeAt ORDER BY openAt ASC LIMIT 1';
+    const sql = 'SELECT * FROM performances WHERE now() < closeAt ORDER BY openAt ASC LIMIT 1';
 
-      db.query(sql, [], instanceFromRowPerformance)
-      .then(resolve)
-      .catch(reject);
-
-    }).then((currentPerformance) => {
+    return db.query(sql, [], instanceFromRowPerformance)
+    .then((currentPerformance) => {
       cachedCurrentPerformance = currentPerformance;
       return currentPerformance;
     });

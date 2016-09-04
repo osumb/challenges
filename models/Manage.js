@@ -26,13 +26,9 @@ class Manage {
   }
 
   static create(attributes) {
-    return new Promise((resolve, reject) => {
-      const { sql, values } = db.queryBuilder(Manage, attributes);
+    const { sql, values } = db.queryBuilder(Manage, attributes);
 
-      db.query(sql, values)
-      .then(resolve)
-      .catch(reject);
-    });
+    return db.query(sql, values);
   }
 
   static findAllForPerformanceCSV(performanceId) {

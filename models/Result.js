@@ -64,23 +64,15 @@ class Result {
   }
 
   static approve(ids) {
-    return new Promise((resolve, reject) => {
-      const sql = 'UPDATE results SET needsApproval = FALSE, pending = FALSE WHERE id = ANY($1) RETURNING performanceId';
+    const sql = 'UPDATE results SET needsApproval = FALSE, pending = FALSE WHERE id = ANY($1) RETURNING performanceId';
 
-      db.query(sql, [ids])
-      .then(resolve)
-      .catch(reject);
-    });
+    return db.query(sql, [ids]);
   }
 
   static checkAllDoneForPerformance(id) {
-    return new Promise((resolve, reject) => {
-      const sql = 'SELECT count(*) FROM results WHERE performanceid = $1 AND needsApproval';
+    const sql = 'SELECT count(*) FROM results WHERE performanceid = $1 AND needsApproval';
 
-      db.query(sql, [id], ({ count }) => parseInt(count, 10))
-      .then(resolve)
-      .catch(reject);
-    });
+    return db.query(sql, [id], ({ count }) => parseInt(count, 10));
   }
 
   static createWithClient(attributes, client) {
@@ -95,53 +87,33 @@ class Result {
   }
 
   static findAllForApproval(user) {
-    return new Promise((resolve, reject) => {
-      const sql = queries.resultsForApproval;
+    const sql = queries.resultsForApproval;
 
-      db.query(sql, [user.instrument, user.part], instanceFromRowResultForAdmin)
-      .then(resolve)
-      .catch(reject);
-    });
+    return db.query(sql, [user.instrument, user.part], instanceFromRowResultForAdmin);
   }
 
   static findAllForEval(nameNumber, row) {
-    return new Promise((resolve, reject) => {
-      const sql = queries.resultsForEval;
+    const sql = queries.resultsForEval;
 
-      db.query(sql, [nameNumber, row], instanceFromRowResultForEval)
-      .then(resolve)
-      .catch(reject);
-    });
+    return db.query(sql, [nameNumber, row], instanceFromRowResultForEval);
   }
 
   static findAllForPerformance(performanceId) {
-    return new Promise((resolve, reject) => {
-      const sql = queries.resultsForPerformance;
+    const sql = queries.resultsForPerformance;
 
-      db.query(sql, [performanceId], instanceFromRowResultForAdmin)
-      .then(resolve)
-      .catch(reject);
-    });
+    return db.query(sql, [performanceId], instanceFromRowResultForAdmin);
   }
 
   static findAllRawForPerformance(performanceId) {
-    return new Promise((resolve, reject) => {
-      const sql = 'SELECT * FROM results WHERE performanceId = $1';
+    const sql = 'SELECT * FROM results WHERE performanceId = $1';
 
-      db.query(sql, [performanceId], instanceFromRowResultForAdmin)
-      .then(resolve)
-      .catch(reject);
-    });
+    return db.query(sql, [performanceId], instanceFromRowResultForAdmin);
   }
 
   static findAllForUser(nameNumber) {
-    return new Promise((resolve, reject) => {
-      const sql = queries.resultsForUser;
+    const sql = queries.resultsForUser;
 
-      db.query(sql, [nameNumber], instanceFromRowResultForUser(nameNumber))
-      .then(resolve)
-      .catch(reject);
-    });
+    return db.query(sql, [nameNumber], instanceFromRowResultForUser(nameNumber));
   }
 
   static switchSpotsForPerformance(id) {
@@ -174,20 +146,16 @@ class Result {
   }
 
   static update(attributes) {
-    return new Promise((resolve, reject) => {
-      const id = attributes.id;
+    const id = attributes.id;
 
-      if (typeof id === 'undefined') {
-        reject(new Error('No id provided with attributes'));
-      }
+    if (typeof id === 'undefined') {
+      return Promise.reject(new Error('No id provided with attributes'));
+    }
 
-      delete attributes.id;
-      const { sql, values } = db.queryBuilder(Result, attributes, { statement: 'UPDATE', id });
+    delete attributes.id;
+    const { sql, values } = db.queryBuilder(Result, attributes, { statement: 'UPDATE', id });
 
-      db.query(sql, values)
-      .then(resolve)
-      .catch(reject);
-    });
+    return db.query(sql, values);
   }
 
   static updateForTestsOnly(firstNameNumber, comments1, comments2, winnerId) {
