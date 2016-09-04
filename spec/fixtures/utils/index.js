@@ -2,6 +2,7 @@
 // const xlsx = require('node-xlsx');
 // const bcrypt = require('bcrypt');
 //
+// const config = require('../../../config');
 // // the order of columns in execl file is SpotId, name, instrument, part, name.number, role, password
 // function getMockUsersFromExcelFile(filePath) {
 //   filePath = filePath || path.resolve(__dirname, '../mock-data/FakeUsers.xlsx');
@@ -19,7 +20,7 @@
 //       UserObj.part = e[3];
 //       UserObj.nameNumber = e[4];
 //       UserObj.role = e[5];
-//       UserObj.password = bcrypt.hashSync(e[6], bcrypt.genSaltSync(1)); // eslint-disable-line no-sync
+//       UserObj.password = bcrypt.hashSync('this will not get used', bcrypt.genSaltSync(1)); // eslint-disable-line no-sync
 //       UserObj.email = e[7];
 //       userArr.push(UserObj);
 //     }
