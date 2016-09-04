@@ -2,5 +2,6 @@
 module.exports = {
   db: require('./db'),
   email: require('./email'),
-  logger: require('./logger')
+  logger: require('./logger'),
+  returnArgument: require('./return-argument')
 };
