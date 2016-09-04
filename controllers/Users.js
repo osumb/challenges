@@ -98,11 +98,11 @@ function UsersController() {
         Result.findAllForUser(req.user.nameNumber),
         Performance.findCurrent()
       ])
-      .then(([challenge, results, currentPerformance]) =>
+      .then(([challenge, results, [currentPerformance]]) =>
         Promise.all([challenge, results, currentPerformance, User.canChallengeForPerformance(req.user, currentPerformance && currentPerformance.id)])
       )
       .then(data => {
-        const canChallenge = data[3], challenge = data[0][0], performance = data[2][0], results = data[1];
+        const canChallenge = data[3], challenge = data[0][0], performance = data[2], results = data[1];
 
         res.render('users/show', {
           canChallenge: canChallenge && (performance && performance.inPerformanceWindow()),
