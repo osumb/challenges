@@ -21,5 +21,5 @@ gist.read(function (err, gist, xhr) {
       .then(() => { email.sendUserCreateEmail(user.email, user.nameNumber, user.password); });
   }))
   .then(console.log('success!')
-  .catch(console.error);
+  .catch((err) => console.error(err));
 });
