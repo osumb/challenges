@@ -7,5 +7,5 @@ set -e
 cd "$(dirname "$0")/.."
 
 echo "==> Setting Up Database Schema"
-node db/setup.js
+node db/schema.js
 echo "==> Done!"
