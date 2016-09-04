@@ -27,7 +27,7 @@ class Challenge {
     return new Promise((resolve, reject) => {
       const sql = 'SELECT make_challenge($1, $2, $3)';
 
-      db.query(sql, [userId, spotId, performanceId])
+      db.query(sql, [userId, performanceId, spotId], codeFromRow)
       .then(resolve)
       .catch(reject);
     });
@@ -165,6 +165,8 @@ class ChallengeableUser {
   }
 
 }
+
+const codeFromRow = ({ make_challenge }) => make_challenge;
 
 const instanceFromRowChallenge = ({ name, performanceid, spotid }) =>
   new Challenge(performanceid, name, spotid);
