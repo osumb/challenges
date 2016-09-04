@@ -1,42 +1,43 @@
 const models = require('../models');
-const Challenge = new models.Challenge();
-const Result = new models.Result();
+const Challenge = models.Challenge;
+const Result = models.Result;
 const { db, logger } = require('../utils');
 
 const client = db.createClient();
 let PERFORMANCEID;
 
 const sort = (challenges) =>
-  challenges.sort((a, b) => a.challengeespot.localeCompare(b.challengeespot));
+  challenges.sort((a, b) => a.challengeeSpot.localeCompare(b.challengeeSpot));
 
 const reduce = (challenges) => {
   const reducedChallenges = [];
 
   for (let i = 0; i < challenges.length; i++) {
-    if (challenges[i].spotopen && i < challenges.length - 1 && challenges[i].challengeespot === challenges[i + 1].challengeespot) {
+    if (challenges[i].spotOpen && i < challenges.length - 1 && challenges[i].challengeeSpot === challenges[i + 1].challengeeSpot) {
       reducedChallenges.push(Object.assign({}, {
-        firstNameNumber: challenges[i].namenumberone,
+        firstNameNumber: challenges[i].firstNameNumber,
         performanceId: PERFORMANCEID,
-        secondNameNumber: challenges[i + 1].namenumberone,
-        spotId: challenges[i].challengeespot
+        secondNameNumber: challenges[i + 1].firstNameNumber,
+        spotId: challenges[i].challengeeSpot
       }));
       i += 1;
-    } else if (challenges[i].spotopen && i < challenges.length - 1 && challenges[i].challengeespot !== challenges[i + 1].challengeespot) {
+    } else if (challenges[i].spotOpen && i < challenges.length - 1 && challenges[i].challengeeSpot !== challenges[i + 1].challengeeSpot) {
       reducedChallenges.push(Object.assign({}, {
-        firstNameNumber: challenges[i].namenumberone,
+        firstNameNumber: challenges[i].firstNameNumber,
         performanceId: PERFORMANCEID,
         secondNameNumber: null,
-        spotId: challenges[i].challengeespot
+        spotId: challenges[i].challengeeSpot
       }));
     } else {
       reducedChallenges.push(Object.assign({}, {
-        firstNameNumber: challenges[i].namenumberone,
+        firstNameNumber: challenges[i].firstNameNumber,
         performanceId: PERFORMANCEID,
-        secondNameNumber: challenges[i].namenumbertwo,
-        spotId: challenges[i].challengeespot
+        secondNameNumber: challenges[i].secondNameNumber,
+        spotId: challenges[i].challengeeSpot
       }));
     }
   }
+
   return reducedChallenges;
 };
 

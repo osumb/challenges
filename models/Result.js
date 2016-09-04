@@ -5,12 +5,12 @@ const { db, logger } = require('../utils');
 
 const modelAttributes = ['id', 'performanceId', 'spotId', 'firstNameNumber', 'secondNameNumber', 'firstComments', 'secondComments', 'winnerId', 'pending', 'needsApproval'];
 const alternateVersusRegular = result =>
-  (!result.useronealternate && result.usertwoalternate) ||
-  (result.useronealternate && !result.usertwoalternate);
+  (!result.userOneAlternate && result.userTwoAlternate) ||
+  (result.userOneAlternate && !result.userTwoAlternate);
 const alternateVersusAlternate = result =>
-  result.useronealternate && result.usertwoalternate;
+  result.userOneAlternate && result.userTwoAlternate;
 const regularVersusRegular = result =>
-  !result.useronealternate && !result.usertwoalternate;
+  !result.userOneAlternate && !result.userTwoAlternate;
 
 /*
   We need a special sorting for results when we're switching user spots based on results
@@ -31,21 +31,39 @@ const resultsSort = (a, b) => { // eslint-disable-line consistent-return, array-
   if (regularVersusRegular(a) && regularVersusRegular(b)) return 0;
 };
 
-module.exports = class Results {
+class Result {
 
-  static getAttributes() {
+  constructor(id, fC, fNN, nA, opponentName, pending, perfDate, perfName, perfId, sC, sNN, spotId, uOA, uTA, winnerId) {
+    this._id = id;
+    this._firstComments = fC;
+    this._firstNameNumber = fNN;
+    this._needsApproval = nA;
+    this._opponentName = opponentName;
+    this._pending = pending;
+    this._performanceDate = new Date(perfDate);
+    this._performanceName = perfName;
+    this._performanceId = perfId;
+    this._secondComments = sC;
+    this._secondNameNumber = sNN;
+    this._spotId = spotId;
+    this._userOneAlternate = uOA;
+    this._userTwoAlternate = uTA;
+    this._winnerId = winnerId;
+  }
+
+  static get attributes() {
     return modelAttributes;
   }
 
-  static getIdName() {
+  static get idName() {
     return 'id';
   }
 
-  static getTableName() {
+  static get tableName() {
     return 'results';
   }
 
-  approve(ids) {
+  static approve(ids) {
     const client = db.createClient();
     const sql = 'UPDATE results SET needsApproval = FALSE, pending = FALSE WHERE id = ANY($1) RETURNING performanceId';
     let performanceId;
@@ -71,7 +89,7 @@ module.exports = class Results {
     });
   }
 
-  checkAllDoneForPerformance(id) {
+  static checkAllDoneForPerformance(id) {
     const client = db.createClient();
     const sql = 'SELECT count(*) FROM results WHERE performanceid = $1 AND needsApproval';
     let count;
@@ -96,8 +114,8 @@ module.exports = class Results {
     });
   }
 
-  createWithClient(attributes, client) {
-    const { sql, values } = db.queryBuilder(Results, attributes);
+  static createWithClient(attributes, client) {
+    const { sql, values } = db.queryBuilder(Result, attributes);
 
     return new Promise((resolve, reject) => {
       const query = client.query(sql, values);
@@ -107,7 +125,7 @@ module.exports = class Results {
     });
   }
 
-  findAllForApproval(user) {
+  static findAllForApproval(user) {
     const client = db.createClient();
     const sql = queries.resultsForApproval;
     const results = [];
@@ -118,11 +136,13 @@ module.exports = class Results {
 
       const query = client.query(sql, [user.instrument, user.part]);
 
-      query.on('row', (result) => results.push(this.parseForAdmin(result)));
+      query.on('row', (result) => results.push(resultForAdminFromDBRow(result)));
+
       query.on('end', () => {
         client.end();
         resolve(results);
       });
+
       query.on('error', (err) => {
         client.end();
         reject(err);
@@ -130,7 +150,7 @@ module.exports = class Results {
     });
   }
 
-  findAllForEval(nameNumber, row) {
+  static findAllForEval(nameNumber, row) {
     const client = db.createClient();
     const sql = queries.resultsForEval;
     const results = [];
@@ -141,7 +161,7 @@ module.exports = class Results {
 
       const query = client.query(sql, [nameNumber, row]);
 
-      query.on('row', (result) => results.push(this.parseForEval(result)));
+      query.on('row', (result) => results.push(resultForEvaluationFromDBRow(result)));
 
       query.on('end', () => {
         client.end();
@@ -155,7 +175,7 @@ module.exports = class Results {
     });
   }
 
-  findAllForPerformance(performanceId) {
+  static findAllForPerformance(performanceId) {
     const client = db.createClient();
     const sql = queries.resultsForPerformance;
     const results = [];
@@ -166,7 +186,7 @@ module.exports = class Results {
 
       const query = client.query(sql, [performanceId]);
 
-      query.on('row', (result) => results.push(this.parseForAdmin(result)));
+      query.on('row', (result) => results.push(resultForAdminFromDBRow(result)));
 
       query.on('end', () => {
         client.end();
@@ -180,7 +200,7 @@ module.exports = class Results {
     });
   }
 
-  findAllRawForPerformance(performanceId) {
+  static findAllRawForPerformance(performanceId) {
     const client = db.createClient();
     const sql = 'SELECT * FROM results WHERE performanceId = $1';
     const results = [];
@@ -191,7 +211,7 @@ module.exports = class Results {
 
       const query = client.query(sql, [performanceId]);
 
-      query.on('row', (result) => results.push(this.parseForAdmin(result)));
+      query.on('row', (result) => results.push(resultForAdminFromDBRow(result)));
 
       query.on('end', () => {
         client.end();
@@ -204,7 +224,8 @@ module.exports = class Results {
       });
     });
   }
-  findAllForUser(nameNumber) {
+
+  static findAllForUser(nameNumber) {
     const client = db.createClient();
     const sql = queries.resultsForUser;
     const results = [];
@@ -215,8 +236,9 @@ module.exports = class Results {
 
       const query = client.query(sql, [nameNumber]);
 
-      query.on('row', (result) => {
-        results.push(this.parse(result, nameNumber));
+      query.on('row', ({ comments, opponentname, performdate, performanceid, name, spotid, winnerid }) => {
+        console.log(comments, opponentname, performdate, performanceid, name, spotid, nameNumber, winnerid);
+        results.push(new ResultForUser(comments, opponentname, performdate, performanceid, name, spotid, nameNumber, winnerid));
       });
 
       query.on('end', () => {
@@ -231,7 +253,7 @@ module.exports = class Results {
     });
   }
 
-  switchSpotsForPerformance(id) {
+  static switchSpotsForPerformance(id) {
     const client = db.createClient();
     const resultsSql = queries.resultsForPerformance;
     const switchSql = 'SELECT switch_spots_based_on_results($1)';
@@ -248,15 +270,15 @@ module.exports = class Results {
 
       const resultsQuery = client.query(resultsSql, [id]);
 
-      resultsQuery.on('row', result => results.push(result));
+      resultsQuery.on('row', resultRow => results.push(instanceFromDBRow(resultRow)));
       resultsQuery.on('end', () => {
-        const filteredResults = results.filter(({ namenumbertwo }, i) => {
-          if (!namenumbertwo) {
-            onePersonResultIds.push(results[i].resultid);
+        const filteredResults = results.filter(({ secondNameNumber }, i) => {
+          if (!secondNameNumber) {
+            onePersonResultIds.push(results[i].id);
           }
-          return namenumbertwo;
+          return secondNameNumber;
         });
-        const filteredResultsIds = filteredResults.sort(resultsSort).map(({ resultid }) => resultid);
+        const filteredResultsIds = filteredResults.sort(resultsSort).map(({ id: resultId }) => resultId);
 
         const switchQuery = client.query(switchSql, [filteredResultsIds]);
 
@@ -289,7 +311,7 @@ module.exports = class Results {
     });
   }
 
-  update(attributes) {
+  static update(attributes) {
     const client = db.createClient();
 
     return new Promise((resolve, reject) => {
@@ -303,7 +325,7 @@ module.exports = class Results {
       }
 
       delete attributes.id;
-      const { sql, values } = db.queryBuilder(Results, attributes, { statement: 'UPDATE', id });
+      const { sql, values } = db.queryBuilder(Result, attributes, { statement: 'UPDATE', id });
       const query = client.query(sql, values);
 
       query.on('end', () => resolve());
@@ -311,7 +333,7 @@ module.exports = class Results {
     });
   }
 
-  updateForTestsOnly(firstNameNumber, comments1, comments2, winnerId) {
+  static updateForTestsOnly(firstNameNumber, comments1, comments2, winnerId) {
     const client = db.createClient();
     const sql = 'UPDATE results SET firstComments = $1, secondComments = $2, winnerId = $3 WHERE firstNameNumber = $4';
 
@@ -333,43 +355,282 @@ module.exports = class Results {
     });
   }
 
-  parse(result, nameNumber) {
-    return {
-      comments: result.comments,
-      opponentName: result.opponentname,
-      performanceDate: moment(result.performdate).format('MMMM D, YYYY'),
-      performanceId: result.performanceid,
-      performanceName: result.name,
-      spotId: result.spotid,
-      winner: nameNumber === result.winnerid
-    };
+  get id() {
+    return this._id;
   }
 
-  parseForAdmin(result) {
-    return {
-      id: result.resultid,
-      firstComments: result.firstcomments,
-      firstName: result.nameone,
-      firstNameNumber: result.firstnamenumber,
-      pending: result.pending,
-      performanceId: result.performanceid,
-      performanceName: result.performancename,
-      secondComments: result.secondcomments,
-      secondName: result.nametwo,
-      secondNameNumber: result.secondnamenumber,
-      spotId: result.spotid,
-      winner: result.winnerid === result.namenumberone ? result.nameone : result.nametwo
-    };
+  get firstComments() {
+    return this._firstComments;
   }
 
-  parseForEval(result) {
+  get firstNameNumber() {
+    return this._firstNameNumber;
+  }
+
+  get needsApproval() {
+    return this._needsApproval;
+  }
+
+  get opponentName() {
+    return this._opponentName;
+  }
+
+  get pending() {
+    return this._pending;
+  }
+
+  get performanceId() {
+    return this._performanceId;
+  }
+
+  get secondComments() {
+    return this._secondComments;
+  }
+
+  get secondNameNumber() {
+    return this._secondNameNumber;
+  }
+
+  get spotId() {
+    return this._spotId;
+  }
+
+  get userOneAlternate() {
+    return this._userOneAlternate;
+  }
+
+  get userTwoAlternate() {
+    return this._userTwoAlternate;
+  }
+
+  // This function is only for results returned by findForUser
+  toJSONForUser(nameNumber) {
     return {
-      firstName: result.nameone,
-      firstNameNumber: result.firstnamenumber,
-      resultId: result.resultid,
-      secondName: result.nametwo,
-      secondNameNumber: result.secondnamenumber,
-      spotId: result.spotid
+      comments: this._firstComments,
+      opponentName: this._opponentName,
+      performanceDate: moment(this._performanceDate).format('MMM D, YYYY'),
+      performanceName: this._performanceName,
+      spotId: this._spotId,
+      winner: this._winnerId === nameNumber
     };
   }
-};
+}
+
+class ResultForAdmin {
+
+  constructor(id, fC, fN, fNN, pending, perfId, perfName, sC, sN, sNN, spotId, winnerId) {
+    this._firstComments = fC;
+    this._firstName = fN;
+    this._firstNameNumber = fNN;
+    this._id = id;
+    this._pending = pending;
+    this._performanceId = perfId;
+    this._performanceName = perfName;
+    this._secondComments = sC;
+    this._secondName = sN;
+    this._secondNameNumber = sNN;
+    this._spotId = spotId;
+    this._winnerId = winnerId;
+  }
+
+  get firstComments() {
+    return this._firstComments;
+  }
+
+  get firstName() {
+    return this._firstName;
+  }
+
+  get firstNameNumber() {
+    return this._firstNameNumber;
+  }
+
+  get id() {
+    return this._id;
+  }
+
+  get pending() {
+    return this._pending;
+  }
+
+  get performanceId() {
+    return this._performanceId;
+  }
+
+  get performanceName() {
+    return this._performanceName;
+  }
+
+  get secondComments() {
+    return this._secondComments;
+  }
+
+  get secondName() {
+    return this._secondName;
+  }
+
+  get secondNameNumber() {
+    return this._secondNameNumber;
+  }
+
+  get spotId() {
+    return this._spotId;
+  }
+
+  get winner() {
+    return this._winnerId === this._firstNameNumber ? this._firstName : this._secondName;
+  }
+
+}
+
+class ResultForEvaluation {
+
+  constructor(firstName, firstNameNumber, id, secondName, secondNameNumber, spotId) {
+    this._firstName = firstName;
+    this._firstNameNumber = firstNameNumber;
+    this._id = id;
+    this._secondName = secondName;
+    this._secondNameNumber = secondNameNumber;
+    this._spotId = spotId;
+  }
+
+  get firstName() {
+    return this._firstName;
+  }
+
+  get firstNameNumber() {
+    return this._firstNameNumber;
+  }
+
+  get resultId() {
+    return this._id;
+  }
+
+  get secondName() {
+    return this._secondName;
+  }
+
+  get secondNameNumber() {
+    return this._secondNameNumber;
+  }
+
+  get spotId() {
+    return this._spotId;
+  }
+
+}
+
+class ResultForUser {
+
+  constructor(comments, opponentName, performanceDate, performanceId, performanceName, spotId, userNameNumber, winner) {
+    this._comments = comments;
+    this._opponentName = opponentName;
+    this._performanceDate = moment(performanceDate).format('MMMM D, YYYY');
+    this._performanceId = performanceId;
+    this._performanceName = performanceName;
+    this._spotId = spotId;
+    this._winner = winner === userNameNumber;
+  }
+
+  get comments() {
+    return this._comments;
+  }
+
+  get opponentName() {
+    return this._opponentName;
+  }
+
+  get performanceDate() {
+    return this._performanceDate;
+  }
+
+  get performanceId() {
+    return this._performanceId;
+  }
+
+  get performanceName() {
+    return this._performanceName;
+  }
+
+  get spotId() {
+    return this._spotId;
+  }
+
+  get winner() {
+    return this._winner;
+  }
+
+}
+
+const resultForAdminFromDBRow = ({
+  resultid,
+  firstcomments,
+  nameone,
+  firstnamenumber,
+  pending,
+  performanceid,
+  performancename,
+  secondcomments,
+  nametwo,
+  secondnamenumber,
+  spotid,
+  winnerid
+}) => new ResultForAdmin(
+  resultid,
+  firstcomments,
+  nameone,
+  firstnamenumber,
+  pending,
+  performanceid,
+  performancename,
+  secondcomments,
+  nametwo,
+  secondnamenumber,
+  spotid,
+  winnerid
+);
+
+const resultForEvaluationFromDBRow = ({
+  nameone,
+  firstnamenumber,
+  resultid,
+  nametwo,
+  secondnamenumber,
+  spotid
+}) => new ResultForEvaluation(nameone, firstnamenumber, resultid, nametwo, secondnamenumber, spotid);
+
+const instanceFromDBRow = ({
+  id,
+  firstcomments,
+  firstnamenumber,
+  needsapproval,
+  opponentname,
+  pending,
+  performdate,
+  name,
+  performanceid,
+  secondcomments,
+  secondnamenumber,
+  spotid,
+  useronealternate,
+  usertwoalternate,
+  winnerid
+}) => new Result(
+  id,
+  firstcomments,
+  firstnamenumber,
+  needsapproval,
+  opponentname,
+  pending,
+  performdate,
+  name,
+  performanceid,
+  secondcomments,
+  secondnamenumber,
+  spotid,
+  useronealternate,
+  usertwoalternate,
+  winnerid
+);
+
+module.exports = Result;

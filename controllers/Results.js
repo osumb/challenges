@@ -1,6 +1,6 @@
 const models = require('../models');
 const { logger } = require('../utils');
-const Result = new models.Result();
+const Result = models.Result;
 
 function ResultsController() {
   this.approve = (req, res) => {

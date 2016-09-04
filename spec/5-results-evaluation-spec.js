@@ -2,7 +2,7 @@
 const { testData } = require('../spec/fixtures');
 const models = require('../models');
 
-const Result = new models.Result();
+const Result = models.Result;
 const { testResults } = testData;
 
 console.log('==> EVAULATE RESULTS');

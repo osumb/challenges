@@ -6,7 +6,7 @@ const createClient = () =>
   new pg.Client(config.db.postgres);
 
 const queryBuilder = (model, params, options) => {
-  const attributes = model.getAttributes(), tableName = model.getTableName(), idName = model.getIdName();
+  const attributes = model.attributes, tableName = model.tableName, idName = model.idName;
 
   options = options || {}; // eslint-disable-line no-param-reassign
   try {

@@ -6,7 +6,7 @@ const models = require('../models');
 const { testPerformance, testResults } = testData;
 const { id } = testPerformance;
 
-const Result = new models.Result();
+const Result = models.Result;
 
 console.log('==> CREATE EMPTY RESULTS');
 describe('Create Empty Results', () => {

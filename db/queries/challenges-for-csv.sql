@@ -1,5 +1,5 @@
 SELECT t1.name AS challenger, t2.name AS challengee, t1.open AS spotopen, t1.challengerspot AS challengerspot,
-t1.challengeespot AS challengeespot, t1.namenumber AS namenumberone, t2.namenumber AS namenumbertwo
+t1.challengeespot AS challengeespot, t1.namenumber AS firstnamenumber, t2.namenumber AS secondnamenumber
 FROM
   (
     SELECT u1.name, c.spotId AS challengeespot, u1.spotId AS challengerspot, s.open, u1.namenumber

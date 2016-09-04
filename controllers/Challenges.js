@@ -1,7 +1,7 @@
 const email = require('../utils').email;
 const { logger } = require('../utils');
 const models = require('../models');
-const Challenge = new models.Challenge();
+const Challenge = models.Challenge;
 const Performance = models.Performance;
 
 function ChallengersController() {
@@ -9,7 +9,8 @@ function ChallengersController() {
     const { spotId } = req.body;
     const userId = req.user.nameNumber;
 
-    return Performance.findNextOrOpenWindow()
+    logger.challengesLog(`${req.user.name} request to challenge ${spotId}`);
+    return Performance.findCurrent()
             .then((performance) => Promise.all([performance, Challenge.create(userId, spotId, performance && performance.id)]))
             .then(([performance, code]) => {
               if (!performance) {
@@ -34,7 +35,7 @@ function ChallengersController() {
   };
 
   this.new = (req, res) => {
-    Performance.findNextOrOpenWindow()
+    Performance.findCurrent()
     .then((performance) => Promise.all([performance, Challenge.findAllChallengeablePeopleForUser(req.user, performance && performance.id)]))
     .then(([performance, challengeableUsers]) => {
       res.render('challenges/new', {

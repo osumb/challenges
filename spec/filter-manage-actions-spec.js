@@ -7,18 +7,18 @@ describe('filterManageActions', () => {
   it('Simple', () => {
     const actions = [
       {
-        name: 'Kyle Thompson',
-        spotid: 'A5',
+        userName: 'Kyle Thompson',
+        spotId: 'A5',
         reason: 'Volunatrily Opened Spot'
       },
       {
-        name: 'Kyle Thompson',
-        spotid: 'A5',
+        userName: 'Kyle Thompson',
+        spotId: 'A5',
         reason: 'Closed Spot'
       },
       {
-        name: 'Blondell Jeanbaptiste',
-        spotid: 'B8',
+        userName: 'Blondell Jeanbaptiste',
+        spotId: 'B8',
         reason: 'Failed Music Check'
       }
     ];
@@ -26,8 +26,8 @@ describe('filterManageActions', () => {
     const filteredActions = filterManageActions(actions);
 
     expect(filteredActions).toEqual([{
-      name: 'Blondell Jeanbaptiste',
-      spotid: 'B8',
+      userName: 'Blondell Jeanbaptiste',
+      spotId: 'B8',
       reason: 'Failed Music Check'
     }]);
   });
@@ -35,28 +35,28 @@ describe('filterManageActions', () => {
   it('User has closed spot, but not at end', () => {
     const actions = [
       {
-        name: 'Kyle Thompson',
-        spotid: 'A5',
+        userName: 'Kyle Thompson',
+        spotId: 'A5',
         reason: 'Volunatrily Opened Spot'
       },
       {
-        name: 'Kyle Thompson',
-        spotid: 'A5',
+        userName: 'Kyle Thompson',
+        spotId: 'A5',
         reason: 'Closed Spot'
       },
       {
-        name: 'Kyle Thompson',
-        spotid: 'A5',
+        userName: 'Kyle Thompson',
+        spotId: 'A5',
         reason: 'Volunatrily Opened Spot'
       },
       {
-        name: 'Kyle Thompson',
-        spotid: 'A5',
+        userName: 'Kyle Thompson',
+        spotId: 'A5',
         reason: 'Failed Music Check'
       },
       {
-        name: 'Blondell Jeanbaptiste',
-        spotid: 'B8',
+        userName: 'Blondell Jeanbaptiste',
+        spotId: 'B8',
         reason: 'Failed Music Check'
       }
     ];
@@ -65,13 +65,13 @@ describe('filterManageActions', () => {
 
     expect(filteredActions).toEqual([
       {
-        name: 'Kyle Thompson',
-        spotid: 'A5',
+        userName: 'Kyle Thompson',
+        spotId: 'A5',
         reason: 'Failed Music Check'
       },
       {
-        name: 'Blondell Jeanbaptiste',
-        spotid: 'B8',
+        userName: 'Blondell Jeanbaptiste',
+        spotId: 'B8',
         reason: 'Failed Music Check'
       }
     ]);
@@ -80,33 +80,33 @@ describe('filterManageActions', () => {
   it('User has multiple closed spots, with one at end', () => {
     const actions = [
       {
-        name: 'Kyle Thompson',
-        spotid: 'A5',
+        userName: 'Kyle Thompson',
+        spotId: 'A5',
         reason: 'Volunatrily Opened Spot'
       },
       {
-        name: 'Kyle Thompson',
-        spotid: 'A5',
+        userName: 'Kyle Thompson',
+        spotId: 'A5',
         reason: 'Closed Spot'
       },
       {
-        name: 'Kyle Thompson',
-        spotid: 'A5',
+        userName: 'Kyle Thompson',
+        spotId: 'A5',
         reason: 'Volunatrily Opened Spot'
       },
       {
-        name: 'Kyle Thompson',
-        spotid: 'A5',
+        userName: 'Kyle Thompson',
+        spotId: 'A5',
         reason: 'Failed Music Check'
       },
       {
-        name: 'Kyle Thompson',
-        spotid: 'A5',
+        userName: 'Kyle Thompson',
+        spotId: 'A5',
         reason: 'Closed Spot'
       },
       {
-        name: 'Blondell Jeanbaptiste',
-        spotid: 'B8',
+        userName: 'Blondell Jeanbaptiste',
+        spotId: 'B8',
         reason: 'Failed Music Check'
       }
     ];
@@ -114,8 +114,8 @@ describe('filterManageActions', () => {
     const filteredActions = filterManageActions(actions);
 
     expect(filteredActions).toEqual([{
-      name: 'Blondell Jeanbaptiste',
-      spotid: 'B8',
+      userName: 'Blondell Jeanbaptiste',
+      spotId: 'B8',
       reason: 'Failed Music Check'
     }]);
   });
@@ -123,33 +123,33 @@ describe('filterManageActions', () => {
   it('Multiple users get filtered', () => {
     const actions = [
       {
-        name: 'Kyle Thompson',
-        spotid: 'A5',
+        userName: 'Kyle Thompson',
+        spotId: 'A5',
         reason: 'Volunatrily Opened Spot'
       },
       {
-        name: 'Kyle Thompson',
-        spotid: 'A5',
+        userName: 'Kyle Thompson',
+        spotId: 'A5',
         reason: 'Closed Spot'
       },
       {
-        name: 'Kyle Thompson',
-        spotid: 'R11',
+        userName: 'Kyle Thompson',
+        spotId: 'R11',
         reason: 'Volunatrily Opened Spot'
       },
       {
-        name: 'Kyle Thompson',
-        spotid: 'R11',
+        userName: 'Kyle Thompson',
+        spotId: 'R11',
         reason: 'Failed Music Check'
       },
       {
-        name: 'Kyle Thompson',
-        spotid: 'R11',
+        userName: 'Kyle Thompson',
+        spotId: 'R11',
         reason: 'Closed Spot'
       },
       {
-        name: 'Blondell Jeanbaptiste',
-        spotid: 'B8',
+        userName: 'Blondell Jeanbaptiste',
+        spotId: 'B8',
         reason: 'Failed Music Check'
       }
     ];
@@ -157,8 +157,8 @@ describe('filterManageActions', () => {
     const filteredActions = filterManageActions(actions);
 
     expect(filteredActions).toEqual([{
-      name: 'Blondell Jeanbaptiste',
-      spotid: 'B8',
+      userName: 'Blondell Jeanbaptiste',
+      spotId: 'B8',
       reason: 'Failed Music Check'
     }]);
 

@@ -1,5 +1,5 @@
-SELECT t1.name AS nameOne, t2.name AS nameTwo, t1.spotId AS spotId, t1.id AS resultId, t1.nameNumber AS nameNumberOne,
-       t2.nameNumber AS nameNumberTwo, t1.comments AS firstComments, t2.comments AS secondComments, t1.winnerId,
+SELECT t1.name AS nameOne, t2.name AS nameTwo, t1.spotId AS spotId, t1.id, t1.nameNumber AS firstNameNumber,
+       t2.nameNumber AS secondNameNumber, t1.comments AS firstComments, t2.comments AS secondComments, t1.winnerId,
        t1.alternate AS userOneAlternate, t2.alternate AS userTwoAlternate
 FROM
   (SELECT u1.name, r1.id, r1.spotId, u1.nameNumber, r1.firstComments AS comments, r1.winnerId, r1.pending, substring(u1.spotid, 2)::integer > 12 AS alternate

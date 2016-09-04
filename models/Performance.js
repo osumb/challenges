@@ -88,7 +88,7 @@ module.exports = class Performance {
     });
   }
 
-  static findNextOrOpenWindow() {
+  static findCurrent() {
     if (cachedCurrentPerformance && Date.now() < cachedCurrentPerformance.closeAt) {
       return Promise.resolve(cachedCurrentPerformance);
     }
