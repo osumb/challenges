@@ -1,6 +1,6 @@
 #!/bin/sh
 
-# script/mock-data: Populate db with fake-data
+# script/schema: Populate db with the schema information
 
 set -e
 
