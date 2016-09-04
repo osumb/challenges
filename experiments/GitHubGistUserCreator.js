@@ -27,15 +27,28 @@ userGist.read((err, gist) => {
     const password = crypto.createHmac('sha1', current_date).update(random).digest('hex');
 
     user.password = bcrypt.hashSync(password, bcrypt.genSaltSync(1)); // eslint-disable-line no-sync
-    return Spot.create(user.spotId)
-      .then(() => User.create(user.name, user.nameNumber, user.instrument, user.part, user.role, user.spotId, user.email, user.password))
-      .then(() => {
-        email.sendUserCreateEmail(user.email, user.nameNumber, password);
-        return;
-      })
-      .catch((err) => {
-        console.error(err);
-        console.log(user);
-      });
+    if (user.spotId) {
+      return Spot.create(user.spotId)
+        .then(() => User.create(user.name, user.nameNumber, user.instrument, user.part, user.role, user.spotId, user.email, user.password))
+        .then(() => {
+          console.log(`Sending email to ${user.email} spotId: ${user.spotId}`);
+          email.sendUserCreateEmail(user.email, user.nameNumber, password);
+          return;
+        })
+        .catch((err) => {
+          console.error(err);
+          console.log(user);
+        });
+    } else {
+      return User.create(user.name, user.nameNumber, user.instrument, user.part, user.role, null, user.email, user.password)
+        .then(() => {
+          console.log(`Sending email to ${user.email}, role: ${user.role}`);
+          email.sendUserCreateEmail(user.email, user.nameNumber, password);
+          return;
+        })
+        .catch((err) => {
+          console.error(err);
+        })
+    }
   });
 });
