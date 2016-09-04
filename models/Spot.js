@@ -22,6 +22,12 @@ module.exports = class Spot {
     return 'spots';
   }
 
+  static create(id) {
+    const sql = 'INSERT INTO spots (id) VALUES($1)';
+
+    return db.query(sql, [id]);
+  }
+
   // true is open, false is closed
   static setOpenClose(spotId, open) {
     const sql = 'UPDATE spots SET open = $1 WHERE id = $2';
