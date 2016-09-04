@@ -104,7 +104,6 @@ function UsersController() {
       .then(data => {
         const canChallenge = data[3], challenge = data[0], performance = data[2], results = data[1];
 
-        console.log(canChallenge, challenge, performance, results);
         res.render('users/show', {
           canChallenge: canChallenge && (performance && performance.inPerformanceWindow()),
           challenge: !challengeAlreadyInResults(challenge, results) && challenge,

@@ -11,8 +11,8 @@ function ChallengersController() {
 
     logger.challengesLog(`${req.user.name} request to challenge ${spotId}`);
     return Performance.findCurrent()
-            .then((performance) => Promise.all([performance, Challenge.create(userId, spotId, performance && performance.id)]))
-            .then(([performance, code]) => {
+            .then(([performance]) => Promise.all([performance, Challenge.create(userId, spotId, performance && performance.id)]))
+            .then(([performance, [code]]) => {
               if (!performance) {
                 res.json({ code: 4 });
               }
