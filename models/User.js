@@ -41,7 +41,7 @@ class User {
       query.on('end', () => {
         client.end();
         resolve();
-      };
+      });
     }
   }
 
