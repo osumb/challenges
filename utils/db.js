@@ -1,8 +1,9 @@
+const pg = require('pg');
 const Pool = require('pg-pool');
 const url = require('url');
 
 const config = require('../config');
-const { returnArgument } = require('../utils');
+const returnArgument = require('./return-argument');
 
 const postgresParams = url.parse(config.db.postgres);
 
@@ -18,9 +19,7 @@ const poolConfig = {
 
 const pool = new Pool(poolConfig);
 
-const createClient = () => {
-  return;
-};
+const createClient = () => new pg.Client(config.db.postgres);
 
 const query = (sql, params, parseRow = returnArgument) =>
   pool.query(sql, params)
