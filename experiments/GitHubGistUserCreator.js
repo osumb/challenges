@@ -2,7 +2,7 @@ const bcrypt = require('bcrypt');
 const GitHub = require('github-api');
 const crypto = require('crypto');
 
-const { User } = require('../models');
+const { Spot, User } = require('../models');
 const { email } = require('../utils');
 
 const GITHUB_API_TOKEN = process.env.GITHUB_TOKEN;
@@ -27,11 +27,15 @@ userGist.read((err, gist) => {
     const password = crypto.createHmac('sha1', current_date).update(random).digest('hex');
 
     user.password = bcrypt.hashSync(password, bcrypt.genSaltSync(1)); // eslint-disable-line no-sync
-    return User.create(user.name, user.nameNumber, user.instrument, user.part, user.role, user.spotId, user.email, user.password)
+    return Spot.create(user.spotId)
+      .then(() => User.create(user.name, user.nameNumber, user.instrument, user.part, user.role, user.spotId, user.email, user.password))
       .then(() => {
         email.sendUserCreateEmail(user.email, user.nameNumber, password);
         return;
       })
-      .catch(console.error);
+      .catch((err) => {
+        console.error(err);
+        console.log(user);
+      });
   });
 });
