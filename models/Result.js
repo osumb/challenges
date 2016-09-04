@@ -159,13 +159,9 @@ class Result {
   }
 
   static updateForTestsOnly(firstNameNumber, comments1, comments2, winnerId) {
-    return new Promise((resolve, reject) => {
-      const sql = 'UPDATE results SET firstComments = $1, secondComments = $2, winnerId = $3 WHERE firstNameNumber = $4';
+    const sql = 'UPDATE results SET firstComments = $1, secondComments = $2, winnerId = $3 WHERE firstNameNumber = $4';
 
-      db.query(sql, [comments1, comments2 || null, winnerId, firstNameNumber])
-      .then(resolve)
-      .catch(reject);
-    });
+    return db.query(sql, [comments1, comments2 || null, winnerId, firstNameNumber]);
   }
 
   get id() {

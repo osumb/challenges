@@ -67,26 +67,22 @@ class User {
   }
 
   static findByNameNumber(id) {
-    return new Promise((resolve, reject) => {
-      const sql = `
-        SELECT
-          email,
-          name,
-          namenumber,
-          new,
-          COALESCE(u.instrument, ra.instrument) AS instrument,
-          COALESCE(u.part, ra.part) AS part,
-          password,
-          role,
-          spotid
-        FROM users AS u LEFT OUTER JOIN results_approve AS ra ON u.nameNumber = ra.usernamenumber
-        WHERE nameNumber = $1
-      `;
+    const sql = `
+      SELECT
+        email,
+        name,
+        namenumber,
+        new,
+        COALESCE(u.instrument, ra.instrument) AS instrument,
+        COALESCE(u.part, ra.part) AS part,
+        password,
+        role,
+        spotid
+      FROM users AS u LEFT OUTER JOIN results_approve AS ra ON u.nameNumber = ra.usernamenumber
+      WHERE nameNumber = $1
+    `;
 
-      db.query(sql, [id], instanceFromRowUser)
-      .then(([user]) => resolve(user))
-      .catch(reject);
-    });
+    return db.query(sql, [id], instanceFromRowUser).then(([user]) => user);
   }
 
   static findAll() {

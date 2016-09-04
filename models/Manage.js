@@ -32,18 +32,14 @@ class Manage {
   }
 
   static findAllForPerformanceCSV(performanceId) {
-    return new Promise((resolve, reject) => {
-      const sql = `
-        SELECT *
-        FROM manage AS m JOIN users AS u ON m.usernamenumber = u.namenumber
-        WHERE m.performanceId = $1
-        ORDER BY (substring(u.spotid, 0, 2), substring(u.spotid, 2)::int)
-      `;
+    const sql = `
+      SELECT *
+      FROM manage AS m JOIN users AS u ON m.usernamenumber = u.namenumber
+      WHERE m.performanceId = $1
+      ORDER BY (substring(u.spotid, 0, 2), substring(u.spotid, 2)::int)
+    `;
 
-      db.query(sql, [performanceId], instanceFromRowManage)
-      .then(resolve)
-      .catch(reject);
-    });
+    return db.query(sql, [performanceId], instanceFromRowManage);
   }
 
   get id() {

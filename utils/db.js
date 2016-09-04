@@ -3,7 +3,7 @@ const Pool = require('pg-pool');
 const url = require('url');
 
 const config = require('../config');
-const returnArgument = require('./return-argument');
+const identityFunction = require('./identity-function');
 
 const postgresParams = url.parse(config.db.postgres);
 
@@ -21,7 +21,7 @@ const pool = new Pool(poolConfig);
 
 const createClient = () => new pg.Client(config.db.postgres);
 
-const query = (sql, params, parseRow = returnArgument) =>
+const query = (sql, params, parseRow = identityFunction) =>
   pool.query(sql, params)
   .then((data) => (data.rows || []).map((row) => parseRow(row)))
   .catch((err) => {
