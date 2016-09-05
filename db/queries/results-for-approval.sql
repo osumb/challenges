@@ -24,7 +24,7 @@ FROM (
   FROM performances AS p, results AS r1, users AS u1
   WHERE r1.firstnamenumber = u1.namenumber AND r1.performanceid = p.id AND r1.needsapproval AND r1.pending
 ) user1
-JOIN (
+LEFT OUTER JOIN (
   SELECT u2.name, r2.id, u2.nameNumber, r2.secondComments AS comments
   FROM results AS r2, users AS u2
   WHERE r2.secondNameNumber = u2.nameNumber
