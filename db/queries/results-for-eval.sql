@@ -8,7 +8,7 @@ FROM
     r1.needsApproval AND
     r1.pending
   ) t1
-LEFT JOIN
+LEFT OUTER JOIN
   (
     SELECT u2.name, r2.id, u2.nameNumber
     FROM results AS r2, users AS u2
