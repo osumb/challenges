@@ -41,7 +41,7 @@ function ResultsController() {
       id: req.body.id,
       needsApproval: true,
       firstComments: req.body.firstComments,
-      secondComments: req.body.secondComments,
+      secondComments: req.body.secondComments || '',
       spotId: req.body.spotId,
       winnerId: req.body.winnerId
     })
