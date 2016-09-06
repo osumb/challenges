@@ -297,7 +297,7 @@ CREATE TABLE results (
   firstNameNumber varchar(256) references users(nameNumber) NOT NULL,
   secondNameNumber varchar(256) references users(nameNumber),
   firstComments text NOT NULL DEFAULT '',
-  secondComments text NOT NULL DEFAULT '',
+  secondComments text,
   winnerId varchar(256) references users(nameNumber),
   pending boolean NOT NULL DEFAULT true,
   needsApproval boolean NOT NULL DEFAULT false,

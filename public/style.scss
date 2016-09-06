@@ -13,6 +13,7 @@ html {
 body {
   color: #333;
   display: block;
+  flex: 1;
   font-family: -apple-system, BlinkMacSystemFont,
     "Segoe UI", "Roboto", "Oxygen",
     "Ubuntu", "Cantarell", "Fira Sans",
@@ -25,6 +26,7 @@ body {
 
 .App {
   display: flex;
+  height: 100%;
   width: 100%;
   flex-direction: column;
 }
@@ -53,6 +55,11 @@ h1, h2, h3, h4, h5, h6 {
 .BannerMessage {
   color: #ff0033;
   align-self: center;
+}
+
+.Body {
+  display: flex;
+  flex: 1;
 }
 
 .ChallengesButton {

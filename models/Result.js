@@ -66,7 +66,7 @@ class Result {
   static approve(ids) {
     const sql = 'UPDATE results SET needsApproval = FALSE, pending = FALSE WHERE id = ANY($1) RETURNING performanceId';
 
-    return db.query(sql, [ids]);
+    return db.query(sql, [ids], ({ performanceid }) => performanceid);
   }
 
   static checkAllDoneForPerformance(id) {
