@@ -7,7 +7,7 @@ function ResultsController() {
     const { ids } = req.body;
 
     Result.approve(ids)
-    .then((performanceId) => {
+    .then(([performanceId]) => {
       res.json({ success: true });
       Result.checkAllDoneForPerformance(performanceId)
       .then(done => {
@@ -41,7 +41,7 @@ function ResultsController() {
       id: req.body.id,
       needsApproval: true,
       firstComments: req.body.firstComments,
-      secondComments: req.body.secondComments,
+      secondComments: req.body.secondComments || '',
       spotId: req.body.spotId,
       winnerId: req.body.winnerId
     })
