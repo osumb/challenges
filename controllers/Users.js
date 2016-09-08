@@ -50,6 +50,18 @@ function UsersController() {
     });
   };
 
+  this.indexMembers = (req, res) => {
+    User.indexMembers()
+    .then((users) => {
+      console.log(users);
+      res.render('users/index', { user: req.user, users });
+    })
+    .catch((err) => {
+      logger.errorLog('Users.index', err);
+      res.render('static-pages/error', { user: req.user });
+    });
+  };
+
   this.manage = (req, res) => {
     const { nameNumber, performanceId, reason, spotId, voluntary } = req.body;
     const manageAttributes = {
