@@ -1,0 +1,16 @@
+<div class="UserIndex">
+  <div class="UserIndex-header">
+    <p class="UserIndex-headerItem">Name</p>
+    <p class="UserIndex-headerItem">Spot</p>
+    <p class="UserIndex-headerItem">Instrument</p>
+    <p class="UserIndex-headerItem">Part</p>
+  </div>
+  {{#each users}}
+    <div class="UserIndex-user {{this.nameNumber}}">
+      <p class="UserIndex-userItem">{{this.name}}</p>
+      <p class="UserIndex-userItem">{{this.spotId}}</p>
+      <p class="UserIndex-userItem">{{this.instrument}}</p>
+      <p class="UserIndex-userItem">{{this.part}}</p>
+    </div>
+  {{/each}}
+</div>

@@ -1,0 +1,31 @@
+.UserIndex {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  width: 90%;
+}
+
+.UserIndex-header {
+  display: flex;
+  flex: 1;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  font-weight: bold;
+  min-height: 20px;
+}
+
+.UserIndex-headerItem {
+  flex: 1;
+}
+
+.UserIndex-user {
+  display: flex;
+  flex: 1;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  min-height: 20px;
+}
+
+.UserIndex-userItem {
+  flex: 1;
+}
