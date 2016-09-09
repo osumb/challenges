@@ -86,6 +86,10 @@ h1, h2, h3, h4, h5, h6 {
   border-radius: 4px;
 }
 
+.OddRow {
+  background-color: rgba(191, 191, 191, 0.3);
+}
+
 @import './stylesheets/body.scss';
 @import './stylesheets/login.scss';
 @import './stylesheets/navbar.scss';

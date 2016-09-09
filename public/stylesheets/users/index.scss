@@ -9,8 +9,10 @@
   display: flex;
   flex: 1;
   flex-direction: row;
+  font-size: 20px;
   flex-wrap: nowrap;
   font-weight: bold;
+  margin-bottom: 25px;
   min-height: 20px;
 }
 
@@ -19,6 +21,7 @@
 }
 
 .UserIndex-user {
+  align-items: center;
   display: flex;
   flex: 1;
   flex-direction: row;
@@ -28,4 +31,8 @@
 
 .UserIndex-userItem {
   flex: 1;
+}
+
+.UserIndex-editSpot {
+  margin-left: 15px;
 }
