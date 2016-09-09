@@ -53,7 +53,6 @@ function UsersController() {
   this.indexMembers = (req, res) => {
     User.indexMembers()
     .then((users) => {
-      console.log(users);
       res.render('users/index', { user: req.user, users });
     })
     .catch((err) => {
