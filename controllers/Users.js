@@ -29,6 +29,20 @@ function UsersController() {
     }
   };
 
+  this.changeSpot = (req, res) => {
+    const { nameNumber, spotId } = req.body;
+
+    User.updateSpot(nameNumber, spotId)
+    .then(() => {
+      logger.adminActionLog(`${req.user.name} set ${nameNumber}'s spot to ${spotId}`);
+      res.json({ success: true });
+    })
+    .catch((err) => {
+      logger.errorLog('Users.changeSpot', err);
+      res.status(400).json({ success: false });
+    });
+  };
+
   this.closeSpot = (req, res) => {
     const { nameNumber, performanceId, spotId } = req.body;
     const manageAttributes = {
@@ -47,6 +61,17 @@ function UsersController() {
     .catch((err) => {
       logger.errorLog('Users.close', err);
       res.status(500).send();
+    });
+  };
+
+  this.indexMembers = (req, res) => {
+    User.indexMembers()
+    .then((users) => {
+      res.render('users/index', { user: req.user, users });
+    })
+    .catch((err) => {
+      logger.errorLog('Users.index', err);
+      res.render('static-pages/error', { user: req.user });
     });
   };
 

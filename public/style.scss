@@ -52,6 +52,10 @@ h1, h2, h3, h4, h5, h6 {
   margin-top: 20px;
 }
 
+textarea {
+  resize: none;
+}
+
 .BannerMessage {
   color: #ff0033;
   align-self: center;
@@ -86,6 +90,10 @@ h1, h2, h3, h4, h5, h6 {
   border-radius: 4px;
 }
 
+.OddRow {
+  background-color: rgba(191, 191, 191, 0.3);
+}
+
 @import './stylesheets/body.scss';
 @import './stylesheets/login.scss';
 @import './stylesheets/navbar.scss';
@@ -96,6 +104,7 @@ h1, h2, h3, h4, h5, h6 {
 @import './stylesheets/results/approve.scss';
 @import './stylesheets/results/evaluation.scss';
 @import './stylesheets/results/result-table.scss';
+@import './stylesheets/users/index.scss';
 @import './stylesheets/users/individual-manage.scss';
 @import './stylesheets/users/settings.scss';
 @import './stylesheets/users/show.scss';

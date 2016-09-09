@@ -85,8 +85,12 @@ class User {
     return db.query(sql, [id], instanceFromRowUser).then(([user]) => user);
   }
 
-  static findAll() {
-    const sql = 'SELECT * FROM users';
+  static indexMembers() {
+    const sql = `
+      SELECT * FROM users
+      WHERE NOT spotId IS NULL
+      ORDER BY substring(spotId, 1, 1), substring(spotId, 2, 2)::int
+    `;
 
     return db.query(sql, [], instanceFromRowUser);
   }
@@ -95,6 +99,12 @@ class User {
     const sql = 'SELECT * FROM users AS u, spots AS s WHERE lower(name) LIKE \'%\' || lower($1) || \'%\' and u.spotId = s.id';
 
     return db.query(sql, [searchQuery], instanceFromRowUser);
+  }
+
+  static updateSpot(nameNumber, spotId) {
+    const sql = 'UPDATE users SET spotId = $1 WHERE nameNumber = $2';
+
+    return db.query(sql, [spotId, nameNumber]);
   }
 
   get email() {
