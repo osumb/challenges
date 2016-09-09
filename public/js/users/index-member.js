@@ -13,7 +13,7 @@ $(editButtonClass).on('click', (e) => {
 
 const clickEventFunction = (e) => {
   const nameNumber = e.target.className.split(' ')[1];
-  const userRowDiv = Array.from(document.getElementsByClassName(nameNumber))[0];
+  const userRowDiv = document.getElementsByClassName(nameNumber)[0];
   const userRowChildren = userRowDiv.children;
   const spotTag = userRowChildren[1];
   const spotTagButton = spotTag.innerHTML.split(' ').slice(1);
@@ -22,7 +22,7 @@ const clickEventFunction = (e) => {
 
   userRowDiv.replaceChild(editSpotDiv, spotTag);
 
-  const [textArea, cancelButton, confirmButton] = editSpotDiv.children;
+  const textArea = editSpotDiv.children[0], cancelButton = editSpotDiv.children[1], confirmButton = editSpotDiv.children[2];
 
   $(cancelButton).on('click', () => {
     userRowDiv.replaceChild(spotTag, editSpotDiv);
