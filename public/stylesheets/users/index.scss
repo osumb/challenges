@@ -27,12 +27,21 @@
   flex-direction: row;
   flex-wrap: nowrap;
   min-height: 20px;
+  max-height: 20px;
 }
 
 .UserIndex-userItem {
+  display: flex;
   flex: 1;
+  min-height: 20px;
+  max-height: 20px;
 }
 
 .UserIndex-editSpot {
   margin-left: 15px;
+}
+
+.UserIndex-textarea {
+  font-size: 14px;
+  width: 35px;
 }

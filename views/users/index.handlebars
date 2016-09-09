@@ -8,7 +8,7 @@
   {{#each users}}
     <div class="UserIndex-user {{this.nameNumber}} {{evenOdd @index}}">
       <p class="UserIndex-userItem">{{this.name}}</p>
-      <p class="UserIndex-userItem">{{this.spotId}}<button class="UserIndex-editSpot">Edit Spot</button></p>
+      <p class="UserIndex-userItem">{{this.spotId}} <button class="UserIndex-editSpot {{this.nameNumber}}">Edit Spot</button></p>
       <p class="UserIndex-userItem">{{this.instrument}}</p>
       <p class="UserIndex-userItem">{{this.part}}</p>
     </div>
