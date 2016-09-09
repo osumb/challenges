@@ -33,7 +33,10 @@ function UsersController() {
     const { nameNumber, spotId } = req.body;
 
     User.updateSpot(nameNumber, spotId)
-    .then(() => res.json({ success: true }))
+    .then(() => {
+      logger.adminActionLog(`${req.user.name} set ${nameNumber}'s spot to ${spotId}`);
+      res.json({ success: true });
+    })
     .catch((err) => {
       logger.errorLog('Users.changeSpot', err);
       res.status(400).json({ success: false });
