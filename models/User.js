@@ -101,6 +101,12 @@ class User {
     return db.query(sql, [searchQuery], instanceFromRowUser);
   }
 
+  static updateSpot(nameNumber, spotId) {
+    const sql = 'UPDATE users SET spotId = $1 WHERE nameNumber = $2';
+
+    return db.query(sql, [spotId, nameNumber]);
+  }
+
   get email() {
     return this._email;
   }

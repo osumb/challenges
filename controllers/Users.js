@@ -29,6 +29,17 @@ function UsersController() {
     }
   };
 
+  this.changeSpot = (req, res) => {
+    const { nameNumber, spotId } = req.body;
+
+    User.updateSpot(nameNumber, spotId)
+    .then(() => res.json({ success: true }))
+    .catch((err) => {
+      logger.errorLog('Users.changeSpot', err);
+      res.status(400).json({ success: false });
+    });
+  };
+
   this.closeSpot = (req, res) => {
     const { nameNumber, performanceId, spotId } = req.body;
     const manageAttributes = {

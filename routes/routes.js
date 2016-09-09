@@ -48,6 +48,7 @@ router.setup = (app) => {
   app.get('/users', ensureAdmin, Users.indexMembers);
   app.get('/:nameNumber', [ensureAuthAndNameNumberRoute, ensureNotFirstLogin], Users.show);
   app.get('/:nameNumber/settings', ensureAuthAndNameNumberRoute, Users.settings);
+  app.post('/users/spot', ensureAdmin, Users.changeSpot);
   app.get('/users/manage', ensureAdmin, Users.showManage);
   app.get('/users/manage/:nameNumber', ensureAdmin, Users.showIndividualManage);
   app.get('/users/search', ensureAdmin, Users.search);
