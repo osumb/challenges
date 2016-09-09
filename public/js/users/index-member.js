@@ -48,7 +48,7 @@ const clickEventFunction = (e) => {
         banner('Successfully updated spot!');
         spotTag.innerHTML = `${newSpotId} ${spotTagButton.join(' ')}`;
         userRowDiv.replaceChild(spotTag, editSpotDiv);
-        $(editButtonClass).on('click', (element) => {
+        $(spotTag.children[0]).on('click', (element) => {
           clickEventFunction(element);
         });
       })
@@ -74,7 +74,7 @@ const createTextAreaWithButtons = (spotId) => {
   confirmEditTextBoxButton.innerHTML = 'Confirm';
   containerDiv.className += `${userIndexItemClass}`;
   textArea.className += `${textAreaClass}`;
-  textArea.innerHTML = spotId;
+  textArea.value = spotId;
 
   containerDiv.appendChild(textArea);
   containerDiv.appendChild(cancelEditTextBoxButton);
