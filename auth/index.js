@@ -14,7 +14,11 @@ passport.use(new Strategy((username, password, done) => {
       if (!bcrypt.compareSync(password, user.password)) { // eslint-disable-line no-sync
         return done(null, false);
       }
-      return done(null, user);
+
+      const serializedUser = user.toJSON();
+
+      serializedUser.resultsIndexPermission = serializedUser.instrument === 'Any' && serializedUser.part === 'Any';
+      return done(null, serializedUser);
     })
     .catch((err) => done(err));
 }));
