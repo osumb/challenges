@@ -10,5 +10,6 @@ module.exports = {
   resultsForApproval: fs.readFileSync(path.resolve(__dirname, 'results-for-approval.sql')).toString(),
   resultsForEval: fs.readFileSync(path.resolve(__dirname, 'results-for-eval.sql')).toString(),
   resultsForPerformance: fs.readFileSync(path.resolve(__dirname, 'results-for-performance-query.sql')).toString(),
-  resultsForUser: fs.readFileSync(path.resolve(__dirname, 'results-query.sql')).toString()
+  resultsForUser: fs.readFileSync(path.resolve(__dirname, 'results-query.sql')).toString(),
+  resultsIndex: fs.readFileSync(path.resolve(__dirname, 'results-index.sql')).toString()
 };
