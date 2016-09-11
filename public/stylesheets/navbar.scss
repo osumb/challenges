@@ -42,6 +42,22 @@
   .Navbar-link {
     padding-left: 10px;
   }
+
+  .Navbar-link-results span {
+    display: none;
+  }
+
+  .Navbar-link-results::after {
+    content: 'Approve';
+  }
+
+  .Navbar-link-resultsIndex span {
+    display: none;
+  }
+
+  .Navbar-link-resultsIndex::after {
+    content: 'Results';
+  }
 }
 
 @media (max-width: 737px) {
@@ -54,7 +70,7 @@
   }
 
   .Navbar-link-performance::after {
-    content: 'Performance'
+    content: 'Performance';
   }
 
   .Navbar-link-results span {
@@ -62,7 +78,7 @@
   }
 
   .Navbar-link-results::after {
-    content: 'Results';
+    content: 'Approve';
   }
 
   .Navbar-link-users span {
@@ -70,7 +86,7 @@
   }
 
   .Navbar-link-users::after {
-    content: 'Users'
+    content: 'Users';
   }
 }
 
