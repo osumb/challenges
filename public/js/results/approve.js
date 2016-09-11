@@ -1,3 +1,5 @@
+const { banner } = require('../utils');
+
 const resultsListCheckboxClass = '.ResultsApprove-checkbox';
 const resultListItemClass = '.ResultsApproveList-item';
 const submitAllButton = '.ResultsApproveSubmitAll';
@@ -21,8 +23,12 @@ $(submitCheckedButton).on('click', () => {
   sendApprovals(ids)
   .then(() => {
     removeIds(ids);
+    banner('Approved Results');
   })
-  .catch(err => console.error(err));
+  .catch((err) => {
+    banner('Sorry! There was an issue with your request. We\'re aware of and are working on the issue');
+    console.error(err);
+  });
 });
 
 const sendApprovals = (ids) => {
@@ -41,7 +47,6 @@ const removeIds = (ids) => {
   ids.forEach((id) => {
     $(`${resultListItemClass}.${id}`).remove();
   });
-  // window.location.reload(false);
 };
 
 const getIdFromElement = element => {
