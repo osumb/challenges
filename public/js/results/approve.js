@@ -13,7 +13,10 @@ $(submitAllButton).on('click', () => {
   .then(() => {
     removeIds(ids);
   })
-  .catch((err) => console.error(err));
+  .catch((err) => {
+    banner('Sorry! There was an issue with your request. We\'re aware of and are working on the issue');
+    console.error(err);
+  });
 });
 
 $(submitCheckedButton).on('click', () => {
@@ -23,7 +26,6 @@ $(submitCheckedButton).on('click', () => {
   sendApprovals(ids)
   .then(() => {
     removeIds(ids);
-    banner('Approved Results');
   })
   .catch((err) => {
     banner('Sorry! There was an issue with your request. We\'re aware of and are working on the issue');
@@ -46,6 +48,7 @@ const sendApprovals = (ids) => {
 const removeIds = (ids) => {
   ids.forEach((id) => {
     $(`${resultListItemClass}.${id}`).remove();
+    banner('Approved Results');
   });
 };
 
