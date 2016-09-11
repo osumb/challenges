@@ -41,7 +41,7 @@ const removeIds = (ids) => {
   ids.forEach((id) => {
     $(`${resultListItemClass}.${id}`).remove();
   });
-  window.location.reload(false);
+  // window.location.reload(false);
 };
 
 const getIdFromElement = element => {
