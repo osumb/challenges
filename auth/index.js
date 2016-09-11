@@ -1,3 +1,4 @@
+/* eslint-disable callback-return */
 const passport = require('passport');
 const Strategy = require('passport-local').Strategy;
 const models = require('../models');
@@ -82,11 +83,20 @@ function ensureNotFirstLogin(req, res, next) {
   }
 }
 
+function ensureResultsIndexAbility(req, res, next) {
+  if (isAuthenticated(req) && req.user.admin && req.user.instrument === 'Any' && req.user.part === 'Any') {
+    next();
+  } else {
+    res.redirect('notAdmin');
+  }
+}
+
 module.exports = {
   ensureAuthenticated,
   ensureAdmin,
   ensureAuthAndNameNumberRoute,
   ensureEvalAbility,
   ensureNotFirstLogin,
+  ensureResultsIndexAbility,
   passport
 };
