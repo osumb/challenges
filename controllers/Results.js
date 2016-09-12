@@ -25,17 +25,6 @@ function ResultsController() {
     });
   };
 
-  this.getForApproval = (req, res) => {
-    Result.findAllForApproval(req.user)
-    .then((results) => {
-      res.render('results/approve', { user: req.user, results });
-    })
-    .catch((err) => {
-      logger.errorLog('Results.getForApproval', err);
-      res.render('static-pages/error', { user: req.user });
-    });
-  };
-
   this.evaluate = (req, res) => {
     Result.update({
       id: req.body.id,
@@ -55,6 +44,28 @@ function ResultsController() {
     });
   };
 
+  this.getForApproval = (req, res) => {
+    Result.findAllForApproval(req.user)
+    .then((results) => {
+      res.render('results/approve', { user: req.user, results });
+    })
+    .catch((err) => {
+      logger.errorLog('Results.getForApproval', err);
+      res.render('static-pages/error', { user: req.user });
+    });
+  };
+
+  this.index = (req, res) => {
+    Result.index()
+    .then((performanceResultsMap) => {
+      res.render('results/index', { user: req.user, performanceResultsMap });
+    })
+    .catch((err) => {
+      logger.errorLog('Results.index', err);
+      res.render('static-pages/error', { user: req.user });
+    });
+  };
+
   this.showForEvaluation = (req, res) => {
     return Result.findAllForEval(req.user.nameNumber, req.user.spotId[0])
       .then((results) => {
@@ -68,15 +79,6 @@ function ResultsController() {
         logger.errorLog('Results.showForEvaluation', err);
         res.render('static-pages/error', { user: req.user });
       });
-  };
-
-  this.showAll = (req, res) => {
-    Result.findAllForPerformance(req.params.performanceId)
-    .then(results => res.render('results/show', { user: req.user, results }))
-    .catch(err => {
-      logger.errorLog('Results.showAll', err);
-      res.render('static-pages/error', { user: req.user });
-    });
   };
 }
 

@@ -56,12 +56,13 @@
 }
 
 .ResultsApproveList-item-body-left {
-  border-right: 1px solid black;
   flex: 1;
   margin: 4px;
 }
 
 .ResultsApproveList-item-body-right {
+  border-left: 1px solid black;
   flex: 1;
   margin: 4px;
+  padding-left: 4px;
 }

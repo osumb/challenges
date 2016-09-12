@@ -9,7 +9,8 @@ const {
   ensureAdmin,
   ensureAuthAndNameNumberRoute,
   ensureEvalAbility,
-  ensureNotFirstLogin
+  ensureNotFirstLogin,
+  ensureResultsIndexAbility
 } = auth;
 const passport = auth.passport;
 
@@ -33,7 +34,7 @@ router.setup = (app) => {
   //Results Controller
   app.get('/performances/results/evaluate', ensureEvalAbility, Results.showForEvaluation);
   app.get('/performances/results/toapprove', ensureAdmin, Results.getForApproval);
-  app.get('/performances/:performanceId/results', ensureAdmin, Results.showAll);
+  app.get('/results', ensureResultsIndexAbility, Results.index);
   app.post('/performances/results/evaulate', ensureEvalAbility, Results.evaluate);
   app.post('/results/approve', ensureAdmin, Results.approve);
 
