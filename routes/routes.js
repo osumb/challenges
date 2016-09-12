@@ -54,8 +54,7 @@ router.setup = (app) => {
   app.get('/users/search', ensureAdmin, Users.search);
   app.post('/users/manage', ensureAdmin, Users.manage);
   app.post('/users/manage/close', ensureAdmin, Users.closeSpot);
-  app.post('/users/spot', ensureAdmin, Users.changeSpot);
-  app.put('/users/update', ensureAdmin, Users.update);
+  app.put('/users', ensureAdmin, Users.update);
   app.put('/users/password', ensureAuthenticated, Users.changePassword);
 };
 

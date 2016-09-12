@@ -1,6 +1,6 @@
 const { banner, validSpot } = require('../utils');
 
-const apiEndPoint = '/users/spot';
+const apiEndPoint = '/users';
 const editButtonClass = '.UserIndex-editSpot';
 const confirmEditTextBoxButtonClass = 'UserIndex-confirmEditTextButton';
 const cancelEditTextBoxButtonClass = 'UserIndex-cancelEditTextBoxButton';
@@ -38,7 +38,7 @@ const clickEventFunction = (e) => {
           'Content-Type': 'application/json'
         },
         credentials: 'same-origin',
-        method: 'post',
+        method: 'put',
         body: JSON.stringify({
           nameNumber,
           spotId: newSpotId
