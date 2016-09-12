@@ -49,13 +49,14 @@ router.setup = (app) => {
   app.get('/users', ensureAdmin, Users.indexMembers);
   app.get('/:nameNumber', [ensureAuthAndNameNumberRoute, ensureNotFirstLogin], Users.show);
   app.get('/:nameNumber/settings', ensureAuthAndNameNumberRoute, Users.settings);
-  app.post('/users/spot', ensureAdmin, Users.changeSpot);
   app.get('/users/manage', ensureAdmin, Users.showManage);
   app.get('/users/manage/:nameNumber', ensureAdmin, Users.showIndividualManage);
   app.get('/users/search', ensureAdmin, Users.search);
-  app.post('/users/changePassword', ensureAuthenticated, Users.changePassword);
   app.post('/users/manage', ensureAdmin, Users.manage);
   app.post('/users/manage/close', ensureAdmin, Users.closeSpot);
+  app.post('/users/spot', ensureAdmin, Users.changeSpot);
+  app.put('/users/update', ensureAdmin, Users.update);
+  app.put('/users/password', ensureAuthenticated, Users.changePassword);
 };
 
 module.exports = router;

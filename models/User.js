@@ -3,7 +3,7 @@ const bcrypt = require('bcrypt');
 const queries = require('../db/queries');
 const { db } = require('../utils');
 
-const attributes = ['nameNumber', 'instrument', 'name', 'part', 'password', 'role', 'spotId'];
+const attributes = ['email', 'instrument', 'name', 'nameNumber', 'new', 'part', 'password', 'role', 'spotId'];
 
 class User {
 
@@ -53,13 +53,6 @@ class User {
     return db.query(sql, [user.nameNumber, performanceId, user.spotId]);
   }
 
-  static changePassword(nameNumber, newPassword) {
-    const sql = 'UPDATE users SET password = $1, new = false WHERE nameNumber = $2';
-    const password = bcrypt.hashSync(newPassword, bcrypt.genSaltSync(1)); // eslint-disable-line no-sync
-
-    return db.query(sql, [password, nameNumber]);
-  }
-
   static findForIndividualManage(nameNumber) {
     const sql = queries.findForIndividualManage;
 
@@ -99,6 +92,23 @@ class User {
     const sql = 'SELECT * FROM users AS u, spots AS s WHERE lower(name) LIKE \'%\' || lower($1) || \'%\' and u.spotId = s.id';
 
     return db.query(sql, [searchQuery], instanceFromRowUser);
+  }
+
+  static update(nameNumber, params) {
+    let extraSql = '';
+
+    if (!nameNumber || typeof nameNumber !== 'string') {
+      return Promise.reject(new Error('No nameNumber provided'));
+    }
+
+    if (params.password) {
+      params.password = bcrypt.hashSync(params.password, bcrypt.genSaltSync(1)); // eslint-disable-line no-sync
+      extraSql = 'RETURNING password';
+    }
+
+    const { sql, values } = db.queryBuilder(User, params, { statement: 'UPDATE', id: nameNumber });
+
+    return db.query(`${sql} ${extraSql}`, values);
   }
 
   static updateSpot(nameNumber, spotId) {

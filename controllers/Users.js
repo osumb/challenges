@@ -14,8 +14,8 @@ function UsersController() {
     const { oldPassword, newPassword } = req.body;
 
     if (bcrypt.compareSync(oldPassword, req.user.password)) { // eslint-disable-line no-sync
-      User.changePassword(req.user.nameNumber, newPassword)
-      .then((hashPassword) => {
+      User.update(req.user.nameNumber, { new: false, password: newPassword })
+      .then(([hashPassword]) => {
         req.user.new = false;
         req.user.password = hashPassword;
         res.json({ success: true });
@@ -162,6 +162,19 @@ function UsersController() {
 
   this.showManage = (req, res) => {
     res.render('users/manage', { user: req.user });
+  };
+
+  this.update = (req, res) => {
+    const { nameNumber } = req.body;
+
+    delete req.body.nameNumber;
+
+    User.update(nameNumber, req.body)
+    .then(() => res.json({ success: true }))
+    .catch((err) => {
+      console.error(err);
+      res.json({ success: false });
+    });
   };
 }
 
