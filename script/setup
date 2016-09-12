@@ -16,11 +16,15 @@ script/bootstrap
 
 if psql -lqt | cut -d \| -f 1 | grep -w challenges_dev; then
   echo "Database already exists"
-else
-  echo "===> Setting up DB..."
-  createdb challenges_dev
+  echo "==> Removing previous database..."
+
+  # remove surrounding whitespace
+  dropdb "$(psql -lqt | cut -d \| -f 1 | grep -w challenges_dev | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//')"
 fi
-script/mock-data
+
+echo "===> Setting up DB..."
+createdb challenges_dev
+npm run migrate:latest
 
 if redis-cli ping | grep PONG; then
   echo "Redis server is running"

@@ -1,5 +1,5 @@
 module.exports = {
-  mockData: require('./mock-data'),
+  seedData: require('./seed-data'),
   testData: require('./test-data'),
   utils: require('./utils')
 };
