@@ -12,7 +12,10 @@ function ResultsController() {
       Result.checkAllDoneForPerformance(performanceId)
       .then(([done]) => {
         if (done) {
-          Result.switchSpotsForPerformance(performanceId);
+          logger.actionLog(`Starting to switch spots for performance ${performanceId}`);
+          Result.switchSpotsForPerformance(performanceId)
+          .then(() => logger.actionLog(`Done switching spots for performance ${performanceId}`))
+          .catch((err) => logger.errorLog('Result.switchSpotsForPerformance', err));
         }
       })
       .catch((err) => {
