@@ -158,7 +158,7 @@ function UsersController() {
     User.update(nameNumber, req.body)
     .then(() => res.json({ success: true }))
     .catch((err) => {
-      console.error(err);
+      logger.errorLog('Users.update', err);
       res.json({ success: false });
     });
   };
