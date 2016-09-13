@@ -35,7 +35,7 @@ const editPartClickEventFunction = (e) => {
   const partTag = userRowChildren[3];
   const partTagButton = partTag.innerHTML.split(' ').slice(1);
   const part = partTag.innerHTML.split(' ')[0];
-  const editPartDiv = createDropDownWithButtons(instrument);
+  const editPartDiv = createDropDownWithButtons(instrument, part);
 
   userRowDiv.replaceChild(editPartDiv, partTag);
 
@@ -62,11 +62,11 @@ const editPartClickEventFunction = (e) => {
         })
       })
       .then(() => {
-        banner('Successfully updated spot!');
+        banner('Successfully updated part!');
         partTag.innerHTML = `${newPart} ${partTagButton.join(' ')}`;
         userRowDiv.replaceChild(partTag, editPartDiv);
         $(partTag.children[0]).on('click', (element) => {
-          editSpotClickEventFunction(element);
+          editPartClickEventFunction(element);
         });
       })
       .catch((err) => {
@@ -130,21 +130,27 @@ const editSpotClickEventFunction = (e) => {
   });
 };
 
-const createDropDownWithButtons = (instrument) => {
+const createDropDownWithButtons = (instrument, oldPart) => {
   const cancelButton = document.createElement('button');
   const confirmButton = document.createElement('button');
   const containerDiv = document.createElement('div');
-  const select = document.createElement('select');
+  let oldPartSelectIndex = 0;
   const options = instrumentPartMap[instrument];
+  const select = document.createElement('select');
 
-  options.forEach((part) => {
+  options.forEach((part, i) => {
     const option = document.createElement('option');
+
+    if (part === oldPart) {
+      oldPartSelectIndex = i;
+    }
 
     option.value = part;
     option.innerHTML = part;
     select.appendChild(option);
   });
 
+  select.selectedIndex = oldPartSelectIndex;
   cancelButton.className += cancelEditPartButtonClass;
   cancelButton.innerHTML = 'Cancel';
   confirmButton.className += confirmEditPartButtonClass;
