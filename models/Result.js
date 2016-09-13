@@ -36,7 +36,7 @@ const sortBySpotId = (a, b) => a.spotId[0] === b.spotId[0] ?
   a.spotId.localeCompare(b.spotId);
 
 const groupResultsByPerformance = (results) => {
-  const performanceResultsMap = {};
+  const performanceResultsMap = [];
 
   results.sort(sortBySpotId);
 
@@ -53,7 +53,7 @@ const groupResultsByPerformance = (results) => {
     }
   });
 
-  return performanceResultsMap;
+  return performanceResultsMap.reverse();
 };
 
 class Result {
