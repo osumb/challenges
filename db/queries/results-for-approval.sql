@@ -31,4 +31,4 @@ LEFT OUTER JOIN (
 ) user2
 ON user1.id = user2.id
 WHERE (user1.instrument = $1 OR $1 = 'Any') AND (user1.part = $2 OR $2 = 'Any')
-ORDER BY user1.performanceId;
+ORDER BY user1.performanceId, substring(user1.spotId, 1, 1), substring(user1.spotId, 2, 2)::int;
