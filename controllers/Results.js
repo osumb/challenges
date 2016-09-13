@@ -10,7 +10,7 @@ function ResultsController() {
     .then(([performanceId]) => {
       res.json({ success: true });
       Result.checkAllDoneForPerformance(performanceId)
-      .then(done => {
+      .then(([done]) => {
         if (done) {
           Result.switchSpotsForPerformance(performanceId);
         }
