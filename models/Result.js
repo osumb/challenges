@@ -97,7 +97,7 @@ class Result {
   static checkAllDoneForPerformance(id) {
     const sql = 'SELECT count(*) FROM results WHERE performanceid = $1 AND needsApproval';
 
-    return db.query(sql, [id], ({ count }) => parseInt(count, 10));
+    return db.query(sql, [id], ({ count }) => parseInt(count, 10) === 0);
   }
 
   static createWithClient(attributes, client) {
