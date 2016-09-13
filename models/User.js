@@ -1,7 +1,7 @@
 const bcrypt = require('bcrypt');
 
 const queries = require('../db/queries');
-const { db } = require('../utils');
+const { db, identityFunction } = require('../utils');
 
 const attributes = ['email', 'instrument', 'name', 'nameNumber', 'new', 'part', 'password', 'role', 'spotId'];
 
@@ -95,7 +95,7 @@ class User {
   }
 
   static update(nameNumber, params) {
-    let extraSql = '';
+    let extraSql = '', parsingFunction = identityFunction;
 
     if (!nameNumber || typeof nameNumber !== 'string') {
       return Promise.reject(new Error('No nameNumber provided'));
@@ -104,11 +104,12 @@ class User {
     if (params.password) {
       params.password = bcrypt.hashSync(params.password, bcrypt.genSaltSync(1)); // eslint-disable-line no-sync
       extraSql = 'RETURNING password';
+      parsingFunction = ({ password }) => password;
     }
 
     const { sql, values } = db.queryBuilder(User, params, { statement: 'UPDATE', id: nameNumber });
 
-    return db.query(`${sql} ${extraSql}`, values);
+    return db.query(`${sql} ${extraSql}`, values, parsingFunction);
   }
 
   get email() {
