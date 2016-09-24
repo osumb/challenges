@@ -12,8 +12,20 @@ echo "==> Linting..."
 eslint .
 echo "==> Done!"
 
+if psql -lqt | cut -d \| -f 1 | grep -w challenges_test; then
+  echo "Test database already exists"
+  echo "==> Removing previous database..."
+
+  # remove surrounding whitespace
+  dropdb "$(psql -lqt | cut -d \| -f 1 | grep -w challenges_test | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//')"
+fi
+
+echo "===> Setting up test DB..."
+createdb challenges_test
+npm run migrate:latest
+
 # We'll do some integration tests later
-echo "==> Setting Up Test Database..."
+echo "==> Loading test data..."
 node db/load-test-data.js
 echo "==> Done!"
 

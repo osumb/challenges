@@ -2,22 +2,12 @@
 -- CLEAN UP
 ----------------------------------------
 
-DROP TABLE IF EXISTS users CASCADE;
-DROP TABLE IF EXISTS challenges CASCADE;
-DROP TABLE IF EXISTS results CASCADE;
-DROP TABLE IF EXISTS spots CASCADE;
-DROP TABLE IF EXISTS performances CASCADE;
-DROP TABLE IF EXISTS manage CASCADE;
-DROP TABLE IF EXISTS results_approve CASCADE;
-DROP TYPE IF EXISTS part;
-DROP TYPE IF EXISTS instrument;
-DROP TYPE IF EXISTS role;
 CREATE EXTENSION IF NOT EXISTS citext;
 
 ----------------------------------------
 -- FUNCTIONS
 ----------------------------------------
-DROP FUNCTION IF EXISTS switch_spots_based_on_results_one_user(resultIds int[]);
+
 CREATE OR REPLACE FUNCTION switch_spots_based_on_results_one_user(resultIds int[])
 RETURNS VOID AS $$
 DECLARE userOne varchar(256); userTwo varchar(256); spotOne char(3); winnerSpot char(3); rId int;
@@ -44,7 +34,6 @@ $$ LANGUAGE plpgsql;
     - Regular vs Regular
   We're not going to worry about results where only one person is involved
 */
-DROP FUNCTION IF EXISTS switch_spots_based_on_results(resultIds int[]);
 CREATE OR REPLACE FUNCTION switch_spots_based_on_results(resultIds int[])
 RETURNS VOID AS $$
 DECLARE userOne varchar(256); userTwo varchar(256); winner varchar(256); spotOne char(3); spotTwo char(3);
@@ -109,7 +98,6 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
-DROP FUNCTION IF EXISTS can_sl_eval(sLRow varchar(3), resultRow varchar(3), nameNumberOne varchar(256), nameNumberTwo varchar(256));
 CREATE OR REPLACE FUNCTION can_sl_eval(sLRow varchar(3), resultRow varchar(3), nameNumberOne varchar(256), nameNumberTwo varchar(256))
 RETURNS boolean as $$
 DECLARE rowOne varchar(1); rowTwo varchar(1);
@@ -123,7 +111,6 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
-DROP FUNCTION IF EXISTS make_challenge(uId varchar(256), pId int, sId varchar(3));
 CREATE OR REPLACE FUNCTION make_challenge(uId varchar(256), pId int, sId varchar(3))
 RETURNS int as $$
 DECLARE spotOpen boolean; cCount int;
@@ -143,7 +130,6 @@ BEGIN
   RETURN 0;
 END;
 $$ LANGUAGE plpgsql;
-
 
 CREATE OR REPLACE FUNCTION get_user_result_comments(idOne varchar(256), commentsOne text, commentsTwo text, id varchar(256))
 RETURNS text AS $$
@@ -239,7 +225,7 @@ CREATE TABLE users (
   part part,
   password varchar(256) NOT NULL,
   role role,
-  spotId varchar(3) references spots(id),
+  spotId varchar(3) references spots(id) ON DELETE CASCADE,
   created_at timestamptz NOT NULL,
   modified_at timestamptz NOT NULL
 );
@@ -274,9 +260,9 @@ FOR EACH ROW EXECUTE PROCEDURE modified_stamp();
 ----------------------------------------
 CREATE TABLE challenges (
   id serial PRIMARY KEY,
-  performanceId integer references performances(id) NOT NULL,
-  userNameNumber varchar(256) references users(nameNumber) NOT NULL,
-  spotId varchar(3) references spots(id) NOT NULL,
+  performanceId integer NOT NULL references performances(id) ON DELETE CASCADE,
+  userNameNumber varchar(256) NOT NULL references users(nameNumber) ON DELETE CASCADE,
+  spotId varchar(3) NOT NULL references spots(id) ON DELETE CASCADE,
   created_at timestamptz NOT NULL,
   modified_at timestamptz NOT NULL
 );
@@ -292,13 +278,13 @@ FOR EACH ROW EXECUTE PROCEDURE modified_stamp();
 ----------------------------------------
 CREATE TABLE results (
   id serial PRIMARY KEY,
-  performanceId integer references performances(id) NOT NULL,
-  spotId varchar(3) references spots(id) NOT NULL,
-  firstNameNumber varchar(256) references users(nameNumber) NOT NULL,
-  secondNameNumber varchar(256) references users(nameNumber),
+  performanceId integer NOT NULL references performances(id) ON DELETE CASCADE,
+  spotId varchar(3) NOT NULL references spots(id) ON DELETE CASCADE,
+  firstNameNumber varchar(256) NOT NULL references users(nameNumber) ON DELETE CASCADE,
+  secondNameNumber varchar(256) references users(nameNumber) ON DELETE CASCADE,
   firstComments text NOT NULL DEFAULT '',
   secondComments text,
-  winnerId varchar(256) references users(nameNumber),
+  winnerId varchar(256) references users(nameNumber) ON DELETE CASCADE,
   pending boolean NOT NULL DEFAULT true,
   needsApproval boolean NOT NULL DEFAULT false,
   created_at timestamptz NOT NULL,
@@ -316,10 +302,10 @@ FOR EACH ROW EXECUTE PROCEDURE modified_stamp();
 ----------------------------------------
 CREATE TABLE manage (
   id serial PRIMARY KEY,
-  performanceId integer references performances(id) NOT NULL,
-  userNameNumber varchar(256) references users(nameNumber) NOT NULL,
+  performanceId integer NOT NULL references performances(id) ON DELETE CASCADE,
+  userNameNumber varchar(256) NOT NULL references users(nameNumber) ON DELETE CASCADE,
   reason text NOT NULL DEFAULT '',
-  spotId varchar(3) references spots(id) NOT NULL,
+  spotId varchar(3) NOT NULL references spots(id) ON DELETE CASCADE,
   voluntary boolean NOT NULL default true,
   created_at timestamptz NOT NULL,
   modified_at timestamptz NOT NULL
@@ -336,7 +322,7 @@ FOR EACH ROW EXECUTE PROCEDURE modified_stamp();
 ----------------------------------------
 CREATE TABLE results_approve (
   id serial PRIMARY KEY,
-  userNameNumber varchar(256) references users(nameNumber) NOT NULL,
+  userNameNumber varchar(256) NOT NULL references users(nameNumber) ON DELETE CASCADE,
   instrument instrument,
   part part,
   created_at timestamptz NOT NULL,

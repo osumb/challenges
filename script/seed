@@ -1,0 +1,12 @@
+#!/bin/sh
+
+# script/seed: Populate db with seed-data
+
+set -e
+
+cd "$(dirname "$0")/.."
+
+echo "==> Seeding database..."
+node db/reset.js
+node db/seed.js
+echo "==> Done!"
