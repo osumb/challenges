@@ -1,5 +1,5 @@
 /* eslint-disable no-undef */
-const { sendChallengeListEmail } = require('../jobs');
+const { sendChallengeListEmail } = require('../jobs/utils');
 const { testData } = require('../spec/fixtures');
 
 const { id } = testData.testPerformance;

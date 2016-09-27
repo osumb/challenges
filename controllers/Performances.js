@@ -1,7 +1,7 @@
 const models = require('../models');
 const schedule = require('node-schedule');
 const { logger } = require('../utils');
-const { sendChallengeListEmail, createEmptyResults } = require('../jobs');
+const { sendChallengeListEmail, createEmptyResults } = require('../jobs/utils');
 
 const Performance = models.Performance;
 
