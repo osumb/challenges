@@ -1,6 +1,6 @@
 const { db } = require('../utils');
 
-const attributes = ['id', 'name', 'openAt', 'closeAt', 'performDate'];
+const modelAttributes = ['closeAt', 'id', 'list_exported', 'name', 'openAt', 'performDate'];
 
 let cachedCurrentPerformance;
 
@@ -14,8 +14,8 @@ class Performance {
     this._performDate = new Date(performDate);
   }
 
-  static get Attributes() {
-    return attributes;
+  static get attributes() {
+    return modelAttributes;
   }
 
   static get idName() {
@@ -61,6 +61,25 @@ class Performance {
       cachedCurrentPerformance = currentPerformance;
       return currentPerformance;
     });
+  }
+
+  static findForListExporting() {
+    const sql = 'SELECT * from performances WHERE not list_exported AND closeat < now() ORDER BY id asc';
+
+    return db.query(sql, [], instanceFromRowPerformance);
+  }
+
+  static update(attributes) {
+    const id = attributes.id;
+
+    if (typeof id === 'undefined') {
+      return Promise.reject(new Error('No id provided with attributes'));
+    }
+
+    delete attributes.id;
+    const { sql, values } = db.queryBuilder(Performance, attributes, { statement: 'UPDATE', id });
+
+    return db.query(sql, values);
   }
 
   get closeAt() {
