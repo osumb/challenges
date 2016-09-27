@@ -1,7 +1,5 @@
 const models = require('../models');
-const schedule = require('node-schedule');
 const { logger } = require('../utils');
-const { sendChallengeListEmail, createEmptyResults } = require('../jobs/utils');
 
 const Performance = models.Performance;
 
@@ -11,13 +9,7 @@ function PerformanceController() {
     const { closeAt, performanceName, performanceDate, openAt } = req.body;
 
     Performance.create(performanceName, performanceDate, openAt, closeAt)
-    .then(([performance]) => {
-      const minutesMultiplier = 60000;
-
-      schedule.scheduleJob(new Date(performance.closeAt.getTime() + 5 * minutesMultiplier), () => {
-        sendChallengeListEmail.sendChallengeListEmail(performance.id);
-        createEmptyResults(performance.id);
-      });
+    .then(() => {
       res.json({ success: true });
     })
     .catch(err => {
