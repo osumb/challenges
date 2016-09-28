@@ -9,4 +9,4 @@ new CronJob({
   onTick: emailChallengeList,
   start: true,
   timeZone: 'Etc/UTC'
-}, emailChallengeList);
+});
