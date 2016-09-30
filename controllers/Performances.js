@@ -18,18 +18,25 @@ function PerformanceController() {
     });
   };
 
+  this.index = (req, res) => {
+    Performance.findAll('MMMM Do, h:mm:ss a')
+    .then((performances) => {
+      res.render('performances/index', { user: req.user, performances: performances.map((performance) => performance.toJSON()) });
+    })
+    .catch((err) => {
+      logger.errorLog('Performances.index', err);
+      res.render('static-pages/error', { user: req.user });
+    });
+  };
+
   this.new = (req, res) => {
     res.render('performances/new', { user: req.user });
   };
 
-  this.showAll = (req, res) => {
-    Performance.findAll('MMMM Do, h:mm:ss a')
-    .then((performances) => res.json(performances))
-    .catch((err) => {
-      logger.errorLog('Performances.showAll', err);
-      res.render('static-pages/error', { user: req.user });
-    });
+  this.update = ({ body }, res) => {
+
   };
+
 }
 
 module.exports = PerformanceController;
