@@ -6,8 +6,9 @@ let cachedCurrentPerformance;
 
 class Performance {
 
-  constructor(id, name, openAt, closeAt, performDate) {
+  constructor(id, listExported, name, openAt, closeAt, performDate) {
     this._id = id;
+    this._listExported = listExported;
     this._name = name;
     this._openAt = new Date(openAt);
     this._closeAt = new Date(closeAt);
@@ -90,12 +91,20 @@ class Performance {
     return this._id;
   }
 
+  get listExported() {
+    return this._listExported;
+  }
+
   get name() {
     return this._name;
   }
 
   get openAt() {
     return this._openAt;
+  }
+
+  get performDate() {
+    return this._performDate;
   }
 
   inPerformanceWindow() {
@@ -115,10 +124,10 @@ class Performance {
 
 }
 
-const instanceFromRowPerformance = ({ id, name, openat, closeat, performdate }) =>
-  new Performance(id, name, openat, closeat, performdate);
+const instanceFromRowPerformance = ({ id, list_exported, name, openat, closeat, performdate }) =>
+  new Performance(id, list_exported, name, openat, closeat, performdate);
 
 const instanceFromRowPerformanceWithoutId = (name, openAt, closeAt, performDate) =>
-  ({ id }) => new Performance(id, name, openAt, closeAt, performDate);
+  ({ id }) => new Performance(id, false, name, openAt, closeAt, performDate);
 
 module.exports = Performance;
