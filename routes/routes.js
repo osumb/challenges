@@ -27,9 +27,10 @@ router.setup = (app) => {
   app.post('/performances/challenge', ensureAuthenticated, Challenges.create);
 
   //Performance Controller
-  app.get('/performances', ensureAuthenticated, Performances.showAll);
+  app.get('/performances', ensureAuthenticated, Performances.index);
   app.get('/performances/new', ensureAdmin, Performances.new);
   app.post('/performances/create', ensureAdmin, Performances.create);
+  app.put('/performances', ensureAdmin, Performances.update);
 
   //Results Controller
   app.get('/performances/results/evaluate', ensureEvalAbility, Results.showForEvaluation);
