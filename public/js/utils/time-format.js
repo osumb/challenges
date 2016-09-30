@@ -6,7 +6,6 @@ module.exports = (classNames, formatString) => {
   elements.forEach((element) => {
     Array.from(element).forEach((e) => {
       if (e) {
-        console.log(e.innerHTML);
         e.innerHTML = moment(e.innerHTML).format(formatString);
       }
     });
