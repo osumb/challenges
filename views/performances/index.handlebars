@@ -1,27 +1,27 @@
 <div class="Performances">
-  <h1>Edit Performances</h1>
+  <h1>Performances</h1>
   <div class="Performances-wrapper">
     {{#each performances}}
     <div class="Performances-edit">
       <div class="Performance-editField">
         <h2 class="Performance-editName">{{this.name}}</h2>
-        <button class="Performance-editNameButton ChallengesButton">Edit</button>
+        <!-- <button class="Performance-editNameButton ChallengesButton">Edit</button> -->
       </div>
       <div class="Performance-editField">
         <h2 class="Performance-editOpenAt">{{this.openAt}}</h2>
-        <button class="Performance-editOpenAtButton ChallengesButton">Edit</button>
+        <!-- <button class="Performance-editOpenAtButton ChallengesButton">Edit</button> -->
       </div>
       <div class="Performance-editField">
         <h2 class="Performance-editCloseAt">{{this.closeAt}}</h2>
-        <button class="Performance-editCloseAtButton ChallengesButton">Edit</button>
+        <!-- <button class="Performance-editCloseAtButton ChallengesButton">Edit</button> -->
       </div>
       <div class="Performance-editField">
         {{#if this.listExported}}
           <h3 class="Performance-editListExported">Challenge Email Already Sent</h3>
-          <button class="Performance-editListExportedButton ChallengesButton">Send Again</button>
+          <button class="Performance-editListExportedButton {{this.id}} ChallengesButton">Send Again</button>
         {{else}}
           <h3 class="Performance-editListExported">Challenge List Not Sent Yet</h3>
-          <button class="Performance-editListExportedButton ChallengesButton">Send Anyway</button>
+          <button class="Performance-editListExportedButton {{this.id}} ChallengesButton">Send Anyway</button>
         {{/if}}
       </div>
     </div>
