@@ -25,12 +25,13 @@ router.setup = (app) => {
   //Challenges Controller
   app.get('/performances/challenges/new', ensureAuthenticated, Challenges.new);
   app.post('/performances/challenge', ensureAuthenticated, Challenges.create);
+  app.post('/emailList', ensureAdmin, Challenges.emailList);
 
   //Performance Controller
   app.get('/performances', ensureAuthenticated, Performances.index);
   app.get('/performances/new', ensureAdmin, Performances.new);
   app.post('/performances/create', ensureAdmin, Performances.create);
-  app.put('/performances', ensureAdmin, Performances.update);
+  // app.put('/performances', ensureAdmin, Performances.update);
 
   //Results Controller
   app.get('/performances/results/evaluate', ensureEvalAbility, Results.showForEvaluation);
@@ -57,6 +58,7 @@ router.setup = (app) => {
   app.post('/users/manage/close', ensureAdmin, Users.closeSpot);
   app.put('/users', ensureAdmin, Users.update);
   app.put('/users/password', ensureAuthenticated, Users.changePassword);
+
 };
 
 module.exports = router;
