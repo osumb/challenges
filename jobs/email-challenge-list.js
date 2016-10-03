@@ -4,7 +4,7 @@ const { sendChallengeListEmail, createEmptyResults } = require('./utils');
 
 module.exports = () => {
   logger.jobsLog('Email Challenge List Check');
-  Performance.findForListExporting()
+  return Performance.findForListExporting()
     .then(([performance]) => {
       if (!performance) {
         logger.jobsLog('Email Challenge List Check: no email to send');
