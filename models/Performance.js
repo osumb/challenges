@@ -46,7 +46,7 @@ class Performance {
   }
 
   static findAll() {
-    const sql = 'SELECT * FROM performances';
+    const sql = 'SELECT * FROM performances ORDER BY id';
 
     return db.query(sql, [], instanceFromRowPerformance);
   }
@@ -115,6 +115,7 @@ class Performance {
     return {
       closeAt: this._closeAt.toISOString(),
       id: this._id,
+      listExported: this._listExported,
       name: this._name,
       openAt: this._openAt.toISOString(),
       performDate: this._performDate.toISOString(),
