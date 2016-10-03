@@ -33,10 +33,6 @@ function PerformanceController() {
     res.render('performances/new', { user: req.user });
   };
 
-  this.update = ({ body }, res) => {
-
-  };
-
 }
 
 module.exports = PerformanceController;
