@@ -1,4 +1,5 @@
 const email = require('../utils').email;
+const emailChallengeList = require('../jobs/email-challenge-list.js');
 const { logger } = require('../utils');
 const models = require('../models');
 const Challenge = models.Challenge;
@@ -32,6 +33,15 @@ function ChallengersController() {
               logger.errorLog('Challenges.create', err);
               res.status(400).send(err);
             });
+  };
+
+  this.emailList = ({ body }, res) => {
+    emailChallengeList(body.performanceId)
+    .then(() => res.json({ success: true }))
+    .catch((err) => {
+      logger.errorLog('Challenges.emailList', err);
+      res.status(500).send(err);
+    });
   };
 
   this.new = (req, res) => {
