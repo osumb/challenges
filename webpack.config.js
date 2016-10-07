@@ -1,43 +1,90 @@
-'use strict';
-
-var ExtractTextPlugin = require('extract-text-webpack-plugin');
-var path = require('path');
-var webpack = require('webpack');
+const autoprefixer = require('autoprefixer');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const path = require('path');
+const webpack = require('webpack');
 
 module.exports = {
-  context: path.join(__dirname, 'public'),
-  entry: './index.js',
-
-  output: {
-    path: path.resolve(__dirname, 'dist'),
-    filename: 'bundle.js'
+  debug: true,
+  devtool: 'eval',
+  noInfo: true,
+  resolve: {
+    extensions: ['', '.js', '.jsx', '.json'],
   },
-
+  entry: [
+    path.resolve(__dirname, './public/index')
+  ],
+  target: 'web',
+  output: {
+    path: path.resolve(__dirname, './dist'),
+    publicPath: '/',
+    filename: 'bundle.js',
+  },
   module: {
     loaders: [
       {
-        test: /\.s?css$/,
-        loader: ExtractTextPlugin.extract('style', 'css', 'autoprefixer', 'sass')
+        test: /\.jsx?$/,
+        exclude: /node_modules/,
+        loader: 'babel',
+        babelrc: false,
+        query: {
+          cacheDirectory: true,
+          plugins: ['transform-runtime'],
+          presets: ['react', 'latest', 'stage-0'],
+        },
       },
       {
-        test: /\.js$/,
-        exclude: /(node_modules)/,
-        loader: 'babel',
-        query: {
-          presets: ['es2015']
-        }
-      }
-    ]
+        test: /\.json$/,
+        loader: 'json',
+      },
+      {
+        test: /\.eot(\?v=\d+.\d+.\d+)?$/,
+        loader: 'file',
+      },
+      {
+        test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/,
+        loader: 'url?limit=10000&mimetype=application/font-woff',
+      },
+      {
+        test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/,
+        loader: 'url?limit=10000&mimetype=application/octet-stream',
+      },
+      {
+        test: /\.svg(\?v=\d+\.\d+\.\d+)?$/,
+        loader: 'url?limit=10000&mimetype=image/svg+xml',
+      },
+      {
+        test: /\.(jpe?g|png|gif)$/i,
+        loader: 'file?name=[name].[ext]',
+      },
+      {
+        test: /\.ico$/,
+        loader: 'file?name=[name].[ext]',
+      },
+      {
+        test: /(\.css|\.scss)$/,
+        loaders: ['style', 'css', 'postcss', 'sass'],
+      },
+    ],
   },
-
-  plugins: [
-    new ExtractTextPlugin('style.css'),
-    new webpack.optimize.UglifyJsPlugin({
-      compress: { warnings: false}
+  postcss: () => [
+    autoprefixer({
+      browsers: ['last 2 versions', 'IE > 10'],
     }),
-    new webpack.ProvidePlugin({
-      $: 'jquery',
-      jQuery: 'jquery'
-    })
-  ]
+  ],
+  plugins: [
+    new webpack.DefinePlugin({
+      'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
+      isDev: process.env.NODE_ENV === 'development',
+    }),
+    new webpack.HotModuleReplacementPlugin(),
+    new webpack.NoErrorsPlugin(),
+    new HtmlWebpackPlugin({
+      template: path.resolve(__dirname, './public/index.html'),
+      minify: {
+        removeComments: true,
+        collapseWhitespace: true,
+      },
+      inject: true,
+    }),
+  ],
 };
