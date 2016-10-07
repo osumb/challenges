@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router(); // eslint-disable-line new-cap
+const path = require('path');
 
 const auth = require('../auth');
 const controllers = require('../controllers');
@@ -18,7 +19,7 @@ const Challenges = new controllers.Challenges();
 const Performances = new controllers.Performances();
 const Results = new controllers.Results();
 const Sessions = new controllers.Sessions();
-const StaticPages = new controllers.StaticPages();
+// const StaticPages = new controllers.StaticPages();
 const Users = new controllers.Users();
 
 router.setup = (app) => {
@@ -41,7 +42,7 @@ router.setup = (app) => {
   app.post('/results/approve', ensureAdmin, Results.approve);
 
   //Static Pages Controllers
-  app.get('/', StaticPages.home);
+  app.get('/', (res, response) => response.sendFile(path.resolve(__dirname, '../dist/index.html')));
 
   //Sessions Controller
   app.post('/login', passport.authenticate('local', { failureRedirect: '/?auth=false' }), Sessions.redirect);

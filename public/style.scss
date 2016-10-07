@@ -93,22 +93,3 @@ textarea {
 .OddRow {
   background-color: rgba(191, 191, 191, 0.3);
 }
-
-@import './stylesheets/body.scss';
-@import './stylesheets/login.scss';
-@import './stylesheets/navbar.scss';
-@import './stylesheets/header.scss';
-@import './stylesheets/challenges/new.scss';
-@import './stylesheets/partials/challenge-window.scss';
-@import './stylesheets/performances/index.scss';
-@import './stylesheets/performances/new.scss';
-@import './stylesheets/results/approve.scss';
-@import './stylesheets/results/evaluation.scss';
-@import './stylesheets/results/result-table.scss';
-@import './stylesheets/users/index.scss';
-@import './stylesheets/users/individual-manage.scss';
-@import './stylesheets/users/settings.scss';
-@import './stylesheets/users/show.scss';
-@import './stylesheets/users/show-admin.scss';
-@import './stylesheets/users/search.scss';
-@import './stylesheets/static-pages/no-auth.scss';
