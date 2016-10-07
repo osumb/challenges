@@ -4,6 +4,7 @@ import { BrowserRouter } from 'react-router';
 
 import './style.scss';
 import Header from './components/header';
+import LoginForm from './components/login-form';
 import Navbar from './components/navbar';
 import { auth } from './utils';
 
@@ -16,7 +17,10 @@ const App = () => (
         <div>
           <Header />
           <Navbar user={user} />
-          <div>Yo</div>
+          {user ?
+            <div>Hey {user.name}!</div> :
+            <LoginForm />
+          }
         </div>
       )
     }
