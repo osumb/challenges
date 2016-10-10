@@ -1,0 +1,30 @@
+@import '../style.scss';
+
+.LoginForm {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  width: 80%
+}
+
+.LoginForm-inputs {
+  display: flex;
+  flex-direction: row;
+}
+
+.LoginForm-input {
+  padding: 0 2px 0 2px;
+
+  input {
+    font-size: 14px;
+  }
+}
+
+.LoginForm-inputs-label {
+  font-size: 20px;
+  padding-right: 4px;
+}
+
+.LoginForm-button {
+  @extend .ChallengesButton;
+}
