@@ -23,10 +23,10 @@
 .Dropdown-link {
   @extend .ChallengesLink;
   background-color: #bfbfbf;
-  color: white;
-  font-size: 16px;
+  color: $Challenges-dark-gray;
+  font-size: 14px;
   min-width: 100px;
-  padding: 4px 2px 0 2px;
+  padding: 4px 4px 0 4px;
 
   a {
     color: inherit;
