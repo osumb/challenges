@@ -4,8 +4,10 @@ import jwtDecode from 'jwt-decode';
 import { api } from '../utils';
 
 const LOCAL_STORE_STRING = 'userJWT';
-const NON_ADMIN_ROUTES = [
-
+const ADMIN_ROUTES = [
+  '/performances',
+  '/performances/new',
+  '/results'
 ];
 
 const authenticate = (nameNumber, password) =>
@@ -23,6 +25,6 @@ const logout = () => {
   localStorage.removeItem(LOCAL_STORE_STRING);
 };
 
-const userCanAccess = (pattern) => getUser().admin || NON_ADMIN_ROUTES.includes(pattern);
+const userCanAccess = (pattern) => getUser().admin || !ADMIN_ROUTES.includes(pattern);
 
 export default { authenticate, getUser, isAuthenticated, logout, userCanAccess };
