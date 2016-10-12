@@ -9,6 +9,41 @@
   height: 35px;
 }
 
+.Navbar-left {
+  align-items: center;
+  display: flex;
+  flex: 1;
+  flex-direction: row;
+  flex-wrap: nowrap;
+}
+
+.Navbar-right {
+  display: flex;
+  padding-right: 4px;
+}
+
 .Navbar-item {
   margin: 0 4px 0 4px;
+}
+
+.Navbar-home {
+  color: black;
+  font-weight: bold;
+  font-size: 18px;
+}
+
+.Navbar-logout:hover {
+  cursor: pointer;
+}
+
+.Navbar-settings {
+  @extend .ChallengesLink;
+  color: black;
+  padding-right: 4px;
+}
+
+@media (max-width: 414px){
+  .Navbar-home, .Navbar-settings, .Navbar-logout {
+    font-size: 12px;
+  }
 }
