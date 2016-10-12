@@ -6,30 +6,30 @@ const auth = require('../auth');
 const controllers = require('../controllers');
 
 const {
-  ensureAuthenticated,
   ensureAdmin,
-  ensureAuthAndNameNumberRoute,
   ensureEvalAbility,
-  ensureNotFirstLogin,
   ensureResultsIndexAbility
 } = auth;
-const passport = auth.passport;
 
+const Auth = controllers.Auth;
 const Challenges = new controllers.Challenges();
 const Performances = new controllers.Performances();
 const Results = new controllers.Results();
-const Sessions = new controllers.Sessions();
-// const StaticPages = new controllers.StaticPages();
 const Users = new controllers.Users();
 
 router.setup = (app) => {
+
+  app.get('/test', ensureAdmin, (req, res) => res.json({ success: true }));
+
+  //Auth Controller
+  app.get('/token', Auth.getToken);
   //Challenges Controller
-  app.get('/performances/challenges/new', ensureAuthenticated, Challenges.new);
-  app.post('/performances/challenge', ensureAuthenticated, Challenges.create);
+  app.get('/performances/challenges/new', Challenges.new);
+  app.post('/performances/challenge', Challenges.create);
   app.post('/emailList', ensureAdmin, Challenges.emailList);
 
   //Performance Controller
-  app.get('/performances', ensureAuthenticated, Performances.index);
+  app.get('/performances', ensureAdmin, Performances.index);
   app.get('/performances/new', ensureAdmin, Performances.new);
   app.post('/performances/create', ensureAdmin, Performances.create);
   // app.put('/performances', ensureAdmin, Performances.update);
@@ -44,21 +44,17 @@ router.setup = (app) => {
   //Static Pages Controllers
   app.get('/', (res, response) => response.sendFile(path.resolve(__dirname, '../dist/index.html')));
 
-  //Sessions Controller
-  app.post('/login', passport.authenticate('local', { failureRedirect: '/?auth=false' }), Sessions.redirect);
-  app.get('/logout', Sessions.logout);
-
   //Users Controller
   app.get('/users', ensureAdmin, Users.indexMembers);
-  app.get('/:nameNumber', [ensureAuthAndNameNumberRoute, ensureNotFirstLogin], Users.show);
-  app.get('/:nameNumber/settings', ensureAuthAndNameNumberRoute, Users.settings);
+  app.get('/:nameNumber', ensureAdmin, Users.show);
+  app.get('/:nameNumber/settings', Users.settings);
   app.get('/users/manage', ensureAdmin, Users.showManage);
   app.get('/users/manage/:nameNumber', ensureAdmin, Users.showIndividualManage);
   app.get('/users/search', ensureAdmin, Users.search);
   app.post('/users/manage', ensureAdmin, Users.manage);
   app.post('/users/manage/close', ensureAdmin, Users.closeSpot);
   app.put('/users', ensureAdmin, Users.update);
-  app.put('/users/password', ensureAuthenticated, Users.changePassword);
+  app.put('/users/password', Users.changePassword);
 
 };
 

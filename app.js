@@ -1,12 +1,11 @@
 const bodyParser = require('body-parser');
 const express = require('express');
 const favicon = require('serve-favicon');
-const jwtDecode = require('jwt-decode');
 const logger = require('morgan');
 const path = require('path');
 
-const { getToken, verifyToken } = require('./auth');
-const routes = require('./routes/routes');
+const { getToken, getUserFromToken, verifyToken } = require('./auth');
+const router = require('./routes/routes');
 
 const app = express();
 
@@ -20,26 +19,22 @@ app.use((req, res, next) => {
 
   verifyToken(token)
     .then((verified) => {
-      if (verified) req.user = jwtDecode(token);
+      if (verified) req.user = getUserFromToken(token);
       if (!verified) req.user = {};
       next();
     })
     .catch((err) => {
       console.error(err);
+      req.user = {};
       next();
     });
 });
-
 app.use('/public/images', express.static(path.join(__dirname, '/public/images')));
 
-//routing
-app.use('/', routes);
+app.use('/api', router);
 
-routes.setup(app);
-
-// catch 404 and forward to error handler
 app.use((req, res) => {
-  res.status(404).send();
+  res.sendFile(path.resolve(__dirname, './dist/index.html'));
 });
 
 exports.app = app;
