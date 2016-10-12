@@ -9,6 +9,7 @@ class Login extends Component {
   constructor() {
     super();
     this.state = {
+      failed: false,
       redirectToRefferrer: false
     };
     this.handleClick = this.handleClick.bind(this);
@@ -24,6 +25,12 @@ class Login extends Component {
       this.setState({
         ...this.state,
         redirectToRefferrer: true
+      });
+    })
+    .catch(() => {
+      this.setState({
+        ...this.state,
+        failed: true
       });
     });
   }
@@ -45,6 +52,7 @@ class Login extends Component {
 
     return (
       <div className="Login">
+        {this.state.failed && <div className="Login-failed">Sorry, the username or password is incorrect</div>}
         <div className="Login-inputs">
           <div className="Login-input">
             <label className="Login-inputs-label">Username</label>
