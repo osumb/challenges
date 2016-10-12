@@ -2,9 +2,9 @@ import React, { Component, PropTypes } from 'react';
 import { Redirect } from 'react-router';
 
 import { auth, keyCodes } from '../utils';
-import './login-form.scss';
+import './login.scss';
 
-class LoginForm extends Component {
+class Login extends Component {
 
   constructor() {
     super();
@@ -44,10 +44,10 @@ class LoginForm extends Component {
     }
 
     return (
-      <div className="LoginForm">
-        <div className="LoginForm-inputs">
-          <div className="LoginForm-input">
-            <label className="LoginForm-inputs-label">Username</label>
+      <div className="Login">
+        <div className="Login-inputs">
+          <div className="Login-input">
+            <label className="Login-inputs-label">Username</label>
             <input
               onKeyUp={this.handleEnterKey}
               placeholder="name.#"
@@ -56,8 +56,8 @@ class LoginForm extends Component {
               value={this.state.nameNumber}
             />
           </div>
-          <div className="LoginForm-input">
-            <label className="LoginForm-inputs-label">Password</label>
+          <div className="Login-input">
+            <label className="Login-inputs-label">Password</label>
             <input
               onKeyUp={this.handleEnterKey}
               placeholder="password"
@@ -66,11 +66,11 @@ class LoginForm extends Component {
               value={this.state.password}
             />
           </div>
-          <div className="LoginForm-input">
-            <button className="LoginForm-button" onClick={this.handleClick}>Submit</button>
+          <div className="Login-input">
+            <button className="Login-button" onClick={this.handleClick}>Submit</button>
           </div>
         </div>
-        <div className="LoginForm-forgot">
+        <div className="Login-forgot">
           <p>Forgot your password?</p>
         </div>
       </div>
@@ -78,10 +78,10 @@ class LoginForm extends Component {
   }
 }
 
-LoginForm.propTypes = {
+Login.propTypes = {
   location: PropTypes.shape({
     state: PropTypes.string
   })
 };
 
-export default LoginForm;
+export default Login;

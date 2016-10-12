@@ -1,18 +1,18 @@
 @import '../style.scss';
 
-.LoginForm {
+.Login {
   align-items: center;
   display: flex;
   flex-direction: column;
   width: 80%
 }
 
-.LoginForm-inputs {
+.Login-inputs {
   display: flex;
   flex-direction: row;
 }
 
-.LoginForm-input {
+.Login-input {
   padding: 0 2px 0 2px;
 
   input {
@@ -20,11 +20,11 @@
   }
 }
 
-.LoginForm-inputs-label {
+.Login-inputs-label {
   font-size: 20px;
   padding-right: 4px;
 }
 
-.LoginForm-button {
+.Login-button {
   @extend .ChallengesButton;
 }
