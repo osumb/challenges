@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { Link } from 'react-router';
 
 import './dropdown.scss';
+import { keyCodes } from '../utils';
 
 class Dropdown extends Component {
 
@@ -11,16 +12,19 @@ class Dropdown extends Component {
       closed: true
     };
     this.handleClick = this.handleClick.bind(this);
+    this.handleKeyClick = this.handleKeyClick.bind(this);
     this.handleOutsideClick = this.handleOutsideClick.bind(this);
   }
 
   componentDidMount() {
     window.addEventListener('click', this.handleOutsideClick);
+    window.addEventListener('keyup', this.handleKeyClick);
     window.addEventListener('touchend', this.handleOutsideClick);
   }
 
   componentWillUnMount() {
     window.removeEventListener('click', this.handleOutsideClick);
+    window.removeEventListener('keyup', this.handleKeyClick);
     window.removeEventListener('touchend', this.handleOutsideClick);
   }
 
@@ -28,6 +32,14 @@ class Dropdown extends Component {
     this.setState({
       closed: !this.state.closed
     });
+  }
+
+  handleKeyClick({ keyCode }) {
+    if (keyCode === keyCodes.ESC) {
+      this.setState({
+        closed: true
+      });
+    }
   }
 
   handleOutsideClick(e) {
