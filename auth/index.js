@@ -1,5 +1,6 @@
 /* eslint-disable callback-return, no-unused-expressions */
 const jwt = require('jsonwebtoken');
+const jwtDecode = require('jwt-decode');
 
 const config = require('../config');
 
@@ -26,9 +27,13 @@ const getToken = (req) => {
   return null;
 };
 
+const getUserFromToken = (token) => {
+  return token && jwtDecode(token);
+};
+
 const verifyToken = (token) =>
   new Promise((resolve, reject) => {
-    if (!token) reject();
+    if (!token) resolve(false);
     jwt.verify(token, config.auth.secret, (err, verified) => {
       if (err) reject(err);
       resolve(verified);
@@ -40,5 +45,6 @@ module.exports = {
   ensureEvalAbility,
   ensureResultsIndexAbility,
   getToken,
+  getUserFromToken,
   verifyToken
 };
