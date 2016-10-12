@@ -8,7 +8,7 @@ import Header from './components/header';
 import Login from './components/login';
 import Navbar from './components/navbar';
 import NotFound from './components/not-found';
-import Test from './components/test';
+import Profile from './components/profile';
 import { auth } from './utils';
 
 const renderBasedOnAuth = (Component, pattern, props) => {
@@ -44,7 +44,7 @@ const App = () => {
             <Header />
             <Navbar onLogout={handleLogout.bind(null, router)} />
             <div className="Main">
-              <MatchWhenAuthorized exactly pattern="/" component={Test} />
+              <MatchWhenAuthorized exactly pattern="/" component={Profile} />
               <Match pattern="/login" component={Login} />
               <Miss component={NotFound} />
             </div>
