@@ -1,5 +1,7 @@
 import React, { Component, PropTypes } from 'react';
+import { Redirect } from 'react-router';
 
+import { auth, keyCodes } from '../utils';
 import './login-form.scss';
 
 class LoginForm extends Component {
@@ -7,41 +9,49 @@ class LoginForm extends Component {
   constructor() {
     super();
     this.state = {
-      nameNumber: '',
-      password: ''
+      redirectToRefferrer: false
     };
     this.handleClick = this.handleClick.bind(this);
-    this.handleNameNumberChange = this.handleNameNumberChange.bind(this);
-    this.handlePasswordChange = this.handlePasswordChange.bind(this);
+    this.handleEnterKey = this.handleEnterKey.bind(this);
+    this.login = this.login.bind(this);
+  }
+
+  login() {
+    const { nameNumber, password } = this.refs;
+
+    auth.authenticate(nameNumber.value, password.value)
+    .then(() => {
+      this.setState({
+        ...this.state,
+        redirectToRefferrer: true
+      });
+    });
   }
 
   handleClick() {
-    this.props.onLogin(this.state.nameNumber, this.state.password);
+    this.login();
   }
 
-  handleNameNumberChange({ target }) {
-    this.setState({
-      ...this.state,
-      nameNumber: target.value
-    });
-  }
-
-  handlePasswordChange({ target }) {
-    this.setState({
-      ...this.state,
-      password: target.value
-    });
+  handleEnterKey({ keyCode }) {
+    if (keyCode === keyCodes.ENTER) {
+      this.login();
+    }
   }
 
   render() {
+    if (this.state.redirectToRefferrer) {
+      return <Redirect to={(this.props.location && this.props.location.state) || '/'} />;
+    }
+
     return (
       <div className="LoginForm">
         <div className="LoginForm-inputs">
           <div className="LoginForm-input">
             <label className="LoginForm-inputs-label">Username</label>
             <input
-              onChange={this.handleNameNumberChange}
+              onKeyUp={this.handleEnterKey}
               placeholder="name.#"
+              ref="nameNumber"
               type="text"
               value={this.state.nameNumber}
             />
@@ -49,8 +59,9 @@ class LoginForm extends Component {
           <div className="LoginForm-input">
             <label className="LoginForm-inputs-label">Password</label>
             <input
-              onChange={this.handlePasswordChange}
+              onKeyUp={this.handleEnterKey}
               placeholder="password"
+              ref="password"
               type="password"
               value={this.state.password}
             />
@@ -68,7 +79,9 @@ class LoginForm extends Component {
 }
 
 LoginForm.propTypes = {
-  onLogin: PropTypes.func.isRequired
+  location: PropTypes.shape({
+    state: PropTypes.string
+  })
 };
 
 export default LoginForm;
