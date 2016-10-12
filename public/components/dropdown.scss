@@ -32,3 +32,14 @@
     color: inherit;
   }
 }
+
+@media (max-width: 414px){
+  .Dropdown-link {
+    font-size: 10px;
+  }
+
+  .Dropdown-header {
+    font-weight: normal;
+    font-size: 11px;
+  }
+}

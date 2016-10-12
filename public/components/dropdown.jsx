@@ -46,7 +46,7 @@ class Dropdown extends Component {
     const area = this.refs.dropdown;
     const { target } = e;
 
-    if (!area.contains(target)) {
+    if (area && !area.contains(target)) {
       this.setState({ closed: true });
     }
   }
