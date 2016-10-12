@@ -1,5 +1,11 @@
+@import '../style.scss';
+
 .Dropdown-header {
   font-weight: bold;
+}
+
+.Dropdown-header:hover {
+  cursor: pointer;
 }
 
 .Dropdown-links {
@@ -9,10 +15,18 @@
   position: absolute;
 }
 
+.Dropdown-link:first-child {
+  border-top: 2px solid $Challenges-dark-gray;
+  margin-top: 7px;
+}
+
 .Dropdown-link {
+  @extend .ChallengesLink;
   background-color: #bfbfbf;
   color: white;
-  padding-top: 4px;
+  font-size: 16px;
+  min-width: 100px;
+  padding: 4px 2px 0 2px;
 
   a {
     color: inherit;

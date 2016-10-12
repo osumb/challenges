@@ -53,7 +53,9 @@ class Dropdown extends Component {
 
   renderHeader() {
     return (
-      <div className="Dropdown-header" onClick={this.handleClick}>{this.props.name}</div>
+      <div className="Dropdown-header" onClick={this.handleClick}>
+        {this.props.name}{'  '}<i className="fa fa-angle-down" aria-hidden="true" />
+      </div>
     );
   }
 

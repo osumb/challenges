@@ -100,3 +100,9 @@ textarea {
 .OddRow {
   background-color: rgba(191, 191, 191, 0.3);
 }
+
+.ChallengesLink {
+  :hover {
+    cursor: pointer;
+  }
+}
