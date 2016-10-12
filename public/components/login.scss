@@ -28,3 +28,10 @@
 .Login-button {
   @extend .ChallengesButton;
 }
+
+@media (max-width: 415px) {
+  .Login-inputs {
+    display: flex;
+    flex-direction: column;
+  }
+}

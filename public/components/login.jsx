@@ -49,6 +49,8 @@ class Login extends Component {
           <div className="Login-input">
             <label className="Login-inputs-label">Username</label>
             <input
+              autoCorrect="off"
+              autoCapitalize="off"
               onKeyUp={this.handleEnterKey}
               placeholder="name.#"
               ref="nameNumber"
@@ -59,6 +61,8 @@ class Login extends Component {
           <div className="Login-input">
             <label className="Login-inputs-label">Password</label>
             <input
+              autoCorrect="off"
+              autoCapitalize="off"
               onKeyUp={this.handleEnterKey}
               placeholder="password"
               ref="password"
