@@ -14,6 +14,7 @@ const NotFound = () => (
         <img className="NotFound-image--mobile" src="/public/images/404.png" />
       }
     </Media>
+    <h2>Not Found</h2>
     <Link className="NotFound-link" to="/">Get me outta here!</Link>
   </div>
 );
