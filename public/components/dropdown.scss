@@ -1,0 +1,45 @@
+@import '../style.scss';
+
+.Dropdown-header {
+  font-weight: bold;
+}
+
+.Dropdown-header:hover {
+  cursor: pointer;
+}
+
+.Dropdown-links {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  position: absolute;
+}
+
+.Dropdown-link:first-child {
+  border-top: 2px solid $Challenges-dark-gray;
+  margin-top: 7px;
+}
+
+.Dropdown-link {
+  @extend .ChallengesLink;
+  background-color: #bfbfbf;
+  color: $Challenges-dark-gray;
+  font-size: 14px;
+  min-width: 100px;
+  padding: 4px 4px 0 4px;
+
+  a {
+    color: inherit;
+  }
+}
+
+@media (max-width: 414px){
+  .Dropdown-link {
+    font-size: 10px;
+  }
+
+  .Dropdown-header {
+    font-weight: normal;
+    font-size: 11px;
+  }
+}

@@ -1,3 +1,7 @@
+$Challenges-light-gray: #bfbfbf;
+$Challenges-dark-gray: #333333;
+$Challenges-red: #bb0000;
+
 * {
   box-sizing: border-box;
 }
@@ -61,9 +65,12 @@ textarea {
   align-self: center;
 }
 
-.Body {
+.Main {
+  align-items: center;
   display: flex;
   flex: 1;
+  flex-direction: column;
+  padding: 10px 5px 0 5px;
 }
 
 .ChallengesButton {
@@ -94,21 +101,8 @@ textarea {
   background-color: rgba(191, 191, 191, 0.3);
 }
 
-@import './stylesheets/body.scss';
-@import './stylesheets/login.scss';
-@import './stylesheets/navbar.scss';
-@import './stylesheets/header.scss';
-@import './stylesheets/challenges/new.scss';
-@import './stylesheets/partials/challenge-window.scss';
-@import './stylesheets/performances/index.scss';
-@import './stylesheets/performances/new.scss';
-@import './stylesheets/results/approve.scss';
-@import './stylesheets/results/evaluation.scss';
-@import './stylesheets/results/result-table.scss';
-@import './stylesheets/users/index.scss';
-@import './stylesheets/users/individual-manage.scss';
-@import './stylesheets/users/settings.scss';
-@import './stylesheets/users/show.scss';
-@import './stylesheets/users/show-admin.scss';
-@import './stylesheets/users/search.scss';
-@import './stylesheets/static-pages/no-auth.scss';
+.ChallengesLink {
+  :hover {
+    cursor: pointer;
+  }
+}

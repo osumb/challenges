@@ -5,60 +5,41 @@ const auth = require('../auth');
 const controllers = require('../controllers');
 
 const {
-  ensureAuthenticated,
   ensureAdmin,
-  ensureAuthAndNameNumberRoute,
-  ensureEvalAbility,
-  ensureNotFirstLogin,
-  ensureResultsIndexAbility
+  ensureEvalAbility
 } = auth;
-const passport = auth.passport;
 
+const Auth = controllers.Auth;
 const Challenges = new controllers.Challenges();
 const Performances = new controllers.Performances();
 const Results = new controllers.Results();
-const Sessions = new controllers.Sessions();
-const StaticPages = new controllers.StaticPages();
 const Users = new controllers.Users();
 
-router.setup = (app) => {
-  //Challenges Controller
-  app.get('/performances/challenges/new', ensureAuthenticated, Challenges.new);
-  app.post('/performances/challenge', ensureAuthenticated, Challenges.create);
-  app.post('/emailList', ensureAdmin, Challenges.emailList);
+router.get('/test', ensureAdmin, (req, res) => res.json({ success: true }));
 
-  //Performance Controller
-  app.get('/performances', ensureAuthenticated, Performances.index);
-  app.get('/performances/new', ensureAdmin, Performances.new);
-  app.post('/performances/create', ensureAdmin, Performances.create);
-  // app.put('/performances', ensureAdmin, Performances.update);
+//Auth Controller
+router.get('/token', Auth.getToken);
 
-  //Results Controller
-  app.get('/performances/results/evaluate', ensureEvalAbility, Results.showForEvaluation);
-  app.get('/performances/results/toapprove', ensureAdmin, Results.getForApproval);
-  app.get('/results', ensureResultsIndexAbility, Results.index);
-  app.post('/performances/results/evaulate', ensureEvalAbility, Results.evaluate);
-  app.post('/results/approve', ensureAdmin, Results.approve);
+//Challenges Controller
+router.post('/performances/challenge', Challenges.create);
+router.post('/emailList', ensureAdmin, Challenges.emailList);
 
-  //Static Pages Controllers
-  app.get('/', StaticPages.home);
+//Performance Controller
+router.post('/performances/create', ensureAdmin, Performances.create);
+// router.put('/performances', ensureAdmin, Performances.update);
 
-  //Sessions Controller
-  app.post('/login', passport.authenticate('local', { failureRedirect: '/?auth=false' }), Sessions.redirect);
-  app.get('/logout', Sessions.logout);
+//Results Controller
+router.post('/performances/results/evaulate', ensureEvalAbility, Results.evaluate);
+router.post('/results/approve', ensureAdmin, Results.approve);
 
-  //Users Controller
-  app.get('/users', ensureAdmin, Users.indexMembers);
-  app.get('/:nameNumber', [ensureAuthAndNameNumberRoute, ensureNotFirstLogin], Users.show);
-  app.get('/:nameNumber/settings', ensureAuthAndNameNumberRoute, Users.settings);
-  app.get('/users/manage', ensureAdmin, Users.showManage);
-  app.get('/users/manage/:nameNumber', ensureAdmin, Users.showIndividualManage);
-  app.get('/users/search', ensureAdmin, Users.search);
-  app.post('/users/manage', ensureAdmin, Users.manage);
-  app.post('/users/manage/close', ensureAdmin, Users.closeSpot);
-  app.put('/users', ensureAdmin, Users.update);
-  app.put('/users/password', ensureAuthenticated, Users.changePassword);
-
-};
+//Users Controller
+router.get('/:nameNumber', ensureAdmin, Users.show);
+router.get('/users/manage', ensureAdmin, Users.showManage);
+router.get('/users/manage/:nameNumber', ensureAdmin, Users.showIndividualManage);
+router.get('/users/search', ensureAdmin, Users.search);
+router.post('/users/manage', ensureAdmin, Users.manage);
+router.post('/users/manage/close', ensureAdmin, Users.closeSpot);
+router.put('/users', ensureAdmin, Users.update);
+router.put('/users/password', Users.changePassword);
 
 module.exports = router;

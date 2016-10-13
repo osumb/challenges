@@ -1,0 +1,37 @@
+@import '../style.scss';
+
+.Login {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  width: 80%
+}
+
+.Login-inputs {
+  display: flex;
+  flex-direction: row;
+}
+
+.Login-input {
+  padding: 0 2px 0 2px;
+
+  input {
+    font-size: 14px;
+  }
+}
+
+.Login-inputs-label {
+  font-size: 20px;
+  padding-right: 4px;
+}
+
+.Login-button {
+  @extend .ChallengesButton;
+}
+
+@media (max-width: 415px) {
+  .Login-inputs {
+    display: flex;
+    flex-direction: column;
+  }
+}

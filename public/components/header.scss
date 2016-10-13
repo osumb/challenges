@@ -1,6 +1,8 @@
+@import '../style.scss';
+
 .Header {
-  background-color: #333333;
-  border-bottom: 6px solid #bb0000;
+  background-color: $Challenges-dark-gray;
+  border-bottom: 6px solid $Challenges-red;
   display: flex;
   flex-wrap: nowrap;
   max-height: 70px;
@@ -14,6 +16,15 @@
   padding: 5px 5px 5px 0;
 }
 
+.Header-image--mobile {
+  height: 50px;
+  width: 100px;
+}
+
+.Header-link {
+  color: inherit;
+}
+
 .Header-title {
   display: flex;
   flex: 2;
@@ -22,22 +33,10 @@
 
 .Header-main {
   color: white;
-  margin: 0 0 10px 0;
+  margin: 10px 0 10px 0;
   padding: 5px 5px 0 5px;
 }
 
-@media (max-width: 900px) {
-  .Header-main span {
-    display: none;
-  }
-
-  .Header-main::after {
-    content: 'OSUMB Challenges';
-    font-size: 20px;
-  }
-
-  .Header-image {
-    height: 50px;
-    width: 100px;
-  }
+.Header-mobile {
+  font-size: 20px;
 }

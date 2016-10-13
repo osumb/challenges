@@ -7,6 +7,6 @@ set -e
 cd "$(dirname "$0")/.."
 
 echo "===> Webpack is gonna do it's thang"
-webpack
+npm run build
 
 node --use_strict ./bin/www
