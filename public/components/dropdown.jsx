@@ -22,7 +22,7 @@ class Dropdown extends Component {
     window.addEventListener('touchend', this.handleOutsideClick);
   }
 
-  componentWillUnMount() {
+  componentWillUnmount() {
     window.removeEventListener('click', this.handleOutsideClick);
     window.removeEventListener('keyup', this.handleKeyClick);
     window.removeEventListener('touchend', this.handleOutsideClick);
@@ -46,7 +46,7 @@ class Dropdown extends Component {
     const area = this.refs.dropdown;
     const { target } = e;
 
-    if (area && !area.contains(target)) {
+    if (!area.contains(target)) {
       this.setState({ closed: true });
     }
   }
