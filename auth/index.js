@@ -33,7 +33,9 @@ const getUserFromToken = (token) => {
 
 const verifyToken = (token) =>
   new Promise((resolve, reject) => {
-    if (!token) resolve(false);
+    if (!token) {
+      resolve(false);
+    }
     jwt.verify(token, config.auth.secret, (err, verified) => {
       if (err) reject(err);
       resolve(verified);

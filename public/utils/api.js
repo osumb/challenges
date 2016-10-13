@@ -1,10 +1,12 @@
 import 'whatwg-fetch';
 
+const authorization = localStorage.userJWT && `Bearer ${localStorage.userJWT}`;
+
 const request = (url, { method, body }) =>
   fetch(`/api${url}`, {
     headers: {
       Accept: 'application/json, text/html',
-      Authorization: `Bearer ${localStorage.userJWT}`
+      Authorization: authorization
     },
     method,
     body
