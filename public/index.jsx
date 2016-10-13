@@ -11,9 +11,9 @@ import NotFound from './components/not-found';
 import Profile from './components/profile';
 import { auth } from './utils';
 
-const renderBasedOnAuth = (Component, pattern, props) => {
+const renderBasedOnAuth = (Component, pattern, props, user) => {
   if (auth.isAuthenticated() && auth.userCanAccess(pattern)) {
-    return <Component />;
+    return <Component user={user} />;
   } else if (auth.isAuthenticated()) {
     return <NotFound />;
   } else {
@@ -33,8 +33,8 @@ const MatchWhenNotLoggedIn = ({ component: Component, pattern, ...rest }) => (
   }} />
 );
 
-const MatchWhenAuthorized = ({ component: Component, pattern, ...rest }) => (
-  <Match {...rest} pattern={pattern} render={props => (renderBasedOnAuth(Component, pattern, props))} />
+const MatchWhenAuthorized = ({ component: Component, pattern, user, ...rest }) => (
+  <Match {...rest} pattern={pattern} render={props => (renderBasedOnAuth(Component, pattern, props, user))} />
 );
 
 const handleLogout = (router) => {
@@ -42,24 +42,22 @@ const handleLogout = (router) => {
   router.transitionTo('/');
 };
 
-const App = () => {
-  return (
-    <BrowserRouter>
-      {
-        ({ router }) => (
-          <div className="App">
-            <Header />
-            <Navbar onLogout={handleLogout.bind(null, router)} />
-            <div className="Main">
-              <MatchWhenAuthorized exactly pattern="/" component={Profile} />
-              <MatchWhenNotLoggedIn pattern="/login" component={Login} />
-              <Miss component={NotFound} />
-            </div>
+const App = () => (
+  <BrowserRouter>
+    {
+      ({ router }) => (
+        <div className="App">
+          <Header />
+          <Navbar onLogout={handleLogout.bind(null, router)} user={auth.getUser()} />
+          <div className="Main">
+            <MatchWhenAuthorized exactly pattern="/" component={Profile} user={auth.getUser()} />
+            <MatchWhenNotLoggedIn pattern="/login" component={Login} />
+            <Miss component={NotFound} />
           </div>
-        )
-      }
-    </BrowserRouter>
-  );
-};
+        </div>
+      )
+    }
+  </BrowserRouter>
+);
 
 render(<App />, document.getElementById('app'));
