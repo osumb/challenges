@@ -8,6 +8,7 @@
   },
   "private": true,
   "scripts": {
+    "build": "NODE_ENV=production webpack --config webpack.config.production.js",
     "dev": "webpack && NODE_ENV=dev nodemon --use_strict ./bin/www",
     "lint": "eslint .",
     "start": "script/server",
@@ -66,6 +67,7 @@
     "serve-favicon": "~2.3.0",
     "style-loader": "^0.13.1",
     "webpack": "^1.13.1",
+    "webpack-md5-hash": "0.0.5",
     "whatwg-fetch": "^1.0.0"
   },
   "devDependencies": {
