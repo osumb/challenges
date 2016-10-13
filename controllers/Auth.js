@@ -2,6 +2,7 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
 const { auth } = require('../config');
+const { logger } = require('../utils');
 const { User } = require('../models');
 
 class Auth {
@@ -26,8 +27,7 @@ class Auth {
         res.json({ token });
       })
       .catch((err) => {
-        console.log('as;dlkjasdf;lkj');
-        console.error(err);
+        logger.errorLog('Auth.getToken', err);
         res.status(500);
       });
   }

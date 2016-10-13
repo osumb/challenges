@@ -1,4 +1,3 @@
-import 'whatwg-fetch';
 import jwtDecode from 'jwt-decode';
 
 import { api } from '../utils';
