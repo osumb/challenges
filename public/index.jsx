@@ -26,6 +26,13 @@ const renderBasedOnAuth = (Component, pattern, props) => {
   }
 };
 
+const MatchWhenNotLoggedIn = ({ component: Component, pattern, ...rest }) => (
+  <Match {...rest} pattern={pattern} render={() => {
+    if (!auth.isAuthenticated()) return <Component />;
+    return <Redirect to={{ pathname: '/' }} />;
+  }} />
+);
+
 const MatchWhenAuthorized = ({ component: Component, pattern, ...rest }) => (
   <Match {...rest} pattern={pattern} render={props => (renderBasedOnAuth(Component, pattern, props))} />
 );
@@ -45,7 +52,7 @@ const App = () => {
             <Navbar onLogout={handleLogout.bind(null, router)} />
             <div className="Main">
               <MatchWhenAuthorized exactly pattern="/" component={Profile} />
-              <Match pattern="/login" component={Login} />
+              <MatchWhenNotLoggedIn pattern="/login" component={Login} />
               <Miss component={NotFound} />
             </div>
           </div>

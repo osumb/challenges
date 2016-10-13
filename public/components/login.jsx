@@ -82,9 +82,6 @@ class Login extends Component {
             <button className="Login-button" onClick={this.handleClick}>Submit</button>
           </div>
         </div>
-        <div className="Login-forgot">
-          <p>Forgot your password?</p>
-        </div>
       </div>
     );
   }
