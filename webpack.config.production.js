@@ -30,8 +30,7 @@ module.exports = {
         babelrc: false,
         query: {
           plugins: [
-            'transform-react-constant-elements',
-            'transform-react-remove-prop-types',
+            'transform-react-remove-prop-types'
           ],
           presets: ['react', 'latest', 'stage-0'],
         },

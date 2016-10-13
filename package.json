@@ -9,7 +9,7 @@
   "private": true,
   "scripts": {
     "build": "NODE_ENV=production webpack --config webpack.config.production.js",
-    "dev": "webpack && NODE_ENV=dev nodemon --use_strict ./bin/www",
+    "dev": "webpack && NODE_ENV=dev nodemon ./bin/www",
     "lint": "eslint .",
     "start": "script/server",
     "test": "script/test",
