@@ -47,6 +47,10 @@ h2 {
   font-size: 30px;
 }
 
+h3 {
+  font-size: 24px;
+}
+
 h1, h2, h3, h4, h5, h6 {
   color: inherit;
   font-family: inherit;
@@ -104,5 +108,19 @@ textarea {
 .ChallengesLink {
   :hover {
     cursor: pointer;
+  }
+}
+
+@media(max-width: 414px) {
+  h1 {
+    font-size: 20px;
+  }
+
+  h2 {
+    font-size: 14px;
+  }
+
+  h3 {
+    font-size: 10px;
   }
 }
