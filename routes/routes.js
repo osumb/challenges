@@ -6,6 +6,7 @@ const controllers = require('../controllers');
 
 const {
   ensureAdmin,
+  ensureAuthenticated,
   ensureEvalAbility
 } = auth;
 
@@ -16,6 +17,8 @@ const Results = new controllers.Results();
 const Users = new controllers.Users();
 
 router.get('/test', ensureAdmin, (req, res) => res.json({ success: true }));
+
+router.get('/profile', ensureAuthenticated, Users.profile);
 
 //Auth Controller
 router.get('/token', Auth.getToken);

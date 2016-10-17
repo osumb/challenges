@@ -10,6 +10,28 @@ const Spot = models.Spot;
 const User = models.User;
 
 function UsersController() {
+  this.profile = ({ user }, res) => {
+    Promise.all([
+      Challenge.findForUser(user.nameNumber),
+      Performance.findCurrent(),
+      Result.findAllForUser(user.nameNumber)
+    ])
+    .then(([[challenge], [performance], results]) =>
+      Promise.all([challenge, performance, results, User.canChallengeForPerformance(user, performance && performance.id)])
+    )
+    .then(([challenge, performance, results, [canChallenge]]) => {
+      res.json({
+        canChallenge,
+        challenge: !challengeAlreadyInResults(challenge, results) && challenge,
+        results: results.map((result) => result.toJSON()),
+        performance: performance && performance.toJSON()
+      });
+    })
+    .catch((err) => {
+      console.error(err);
+    });
+  };
+
   this.changePassword = (req, res) => {
     const { oldPassword, newPassword } = req.body;
 
@@ -91,43 +113,6 @@ function UsersController() {
 
   this.settings = (req, res) => {
     res.render('users/settings', { user: req.user });
-  };
-
-  this.show = (req, res) => {
-    if (req.user.admin) {
-      Performance.findCurrent()
-      .then(([performance]) => {
-        res.render('users/admin', { user: req.user, performance: performance && performance.toJSON() });
-      })
-      .catch((err) => {
-        logger.errorLog('Users.show', err);
-        res.render('static-pages/error', { user: req.user });
-      });
-    } else {
-      Promise.all([
-        Challenge.findForUser(req.user.nameNumber),
-        Result.findAllForUser(req.user.nameNumber),
-        Performance.findCurrent()
-      ])
-      .then(([challenge, results, [currentPerformance]]) =>
-        Promise.all([challenge, results, currentPerformance, User.canChallengeForPerformance(req.user, currentPerformance && currentPerformance.id)])
-      )
-      .then(data => {
-        const canChallenge = data[3][0], challenge = data[0][0], performance = data[2], results = data[1];
-
-        res.render('users/show', {
-          canChallenge: canChallenge && (performance && performance.inPerformanceWindow()),
-          challenge: !challengeAlreadyInResults(challenge, results) && challenge,
-          results,
-          performance: performance && performance.toJSON(),
-          user: req.user
-        });
-      })
-      .catch((err) => {
-        logger.errorLog('Users.show', err);
-        res.render('static-pages/error', { user: req.user });
-      });
-    }
   };
 
   this.showIndividualManage = (req, res) => {
