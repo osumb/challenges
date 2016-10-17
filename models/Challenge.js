@@ -5,7 +5,8 @@ const attributes = ['id', 'performanceId', 'userNameNumber', 'spotId'];
 
 class Challenge {
 
-  constructor(performanceId, performanceName, spotId) {
+  constructor(id, performanceId, performanceName, spotId) {
+    this._id = id;
     this._performanceId = performanceId;
     this._performanceName = performanceName;
     this._spotId = spotId;
@@ -66,6 +67,10 @@ class Challenge {
     return db.query(sql, [nameNumber], instanceFromRowChallenge);
   }
 
+  get id() {
+    return this._id;
+  }
+
   get performanceId() {
     return this._performanceId;
   }
@@ -78,6 +83,14 @@ class Challenge {
     return this._spotId;
   }
 
+  toJSON() {
+    return {
+      id: this._id,
+      performanceId: this._performanceId,
+      performanceName: this._performanceName,
+      spotId: this._spotId
+    };
+  }
 }
 
 class ChallengeForCSV {
@@ -158,8 +171,8 @@ class ChallengeableUser {
 
 const codeFromRow = ({ make_challenge }) => make_challenge;
 
-const instanceFromRowChallenge = ({ name, performanceid, spotid }) =>
-  new Challenge(performanceid, name, spotid);
+const instanceFromRowChallenge = ({ id, name, performanceid, spotid }) =>
+  new Challenge(id, performanceid, name, spotid);
 
 const instanceFromRowChallengeableUser = ({ challengedcount, name, spotid, open }) =>
   new ChallengeableUser(challengedcount, name, spotid, open);
