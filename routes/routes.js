@@ -20,6 +20,7 @@ router.get('/test', ensureAdmin, (req, res) => res.json({ success: true }));
 
 router.get('/profile', ensureAuthenticated, Users.profile);
 router.get('/challengeableUsers', ensureAuthenticated, Challenges.challengeableUsers);
+router.post('/challenges/create', ensureAuthenticated, Challenges.create);
 
 //Auth Controller
 router.get('/token', Auth.getToken);

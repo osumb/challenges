@@ -49,7 +49,7 @@ function ChallengersController() {
     .then(([performance]) => Promise.all([performance, Challenge.findAllChallengeablePeopleForUser(req.user, performance && performance.id)]))
     .then(([performance, challengeableUsers]) => {
       res.json({
-        challengeableUsers: (performance && performance.inPerformanceWindow()) && challengeableUsers.map((user) => user.toJSON()),
+        challengeableUsers: (challengeableUsers || []).map((user) => user.toJSON()),
         performanceName: performance && performance.name
       });
     })

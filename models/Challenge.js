@@ -170,7 +170,7 @@ class ChallengeableUser {
   toJSON() {
     return {
       challengedCount: this._challengedCount,
-      challengedFull: this._spotOpen ? this._challengedCount >= 2 : this._challengedCount >= 1,
+      challengeFull: this._spotOpen ? this._challengedCount >= 2 : this._challengedCount >= 1,
       name: this._name,
       spotId: this._spotId,
       spotOpen: this._spotOpen
