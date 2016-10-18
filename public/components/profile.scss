@@ -1,0 +1,47 @@
+@import '../style.scss';
+
+.Profile {
+  display: flex;
+  flex-direction: column;
+}
+
+.Profile-title {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  padding-top: 10px;
+}
+
+.Profile-title-admin {
+  color: $Challenges-red;
+}
+
+.Profile-title-spot {
+  background: $Challenges-red;
+  border-radius: 50%;
+  color: #fff;
+  display: flex;
+  font-size: 30px;
+  height: 100px;
+  justify-content: center;
+  text-align: center;
+  vertical-align: middle;
+  width: 100px;
+}
+
+.Profile-title-text {
+  align-self: center;
+}
+
+.Profile-title-name {
+  align-self: center;
+  padding-left: 10px;
+}
+
+@media(max-width: 414px) {
+  .Profile-title-spot {
+    font-size: 30px;
+    height: 70px;
+    width: 70px;
+  }
+}

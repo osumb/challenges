@@ -50,7 +50,7 @@ class User {
     }
     const sql = queries.canChallengeForPerformance;
 
-    return db.query(sql, [user.nameNumber, performanceId, user.spotId]);
+    return db.query(sql, [user.nameNumber, performanceId, user.spotId], ({ can_challenge }) => can_challenge);
   }
 
   static findForIndividualManage(nameNumber) {

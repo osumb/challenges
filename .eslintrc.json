@@ -26,7 +26,8 @@
         "react/jsx-indent": [
           2,2
         ],
-        "react/jsx-indent-props": "off"
+        "react/jsx-indent-props": "off",
+        "react/no-multi-comp": "off"
     },
     "env": {
         "browser": true,

@@ -1,4 +1,4 @@
-SELECT * FROM users WHERE
+SELECT count(*) > 0 AS can_challenge FROM users WHERE
 NOT EXISTS (SELECT * FROM challenges WHERE userNamenumber = $1 AND performanceid = $2) AND
 ((SELECT COALESCE(voluntary, true) FROM manage AS m WHERE m.usernamenumber = $1 AND m.performanceid = $2 ORDER BY id DESC LIMIT 1) OR
 (

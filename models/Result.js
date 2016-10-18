@@ -400,6 +400,18 @@ class ResultForUser {
     return this._winner;
   }
 
+  toJSON() {
+    return {
+      comments: this._comments,
+      id: this._id,
+      opponentName: this._opponentName,
+      performanceDate: this._performanceDate,
+      performanceId: this._performanceId,
+      performanceName: this._performanceName,
+      spotId: this._spotId,
+      winner: this._winner
+    };
+  }
 }
 
 const instanceFromRowResultForAdmin = ({
