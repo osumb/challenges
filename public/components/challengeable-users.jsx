@@ -4,29 +4,18 @@ import './challengeable-users.scss';
 
 const getSelectOptionFromChallengeableUser = (challengeableUser) => {
   const { name, spotOpen, challengeFull, spotId, challengedCount } = challengeableUser;
+  const optionText = spotOpen ? `open - challenged ${challengedCount} time(s)` : name;
 
-  if (spotOpen && !challengeFull) {
-    return (
-      <option key={spotId} value={spotId}>
-        {spotId} (open - challenged {challengedCount} time(s))
-      </option>
-    );
-  } else if (spotOpen) {
+  if (challengeFull) {
     return (
       <option disabled key={spotId} value={spotId}>
-        {spotId} (open - challenged {challengedCount} times(s))
-      </option>
-    );
-  } else if (challengeFull) {
-    return (
-      <option disabled key={spotId} value={spotId}>
-        {spotId}: {name}
+        {spotId}: {optionText}
       </option>
     );
   } else {
     return (
       <option key={spotId} value={spotId}>
-        {spotId}: {name}
+        {spotId}: {optionText}
       </option>
     );
   }
