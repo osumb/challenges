@@ -1,25 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 
 import './challengeable-users.scss';
-
-const getSelectOptionFromChallengeableUser = (challengeableUser) => {
-  const { name, spotOpen, challengeFull, spotId, challengedCount } = challengeableUser;
-  const optionText = spotOpen ? `open - challenged ${challengedCount} time(s)` : name;
-
-  if (challengeFull) {
-    return (
-      <option disabled key={spotId} value={spotId}>
-        {spotId}: {optionText}
-      </option>
-    );
-  } else {
-    return (
-      <option key={spotId} value={spotId}>
-        {spotId}: {optionText}
-      </option>
-    );
-  }
-};
+import ChallengeableUser from 'challengeable-user';
 
 class ChallengeableUsers extends Component {
 
@@ -40,7 +22,7 @@ class ChallengeableUsers extends Component {
     return (
       <div className="ChallengeableUsers">
         <select className="ChallengeableUsers-select" ref="select">
-          {challengeableUsers.map(getSelectOptionFromChallengeableUser)}
+          {challengeableUsers.map((cUser) => <ChallengeableUser {...cUser} key={cUser.spotId} />)}
         </select>
         <input key="submit" type="submit" className="ChallengeableUsers-submit" onClick={this.handleClick} value="Challenge" />
       </div>
@@ -50,11 +32,11 @@ class ChallengeableUsers extends Component {
 
 ChallengeableUsers.propTypes = {
   challengeableUsers: PropTypes.arrayOf(PropTypes.shape({
-    name: PropTypes.string.isRequired,
-    spotOpen: PropTypes.bool.isRequired,
     challengeFull: PropTypes.bool.isRequired,
+    challengedCount: PropTypes.number.isRequired,
+    name: PropTypes.string.isRequired,
     spotId: PropTypes.string.isRequired,
-    challengedCount: PropTypes.number.isRequired
+    spotOpen: PropTypes.bool.isRequired
   })),
   onClick: PropTypes.func.isRequired
 };
