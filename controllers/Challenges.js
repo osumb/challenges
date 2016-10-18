@@ -6,6 +6,14 @@ const Challenge = models.Challenge;
 const Performance = models.Performance;
 
 function ChallengersController() {
+
+  /*
+  * So, this code thing...
+  * Basically:
+  * 0 - successful challenge
+  * 1 - someone already challenged the requested spot
+  * 2 - the user requesting to make a challenge already made a challenge
+  */
   this.create = (req, res) => {
     const { spotId } = req.body;
     const userId = req.user.nameNumber;
@@ -44,19 +52,18 @@ function ChallengersController() {
     });
   };
 
-  this.new = (req, res) => {
+  this.challengeableUsers = (req, res) => {
     Performance.findCurrent()
     .then(([performance]) => Promise.all([performance, Challenge.findAllChallengeablePeopleForUser(req.user, performance && performance.id)]))
     .then(([performance, challengeableUsers]) => {
-      res.render('challenges/new', {
-        challengeableUsers: (performance && performance.inPerformanceWindow()) && challengeableUsers,
-        performance,
-        user: req.user
+      res.json({
+        challengeableUsers: (challengeableUsers || []).map((user) => user.toJSON()),
+        performanceName: performance && performance.name
       });
     })
     .catch((err) => {
-      logger.errorLog('Challenges.new', err);
-      res.render('static-pages/error', { user: req.user });
+      logger.errorLog('Challenges.challengeablePeople', err);
+      res.status(500).send();
     });
   };
 }

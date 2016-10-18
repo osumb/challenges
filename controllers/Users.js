@@ -28,7 +28,8 @@ function UsersController() {
       });
     })
     .catch((err) => {
-      console.error(err);
+      logger.errorLog('Users.profile', err);
+      res.status(500).send();
     });
   };
 

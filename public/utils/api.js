@@ -2,12 +2,13 @@ import 'whatwg-fetch';
 
 const request = (url, { method, body }) =>
   fetch(`/api${url}`, {
-    headers: {
+    headers: { // eslint-disable-line quote-props
       Accept: 'application/json, text/html',
-      Authorization: localStorage.userJWT && `Bearer ${localStorage.userJWT}`
+      Authorization: localStorage.userJWT && `Bearer ${localStorage.userJWT}`,
+      'Content-Type': 'application/json'
     },
     method,
-    body
+    body: JSON.stringify(body)
   })
   .then((response) => {
     if (response.status >= 300) throw new Error(response.status);
