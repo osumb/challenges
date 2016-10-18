@@ -2,45 +2,7 @@ import React, { Component, PropTypes } from 'react';
 
 import './challenge-select.scss';
 import { api } from '../utils';
-
-const select = (challengeableUsers) => {
-  const users = challengeableUsers.map(({ name, spotOpen, challengeFull, spotId, challengedCount }) => {
-    if (spotOpen && !challengeFull) {
-      return (
-        <option key={spotId}>
-          {spotId} (open - challenged {challengedCount} time(s))
-        </option>
-      );
-    } else if (spotOpen) {
-      return (
-        <option disabled key={spotId}>
-          {spotId} (open - challenged {challengedCount} times(s))
-        </option>
-      );
-    } else if (challengeFull) {
-      return (
-        <option disabled key={spotId}>
-          {spotId}: {name}
-        </option>
-      );
-    } else {
-      return (
-        <option key={spotId}>
-          {spotId}: {name}
-        </option>
-      );
-    }
-  });
-
-  return (
-    <div className="ChallengeSelect-container">
-      <select className="ChallengeSelect-select">
-        {users}
-      </select>
-      <input key="submit" type="submit" className="ChallengeSelect-submit" value="Challenge" />
-    </div>
-  );
-};
+import ChallengeableUsers from './challengeable-users';
 
 class ChallengeSelect extends Component {
 
@@ -48,8 +10,10 @@ class ChallengeSelect extends Component {
     super();
     this.state = {
       challengeableUsers: null,
-      performanceName: null
+      performanceName: null,
+      selectedSpot: null
     };
+    this.handleClick = this.handleClick.bind(this);
   }
 
   componentDidMount() {
@@ -62,8 +26,26 @@ class ChallengeSelect extends Component {
     });
   }
 
+  handleClick(spotId) {
+    api.post('/challenges/create', {
+      spotId
+    })
+    .then(() => {
+      this.setState({
+        ...this.state,
+        selectedSpot: spotId
+      });
+    });
+  }
+
   render() {
-    const { challengeableUsers, performanceName } = this.state;
+    const { challengeableUsers, performanceName, selectedSpot } = this.state;
+
+    if (selectedSpot) {
+      return (
+        <h2>Successfully challenged for {selectedSpot}</h2>
+      );
+    }
 
     if (!challengeableUsers) {
       return (
@@ -75,11 +57,8 @@ class ChallengeSelect extends Component {
 
     return (
       <div className="ChallengeSelect">
-        <h1>Who do you want to challenge for the {performanceName}?</h1>
-        {challengeableUsers.length > 0 ?
-          select(challengeableUsers) :
-            <h2>Sorry, you can't make a challenge right now!</h2>
-        }
+        {performanceName && challengeableUsers.length > 0 && <h1>Who do you want to challenge for the {performanceName}?</h1>}
+        {<ChallengeableUsers challengeableUsers={challengeableUsers} onClick={this.handleClick} />}
       </div>
     );
   }
