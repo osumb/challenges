@@ -167,6 +167,15 @@ class ChallengeableUser {
     return this._spotOpen;
   }
 
+  toJSON() {
+    return {
+      challengedCount: this._challengedCount,
+      challengedFull: this._spotOpen ? this._challengedCount >= 2 : this._challengedCount >= 1,
+      name: this._name,
+      spotId: this._spotId,
+      spotOpen: this._spotOpen
+    };
+  }
 }
 
 const codeFromRow = ({ make_challenge }) => make_challenge;

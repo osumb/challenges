@@ -44,19 +44,18 @@ function ChallengersController() {
     });
   };
 
-  this.new = (req, res) => {
+  this.challengeableUsers = (req, res) => {
     Performance.findCurrent()
     .then(([performance]) => Promise.all([performance, Challenge.findAllChallengeablePeopleForUser(req.user, performance && performance.id)]))
     .then(([performance, challengeableUsers]) => {
-      res.render('challenges/new', {
-        challengeableUsers: (performance && performance.inPerformanceWindow()) && challengeableUsers,
-        performance,
-        user: req.user
+      res.json({
+        challengeableUsers: (performance && performance.inPerformanceWindow()) && challengeableUsers.map((user) => user.toJSON()),
+        performanceName: performance && performance.name
       });
     })
     .catch((err) => {
-      logger.errorLog('Challenges.new', err);
-      res.render('static-pages/error', { user: req.user });
+      logger.errorLog('Challenges.challengeablePeople', err);
+      res.status(500).send();
     });
   };
 }
