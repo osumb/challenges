@@ -6,6 +6,14 @@ const Challenge = models.Challenge;
 const Performance = models.Performance;
 
 function ChallengersController() {
+
+  /*
+  * So, this code thing...
+  * Basically:
+  * 0 - successful challenge
+  * 1 - someone already challenged the requested spot
+  * 2 - the user requesting to make a challenge already made a challenge
+  */
   this.create = (req, res) => {
     const { spotId } = req.body;
     const userId = req.user.nameNumber;
