@@ -36,7 +36,6 @@ router.post('/performances/results/evaulate', ensureEvalAbility, Results.evaluat
 router.post('/results/approve', ensureAdmin, Results.approve);
 
 //Users Controller
-router.get('/:nameNumber', ensureAdmin, Users.show);
 router.get('/users/manage', ensureAdmin, Users.showManage);
 router.get('/users/manage/:nameNumber', ensureAdmin, Users.showIndividualManage);
 router.get('/users/search', ensureAdmin, Users.search);
