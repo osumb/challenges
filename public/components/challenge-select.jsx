@@ -11,6 +11,7 @@ class ChallengeSelect extends Component {
     this.state = {
       code: null,
       challengeableUsers: null,
+      loading: true,
       performanceName: null,
       selectedSpot: null
     };
@@ -22,6 +23,7 @@ class ChallengeSelect extends Component {
     .then(({ challengeableUsers, performanceName }) => {
       this.setState({
         challengeableUsers,
+        loading: false,
         performanceName
       });
     });
@@ -48,9 +50,9 @@ class ChallengeSelect extends Component {
   }
 
   render() {
-    const { challengeableUsers, code, performanceName, selectedSpot } = this.state;
+    const { challengeableUsers, code, loading, performanceName, selectedSpot } = this.state;
 
-    if (!challengeableUsers) {
+    if (loading) {
       return (
         <div className="ChallengeSelect-loading">
           Loading...
