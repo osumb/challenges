@@ -4,6 +4,7 @@ import { render } from 'react-dom';
 import { BrowserRouter, Match, Miss, Redirect } from 'react-router';
 
 import './style.scss';
+import ChallengeSelect from './components/challenge-select';
 import Header from './components/header';
 import Login from './components/login';
 import Navbar from './components/navbar';
@@ -21,7 +22,8 @@ const renderBasedOnAuth = (Component, pattern, props, user) => {
       <Redirect to={{
         pathname: '/login',
         stats: { from: props.location }
-      }} />
+      }}
+      />
     );
   }
 };
@@ -30,7 +32,8 @@ const MatchWhenNotLoggedIn = ({ component: Component, pattern, ...rest }) => (
   <Match {...rest} pattern={pattern} render={() => {
     if (!auth.isAuthenticated()) return <Component />;
     return <Redirect to={{ pathname: '/' }} />;
-  }} />
+  }}
+  />
 );
 
 const MatchWhenAuthorized = ({ component: Component, pattern, user, ...rest }) => (
@@ -51,6 +54,7 @@ const App = () => (
           <Navbar onLogout={handleLogout.bind(null, router)} user={auth.getUser()} />
           <div className="Main">
             <MatchWhenAuthorized exactly pattern="/" component={Profile} user={auth.getUser()} />
+            <MatchWhenAuthorized exactly pattern="/challenges/new" component={ChallengeSelect} user={auth.getUser()} />
             <MatchWhenNotLoggedIn pattern="/login" component={Login} />
             <Miss component={NotFound} />
           </div>
