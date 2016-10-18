@@ -16,10 +16,10 @@ function UsersController() {
       Performance.findCurrent(),
       Result.findAllForUser(user.nameNumber)
     ])
-    .then(([[challenge], [performance], results]) =>
-      Promise.all([challenge, performance, results, User.canChallengeForPerformance(user, performance && performance.id)])
+    .then(([challenge, performances, results]) =>
+      Promise.all([challenge, performances, results, User.canChallengeForPerformance(user, performances[0] && performances[0].id)])
     )
-    .then(([challenge, performance, results, [canChallenge]]) => {
+    .then(([[challenge], [performance], results, canChallenge]) => {
       res.json({
         canChallenge,
         challenge: !challengeAlreadyInResults(challenge, results) && challenge,
