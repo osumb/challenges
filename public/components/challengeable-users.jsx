@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 
 import './challengeable-users.scss';
-import ChallengeableUser from 'challengeable-user';
+import ChallengeableUser from './challengeable-user';
 
 class ChallengeableUsers extends Component {
 
@@ -22,7 +22,7 @@ class ChallengeableUsers extends Component {
     return (
       <div className="ChallengeableUsers">
         <select className="ChallengeableUsers-select" ref="select">
-          {challengeableUsers.map((cUser) => <ChallengeableUser {...cUser} key={cUser.spotId} />)}
+          {challengeableUsers.map((cUser) => <ChallengeableUser key={cUser.spotId} {...cUser} />)}
         </select>
         <input key="submit" type="submit" className="ChallengeableUsers-submit" onClick={this.handleClick} value="Challenge" />
       </div>
