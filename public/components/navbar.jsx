@@ -13,7 +13,7 @@ const Navbar = ({ onLogout, user }) => (
         <Link className="Navbar-home" to="/">Home</Link>
       </div>
       <div className="Navbar-item">
-        {user && <ChallengesDropdown admin={user.admin} />}
+        {user && <ChallengesDropdown admin={user.admin} squadLeader={user.squadLeader} />}
       </div>
       <div className="Navbar-item">
         {user && user.admin && <PerformancesDropdown />}
