@@ -6,8 +6,8 @@ const controllers = require('../controllers');
 
 const {
   ensureAdmin,
-  ensureAuthenticated,
-  ensureEvalAbility
+  ensureAdminOrSquadLeader,
+  ensureAuthenticated
 } = auth;
 
 const Auth = controllers.Auth;
@@ -20,7 +20,9 @@ router.get('/test', ensureAdmin, (req, res) => res.json({ success: true }));
 
 router.get('/profile', ensureAuthenticated, Users.profile);
 router.get('/challengeableUsers', ensureAuthenticated, Challenges.challengeableUsers);
+router.get('/results/evaluate', ensureAdminOrSquadLeader, Results.showForEvaluation);
 router.post('/challenges/create', ensureAuthenticated, Challenges.create);
+router.put('/results/evaluate', ensureAdminOrSquadLeader, Results.evaluate);
 
 //Auth Controller
 router.get('/token', Auth.getToken);
@@ -34,7 +36,6 @@ router.post('/performances/create', ensureAdmin, Performances.create);
 // router.put('/performances', ensureAdmin, Performances.update);
 
 //Results Controller
-router.post('/performances/results/evaulate', ensureEvalAbility, Results.evaluate);
 router.post('/results/approve', ensureAdmin, Results.approve);
 
 //Users Controller

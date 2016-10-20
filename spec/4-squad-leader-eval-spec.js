@@ -10,13 +10,13 @@ const headSquadLeaders = testData.testUsers.filter(({ nameNumber }) => testSquad
 console.log('==> SQUAD LEADER EVAL PERMISSION CHECK');
 describe('Squad eval permission', () => {
   const res = {
-    render() {
+    json() {
       return;
     }
   };
 
   beforeEach(() => {
-    spyOn(res, 'render');
+    spyOn(res, 'json');
   });
 
   headSquadLeaders.forEach(({ nameNumber, spotId }) => {
@@ -27,14 +27,14 @@ describe('Squad eval permission', () => {
       }
     };
 
-    it('should render the eval page with the correct results', (done) => {
+    it('should send json with the correct results', (done) => {
       Results.showForEvaluation(req, res)
       .then(() => {
-        expect(res.render).toHaveBeenCalledWith(jasmine.any(String), jasmine.objectContaining({
+        expect(res.json).toHaveBeenCalledWith(jasmine.objectContaining({
           results: jasmine.any(Array)
         }));
         jasmine.addCustomEqualityTester(sLGotCorrectChallenges);
-        expect(res.render.calls.mostRecent().args[1].results).toEqual(req.user.nameNumber);
+        expect(res.json.calls.mostRecent().args[0].results).toEqual(req.user.nameNumber);
         done();
       })
       .catch((err) => {

@@ -358,6 +358,16 @@ class ResultForEvaluation {
     return this._spotId;
   }
 
+  toJSON() {
+    return {
+      firstName: this._firstName,
+      firstNameNumber: this._firstNameNumber,
+      id: this._id,
+      secondName: this._secondName,
+      secondNameNumber: this._secondNameNumber,
+      spotId: this._spotId
+    };
+  }
 }
 
 class ResultForUser {

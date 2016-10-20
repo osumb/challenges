@@ -1,0 +1,45 @@
+@import '../style.scss';
+
+.ResultForEvaluation {
+  display: flex;
+  flex-direction: column;
+  padding-top: 10px;
+  width: 500px;
+}
+
+.ResultForEvaluation-header {
+  background-color: $Challenges-light-gray;
+  display: flex;
+  justify-content: space-between;
+}
+
+.ResultForEvaluation-comments {
+  display: flex;
+}
+
+.ResultForEvaluation-comment {
+  flex: 1;
+  font-size: 16px;
+  height: 200px;
+}
+
+.ResultForEvaluation-header-left {
+  flex: 1;
+  padding-left: 2px;
+}
+
+.ResultForEvaluation-header-right {
+  text-align: right;
+  flex: 1;
+  padding-right: 2px;
+}
+
+.ResultForEvaluation-header-middle {
+  align-self: center;
+  text-align: center;
+}
+
+.ResultForEvaluation-submit {
+  @extend .ChallengesButton;
+  border-radius: 0px;
+}

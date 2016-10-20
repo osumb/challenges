@@ -5,6 +5,7 @@ import { BrowserRouter, Match, Miss, Redirect } from 'react-router';
 
 import './style.scss';
 import ChallengeSelect from './components/challenge-select';
+import ResultsForEvaluation from './components/results-for-evaluation';
 import Header from './components/header';
 import Login from './components/login';
 import Navbar from './components/navbar';
@@ -54,7 +55,8 @@ const App = () => (
           <Navbar onLogout={handleLogout.bind(null, router)} user={auth.getUser()} />
           <div className="Main">
             <MatchWhenAuthorized exactly pattern="/" component={Profile} user={auth.getUser()} />
-            <MatchWhenAuthorized exactly pattern="/challenges/new" component={ChallengeSelect} user={auth.getUser()} />
+            <MatchWhenAuthorized exactly pattern="/challenges/new" component={ChallengeSelect} />
+            <MatchWhenAuthorized exactly pattern="/challenges/evaluate" component={ResultsForEvaluation} />
             <MatchWhenNotLoggedIn pattern="/login" component={Login} />
             <Miss component={NotFound} />
           </div>

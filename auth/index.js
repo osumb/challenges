@@ -8,11 +8,9 @@ const ensureAdmin = ({ user }, res, next) => {
   user.admin ? next() : res.status(404).send();
 };
 
-const ensureAuthenticated = ({ user }, res, next) => (user && user !== {}) ? next() : res.status(404).send();
+const ensureAdminOrSquadLeader = ({ user }, res, next) => (user && user.admin || user.squadLeader) ? next() : res.status(404).send();
 
-const ensureEvalAbility = ({ user }, res, next) => {
-  (user.squadLeader || user.admin) ? next() : res.status(404).send();
-};
+const ensureAuthenticated = ({ user }, res, next) => (user && user !== {}) ? next() : res.status(404).send();
 
 const ensureResultsIndexAbility = ({ user }, res, next) => {
   (user.admin && user.instrument === 'Any' && user.instrument === 'Any') ?
@@ -46,8 +44,8 @@ const verifyToken = (token) =>
 
 module.exports = {
   ensureAdmin,
+  ensureAdminOrSquadLeader,
   ensureAuthenticated,
-  ensureEvalAbility,
   ensureResultsIndexAbility,
   getToken,
   getUserFromToken,
