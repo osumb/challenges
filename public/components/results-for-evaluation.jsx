@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 
 import './results-for-evaluation.scss';
 import { api } from '../utils';
+import Banner from './banner';
 import ResultForEvaluation from './result-for-evaluation';
 
 class Evaluate extends Component {
@@ -10,7 +11,8 @@ class Evaluate extends Component {
     super();
     this.state = {
       loading: true,
-      results: null
+      results: null,
+      success: false
     };
     this.handleSubmit = this.handleSubmit.bind(this);
   }
@@ -39,13 +41,14 @@ class Evaluate extends Component {
       const newResults = results.filter(({ id: rId }) => id !== rId);
 
       this.setState({
-        results: newResults
+        results: newResults,
+        success: true
       });
     });
   }
 
   render() {
-    const { loading, results } = this.state;
+    const { loading, results, success } = this.state;
 
     if (loading) {
       return <div>Loading...</div>;
@@ -57,6 +60,7 @@ class Evaluate extends Component {
 
     return (
       <div className="ResultsForEvaluation">
+        {success && <Banner message="Successfully Evaluated Challenge" />}
         <h2 className="ResultsForEvaluation-header">Evaluate Challenges</h2>
         {results.map((result) => <ResultForEvaluation key={result.id} onSubmit={this.handleSubmit} {...result} />)}
       </div>
