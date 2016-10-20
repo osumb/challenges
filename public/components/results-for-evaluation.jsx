@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 
+import './results-for-evaluation.scss';
 import { api } from '../utils';
 import ResultForEvaluation from './result-for-evaluation';
 
@@ -56,6 +57,7 @@ class Evaluate extends Component {
 
     return (
       <div className="ResultsForEvaluation">
+        <h2 className="ResultsForEvaluation-header">Evaluate Challenges</h2>
         {results.map((result) => <ResultForEvaluation key={result.id} onSubmit={this.handleSubmit} {...result} />)}
       </div>
     );

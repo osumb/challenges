@@ -1,5 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 
+import './result-for-evaluation.scss';
+
 class ResultForEvaluation extends Component {
 
   constructor() {
@@ -22,34 +24,36 @@ class ResultForEvaluation extends Component {
       <div className="ResultForEvaluation">
         <div className="ResultForEvaluation-header">
           <p className="ResultForEvaluation-header-left">
-            <label>{firstName}</label>
-            <input defaultChecked name={id} ref="firstNameNumber" type="radio" value={firstNameNumber} />
+            <label>
+              {firstName}
+              <input defaultChecked name={id} ref="firstNameNumber" type="radio" value={firstNameNumber} />
+            </label>
           </p>
           <p className="ResultForEvaluation-header-middle">{spotId}</p>
           <p className="ResultForEvaluation-header-right">
-            <label>{secondName || ''}</label>
-            {secondName && secondNameNumber &&
-              <input name={id} ref="secondNameNumber" type="radio" value={secondNameNumber} />
-            }
+            <label>
+              {secondName || ''}
+              {secondName && secondNameNumber &&
+                <input name={id} ref="secondNameNumber" type="radio" value={secondNameNumber} />
+              }
+            </label>
           </p>
         </div>
         <div className="ResultForEvaluation-comments">
           <textarea
-            className="ResultForEvaluation-comments-left"
+            className="ResultForEvaluation-comment"
             placeholder={`Comments for ${firstName}`}
             ref="firstComments"
           />
           {secondName && secondNameNumber &&
             <textarea
-              className="ResultForEvaluation-comments-right"
+              className="ResultForEvaluation-comment"
               placeholder={`Comments for ${secondName}`}
               ref="secondComments"
             />
           }
         </div>
-        <div className="ResultForEvaluation-submit">
-          <button onClick={this.handleSubmit}>Submit</button>
-        </div>
+        <button className="ResultForEvaluation-submit" onClick={this.handleSubmit}>Submit</button>
       </div>
     );
   }
