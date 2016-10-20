@@ -7,8 +7,7 @@ const controllers = require('../controllers');
 const {
   ensureAdmin,
   ensureAdminOrSquadLeader,
-  ensureAuthenticated,
-  ensureEvalAbility
+  ensureAuthenticated
 } = auth;
 
 const Auth = controllers.Auth;
