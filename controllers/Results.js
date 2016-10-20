@@ -70,13 +70,9 @@ function ResultsController() {
   };
 
   this.showForEvaluation = (req, res) => {
-    return Result.findAllForEval(req.user.nameNumber, req.user.spotId[0])
+    return Result.findAllForEval(req.user.nameNumber, (req.user.spotId || '')[0])
       .then((results) => {
-        if (results.length === 0) {
-          results = null; // eslint-disable-line no-param-reassign
-        }
-
-        res.render('results/show-for-evaluation', { user: req.user, results });
+        res.json({ results: results.map((result) => result.toJSON()) });
       })
       .catch((err) => {
         logger.errorLog('Results.showForEvaluation', err);
