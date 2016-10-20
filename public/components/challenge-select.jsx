@@ -82,20 +82,4 @@ class ChallengeSelect extends Component {
   }
 }
 
-ChallengeSelect.propTypes = {
-  user: PropTypes.shape({
-    admin: PropTypes.bool.isRequired,
-    director: PropTypes.bool.isRequired,
-    email: PropTypes.string.isRequired,
-    instrument: PropTypes.string.isRequired,
-    name: PropTypes.string.isRequired,
-    nameNumber: PropTypes.string.isRequired,
-    new: PropTypes.bool.isRequired,
-    part: PropTypes.string.isRequired,
-    spotId: PropTypes.string,
-    spotOpen: PropTypes.bool,
-    squadLeader: PropTypes.bool
-  })
-};
-
 export default ChallengeSelect;
