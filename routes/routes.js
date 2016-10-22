@@ -20,9 +20,11 @@ router.get('/test', ensureAdmin, (req, res) => res.json({ success: true }));
 
 router.get('/profile', ensureAuthenticated, Users.profile);
 router.get('/challengeableUsers', ensureAuthenticated, Challenges.challengeableUsers);
-router.get('/results/evaluate', ensureAdminOrSquadLeader, Results.showForEvaluation);
+router.get('/results/evaluate', ensureAdminOrSquadLeader, Results.getForEvaluation);
+router.get('/results/approve', ensureAdmin, Results.getForApproval);
 router.post('/challenges/create', ensureAuthenticated, Challenges.create);
 router.put('/results/evaluate', ensureAdminOrSquadLeader, Results.evaluate);
+router.put('/results/approve', ensureAdmin, Results.approve);
 
 //Auth Controller
 router.get('/token', Auth.getToken);
@@ -36,7 +38,7 @@ router.post('/performances/create', ensureAdmin, Performances.create);
 // router.put('/performances', ensureAdmin, Performances.update);
 
 //Results Controller
-router.post('/results/approve', ensureAdmin, Results.approve);
+// router.post('/results/approve', ensureAdmin, Results.approve);
 
 //Users Controller
 router.get('/users/manage', ensureAdmin, Users.showManage);

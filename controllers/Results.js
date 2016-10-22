@@ -50,11 +50,11 @@ function ResultsController() {
   this.getForApproval = (req, res) => {
     Result.findAllForApproval(req.user)
     .then((results) => {
-      res.render('results/approve', { user: req.user, results });
+      res.json({ results: results.map((result) => result.toJSON()) });
     })
     .catch((err) => {
       logger.errorLog('Results.getForApproval', err);
-      res.render('static-pages/error', { user: req.user });
+      res.status(500).send();
     });
   };
 
@@ -69,14 +69,14 @@ function ResultsController() {
     });
   };
 
-  this.showForEvaluation = (req, res) => {
+  this.getForEvaluation = (req, res) => {
     return Result.findAllForEval(req.user.nameNumber, (req.user.spotId || '')[0])
       .then((results) => {
         res.json({ results: results.map((result) => result.toJSON()) });
       })
       .catch((err) => {
         logger.errorLog('Results.showForEvaluation', err);
-        res.render('static-pages/error', { user: req.user });
+        res.status(500).send();
       });
   };
 }
