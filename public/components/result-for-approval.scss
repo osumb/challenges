@@ -1,0 +1,52 @@
+@import '../style.scss';
+
+.ResultForApproval {
+  display: flex;
+  flex-direction: column;
+  padding: 4px;
+  width: 400px;
+}
+
+.ResultForApproval-header {
+  background-color: $Challenges-light-gray;
+  display: flex;
+  justify-content: space-between;
+}
+
+.ResultForApproval-header > * {
+  flex: 1;
+  padding: 0 4px 0 4px;
+}
+
+.ResultForApproval-winner {
+  text-align: center;
+}
+
+.ResultForApproval-approveWrapper {
+  align-items: center;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.ResultForApproval-approve {
+  @extend .ChallengesButton;
+}
+
+.ResultForApproval-comments {
+  border-bottom: 1px solid $Challenges-light-gray;
+  border-left: 1px solid $Challenges-light-gray;
+  border-right: 1px solid $Challenges-light-gray;
+  display: flex;
+  flex: 1;
+}
+
+.ResultForApproval-comments-item:first-child {
+  border-right: 1px solid $Challenges-light-gray;
+}
+
+.ResultForApproval-comments-item {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  text-align: center;
+}
