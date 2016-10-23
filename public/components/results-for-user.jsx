@@ -1,10 +1,10 @@
 import React, { PropTypes } from 'react';
 
-import Result from './result';
+import ResultForUser from './result-for-user';
 
 const Results = ({ results }) => (
   <div className="Results">
-    {results.map((result) => <Result key={result.performanceId} {...result} />)}
+    {results.map((result) => <ResultForUser key={result.performanceId} {...result} />)}
   </div>
 );
 
