@@ -33,6 +33,10 @@ export default class PastResults extends Component {
 
     const performanceIds = Object.keys(performanceResultsMap).sort((a, b) => b - a);
 
+    if (performanceIds.length <= 0) {
+      return <h2>There are no previous results</h2>;
+    }
+
     return (
       <div className="PastResults">
         {performanceIds.map((id) =>
