@@ -24,6 +24,7 @@ router.get('/challengeableUsers', ensureAuthenticated, Challenges.challengeableU
 router.post('/challenges/create', ensureAuthenticated, Challenges.create);
 
 // Results Controller
+router.get('/results', ensureAdmin, Results.index);
 router.get('/results/approve', ensureAdmin, Results.getForApproval);
 router.get('/results/evaluate', ensureAdminOrSquadLeader, Results.getForEvaluation);
 router.put('/results/approve', ensureAdmin, Results.approve);

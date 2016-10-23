@@ -61,7 +61,7 @@ function ResultsController() {
   this.index = (req, res) => {
     Result.index()
     .then((performanceResultsMap) => {
-      res.render('results/index', { user: req.user, performanceResultsMap });
+      res.json({ performanceResultsMap });
     })
     .catch((err) => {
       logger.errorLog('Results.index', err);
