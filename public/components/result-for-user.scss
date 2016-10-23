@@ -1,4 +1,4 @@
-.Result {
+.ResultForUser {
   background-color: #f2f2f2;
   border: black solid 2px;
   display: flex;
@@ -6,14 +6,14 @@
   margin-top: 6px;
 }
 
-.Result-comments {
+.ResultForUser-comments {
   align-items: center;
   display: flex;
   font-size: inherit;
   padding: 2px 0 0 2px;
 }
 
-.Result-performance {
+.ResultForUser-performance {
   align-items: center;
   background-color: #e6e6e6;
   border-bottom: black solid 1px;
@@ -25,7 +25,7 @@
   width: 100%;
 }
 
-.Result-opponent {
+.ResultForUser-opponent {
   align-items: center;
   border-bottom: black solid 1px;
   display: flex;
@@ -33,7 +33,7 @@
   padding: 2px 0 0 2px;
 }
 
-.Result-winner {
+.ResultForUser-winner {
   align-items: center;
   border-bottom: black solid 1px;
   display: flex;
