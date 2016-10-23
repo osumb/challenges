@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 
 import './results-for-approval.scss';
 import { api } from '../utils';
+import Banner from './banner';
 import ResultForApproval from './result-for-approval';
 
 class ResultsForApproval extends Component {
@@ -10,7 +11,8 @@ class ResultsForApproval extends Component {
     super();
     this.state = {
       loading: true,
-      results: []
+      results: [],
+      success: false
     };
     this.handleApproveAll = this.handleApproveAll.bind(this);
     this.handleApproveOne = this.handleApproveOne.bind(this);
@@ -37,7 +39,8 @@ class ResultsForApproval extends Component {
 
       this.setState({
         ...this.state,
-        results: newResults
+        results: newResults,
+        success: true
       });
     });
   }
@@ -49,24 +52,31 @@ class ResultsForApproval extends Component {
     .then(() => {
       this.setState({
         ...this.state,
-        results: []
+        results: [],
+        success: true
       });
     });
   }
 
   render() {
-    const { loading, results } = this.state;
+    const { loading, results, success } = this.state;
 
     if (loading) {
       return <div className="ResultsForApproval">Loading...</div>;
     }
 
     if (results.length <= 0) {
-      return <h2>No results to approve!</h2>;
+      return (
+        <div>
+          {success && <Banner message="Successfully Approved Result(s)" />}
+          <h2>No results to approve!</h2>
+        </div>
+      );
     }
 
     return (
       <div className="ResultsForApproval">
+        {success && <Banner message="Successfully Approved Result(s)" />}
         <div className="ResultsForApproval-header">
           <h2>Approve Results</h2>
           <button className="ResultsForApproval-all" onClick={this.handleApproveAll}>Approve All</button>
