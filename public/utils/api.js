@@ -1,5 +1,7 @@
 import 'whatwg-fetch';
 
+import errorMessage from './error-message';
+
 const request = (url, { method, body }) =>
   fetch(`/api${url}`, {
     headers: { // eslint-disable-line quote-props
@@ -16,6 +18,7 @@ const request = (url, { method, body }) =>
   })
   .catch((err) => {
     console.error(err);
+    errorMessage('Sorry! There was a problem with your request. We\'re aware of and are working on the issue');
   });
 
 const del = (url) => request(url, { method: 'delete' });

@@ -7,7 +7,7 @@ import PerformancesDropdown from './performances-dropdown';
 import ResultsDropdown from './results-dropdown';
 
 const Navbar = ({ onLogout, user }) => (
-  <div className="Navbar">
+  <div className="Navbar" id="MessageAppend">
     <div className="Navbar-left">
       <div className="Navbar-item">
         <Link className="Navbar-home" to="/">Home</Link>
