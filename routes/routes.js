@@ -16,18 +16,23 @@ const Performances = new controllers.Performances();
 const Results = new controllers.Results();
 const Users = new controllers.Users();
 
-router.get('/test', ensureAdmin, (req, res) => res.json({ success: true }));
-
-router.get('/profile', ensureAuthenticated, Users.profile);
-router.get('/challengeableUsers', ensureAuthenticated, Challenges.challengeableUsers);
-router.get('/results/evaluate', ensureAdminOrSquadLeader, Results.getForEvaluation);
-router.get('/results/approve', ensureAdmin, Results.getForApproval);
-router.post('/challenges/create', ensureAuthenticated, Challenges.create);
-router.put('/results/evaluate', ensureAdminOrSquadLeader, Results.evaluate);
-router.put('/results/approve', ensureAdmin, Results.approve);
-
 //Auth Controller
 router.get('/token', Auth.getToken);
+
+// Challenges Controller
+router.get('/challengeableUsers', ensureAuthenticated, Challenges.challengeableUsers);
+router.post('/challenges/create', ensureAuthenticated, Challenges.create);
+
+// Results Controller
+router.get('/results/approve', ensureAdmin, Results.getForApproval);
+router.get('/results/evaluate', ensureAdminOrSquadLeader, Results.getForEvaluation);
+router.put('/results/approve', ensureAdmin, Results.approve);
+router.put('/results/evaluate', ensureAdminOrSquadLeader, Results.evaluate);
+
+// Users Controller
+router.get('/profile', ensureAuthenticated, Users.profile);
+
+
 
 //Challenges Controller
 router.post('/performances/challenge', Challenges.create);
@@ -36,9 +41,6 @@ router.post('/emailList', ensureAdmin, Challenges.emailList);
 //Performance Controller
 router.post('/performances/create', ensureAdmin, Performances.create);
 // router.put('/performances', ensureAdmin, Performances.update);
-
-//Results Controller
-// router.post('/results/approve', ensureAdmin, Results.approve);
 
 //Users Controller
 router.get('/users/manage', ensureAdmin, Users.showManage);
