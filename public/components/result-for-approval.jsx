@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 
 import './result-for-approval.scss';
+import Result from './result';
 
 class ResultForApproval extends Component {
 
@@ -14,38 +15,8 @@ class ResultForApproval extends Component {
   }
 
   render() {
-    const {
-      firstComments,
-      firstName,
-      firstNameNumber,
-      secondComments,
-      secondName,
-      spotId,
-      winnerId
-    } = this.props;
-
     return (
-      <div className="ResultForApproval">
-        <div className="ResultForApproval-header">
-          <p>{spotId}</p>
-          <p className="ResultForApproval-winner">{winnerId === firstNameNumber ? firstName : secondName}</p>
-          <div className="ResultForApproval-approveWrapper">
-            <button className="ResultForApproval-approve" onClick={this.handleApprove}>Approve</button>
-          </div>
-        </div>
-        <div className="ResultForApproval-comments">
-          <div className="ResultForApproval-comments-item">
-            <p>{firstName}</p>
-            <p>Notes: {firstComments}</p>
-          </div>
-          {secondComments && secondName &&
-            <div className="ResultForApproval-comments-item">
-              <p>{secondName}</p>
-              <p>Notes: {secondComments}</p>
-            </div>
-          }
-        </div>
-      </div>
+      <Result {...this.props} button={{ label: 'Approve', handleAction: this.handleApprove }} />
     );
   }
 }
