@@ -4,15 +4,16 @@ import { render } from 'react-dom';
 import { BrowserRouter, Match, Miss, Redirect } from 'react-router';
 
 import './style.scss';
+import { auth } from './utils';
 import ChallengeSelect from './components/challenge-select';
-import ResultsForApproval from './components/results-for-approval';
-import ResultsForEvaluation from './components/results-for-evaluation';
 import Header from './components/header';
 import Login from './components/login';
 import Navbar from './components/navbar';
 import NotFound from './components/not-found';
+import PastResults from './components/past-results';
 import Profile from './components/profile';
-import { auth } from './utils';
+import ResultsForApproval from './components/results-for-approval';
+import ResultsForEvaluation from './components/results-for-evaluation';
 
 const renderBasedOnAuth = (Component, pattern, props, user) => {
   if (auth.isAuthenticated() && auth.userCanAccess(pattern)) {
@@ -56,8 +57,9 @@ const App = () => (
           <Navbar onLogout={handleLogout.bind(null, router)} user={auth.getUser()} />
           <div className="Main">
             <MatchWhenAuthorized exactly pattern="/" component={Profile} user={auth.getUser()} />
-            <MatchWhenAuthorized exactly pattern="/challenges/new" component={ChallengeSelect} />
             <MatchWhenAuthorized exactly pattern="/challenges/evaluate" component={ResultsForEvaluation} />
+            <MatchWhenAuthorized exactly pattern="/challenges/new" component={ChallengeSelect} />
+            <MatchWhenAuthorized exactly pattern="/results" component={PastResults} />
             <MatchWhenAuthorized exactly pattern="/results/toApprove" component={ResultsForApproval} />
             <MatchWhenNotLoggedIn pattern="/login" component={Login} />
             <Miss component={NotFound} />

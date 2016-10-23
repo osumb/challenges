@@ -3,7 +3,7 @@ import React, { Component, PropTypes } from 'react';
 import './profile.scss';
 import { api } from '../utils';
 import ChallengeWindow from './challenge-window';
-import Results from './results';
+import Results from './results-for-user';
 
 const adminText = (
   <div>

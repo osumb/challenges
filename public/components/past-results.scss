@@ -1,0 +1,9 @@
+.PastResults {
+  display: flex;
+  flex-direction: column;
+}
+
+.PastResults-results {
+  display: flex;
+  flex-wrap: wrap;
+}

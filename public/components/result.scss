@@ -1,42 +1,52 @@
+@import '../style.scss';
+
 .Result {
-  background-color: #f2f2f2;
-  border: black solid 2px;
   display: flex;
   flex-direction: column;
-  margin-top: 6px;
+  padding: 4px;
+  width: 400px;
 }
 
-.Result-comments {
-  align-items: center;
+.Result-header {
+  background-color: $Challenges-light-gray;
   display: flex;
-  font-size: inherit;
-  padding: 2px 0 0 2px;
-}
-
-.Result-performance {
-  align-items: center;
-  background-color: #e6e6e6;
-  border-bottom: black solid 1px;
-  display: flex;
-  font-size: inherit;
-  font-weight: bold;
   justify-content: space-between;
-  padding: 2px 0 0 2px;
-  width: 100%;
 }
 
-.Result-opponent {
-  align-items: center;
-  border-bottom: black solid 1px;
-  display: flex;
-  font-size: inherit;
-  padding: 2px 0 0 2px;
+.Result-header > * {
+  padding: 0 4px 0 4px;
 }
 
 .Result-winner {
+  font-weight: bold;
+  text-align: center;
+}
+
+.Result-buttonWrapper {
   align-items: center;
-  border-bottom: black solid 1px;
   display: flex;
-  font-size: inherit;
-  padding: 2px 0 0 2px;
+  justify-content: flex-end;
+}
+
+.Result-button {
+  @extend .ChallengesButton;
+}
+
+.Result-comments {
+  border-bottom: 1px solid $Challenges-light-gray;
+  border-left: 1px solid $Challenges-light-gray;
+  border-right: 1px solid $Challenges-light-gray;
+  display: flex;
+  flex: 1;
+}
+
+.Result-comment:first-child {
+  border-right: 1px solid $Challenges-light-gray;
+}
+
+.Result-comment {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  text-align: center;
 }
