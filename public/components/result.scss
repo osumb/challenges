@@ -1,0 +1,52 @@
+@import '../style.scss';
+
+.Result {
+  display: flex;
+  flex-direction: column;
+  padding: 4px;
+  width: 400px;
+}
+
+.Result-header {
+  background-color: $Challenges-light-gray;
+  display: flex;
+  justify-content: space-between;
+}
+
+.Result-header > * {
+  padding: 0 4px 0 4px;
+}
+
+.Result-winner {
+  font-weight: bold;
+  text-align: center;
+}
+
+.Result-buttonWrapper {
+  align-items: center;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.Result-button {
+  @extend .ChallengesButton;
+}
+
+.Result-comments {
+  border-bottom: 1px solid $Challenges-light-gray;
+  border-left: 1px solid $Challenges-light-gray;
+  border-right: 1px solid $Challenges-light-gray;
+  display: flex;
+  flex: 1;
+}
+
+.Result-comment:first-child {
+  border-right: 1px solid $Challenges-light-gray;
+}
+
+.Result-comment {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  text-align: center;
+}
