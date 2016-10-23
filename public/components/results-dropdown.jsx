@@ -5,6 +5,10 @@ import Dropdown from './dropdown';
 const ResultsDropdown = () => {
   const links = [
     {
+      location: '/results/toApprove',
+      name: 'Approve Results'
+    },
+    {
       location: '/results',
       name: 'Past Results'
     }

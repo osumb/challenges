@@ -5,6 +5,7 @@ import { BrowserRouter, Match, Miss, Redirect } from 'react-router';
 
 import './style.scss';
 import ChallengeSelect from './components/challenge-select';
+import ResultsForApproval from './components/results-for-approval';
 import ResultsForEvaluation from './components/results-for-evaluation';
 import Header from './components/header';
 import Login from './components/login';
@@ -57,6 +58,7 @@ const App = () => (
             <MatchWhenAuthorized exactly pattern="/" component={Profile} user={auth.getUser()} />
             <MatchWhenAuthorized exactly pattern="/challenges/new" component={ChallengeSelect} />
             <MatchWhenAuthorized exactly pattern="/challenges/evaluate" component={ResultsForEvaluation} />
+            <MatchWhenAuthorized exactly pattern="/results/toApprove" component={ResultsForApproval} />
             <MatchWhenNotLoggedIn pattern="/login" component={Login} />
             <Miss component={NotFound} />
           </div>

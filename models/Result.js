@@ -321,6 +321,22 @@ class ResultForAdmin {
     return this._winnerId === this._firstNameNumber ? this._firstName : this._secondName;
   }
 
+  toJSON() {
+    return {
+      firstComments: this._firstComments,
+      firstName: this._firstName,
+      firstNameNumber: this._firstNameNumber,
+      id: this._id,
+      pending: this._pending,
+      performanceId: this._performanceId,
+      performanceName: this._performanceName,
+      secondComments: this._secondComments,
+      secondName: this._secondName,
+      secondNameNumber: this._secondNameNumber,
+      spotId: this._spotId,
+      winnerId: this._winnerId
+    };
+  }
 }
 
 class ResultForEvaluation {

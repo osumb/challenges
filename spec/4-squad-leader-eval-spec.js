@@ -28,7 +28,7 @@ describe('Squad eval permission', () => {
     };
 
     it('should send json with the correct results', (done) => {
-      Results.showForEvaluation(req, res)
+      Results.getForEvaluation(req, res)
       .then(() => {
         expect(res.json).toHaveBeenCalledWith(jasmine.objectContaining({
           results: jasmine.any(Array)
