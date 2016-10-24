@@ -3,6 +3,7 @@ import Datetime from 'react-datetime';
 import moment from 'moment';
 
 import '../../node_modules/react-datetime/css/react-datetime.css';
+import './create-performance.scss';
 import { api } from '../utils';
 import Banner from './banner';
 

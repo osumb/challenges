@@ -1,0 +1,21 @@
+.CreatePerformance {
+  display: flex;
+  flex-direction: column;
+}
+
+.CreatePerformance-item {
+  align-self: flex-start;
+  display: flex;
+  font-size: 20px;
+  padding-bottom: 5px;
+
+  & > label {
+    padding-right: 6px;
+  }
+}
+
+@media (max-width: 414px) {
+  .CreatePerformance-item {
+    font-size: 14px;
+  }
+}
