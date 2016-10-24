@@ -6,6 +6,7 @@ import { BrowserRouter, Match, Miss, Redirect } from 'react-router';
 import './style.scss';
 import { auth } from './utils';
 import ChallengeSelect from './components/challenge-select';
+import CreatePerformance from './components/create-performance';
 import Header from './components/header';
 import Login from './components/login';
 import Navbar from './components/navbar';
@@ -59,6 +60,7 @@ const App = () => (
             <MatchWhenAuthorized exactly pattern="/" component={Profile} user={auth.getUser()} />
             <MatchWhenAuthorized exactly pattern="/challenges/evaluate" component={ResultsForEvaluation} />
             <MatchWhenAuthorized exactly pattern="/challenges/new" component={ChallengeSelect} />
+            <MatchWhenAuthorized exactly pattern="/performances/new" component={CreatePerformance} />
             <MatchWhenAuthorized exactly pattern="/results" component={PastResults} />
             <MatchWhenAuthorized exactly pattern="/results/toApprove" component={ResultsForApproval} />
             <MatchWhenNotLoggedIn pattern="/login" component={Login} />
