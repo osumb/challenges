@@ -1,0 +1,11 @@
+@import '../style.scss';
+
+.ManageUserSpot {
+  font-size: 16px;
+}
+
+.ManageUserSpot-button {
+  @extend .ChallengesButton;
+
+  margin-left: 10px;
+}

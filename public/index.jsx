@@ -15,10 +15,12 @@ import PastResults from './components/past-results';
 import Profile from './components/profile';
 import ResultsForApproval from './components/results-for-approval';
 import ResultsForEvaluation from './components/results-for-evaluation';
+import User from './components/user';
+import UserSearch from './components/user-search';
 
 const renderBasedOnAuth = (Component, pattern, props, user) => {
   if (auth.isAuthenticated() && auth.userCanAccess(pattern)) {
-    return <Component user={user} />;
+    return <Component {...props} user={user} />;
   } else if (auth.isAuthenticated()) {
     return <NotFound />;
   } else {
@@ -63,6 +65,8 @@ const App = () => (
             <MatchWhenAuthorized exactly pattern="/performances/new" component={CreatePerformance} />
             <MatchWhenAuthorized exactly pattern="/results" component={PastResults} />
             <MatchWhenAuthorized exactly pattern="/results/toApprove" component={ResultsForApproval} />
+            <MatchWhenAuthorized exactly pattern="/users/search" component={UserSearch} />
+            <MatchWhenAuthorized exactly pattern="/users/profile/:nameNumber" component={User} />
             <MatchWhenNotLoggedIn pattern="/login" component={Login} />
             <Miss component={NotFound} />
           </div>
