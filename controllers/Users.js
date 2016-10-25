@@ -33,6 +33,20 @@ function UsersController() {
     });
   };
 
+  this.userProfileForAdmin = ({ query }, res) => {
+    Promise.all([
+      Challenge.findForUser(query.nameNumber),
+      Manage.findAllForUser(query.nameNumber),
+      Performance.findCurrent(),
+      Result.findAllForUser(query.nameNumber),
+      Spot.findByOwnerNameNumber(query.nameNumber),
+      User.findByNameNumber(query.nameNumber)
+    ])
+    .then(([challenges, manages, [performance], results, [spot], user]) => {
+      res.json({ challenges, manages, performance, results, spot, user });
+    });
+  };
+
   this.changePassword = (req, res) => {
     const { oldPassword, newPassword } = req.body;
 
@@ -52,27 +66,6 @@ function UsersController() {
     }
   };
 
-  this.closeSpot = (req, res) => {
-    const { nameNumber, performanceId, spotId } = req.body;
-    const manageAttributes = {
-      performanceId,
-      userNameNumber: nameNumber,
-      reason: 'Closed Spot',
-      spotId,
-      voluntary: false
-    };
-
-    Promise.all([Manage.create(manageAttributes), Spot.setOpenClose(spotId, false)])
-    .then(() => {
-      logger.adminActionLog(`close spot (${spotId}) for ${nameNumber} for performance id: ${performanceId}`);
-      res.json({ success: true });
-    })
-    .catch((err) => {
-      logger.errorLog('Users.close', err);
-      res.status(500).send();
-    });
-  };
-
   this.indexMembers = (req, res) => {
     User.indexMembers()
     .then((users) => {
@@ -85,7 +78,7 @@ function UsersController() {
   };
 
   this.manage = (req, res) => {
-    const { nameNumber, performanceId, reason, spotId, voluntary } = req.body;
+    const { nameNumber, performanceId, reason, spotId, spotOpen, voluntary } = req.body;
     const manageAttributes = {
       performanceId,
       userNameNumber: nameNumber,
@@ -94,10 +87,9 @@ function UsersController() {
       voluntary
     };
 
-    //If the manage was voluntarily taken by the user (elected to open spot), they're now eligible to challenge
-    Promise.all([Manage.create(manageAttributes), Spot.setOpenClose(spotId, true)])
+    Promise.all([Manage.create(manageAttributes), Spot.setOpenClose(spotId, spotOpen)])
     .then(() => {
-      logger.adminActionLog(`open spot (${spotId}) for ${nameNumber} for performance id: ${performanceId}. reason: ${manageAttributes.reason}`);
+      logger.adminActionLog(`${spotOpen ? 'open' : 'close'} spot (${spotId}) for ${nameNumber} for performance id: ${performanceId}. reason: ${manageAttributes.reason}`);
       res.json({ success: true });
     })
     .catch((err) => {

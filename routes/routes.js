@@ -32,7 +32,9 @@ router.put('/results/evaluate', ensureAdminOrSquadLeader, Results.evaluate);
 
 // Users Controller
 router.get('/profile', ensureAuthenticated, Users.profile);
-
+router.get('/users/search', ensureAdmin, Users.search);
+router.get('/users/profile', ensureAdmin, Users.userProfileForAdmin);
+router.post('/users/manage', ensureAdmin, Users.manage);
 
 
 //Challenges Controller
@@ -46,9 +48,6 @@ router.post('/performances/create', ensureAdmin, Performances.create);
 //Users Controller
 router.get('/users/manage', ensureAdmin, Users.showManage);
 router.get('/users/manage/:nameNumber', ensureAdmin, Users.showIndividualManage);
-router.get('/users/search', ensureAdmin, Users.search);
-router.post('/users/manage', ensureAdmin, Users.manage);
-router.post('/users/manage/close', ensureAdmin, Users.closeSpot);
 router.put('/users', ensureAdmin, Users.update);
 router.put('/users/password', Users.changePassword);
 

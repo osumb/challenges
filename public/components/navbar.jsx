@@ -5,6 +5,7 @@ import './navbar.scss';
 import ChallengesDropdown from './challenges-dropdown';
 import PerformancesDropdown from './performances-dropdown';
 import ResultsDropdown from './results-dropdown';
+import UserManageDropdown from './user-manage-dropdown';
 
 const Navbar = ({ onLogout, user }) => (
   <div className="Navbar" id="MessageAppend">
@@ -20,6 +21,9 @@ const Navbar = ({ onLogout, user }) => (
       </div>
       <div className="Navbar-item">
         {user && (user.squadLeader || user.admin) && <ResultsDropdown user={user} />}
+      </div>
+      <div className="Navbar-item">
+        {user && user.admin && <UserManageDropdown />}
       </div>
     </div>
     {user &&
