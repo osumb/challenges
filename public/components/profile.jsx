@@ -4,6 +4,7 @@ import './profile.scss';
 import { api } from '../utils';
 import ChallengeWindow from './challenge-window';
 import Results from './results-for-user';
+import UserHeader from './user-header';
 
 const adminText = (
   <div>
@@ -39,19 +40,6 @@ const currentChallengeWrapper = (canChallenge, performanceName, spotId) => {
   return null;
 };
 
-const profileTitle = (name, spotId, admin) => (
-  <div className="Profile-title">
-    <div className={admin ? 'Profile-title-admin' : 'Profile-title-spot'}>
-      <h1 className="Profile-title-text">
-        {spotId || 'Admin'}
-      </h1>
-    </div>
-    <h1 className="Profile-title-name">
-      {name}
-    </h1>
-  </div>
-);
-
 class Profile extends Component {
 
   constructor() {
@@ -82,7 +70,7 @@ class Profile extends Component {
 
     return (
       <div className="Profile">
-        {profileTitle(name, spotId, admin)}
+        <UserHeader admin={admin} name={name} spotId={spotId} />
         {performance && <ChallengeWindow {...performance} />}
         {currentChallengeWrapper(canChallenge, challenge && challenge.performanceName, challenge && challenge.spotId)}
         <Results results={results} />
