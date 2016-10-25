@@ -42,6 +42,17 @@ class Manage {
     return db.query(sql, [performanceId], instanceFromRowManage);
   }
 
+  static findAllForUser(nameNumber) {
+    const sql = `
+      SELECT m.id AS id, p.name AS performanceName, m.usernamenumber, m.reason, m.spotid, m.voluntary
+      FROM manage AS m JOIN performances AS p on m.performanceid = p.id
+      WHERE m.usernamenumber = $1
+      ORDER BY id DESC
+    `;
+
+    return db.query(sql, [nameNumber], instanceFromRowPerformance);
+  }
+
   get id() {
     return this._id;
   }
@@ -70,7 +81,29 @@ class Manage {
     return this._voluntary;
   }
 
+  toJSON() {
+    return {
+      id: this._id,
+      performanceId: this._performanceId,
+      userName: this._userName,
+      userNameNumber: this._userNameNumber,
+      reason: this._reason,
+      spotId: this._spotId,
+      voluntary: this._voluntary
+    };
+  }
 }
+
+const instanceFromRowPerformance = ({ id, performancename, usernamenumber, reason, voluntary, spotid }) => (
+  {
+    id,
+    performanceName: performancename,
+    userNameNumber: usernamenumber,
+    reason,
+    spotId: spotid,
+    voluntary
+  }
+);
 
 const instanceFromRowManage = ({ id, performanceid, name, namenumber, reason, spotid, voluntary }) =>
   new Manage(id, performanceid, name, namenumber, reason, spotid, voluntary);

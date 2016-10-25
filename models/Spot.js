@@ -2,7 +2,7 @@ const { db } = require('../utils');
 
 const attributes = ['id', 'open', 'challengedCount'];
 
-module.exports = class Spot {
+class Spot {
 
   constructor(id, open, challengedCount) {
     this._id = id;
@@ -28,6 +28,16 @@ module.exports = class Spot {
     return db.query(sql, [id]);
   }
 
+  static findByOwnerNameNumber(nameNumber) {
+    const sql = `
+      SELECT s.challengedcount, s.id, s.open
+      FROM spots AS s JOIN users AS u ON u.spotid = s.id
+      WHERE u.namenumber = $1
+    `;
+
+    return db.query(sql, [nameNumber], instanceFromDBRow);
+  }
+
   // true is open, false is closed
   static setOpenClose(spotId, open) {
     const sql = 'UPDATE spots SET open = $1 WHERE id = $2';
@@ -46,4 +56,17 @@ module.exports = class Spot {
   get open() {
     return this._open;
   }
-};
+
+  toJSON() {
+    return {
+      challengedCount: this._challengedCount,
+      id: this._id,
+      open: this._open
+    };
+  }
+}
+
+const instanceFromDBRow = ({ challengedcount, id, open }) =>
+  new Spot(id, open, challengedcount);
+
+module.exports = Spot;
