@@ -9,7 +9,7 @@ export default function UserManageDropdown() {
       name: 'Roster'
     },
     {
-      location: '/users/manage',
+      location: '/users/search',
       name: 'Search'
     }
   ];
