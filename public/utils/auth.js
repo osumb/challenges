@@ -1,6 +1,5 @@
+import 'whatwg-fetch';
 import jwtDecode from 'jwt-decode';
-
-import { api } from '../utils';
 
 const LOCAL_STORE_STRING = 'userJWT';
 const ADMIN_ROUTES = [
@@ -13,10 +12,18 @@ const SL_ROUTES = [
 ];
 
 const authenticate = (nameNumber, password) =>
-  api.get(`/token?nameNumber=${nameNumber}&password=${password}`)
+  fetch(`/api/token?nameNumber=${nameNumber}&password=${password}`, {
+    headers: { // eslint-disable-line quote-props
+      Accept: 'application/json, text/html',
+      'Content-Type': 'application/json'
+    }
+  })
+  .then((response) => {
+    if (response.status >= 300) throw new Error(response.status);
+    return response.json();
+  })
   .then(({ token }) => {
     localStorage.userJWT = token;
-    return;
   });
 
 const getUser = () => localStorage[LOCAL_STORE_STRING] && jwtDecode(localStorage[LOCAL_STORE_STRING]);
