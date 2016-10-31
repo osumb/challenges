@@ -1,5 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 
+import './edit-part.scss';
+
 const instrumentPartMap = {
   Baritone: ['First'],
   Mellophone: ['First', 'Second'],
@@ -49,7 +51,7 @@ class EditPart extends Component {
       return (
         <div>
           {part}
-          <button onClick={this.handleEditClick}>Edit Part</button>
+          <button className="EditPart-edit" onClick={this.handleEditClick}>Edit Part</button>
         </div>
       );
     }

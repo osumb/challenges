@@ -1,5 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 
+import './edit-spot.scss';
+
 const validSpot = /^[A-Z][1-9][1-9]?$/;
 
 const isSpotValid = (spot, originalSpot) =>
@@ -53,14 +55,14 @@ class EditSpot extends Component {
       return (
         <div>
           {spot}
-          <button onClick={this.handleEditClick}>Edit Spot</button>
+          <button className="EditSpot-edit" onClick={this.handleEditClick}>Edit Spot</button>
         </div>
       );
     }
 
     return (
       <div>
-        <input onChange={this.handleSpotEdit} type="text" value={spotId} />
+        <input className="EditSpot-input" onChange={this.handleSpotEdit} type="text" value={spotId} />
         <button onClick={this.handleCancelClick}>Cancel</button>
         <button disabled={!isSpotValid(spotId, spot)} onClick={this.handleConfirmClick}>Confirm</button>
       </div>
