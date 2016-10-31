@@ -1,0 +1,10 @@
+.UserRow {
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+}
+
+.UserRow-item {
+  flex: 1;
+  white-space: nowrap;
+}
