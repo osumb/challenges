@@ -12,6 +12,7 @@ export default class Users extends Component {
       loading: true,
       users: null
     };
+    this.handlePartEdit = this.handlePartEdit.bind(this);
     this.handleSpotEdit = this.handleSpotEdit.bind(this);
   }
 
@@ -20,6 +21,25 @@ export default class Users extends Component {
     .then(({ users }) => {
       this.setState({
         loading: false,
+        users
+      });
+    });
+  }
+
+  handlePartEdit(nameNumber, part) {
+    api.put('/users', {
+      nameNumber,
+      part
+    })
+    .then(() => {
+      const { users } = this.state;
+
+      const user = users.find(({ nameNumber: uNN }) => uNN === nameNumber);
+
+      user.part = part;
+
+      this.setState({
+        ...this.state,
         users
       });
     });
@@ -60,6 +80,7 @@ export default class Users extends Component {
             key={user.nameNumber}
             className={i % 2 === 0 ? 'EvenRow' : 'OddRow'}
             onSpotEdit={this.handleSpotEdit}
+            onPartEdit={this.handlePartEdit}
             user={user}
           />
         )}
