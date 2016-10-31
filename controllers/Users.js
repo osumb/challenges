@@ -66,14 +66,14 @@ function UsersController() {
     }
   };
 
-  this.indexMembers = (req, res) => {
+  this.roster = (req, res) => {
     User.indexMembers()
     .then((users) => {
-      res.render('users/index', { user: req.user, users });
+      res.json({ users });
     })
     .catch((err) => {
       logger.errorLog('Users.index', err);
-      res.render('static-pages/error', { user: req.user });
+      res.status(500).send();
     });
   };
 
@@ -106,26 +106,6 @@ function UsersController() {
 
   this.settings = (req, res) => {
     res.render('users/settings', { user: req.user });
-  };
-
-  this.showIndividualManage = (req, res) => {
-    Promise.all([User.findForIndividualManage(req.params.nameNumber), Performance.findCurrent()])
-    .then((data) => {
-      res.render('users/individual-manage', {
-        managedUserCurrent: data[0][0],
-        managedUserOld: data[0].slice(1),
-        performance: data[1][0],
-        user: req.user
-      });
-    })
-    .catch((err) => {
-      logger.errorLog('Users.showIndividualManage', err);
-      res.render('static-pages/error', { user: req.user });
-    });
-  };
-
-  this.showManage = (req, res) => {
-    res.render('users/manage', { user: req.user });
   };
 
   this.update = (req, res) => {
