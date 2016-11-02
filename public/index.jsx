@@ -16,6 +16,7 @@ import Profile from './components/profile';
 import ResultsForApproval from './components/results-for-approval';
 import ResultsForEvaluation from './components/results-for-evaluation';
 import User from './components/user';
+import Users from './components/users';
 import UserSearch from './components/user-search';
 
 const renderBasedOnAuth = (Component, pattern, props, user) => {
@@ -65,6 +66,7 @@ const App = () => (
             <MatchWhenAuthorized exactly pattern="/performances/new" component={CreatePerformance} />
             <MatchWhenAuthorized exactly pattern="/results" component={PastResults} />
             <MatchWhenAuthorized exactly pattern="/results/toApprove" component={ResultsForApproval} />
+            <MatchWhenAuthorized exactly pattern="/users" component={Users} />
             <MatchWhenAuthorized exactly pattern="/users/search" component={UserSearch} />
             <MatchWhenAuthorized exactly pattern="/users/profile/:nameNumber" component={User} />
             <MatchWhenNotLoggedIn pattern="/login" component={Login} />

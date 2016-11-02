@@ -5,7 +5,9 @@ const LOCAL_STORE_STRING = 'userJWT';
 const ADMIN_ROUTES = [
   '/performances',
   '/performances/new',
-  '/results'
+  '/results',
+  '/users',
+  '/users/search'
 ];
 const SL_ROUTES = [
   '/challenges/evaluate'
