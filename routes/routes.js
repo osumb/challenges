@@ -12,6 +12,7 @@ const {
 
 const Auth = controllers.Auth;
 const Challenges = new controllers.Challenges();
+const PasswordChangeRequestsController = controllers.PasswordChangeRequestsController;
 const Performances = new controllers.Performances();
 const Results = new controllers.Results();
 const Users = new controllers.Users();
@@ -22,6 +23,10 @@ router.get('/token', Auth.getToken);
 // Challenges Controller
 router.get('/challengeableUsers', ensureAuthenticated, Challenges.challengeableUsers);
 router.post('/challenges/create', ensureAuthenticated, Challenges.create);
+
+// PasswordChangeRequests Controller
+router.get('/passwordRequest', PasswordChangeRequestsController.get);
+router.post('/passwordRequest', PasswordChangeRequestsController.create);
 
 // Results Controller
 router.get('/results', ensureAdmin, Results.index);

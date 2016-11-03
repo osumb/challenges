@@ -7,6 +7,7 @@ import './style.scss';
 import { auth } from './utils';
 import ChallengeSelect from './components/challenge-select';
 import CreatePerformance from './components/create-performance';
+import ForgotPassword from './components/forgot-password';
 import Header from './components/header';
 import Login from './components/login';
 import Navbar from './components/navbar';
@@ -69,6 +70,7 @@ const App = () => (
             <MatchWhenAuthorized exactly pattern="/users" component={Users} />
             <MatchWhenAuthorized exactly pattern="/users/search" component={UserSearch} />
             <MatchWhenAuthorized exactly pattern="/users/profile/:nameNumber" component={User} />
+            <MatchWhenNotLoggedIn pattern="/forgotPassword" component={ForgotPassword} />
             <MatchWhenNotLoggedIn pattern="/login" component={Login} />
             <Miss component={NotFound} />
           </div>

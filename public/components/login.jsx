@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-import { Redirect } from 'react-router';
+import { Link, Redirect } from 'react-router';
 
 import { auth, keyCodes } from '../utils';
 import './login.scss';
@@ -82,6 +82,7 @@ class Login extends Component {
             <button className="Login-button" onClick={this.handleClick}>Submit</button>
           </div>
         </div>
+        <Link to="/forgotPassword">Need A New Password?</Link>
       </div>
     );
   }
