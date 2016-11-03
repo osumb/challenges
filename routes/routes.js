@@ -27,6 +27,7 @@ router.post('/challenges/create', ensureAuthenticated, Challenges.create);
 // PasswordChangeRequests Controller
 router.get('/passwordRequest', PasswordChangeRequestsController.get);
 router.post('/passwordRequest', PasswordChangeRequestsController.create);
+router.put('/passwordRequest', PasswordChangeRequestsController.changePassword);
 
 // Results Controller
 router.get('/results', ensureAdmin, Results.index);
