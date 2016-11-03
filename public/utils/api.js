@@ -26,7 +26,7 @@ const request = (url, { method, body }) =>
         errMessage = 'Resource not found';
         break;
       case 403:
-        errMessage = 'Sorry, that action is forbidden. Make sure the information you send is correct';
+        errMessage = 'Sorry, that information is incorrect. Please verify';
         break;
       default:
         errMessage = 'Sorry! There was a problem with your request. We\'re aware of and are working on the issue';
