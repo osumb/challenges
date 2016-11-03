@@ -1,14 +1,29 @@
-const { email } = require('../utils');
+const { email, logger } = require('../utils');
 const { PasswordChangeRequest, User } = require('../models');
 
 class PasswordChangeRequestsController {
 
+  static changePassword({ body }, res) {
+    const { id, nameNumber, password } = body;
+
+    PasswordChangeRequest.verify(id, nameNumber)
+    .then(() => Promise.all([
+      User.update(nameNumber, { password }),
+      PasswordChangeRequest.update(id, { usernamenumber: nameNumber, used: true })
+    ]))
+    .then(() => {
+      res.json({ success: true });
+    }).catch(() => {
+      res.status(403).send();
+    });
+  }
+
   static create({ body }, res) {
     const { email: userEmail, nameNumber } = body;
 
-    Promise.all([User.verifyEmail(userEmail, nameNumber), PasswordChangeRequest.create(nameNumber)])
-    .then((data) => {
-      email.sendPasswordRecoveryEmail(userEmail, data[1])
+    User.verifyEmail(userEmail, nameNumber).then(() => PasswordChangeRequest.create(nameNumber))
+    .then((id) => {
+      email.sendPasswordRecoveryEmail(userEmail, id)
       .then(() => {
         res.json({ success: true });
       });
@@ -21,7 +36,14 @@ class PasswordChangeRequestsController {
   static get({ query }, res) {
     const { id } = query;
 
-    res.json({ id });
+    PasswordChangeRequest.findById(id)
+    .then(([request]) => {
+      res.json({ request });
+    })
+    .catch((err) => {
+      logger.errorLog(err);
+      res.status(500).send();
+    });
   }
 }
 
