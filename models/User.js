@@ -112,6 +112,16 @@ class User {
     return db.query(`${sql} ${extraSql}`, values, parsingFunction);
   }
 
+  static verifyEmail(email, nameNumber) {
+    const sql = 'SELECT count(*) > 0 AS verified FROM users WHERE email = $1 and namenumber = $2';
+
+    return db.query(sql, [email, nameNumber], ({ verified }) => verified).then(([verified]) => {
+      if (!verified) {
+        throw new Error('Not Verified');
+      }
+    });
+  }
+
   get email() {
     return this._email;
   }
