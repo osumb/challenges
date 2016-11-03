@@ -6,7 +6,7 @@ const deleteMessage = () => {
   }
 };
 
-export default (message) => {
+const errorMessage = (message) => {
   deleteMessage();
   const messageHTML = document.createElement('h2');
   const navbar = document.getElementById('MessageAppend');
@@ -17,4 +17,9 @@ export default (message) => {
   messageHTML.style.textAlign = 'center';
 
   navbar.parentNode.insertBefore(messageHTML, navbar.nextSibling);
+};
+
+export {
+  deleteMessage,
+  errorMessage
 };

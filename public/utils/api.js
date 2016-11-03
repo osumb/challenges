@@ -1,6 +1,6 @@
 import 'whatwg-fetch';
 
-import errorMessage from './error-message';
+import { deleteMessage, errorMessage } from './error-message';
 
 const request = (url, { method, body }) =>
   fetch(`/api${url}`, {
@@ -13,12 +13,27 @@ const request = (url, { method, body }) =>
     body: JSON.stringify(body)
   })
   .then((response) => {
-    if (response.status >= 300) throw new Error(response.status);
+    if (response.status >= 300) throw response.status;
+    deleteMessage();
     return response.json();
   })
   .catch((err) => {
+    let errMessage;
+
+    /* eslint-disable indent*/
+    switch (err) {
+      case 404:
+        errMessage = 'Resource not found';
+        break;
+      case 403:
+        errMessage = 'Sorry, that action is forbidden. Make sure the information you send is correct';
+        break;
+      default:
+        errMessage = 'Sorry! There was a problem with your request. We\'re aware of and are working on the issue';
+    }
     console.error(err);
-    errorMessage('Sorry! There was a problem with your request. We\'re aware of and are working on the issue');
+    errorMessage(errMessage);
+    throw err;
   });
 
 const del = (url) => request(url, { method: 'delete' });
