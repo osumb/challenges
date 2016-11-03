@@ -18,7 +18,7 @@ export default class ForgotPassword extends Component {
   }
 
   handleEnterKey({ keyCode }) {
-    if (keyCode === keyCodes.ENTER) {
+    if (keyCode === keyCodes.ENTER && !this.request) {
       this.handleClick();
     }
   }
@@ -32,15 +32,18 @@ export default class ForgotPassword extends Component {
         badInput: true
       });
     } else {
-      api.post('/passwordRequest', {
+      this.request = api.post('/passwordRequest', {
         email: email.value,
         nameNumber: nameNumber.value
-      })
-      .then(() => {
+      });
+
+      this.request.then(() => {
+        delete this.request;
         this.setState({
           email: email.value,
           emailSent: true
         });
+
       });
     }
   }
