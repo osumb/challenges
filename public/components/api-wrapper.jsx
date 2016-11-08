@@ -9,6 +9,7 @@ class ApiWrapper extends Component {
     this.state = {
       loading: true
     };
+    this.handleUpdate = this.handleUpdate.bind(this);
   }
 
   componentDidMount() {
@@ -30,6 +31,12 @@ class ApiWrapper extends Component {
     }
   }
 
+  handleUpdate(props) {
+    this.setState({
+      ...props
+    });
+  }
+
   render() {
     const { loading, ...rest } = this.state;
     const { component: Child } = this.props;
@@ -38,7 +45,7 @@ class ApiWrapper extends Component {
       return <div>Loading...</div>;
     }
 
-    return <Child {...rest} />;
+    return <Child {...rest} onUpdate={this.handleUpdate} />;
   }
 }
 
