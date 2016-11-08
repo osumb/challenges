@@ -32,7 +32,6 @@ UserRow.propTypes = {
     new: PropTypes.bool.isRequired,
     part: PropTypes.string.isRequired,
     spotId: PropTypes.string,
-    spotOpen: PropTypes.bool,
     squadLeader: PropTypes.bool
   })
 };

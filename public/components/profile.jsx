@@ -1,7 +1,7 @@
-import React, { Component, PropTypes } from 'react';
+import React, { PropTypes } from 'react';
 
 import './profile.scss';
-import { api } from '../utils';
+import ApiWrapper from './api-wrapper';
 import ChallengeWindow from './challenge-window';
 import Results from './results-for-user';
 import UserHeader from './user-header';
@@ -40,60 +40,38 @@ const currentChallengeWrapper = (canChallenge, performanceName, spotId) => {
   return null;
 };
 
-class Profile extends Component {
+const ProfileComponent = (props) => {
+  const { admin, name, canChallenge, challenge, performance, results, spotId } = props;
 
-  constructor() {
-    super();
-    this.state = {
-      canChallenge: false,
-      challenge: null,
-      performance: null,
-      results: []
-    };
-  }
-
-  componentDidMount() {
-    api.get('/profile')
-    .then(({ canChallenge, challenge, performance, results }) => {
-      this.setState({
-        canChallenge,
-        challenge,
-        performance,
-        results
-      });
-    });
-  }
-
-  render() {
-    const { canChallenge, challenge, performance, results } = this.state;
-    const { admin, name, spotId } = this.props.user;
-
-    return (
-      <div className="Profile">
-        <UserHeader admin={admin} name={name} spotId={spotId} />
-        {performance && <ChallengeWindow {...performance} />}
-        {currentChallengeWrapper(canChallenge, challenge && challenge.performanceName, challenge && challenge.spotId)}
-        <Results results={results} />
-        {admin && adminText}
-      </div>
-    );
-  }
-}
-
-Profile.propTypes = {
-  user: PropTypes.shape({
-    admin: PropTypes.bool.isRequired,
-    director: PropTypes.bool.isRequired,
-    email: PropTypes.string.isRequired,
-    instrument: PropTypes.string.isRequired,
-    name: PropTypes.string.isRequired,
-    nameNumber: PropTypes.string.isRequired,
-    new: PropTypes.bool.isRequired,
-    part: PropTypes.string.isRequired,
-    spotId: PropTypes.string,
-    spotOpen: PropTypes.bool,
-    squadLeader: PropTypes.bool
-  })
+  return (
+    <div className="Profile">
+      <UserHeader admin={admin} name={name} spotId={spotId} />
+      {performance && <ChallengeWindow {...performance} />}
+      {currentChallengeWrapper(canChallenge, challenge && challenge.performanceName, challenge && challenge.spotId)}
+      <Results results={results} />
+      {admin && adminText}
+    </div>
+  );
 };
+
+ProfileComponent.propTypes = {
+  admin: PropTypes.bool.isRequired,
+  canChallenge: PropTypes.bool.isRequired,
+  challenge: PropTypes.shape({
+
+  }),
+  name: PropTypes.string.isRequired,
+  performance: PropTypes.shape({
+
+  }),
+  results: PropTypes.arrayOf(PropTypes.shape({
+
+  })),
+  spotId: PropTypes.string
+};
+
+const Profile = () => (
+  <ApiWrapper component={ProfileComponent} url="/profile" />
+);
 
 export default Profile;
