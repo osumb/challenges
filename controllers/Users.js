@@ -21,7 +21,6 @@ function UsersController() {
       Promise.all([challenge, performances, results, dbUser, User.canChallengeForPerformance(user, performances[0] && performances[0].id)])
     )
     .then(([[challenge], [performance], results, dbUser, canChallenge]) => {
-      console.log(dbUser.admin);
       res.json({
         admin: dbUser.admin,
         canChallenge,

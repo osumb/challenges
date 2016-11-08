@@ -16,13 +16,14 @@ class Auth {
           return;
         }
         if (!bcrypt.compareSync(password, user.password)) { // eslint-disable-line no-sync
-          res.status(404);
+          res.status(404).send();
           return;
         }
 
         const userJSON = user.toJSON();
 
         delete userJSON.password;
+        delete userJSON.spotId;
 
         const token = jwt.sign(userJSON, auth.secret);
 
@@ -30,7 +31,7 @@ class Auth {
       })
       .catch((err) => {
         logger.errorLog('Auth.getToken', err);
-        res.status(500);
+        res.status(500).send();
       });
   }
 }
