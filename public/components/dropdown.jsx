@@ -61,7 +61,7 @@ class Dropdown extends Component {
 
   renderLinks() {
     return this.props.links.map(({ location, name }) => (
-      <li className="Dropdown-link" key={location}><Link onClick={this.handleClick} to={location}>{name}</Link></li>
+      <li className="Dropdown-link" key={location} onClick={this.handleClick} ><Link to={location}>{name}</Link></li>
     ));
   }
 

@@ -14,17 +14,22 @@ function UsersController() {
     Promise.all([
       Challenge.findForUser(user.nameNumber),
       Performance.findCurrent(),
-      Result.findAllForUser(user.nameNumber)
+      Result.findAllForUser(user.nameNumber),
+      User.findByNameNumber(user.nameNumber)
     ])
-    .then(([challenge, performances, results]) =>
-      Promise.all([challenge, performances, results, User.canChallengeForPerformance(user, performances[0] && performances[0].id)])
+    .then(([challenge, performances, results, dbUser]) =>
+      Promise.all([challenge, performances, results, dbUser, User.canChallengeForPerformance(user, performances[0] && performances[0].id)])
     )
-    .then(([[challenge], [performance], results, canChallenge]) => {
+    .then(([[challenge], [performance], results, dbUser, canChallenge]) => {
+      console.log(dbUser.admin);
       res.json({
+        admin: dbUser.admin,
         canChallenge,
         challenge: !challengeAlreadyInResults(challenge, results) && challenge,
+        name: dbUser.name,
+        performance: performance && performance.toJSON(),
         results: results.map((result) => result.toJSON()),
-        performance: performance && performance.toJSON()
+        spotId: dbUser.spotId
       });
     })
     .catch((err) => {

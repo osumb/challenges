@@ -7,7 +7,7 @@ const attributes = ['email', 'instrument', 'name', 'nameNumber', 'new', 'part', 
 
 class User {
 
-  constructor(email, instrument, name, nameNumber, isNew, part, password, role, spotId, spotOpen = false) {
+  constructor(email, instrument, name, nameNumber, isNew, part, password, role, spotId, spotOpen = false, revoke) {
     this._admin = role === 'Admin' || role === 'Director';
     this._director = role === 'Director';
     this._email = email;
@@ -17,6 +17,7 @@ class User {
     this._new = isNew;
     this._part = part;
     this._password = password;
+    this._revokeTokenDate = revoke;
     this._spotId = spotId;
     this._spotOpen = spotOpen;
     this._squadLeader = role === 'Squad Leader';
@@ -60,20 +61,7 @@ class User {
   }
 
   static findByNameNumber(id) {
-    const sql = `
-      SELECT
-        email,
-        name,
-        namenumber,
-        new,
-        COALESCE(u.instrument, ra.instrument) AS instrument,
-        COALESCE(u.part, ra.part) AS part,
-        password,
-        role,
-        spotid
-      FROM users AS u LEFT OUTER JOIN results_approve AS ra ON u.nameNumber = ra.usernamenumber
-      WHERE nameNumber = $1
-    `;
+    const sql = 'SELECT * FROM users WHERE nameNumber = $1';
 
     return db.query(sql, [id], instanceFromRowUser).then(([user]) => user);
   }
@@ -112,6 +100,20 @@ class User {
     return db.query(`${sql} ${extraSql}`, values, parsingFunction);
   }
 
+  static verifyEmail(email, nameNumber) {
+    const sql = 'SELECT count(*) > 0 AS verified FROM users WHERE email = $1 and namenumber = $2';
+
+    return db.query(sql, [email, nameNumber], ({ verified }) => verified).then(([verified]) => {
+      if (!verified) {
+        throw new Error('Not Verified');
+      }
+    });
+  }
+
+  get admin() {
+    return this._admin;
+  }
+
   get email() {
     return this._email;
   }
@@ -145,6 +147,10 @@ class User {
     return this._role;
   }
 
+  get revokeTokenDate() {
+    return this._revokeTokenDate;
+  }
+
   get spotId() {
     return this._spotId;
   }
@@ -160,6 +166,7 @@ class User {
       new: this._new,
       part: this._part,
       password: this._password,
+      revokeTokenDate: this._revokeTokenDate,
       spotId: this._spotId,
       spotOpen: this._spotOpen,
       squadLeader: this._squadLeader
@@ -215,8 +222,8 @@ class UserForIndividualManage {
 
 }
 
-const instanceFromRowUser = ({ email, instrument, name, namenumber, new: isNew, part, password, role, spotid }) =>
-  new User(email, instrument, name, namenumber, isNew, part, password, role, spotid);
+const instanceFromRowUser = ({ email, instrument, name, namenumber, new: isNew, part, password, role, spotid, revoke_token_date }) =>
+  new User(email, instrument, name, namenumber, isNew, part, password, role, spotid, revoke_token_date);
 
 const instanceFromRowUserIndividualManage = ({ name, namenumber, performanceid, performancename, spotid, spotopen, reason, voluntary }) =>
   new UserForIndividualManage(name, namenumber, performanceid, performancename, spotid, spotopen, reason, voluntary);

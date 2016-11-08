@@ -7,12 +7,14 @@ import './style.scss';
 import { auth } from './utils';
 import ChallengeSelect from './components/challenge-select';
 import CreatePerformance from './components/create-performance';
+import ForgotPassword from './components/forgot-password';
 import Header from './components/header';
 import Login from './components/login';
 import Navbar from './components/navbar';
 import NotFound from './components/not-found';
 import PastResults from './components/past-results';
 import Profile from './components/profile';
+import ResetPassword from './components/reset-password';
 import ResultsForApproval from './components/results-for-approval';
 import ResultsForEvaluation from './components/results-for-evaluation';
 import User from './components/user';
@@ -36,8 +38,8 @@ const renderBasedOnAuth = (Component, pattern, props, user) => {
 };
 
 const MatchWhenNotLoggedIn = ({ component: Component, pattern, ...rest }) => (
-  <Match {...rest} pattern={pattern} render={() => {
-    if (!auth.isAuthenticated()) return <Component />;
+  <Match {...rest} pattern={pattern} render={(props) => {
+    if (!auth.isAuthenticated()) return <Component {...props} />;
     return <Redirect to={{ pathname: '/' }} />;
   }}
   />
@@ -69,7 +71,9 @@ const App = () => (
             <MatchWhenAuthorized exactly pattern="/users" component={Users} />
             <MatchWhenAuthorized exactly pattern="/users/search" component={UserSearch} />
             <MatchWhenAuthorized exactly pattern="/users/profile/:nameNumber" component={User} />
+            <MatchWhenNotLoggedIn pattern="/forgotPassword" component={ForgotPassword} />
             <MatchWhenNotLoggedIn pattern="/login" component={Login} />
+            <MatchWhenNotLoggedIn pattern="/resetPassword" component={ResetPassword} />
             <Miss component={NotFound} />
           </div>
         </div>
