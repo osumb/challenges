@@ -3,6 +3,7 @@ const jwt = require('jsonwebtoken');
 const jwtDecode = require('jwt-decode');
 
 const config = require('../config');
+const { User } = require('../models');
 
 const ensureAdmin = ({ user }, res, next) => {
   user.admin ? next() : res.status(404).send();
@@ -31,14 +32,42 @@ const getUserFromToken = (token) => {
   return token && jwtDecode(token);
 };
 
+const refreshToken = (user) => tokenFromUser(user);
+
+const tokenFromUser = (user) => {
+  delete user.password;
+  delete user.spotId;
+
+  const now = new Date();
+
+  now.setDate(now.getDate() + 7);
+  user.expires = now.getTime();
+
+  return jwt.sign(user, config.auth.secret);
+};
+
 const verifyToken = (token) =>
   new Promise((resolve, reject) => {
     if (!token) {
-      resolve(false);
+      return resolve(false);
     }
-    jwt.verify(token, config.auth.secret, (err, verified) => {
-      if (err) reject(err);
-      resolve(verified);
+    return jwt.verify(token, config.auth.secret, (err, verified) => {
+      if (err) return reject(err);
+
+      const user = getUserFromToken(token);
+      const now = new Date().getTime();
+
+      if (user.expires < now) {
+        resolve(false);
+      }
+
+      return User.findByNameNumber(user.nameNumber)
+      .then((dbUser) => {
+        if (user.iat < new Date(dbUser.revokeTokenDate).getTime()) {
+          return resolve(false);
+        }
+        return resolve(verified);
+      });
     });
   });
 
@@ -49,5 +78,7 @@ module.exports = {
   ensureResultsIndexAbility,
   getToken,
   getUserFromToken,
+  refreshToken,
+  tokenFromUser,
   verifyToken
 };
