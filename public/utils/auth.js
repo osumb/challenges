@@ -28,16 +28,32 @@ const authenticate = (nameNumber, password) =>
     localStorage.userJWT = token;
   });
 
+const getToken = () => localStorage[LOCAL_STORE_STRING];
+
 const getUser = () => localStorage[LOCAL_STORE_STRING] && jwtDecode(localStorage[LOCAL_STORE_STRING]);
 
-const isAuthenticated = () => typeof getUser() !== 'undefined';
+const isAuthenticated = () => {
+  const user = getUser();
+
+  if (!user) {
+    return false;
+  } else if (user.revokeTokenDate < user.iat || user.expires < new Date().getTime()) {
+    logout();
+    return false;
+  }
+  return true;
+};
 
 const logout = () => {
   localStorage.removeItem(LOCAL_STORE_STRING);
+};
+
+const refreshToken = (token) => {
+  localStorage.userJWT = token;
 };
 
 const userCanAccess = (pattern) =>
   getUser() &&
   (getUser().admin || (!getUser().squadLeader && !SL_ROUTES.includes(pattern)) || !ADMIN_ROUTES.includes(pattern));
 
-export default { authenticate, getUser, isAuthenticated, logout, userCanAccess };
+export default { authenticate, getToken, getUser, isAuthenticated, logout, refreshToken, userCanAccess };
