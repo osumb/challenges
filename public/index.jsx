@@ -62,7 +62,7 @@ const App = () => (
           <Header />
           <Navbar onLogout={handleLogout.bind(null, router)} user={auth.getUser()} />
           <div className="Main">
-            <MatchWhenAuthorized exactly pattern="/" component={Profile} user={auth.getUser()} />
+            <MatchWhenAuthorized exactly pattern="/" component={Profile} />
             <MatchWhenAuthorized exactly pattern="/challenges/evaluate" component={ResultsForEvaluation} />
             <MatchWhenAuthorized exactly pattern="/challenges/new" component={ChallengeSelect} />
             <MatchWhenAuthorized exactly pattern="/performances/new" component={CreatePerformance} />
