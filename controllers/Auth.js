@@ -1,7 +1,6 @@
 const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
 
-const { auth } = require('../config');
+const { tokenFromUser } = require('../auth');
 const { logger } = require('../utils');
 const { User } = require('../models');
 
@@ -19,15 +18,7 @@ class Auth {
           res.status(404).send();
           return;
         }
-
-        const userJSON = user.toJSON();
-
-        delete userJSON.password;
-        delete userJSON.spotId;
-
-        const token = jwt.sign(userJSON, auth.secret);
-
-        res.json({ token });
+        res.json({ token: tokenFromUser(user.toJSON()) });
       })
       .catch((err) => {
         logger.errorLog('Auth.getToken', err);
