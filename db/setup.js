@@ -12,13 +12,11 @@ client.connect();
 const challenges = fixtures.mockData.fakeChallengeList;
 const performances = fixtures.mockData.fakePerformances;
 const results = fixtures.mockData.fakeResults;
-const resultsApprove = fixtures.mockData.fakeResultsApprove;
 const spots = fixtures.mockData.fakeSpots;
 const users = fixtures.mockData.fakeUsers;
 const insertChallengeQueryString = 'INSERT INTO challenges (performanceId, userNameNumber, spotId) VALUES($1, $2, $3)';
 const insertPerformanceQueryString = 'INSERT INTO performances (name, openAt, closeAt, performDate) VALUES($1, $2, $3, $4)';
 const insertResultQueryString = 'INSERT INTO results (performanceId, spotId, firstNameNumber, secondNameNumber, firstComments, secondComments, winnerId, pending) VALUES($1, $2, $3, $4, $5, $6, $7, $8)';
-const insertResultsApproveQueryString = 'INSERT INTO results_approve (userNameNumber, instrument, part) VALUES($1, $2, $3)';
 const insertSpotQueryString = 'INSERT INTO spots VALUES ($1, $2, $3)';
 const insertUserQueryString = 'INSERT INTO users (nameNumber, instrument, name, part, password, role, spotId, email) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)';
 
@@ -46,12 +44,6 @@ function insertPerformance(performance, cb) {
 
 function insertResult(result, cb) {
   client.query(insertResultQueryString, [result.PerformanceId, result.SpotId, result.firstNameNumber, result.secondNameNumber, result.comments1, result.comments2, result.winnerId, result.pending], (err) => {
-    cb(err);
-  });
-}
-
-function insertResultsApprove(user, cb) {
-  client.query(insertResultsApproveQueryString, [user.userNameNumber, user.instrument, user.part], (err) => {
     cb(err);
   });
 }
@@ -104,12 +96,6 @@ async.map(challenges, insertChallenge, (err) => {
 async.map(results, insertResult, (err) => {
   if (err) {
     console.log('Error inserting results', err);
-  }
-});
-
-async.map(resultsApprove, insertResultsApprove, (err) => {
-  if (err) {
-    console.log('Error inserting resultsApprove', err);
   }
   client.end();
 });

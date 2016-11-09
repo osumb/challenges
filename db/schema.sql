@@ -9,6 +9,7 @@ DROP TABLE IF EXISTS spots CASCADE;
 DROP TABLE IF EXISTS performances CASCADE;
 DROP TABLE IF EXISTS manage CASCADE;
 DROP TABLE IF EXISTS results_approve CASCADE;
+DROP TABLE IF EXISTS password_change_requests CASCADE;
 DROP TYPE IF EXISTS part;
 DROP TYPE IF EXISTS instrument;
 DROP TYPE IF EXISTS role;
@@ -238,6 +239,7 @@ CREATE TABLE users (
   new boolean NOT NULL DEFAULT TRUE,
   part part,
   password varchar(256) NOT NULL,
+  revoke_token_date timestamptz NOT NULL DEFAULT now(),
   role role,
   spotId varchar(3) references spots(id),
   created_at timestamptz NOT NULL,
@@ -333,19 +335,19 @@ CREATE TRIGGER manage_modified_stamp BEFORE INSERT ON manage
 FOR EACH ROW EXECUTE PROCEDURE modified_stamp();
 
 ----------------------------------------
--- ResultsApprovePermission
+-- PASSWORD_CHANGE_REQUESTS
 ----------------------------------------
-CREATE TABLE results_approve (
-  id serial PRIMARY KEY,
-  userNameNumber varchar(256) references users(nameNumber) NOT NULL,
-  instrument instrument,
-  part part,
+CREATE TABLE password_change_requests (
+  id varchar(256) PRIMARY KEY,
+  expires timestamptz NOT NULL,
+  usernamenumber varchar(256) references users(namenumber) NOT NULL,
+  used boolean DEFAULT FALSE,
   created_at timestamptz NOT NULL,
   modified_at timestamptz NOT NULL
 );
 
-CREATE TRIGGER results_approve_created_stamp BEFORE INSERT ON results_approve
+CREATE TRIGGER password_change_requests_created_stamp BEFORE INSERT ON password_change_requests
 FOR EACH ROW EXECUTE PROCEDURE created_stamp();
 
-CREATE TRIGGER results_approve_modified_stamp BEFORE INSERT ON results_approve
+CREATE TRIGGER password_change_requests_modified_stamp BEFORE INSERT ON password_change_requests
 FOR EACH ROW EXECUTE PROCEDURE modified_stamp();
