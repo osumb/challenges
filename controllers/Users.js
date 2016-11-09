@@ -10,7 +10,7 @@ const Spot = models.Spot;
 const User = models.User;
 
 function UsersController() {
-  this.profile = ({ user }, res) => {
+  this.profile = ({ user }, res, next) => {
     Promise.all([
       Challenge.findForUser(user.nameNumber),
       Performance.findCurrent(),
@@ -21,7 +21,7 @@ function UsersController() {
       Promise.all([challenge, performances, results, dbUser, User.canChallengeForPerformance(user, performances[0] && performances[0].id)])
     )
     .then(([[challenge], [performance], results, dbUser, canChallenge]) => {
-      res.json({
+      res.locals.jsonResp = {
         admin: dbUser.admin,
         canChallenge,
         challenge: !challengeAlreadyInResults(challenge, results) && challenge,
@@ -29,7 +29,8 @@ function UsersController() {
         performance: performance && performance.toJSON(),
         results: results.map((result) => result.toJSON()),
         spotId: dbUser.spotId
-      });
+      };
+      next();
     })
     .catch((err) => {
       logger.errorLog('Users.profile', err);
@@ -37,7 +38,7 @@ function UsersController() {
     });
   };
 
-  this.userProfileForAdmin = ({ query }, res) => {
+  this.userProfileForAdmin = ({ query }, res, next) => {
     Promise.all([
       Challenge.findForUser(query.nameNumber),
       Manage.findAllForUser(query.nameNumber),
@@ -47,33 +48,40 @@ function UsersController() {
       User.findByNameNumber(query.nameNumber)
     ])
     .then(([challenges, manages, [performance], results, [spot], user]) => {
-      res.json({ challenges, manages, performance, results, spot, user });
+      res.locals.jsonResp = { challenges, manages, performance, results, spot, user };
+      next();
+    })
+    .catch((err) => {
+      logger.errorLog('Users.profileForAdmin', err);
+      res.status(500).send();
     });
   };
 
-  this.changePassword = (req, res) => {
+  this.changePassword = (req, res, next) => {
     const { oldPassword, newPassword } = req.body;
 
     if (bcrypt.compareSync(oldPassword, req.user.password)) { // eslint-disable-line no-sync
       User.update(req.user.nameNumber, { new: false, password: newPassword })
-      .then(([hashPassword]) => {
-        req.user.new = false;
-        req.user.password = hashPassword;
-        res.json({ success: true });
+      .then(() => {
+        res.locals.jsonResp = { success: true };
+        next();
       })
       .catch((err) => {
         logger.errorLog('Users.changePassword', err);
-        res.json({ success: false, error: true });
+        res.locals.jsonResp = { success: false, error: true };
+        next();
       });
     } else {
-      res.json({ success: false, error: false });
+      res.locals.jsonResp = { success: false, error: false };
+      next(); // eslint-disable-line callback-return
     }
   };
 
-  this.roster = (req, res) => {
+  this.roster = (req, res, next) => {
     User.indexMembers()
     .then((users) => {
-      res.json({ users });
+      res.locals.jsonResp = { users };
+      next();
     })
     .catch((err) => {
       logger.errorLog('Users.index', err);
@@ -81,7 +89,7 @@ function UsersController() {
     });
   };
 
-  this.manage = (req, res) => {
+  this.manage = (req, res, next) => {
     const { nameNumber, performanceId, reason, spotId, spotOpen, voluntary } = req.body;
     const manageAttributes = {
       performanceId,
@@ -94,7 +102,8 @@ function UsersController() {
     Promise.all([Manage.create(manageAttributes), Spot.setOpenClose(spotId, spotOpen)])
     .then(() => {
       logger.adminActionLog(`${spotOpen ? 'open' : 'close'} spot (${spotId}) for ${nameNumber} for performance id: ${performanceId}. reason: ${manageAttributes.reason}`);
-      res.json({ success: true });
+      res.locals.jsonResp = { success: true };
+      next();
     })
     .catch((err) => {
       logger.errorLog('Users.manage', err);
@@ -102,9 +111,12 @@ function UsersController() {
     });
   };
 
-  this.search = (req, res) => {
+  this.search = (req, res, next) => {
     User.search(req.query.q)
-    .then(users => res.json(users))
+    .then(users => {
+      res.locals.jsonResp = { users };
+      next();
+    })
     .catch(err => res.status(500).json({ message: err }));
   };
 
@@ -112,13 +124,16 @@ function UsersController() {
     res.render('users/settings', { user: req.user });
   };
 
-  this.update = (req, res) => {
+  this.update = (req, res, next) => {
     const { nameNumber } = req.body;
 
     delete req.body.nameNumber;
 
     User.update(nameNumber, req.body)
-    .then(() => res.json({ success: true }))
+    .then(() => {
+      res.locals.jsonResp = { success: true };
+      next();
+    })
     .catch((err) => {
       logger.errorLog('Users.update', err);
       res.json({ success: false });
