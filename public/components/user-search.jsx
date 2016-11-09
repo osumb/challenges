@@ -22,7 +22,7 @@ export default class UserSearch extends Component {
 
     if (target.value.length > 2) {
       api.get(`/users/search?q=${target.value}`)
-      .then((users) => {
+      .then(({ users }) => {
         this.setState({
           ...this.state,
           searchResults: users
