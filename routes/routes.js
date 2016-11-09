@@ -44,11 +44,6 @@ router.get('/users/profile', ensureAdmin, Users.userProfileForAdmin);
 router.post('/users/manage', ensureAdmin, Users.manage);
 router.put('/users', ensureAdmin, Users.update);
 
-
-//Challenges Controller
-router.post('/performances/challenge', Challenges.create);
-router.post('/emailList', ensureAdmin, Challenges.emailList);
-
 //Performance Controller
 router.post('/performances/create', ensureAdmin, Performances.create);
 // router.put('/performances', ensureAdmin, Performances.update);
