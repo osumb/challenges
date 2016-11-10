@@ -11,7 +11,8 @@ export default class ForgotPassword extends Component {
     this.state = {
       badInput: false,
       email: '',
-      emailSent: false
+      emailSent: false,
+      requesting: false
     };
     this.handleEnterKey = this.handleEnterKey.bind(this);
     this.handleClick = this.handleClick.bind(this);
@@ -32,6 +33,10 @@ export default class ForgotPassword extends Component {
         badInput: true
       });
     } else {
+      this.setState({
+        ...this.state,
+        requesting: true
+      });
       this.request = api.post('/passwordRequest', {
         email: email.value,
         nameNumber: nameNumber.value
@@ -41,7 +46,8 @@ export default class ForgotPassword extends Component {
         delete this.request;
         this.setState({
           email: email.value,
-          emailSent: true
+          emailSent: true,
+          requesting: false
         });
 
       });
@@ -83,7 +89,7 @@ export default class ForgotPassword extends Component {
             />
           </div>
           <div className="ForgotPassword-input">
-            <button className="ForgotPassword-button" onClick={this.handleClick}>Send Email</button>
+            <button className="ForgotPassword-button" disabled={!this.state.requesting} onClick={this.handleClick}>Send Email</button>
           </div>
         </div>
       </div>
