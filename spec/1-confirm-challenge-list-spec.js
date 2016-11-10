@@ -14,25 +14,18 @@ const testValidChallenges = testChallenges.filter(({ ErrorCode }) => ErrorCode =
 console.log('==> MAKE TEST CHALLENGES');
 describe('Make Challenges', () => {
   const res = {
-    json: () => {
-      return;
-    },
-    send: () => {
-      return;
-    }
+    locals: {}
   };
+  const next = () => Promise.resolve;
 
   beforeEach(() => {
-    spyOn(res, 'json');
+    res.locals = {};
   });
 
   testChallenges.forEach(({ ErrorCode, UserNameNumber, SpotId }) => {
     const req = {
       body: {
         spotId: SpotId
-      },
-      session: {
-        currentPerformance: testPerformance
       },
       user: {
         nameNumber: UserNameNumber
@@ -44,25 +37,25 @@ describe('Make Challenges', () => {
     // 2 = User Has Already Made A Challenge
     if (ErrorCode === 0) {
       it('Should Make The Challenge', (done) => {
-        Challenges.create(req, res)
+        Challenges.create(req, res, next)
         .then(() => {
-          expect(res.json).toHaveBeenCalledWith({ code: 0 });
+          expect(res.locals.jsonResp).toEqual({ code: 0 });
           done();
         });
       });
     } else if (ErrorCode === 1) {
       it('Should reject the challenge with error code 1', (done) => {
-        Challenges.create(req, res)
+        Challenges.create(req, res, next)
         .then(() => {
-          expect(res.json).toHaveBeenCalledWith({ code: 1 });
+          expect(res.locals.jsonResp).toEqual({ code: 1 });
           done();
         });
       });
     } else {
       it('Should reject the challenge with error code 2', (done) => {
-        Challenges.create(req, res)
+        Challenges.create(req, res, next)
         .then(() => {
-          expect(res.json).toHaveBeenCalledWith({ code: 2 });
+          expect(res.locals.jsonResp).toEqual({ code: 2 });
           done();
         });
       });
