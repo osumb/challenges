@@ -20,19 +20,10 @@ function UsersController() {
     .then(([challenge, performances, results, dbUser]) =>
       Promise.all([challenge, performances, results, dbUser, User.canChallengeForPerformance(user, performances[0] && performances[0].id)])
     )
-    .then(([[challenge], [performance], results, dbUser, [canChallenge]]) => {
-      console.log({
-        admin: dbUser.admin,
-        canChallenge,
-        challenge: !challengeAlreadyInResults(challenge, results) && challenge,
-        name: dbUser.name,
-        performance: performance && performance.toJSON(),
-        results: results.map((result) => result.toJSON()),
-        spotId: dbUser.spotId
-      });
+    .then(([[challenge], [performance], results, dbUser, canChallenge]) => {
       res.locals.jsonResp = {
         admin: dbUser.admin,
-        canChallenge,
+        canChallenge: canChallenge[0],
         challenge: !challengeAlreadyInResults(challenge, results) && challenge,
         name: dbUser.name,
         performance: performance && performance.toJSON(),
@@ -42,6 +33,7 @@ function UsersController() {
       next();
     })
     .catch((err) => {
+      console.trace(err);
       logger.errorLog('Users.profile', err);
       res.status(500).send();
     });
