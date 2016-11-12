@@ -33,10 +33,10 @@ const request = (url, { method, body }) =>
     /* eslint-disable indent*/
     switch (err) {
       case 404:
-        errMessage = 'Resource not found';
+        errMessage = 'Resource not found. If you\'ve recently changed your password, please log in.';
         break;
       case 403:
-        errMessage = 'Sorry, that information is incorrect. Please verify';
+        errMessage = 'Sorry, that action is forbidden.';
         break;
       default:
         errMessage = 'Sorry! There was a problem with your request. We\'re aware of and are working on the issue';
