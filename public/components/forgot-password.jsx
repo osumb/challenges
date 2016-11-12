@@ -50,6 +50,12 @@ export default class ForgotPassword extends Component {
           requesting: false
         });
 
+      })
+      .catch(() => {
+        this.setState({
+          ...this.state,
+          requesting: false
+        });
       });
     }
   }
