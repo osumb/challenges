@@ -28,12 +28,12 @@ app.use((req, res, next) => {
         req.user = getUserFromToken(token);
         res.locals.token = refreshToken(req.user);
       }
-      if (!verified) req.user = {};
+      if (!verified) req.user = null;
       next();
     })
     .catch((err) => {
       console.error(err);
-      req.user = {};
+      req.user = null;
       next();
     });
 });

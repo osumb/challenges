@@ -8,12 +8,13 @@ class PasswordChangeRequestsController {
 
     PasswordChangeRequest.verify(id, nameNumber)
     .then(() => Promise.all([
-      User.update(nameNumber, { password }),
+      User.update(nameNumber, { 'revoke_token_date': new Date().toISOString(), password }), // eslint-disable-line quote-props
       PasswordChangeRequest.update(id, { usernamenumber: nameNumber, used: true })
     ]))
     .then(() => {
       res.json({ success: true });
-    }).catch(() => {
+    }).catch((err) => {
+      console.log(err);
       res.status(403).send();
     });
   }

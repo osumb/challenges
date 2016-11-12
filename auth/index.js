@@ -43,7 +43,7 @@ const tokenFromUser = (user) => {
   now.setDate(now.getDate() + 7);
   user.expires = now.getTime();
 
-  return jwt.sign(user, config.auth.secret);
+  return jwt.sign(Object.assign({}, user, { iat: new Date().getTime() }), config.auth.secret);
 };
 
 const verifyToken = (token) =>

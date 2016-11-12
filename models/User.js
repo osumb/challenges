@@ -3,11 +3,11 @@ const bcrypt = require('bcrypt');
 const queries = require('../db/queries');
 const { db, identityFunction } = require('../utils');
 
-const attributes = ['email', 'instrument', 'name', 'nameNumber', 'new', 'part', 'password', 'role', 'spotId'];
+const attributes = ['email', 'instrument', 'name', 'nameNumber', 'new', 'part', 'password', 'revoke_token_date', 'role', 'spotId'];
 
 class User {
 
-  constructor(email, instrument, name, nameNumber, isNew, part, password, role, spotId, spotOpen = false, revoke) {
+  constructor(email, instrument, name, nameNumber, isNew, part, password, revoke, role, spotId, spotOpen = false) {
     this._admin = role === 'Admin' || role === 'Director';
     this._director = role === 'Director';
     this._email = email;
@@ -223,7 +223,8 @@ class UserForIndividualManage {
 }
 
 const instanceFromRowUser = ({ email, instrument, name, namenumber, new: isNew, part, password, role, spotid, revoke_token_date }) =>
-  new User(email, instrument, name, namenumber, isNew, part, password, role, spotid, revoke_token_date);
+  new User(email, instrument, name, namenumber, isNew, part, password, revoke_token_date, role, spotid);
+
 
 const instanceFromRowUserIndividualManage = ({ name, namenumber, performanceid, performancename, spotid, spotopen, reason, voluntary }) =>
   new UserForIndividualManage(name, namenumber, performanceid, performancename, spotid, spotopen, reason, voluntary);

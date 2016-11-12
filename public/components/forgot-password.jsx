@@ -89,7 +89,7 @@ export default class ForgotPassword extends Component {
             />
           </div>
           <div className="ForgotPassword-input">
-            <button className="ForgotPassword-button" disabled={!this.state.requesting} onClick={this.handleClick}>Send Email</button>
+            <button className="ForgotPassword-button" disabled={this.state.requesting} onClick={this.handleClick}>Send Email</button>
           </div>
         </div>
       </div>
