@@ -33,7 +33,6 @@ function UsersController() {
       next();
     })
     .catch((err) => {
-      console.trace(err);
       logger.errorLog('Users.profile', err);
       res.status(500).send();
     });

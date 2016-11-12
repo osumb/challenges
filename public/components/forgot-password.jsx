@@ -71,6 +71,7 @@ export default class ForgotPassword extends Component {
             <input
               autoCorrect="off"
               autoCapitalize="off"
+              autoFocus
               onKeyUp={this.handleEnterKey}
               placeholder="name.#"
               ref="nameNumber"

@@ -40,21 +40,18 @@ const currentChallengeWrapper = (canChallenge, performanceName, spotId) => {
   return null;
 };
 
-const ProfileComponent = (props) => {
-  const { admin, name, canChallenge, challenge, performance, results, spotId } = props;
+const renderProfile = ({ admin, name, canChallenge, challenge, performance, results, spotId }) =>
+(
+  <div className="Profile">
+    <UserHeader admin={admin} name={name} spotId={spotId} />
+    {performance && <ChallengeWindow {...performance} />}
+    {currentChallengeWrapper(canChallenge, challenge && challenge.performanceName, challenge && challenge.spotId)}
+    <Results results={results} />
+    {admin && adminText}
+  </div>
+);
 
-  return (
-    <div className="Profile">
-      <UserHeader admin={admin} name={name} spotId={spotId} />
-      {performance && <ChallengeWindow {...performance} />}
-      {currentChallengeWrapper(canChallenge, challenge && challenge.performanceName, challenge && challenge.spotId)}
-      <Results results={results} />
-      {admin && adminText}
-    </div>
-  );
-};
-
-ProfileComponent.propTypes = {
+renderProfile.propTypes = {
   admin: PropTypes.bool.isRequired,
   canChallenge: PropTypes.bool.isRequired,
   challenge: PropTypes.shape({
@@ -71,7 +68,7 @@ ProfileComponent.propTypes = {
 };
 
 const Profile = () => (
-  <ApiWrapper component={ProfileComponent} url="/profile" />
+  <ApiWrapper component={renderProfile} url="/profile" />
 );
 
 export default Profile;

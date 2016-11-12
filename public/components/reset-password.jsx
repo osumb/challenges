@@ -88,7 +88,7 @@ class ResetPassword extends Component {
       return (
         <div>
           <h2>Your password has been reset!</h2>
-          <h3><Link to="/login">Go Home</Link></h3>
+          <h3><Link to="/login">Login</Link></h3>
         </div>
       );
     }

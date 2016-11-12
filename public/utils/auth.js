@@ -37,7 +37,7 @@ const isAuthenticated = () => {
 
   if (!user) {
     return false;
-  } else if (user.revokeTokenDate < user.iat || user.expires < new Date().getTime()) {
+  } else if (new Date(user.revokeTokenDate).getTime() > user.iat || user.expires < new Date().getTime()) {
     logout();
     return false;
   }
