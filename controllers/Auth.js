@@ -12,9 +12,11 @@ class Auth {
       .then((user) => {
         if (!user) {
           res.status(404).send();
+          return;
         }
         if (!bcrypt.compareSync(password, user.password)) { // eslint-disable-line no-sync
           res.status(404).send();
+          return;
         }
         res.json({ token: tokenFromUser(user.toJSON()) });
       })
