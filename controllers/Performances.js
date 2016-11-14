@@ -5,12 +5,13 @@ const Performance = models.Performance;
 
 function PerformanceController() {
   // This assumes `openAt` and `closeAt` are already coming in ISO 8601 format as UTC time
-  this.create = (req, res) => {
+  this.create = (req, res, next) => {
     const { closeAt, performanceName, performanceDate, openAt } = req.body;
 
     Performance.create(performanceName, performanceDate, openAt, closeAt)
     .then(() => {
-      res.json({ success: true });
+      res.locals.jsonResp = { success: true };
+      next();
     })
     .catch(err => {
       logger.errorLog('Performances.new', err);

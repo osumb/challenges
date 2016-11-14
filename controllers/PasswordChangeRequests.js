@@ -3,7 +3,7 @@ const { PasswordChangeRequest, User } = require('../models');
 
 class PasswordChangeRequestsController {
 
-  static changePassword({ body }, res) {
+  static changePassword({ body }, res, next) {
     const { id, nameNumber, password } = body;
 
     PasswordChangeRequest.verify(id, nameNumber)
@@ -12,21 +12,23 @@ class PasswordChangeRequestsController {
       PasswordChangeRequest.update(id, { usernamenumber: nameNumber, used: true })
     ]))
     .then(() => {
-      res.json({ success: true });
+      res.jsonResp = { success: true };
+      next();
     }).catch((err) => {
       console.log(err);
       res.status(403).send();
     });
   }
 
-  static create({ body }, res) {
+  static create({ body }, res, next) {
     const { email: userEmail, nameNumber } = body;
 
     User.verifyEmail(userEmail, nameNumber).then(() => PasswordChangeRequest.create(nameNumber))
     .then((id) => {
       email.sendPasswordRecoveryEmail(userEmail, id)
       .then(() => {
-        res.json({ success: true });
+        res.locals.jsonResp = { success: true };
+        next();
       });
     })
     .catch(() => {
@@ -34,12 +36,13 @@ class PasswordChangeRequestsController {
     });
   }
 
-  static get({ query }, res) {
+  static get({ query }, res, next) {
     const { id } = query;
 
     PasswordChangeRequest.findById(id)
     .then(([request]) => {
-      res.json({ request });
+      res.locals.jsonResp = { request };
+      next();
     })
     .catch((err) => {
       logger.errorLog(err);

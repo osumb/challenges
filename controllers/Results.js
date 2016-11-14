@@ -3,12 +3,12 @@ const { logger } = require('../utils');
 const Result = models.Result;
 
 function ResultsController() {
-  this.approve = (req, res) => {
+  this.approve = (req, res, next) => {
     const { ids } = req.body;
 
     Result.approve(ids)
     .then(([performanceId]) => {
-      res.json({ success: true });
+      res.locals.jsonResp = { success: true };
       Result.checkAllDoneForPerformance(performanceId)
       .then(([done]) => {
         if (done) {
@@ -21,6 +21,7 @@ function ResultsController() {
       .catch((err) => {
         logger.errorLog('Results.approve: Result.checkAllDoneForPerformance', err);
       });
+      next();
     })
     .catch((err) => {
       logger.errorLog('Results.approve: Result.approve', err);
@@ -28,7 +29,7 @@ function ResultsController() {
     });
   };
 
-  this.evaluate = (req, res) => {
+  this.evaluate = (req, res, next) => {
     Result.update({
       id: req.body.id,
       needsApproval: true,
@@ -39,7 +40,8 @@ function ResultsController() {
     })
     .then(() => {
       logger.actionLog(`${req.user.name} evaulated result ${req.body.id}. ${req.body.winnerId} won`);
-      res.status(200).send({ success: true });
+      res.locals.jsonResp = { success: true };
+      next();
     })
     .catch((err) => {
       logger.errorLog('Results.evaluate', err);
@@ -47,10 +49,11 @@ function ResultsController() {
     });
   };
 
-  this.getForApproval = (req, res) => {
+  this.getForApproval = (req, res, next) => {
     Result.findAllForApproval(req.user)
     .then((results) => {
-      res.json({ results: results.map((result) => result.toJSON()) });
+      res.locals.jsonResp = { results: results.map((result) => result.toJSON()) };
+      next();
     })
     .catch((err) => {
       logger.errorLog('Results.getForApproval', err);
@@ -58,10 +61,11 @@ function ResultsController() {
     });
   };
 
-  this.index = (req, res) => {
+  this.index = (req, res, next) => {
     Result.index()
     .then((performanceResultsMap) => {
-      res.json({ performanceResultsMap });
+      res.locals.jsonResp = { performanceResultsMap };
+      next();
     })
     .catch((err) => {
       logger.errorLog('Results.index', err);
@@ -69,10 +73,11 @@ function ResultsController() {
     });
   };
 
-  this.getForEvaluation = (req, res) => {
+  this.getForEvaluation = (req, res, next) => {
     return Result.findAllForEval(req.user.nameNumber, (req.user.spotId || '')[0])
       .then((results) => {
-        res.json({ results: results.map((result) => result.toJSON()) });
+        res.locals.jsonResp = { results: results.map((result) => result.toJSON()) };
+        next();
       })
       .catch((err) => {
         logger.errorLog('Results.showForEvaluation', err);

@@ -5,7 +5,7 @@ const { logger } = require('../utils');
 const { User } = require('../models');
 
 class Auth {
-  static getToken({ query }, res) {
+  static getToken({ query }, res, next) {
     const { nameNumber, password } = query;
 
     User.findByNameNumber(nameNumber)
@@ -18,7 +18,8 @@ class Auth {
           res.status(404).send();
           return;
         }
-        res.json({ token: tokenFromUser(user.toJSON()) });
+        res.locals.jsonResp = { token: tokenFromUser(user.toJSON()) };
+        next();
       })
       .catch((err) => {
         logger.errorLog('Auth.getToken', err);
