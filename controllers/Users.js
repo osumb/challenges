@@ -18,7 +18,7 @@ function UsersController() {
       User.findByNameNumber(user.nameNumber)
     ])
     .then(([challenge, performances, results, dbUser]) =>
-      Promise.all([challenge, performances, results, dbUser, User.canChallengeForPerformance(user, performances[0] && performances[0].id)])
+      Promise.all([challenge, performances, results, dbUser, User.canChallengeForPerformance(user.nameNumber, performances[0] && performances[0].id)])
     )
     .then(([[challenge], [performance], results, dbUser, canChallenge]) => {
       res.locals.jsonResp = {

@@ -45,13 +45,13 @@ class User {
     return db.query(sql, [name, nN, instrument, part, role, spotId, email, password]);
   }
 
-  static canChallengeForPerformance(user, performanceId) {
+  static canChallengeForPerformance(nameNumber, performanceId) {
     if (!performanceId) {
       return Promise.resolve(false);
     }
     const sql = queries.canChallengeForPerformance;
 
-    return db.query(sql, [user.nameNumber, performanceId, user.spotId], ({ can_challenge }) => can_challenge);
+    return db.query(sql, [nameNumber, performanceId], ({ can_challenge }) => can_challenge);
   }
 
   static findForIndividualManage(nameNumber) {
