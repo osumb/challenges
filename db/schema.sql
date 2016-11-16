@@ -349,5 +349,5 @@ CREATE TABLE password_change_requests (
 CREATE TRIGGER password_change_requests_created_stamp BEFORE INSERT ON password_change_requests
 FOR EACH ROW EXECUTE PROCEDURE created_stamp();
 
-CREATE TRIGGER password_change_requests_modified_stamp BEFORE INSERT ON password_change_requests
+CREATE TRIGGER password_change_requests_modified_stamp BEFORE UPDATE ON password_change_requests
 FOR EACH ROW EXECUTE PROCEDURE modified_stamp();
