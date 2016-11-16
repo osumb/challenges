@@ -14,11 +14,13 @@ const SL_ROUTES = [
 ];
 
 const authenticate = (nameNumber, password) =>
-  fetch(`/api/token?nameNumber=${nameNumber}&password=${password}`, {
+  fetch('/api/token', {
     headers: { // eslint-disable-line quote-props
       Accept: 'application/json, text/html',
       'Content-Type': 'application/json'
-    }
+    },
+    method: 'post',
+    body: JSON.stringify({ nameNumber, password })
   })
   .then((response) => {
     if (response.status >= 300) throw new Error(response.status);

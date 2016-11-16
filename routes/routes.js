@@ -18,7 +18,7 @@ const Results = new controllers.Results();
 const Users = new controllers.Users();
 
 //Auth Controller
-router.get('/token', Auth.getToken);
+router.post('/token', Auth.getToken);
 
 // Challenges Controller
 router.get('/challengeableUsers', ensureAuthenticated, Challenges.challengeableUsers);

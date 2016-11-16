@@ -5,8 +5,8 @@ const { logger } = require('../utils');
 const { User } = require('../models');
 
 class Auth {
-  static getToken({ query }, res, next) {
-    const { nameNumber, password } = query;
+  static getToken({ body }, res, next) {
+    const { nameNumber, password } = body;
 
     User.findByNameNumber(nameNumber)
       .then((user) => {
