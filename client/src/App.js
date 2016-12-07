@@ -19,6 +19,7 @@ class App extends Component {
       console.trace(e);
     });
   }
+
   render() {
     return (
       <div className="App">

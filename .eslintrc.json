@@ -22,7 +22,12 @@
         "curly": [
           "error",
           "multi-line"
-        ]
+        ],
+        "react/jsx-indent": [
+          2,2
+        ],
+        "react/jsx-indent-props": "off",
+        "react/no-multi-comp": "off"
     },
     "env": {
         "browser": true,
@@ -30,5 +35,6 @@
         "jquery": true,
         "node": true
     },
-    "extends": "@btmills/eslint-config-btmills/es6"
+    "extends": "@btmills/eslint-config-btmills/es6",
+    "extends": "@btmills/eslint-config-btmills/react"
 }
