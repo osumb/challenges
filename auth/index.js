@@ -1,106 +1,85 @@
-/* eslint-disable callback-return */
-const passport = require('passport');
-const Strategy = require('passport-local').Strategy;
-const models = require('../models');
-const User = models.User;
-const bcrypt = require('bcrypt');
+/* eslint-disable callback-return, no-unused-expressions */
+const jwt = require('jsonwebtoken');
+const jwtDecode = require('jwt-decode');
 
-passport.use(new Strategy((username, password, done) => {
-  User.findByNameNumber(username)
-    .then((user) => {
-      if (!user) {
-        return done(null, false);
-      }
-      if (!bcrypt.compareSync(password, user.password)) { // eslint-disable-line no-sync
-        return done(null, false);
-      }
+const config = require('../config');
+const { models } = require('../api');
+const { User } = models;
 
-      const serializedUser = user.toJSON();
+const ensureAdmin = ({ user }, res, next) => {
+  user.admin ? next() : res.status(404).send();
+};
 
-      serializedUser.resultsIndexPermission = serializedUser.instrument === 'Any' && serializedUser.part === 'Any';
-      return done(null, serializedUser);
-    })
-    .catch((err) => done(err));
-}));
+const ensureAdminOrSquadLeader = ({ user }, res, next) => (user && user.admin || user.squadLeader) ? next() : res.status(404).send();
 
-passport.serializeUser((user, done) => {
-  done(null, user);
-});
+const ensureAuthenticated = ({ user }, res, next) => (user && user !== {}) ? next() : res.status(404).send();
 
-passport.deserializeUser((user, done) => {
-  done(null, user);
-});
+const ensureResultsIndexAbility = ({ user }, res, next) => {
+  (user.admin && user.instrument === 'Any' && user.instrument === 'Any') ?
+    next() :
+    res.status(404).send();
+};
 
-function isAuthenticated(req) {
-  if (req.isAuthenticated && req.isAuthenticated()) {
-    return true;
-  } else {
-    return false;
+const getToken = (req) => {
+  if (req.headers.authorization && req.headers.authorization.split(' ')[0] === 'Bearer') {
+    return req.headers.authorization.split(' ')[1];
+  } else if (req.query && req.query.token) {
+    return req.query.token;
   }
-}
+  return null;
+};
 
-function ensureAuthenticated(req, res, next) {
-  if (isAuthenticated(req)) {
-    return next();
-  } else {
-    return res.render('static-pages/no-auth');
-  }
-}
+const getUserFromToken = (token) => {
+  return token && jwtDecode(token);
+};
 
-function ensureAuthAndNameNumberRoute(req, res, next) {
-  if (isAuthenticated(req) && req.params.nameNumber === req.user.nameNumber) {
-    return next();
-  } else {
-    return res.render('static-pages/no-auth');
-  }
-}
+const refreshToken = (user) => tokenFromUser(user);
 
-function ensureAdmin(req, res, next) {
-  if (isAuthenticated(req)) {
-    const userIsAdmin = req.user && req.user.admin;
+const tokenFromUser = (user) => {
+  delete user.password;
+  delete user.spotId;
 
-    if (userIsAdmin) {
-      return next();
-    } else {
-      return res.redirect('/notAdmin');
+  const now = new Date();
+
+  now.setDate(now.getDate() + 7);
+  user.expires = now.getTime();
+
+  return jwt.sign(Object.assign({}, user, { iat: new Date().getTime() }), config.auth.secret);
+};
+
+const verifyToken = (token) =>
+  new Promise((resolve, reject) => {
+    if (!token) {
+      return resolve(false);
     }
-  }
-  return res.render('static-pages/no-auth');
-}
+    return jwt.verify(token, config.auth.secret, (err, verified) => {
+      if (err) return reject(err);
 
-function ensureEvalAbility(req, res, next) {
-  if (isAuthenticated(req) && (req.user.squadLeader) || req.user.admin) {
-    return next();
-  } else {
-    return res.redirect('/');
-  }
-}
+      const user = getUserFromToken(token);
+      const now = new Date().getTime();
 
-function ensureNotFirstLogin(req, res, next) {
-  if (req.user.new) {
-    return res.render('users/settings', {
-      message: 'This is your first time logging in. Please make a new password',
-      user: req.user
+      if (user.expires < now) {
+        resolve(false);
+      }
+
+      return User.findByNameNumber(user.nameNumber)
+      .then((dbUser) => {
+        if (user.iat < new Date(dbUser.revokeTokenDate).getTime()) {
+          return resolve(false);
+        }
+        return resolve(verified);
+      });
     });
-  } else {
-    return next();
-  }
-}
-
-function ensureResultsIndexAbility(req, res, next) {
-  if (isAuthenticated(req) && req.user.admin && req.user.instrument === 'Any' && req.user.part === 'Any') {
-    next();
-  } else {
-    res.redirect('notAdmin');
-  }
-}
+  });
 
 module.exports = {
-  ensureAuthenticated,
   ensureAdmin,
-  ensureAuthAndNameNumberRoute,
-  ensureEvalAbility,
-  ensureNotFirstLogin,
+  ensureAdminOrSquadLeader,
+  ensureAuthenticated,
   ensureResultsIndexAbility,
-  passport
+  getToken,
+  getUserFromToken,
+  refreshToken,
+  tokenFromUser,
+  verifyToken
 };

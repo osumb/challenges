@@ -1,0 +1,11 @@
+#!/bin/sh
+
+# bin/server: Start the api server for development
+
+set -e
+
+cd "$(dirname "$0")/.."
+
+export NODE_ENV="development"
+
+npm run server

@@ -1,88 +1,73 @@
 const bodyParser = require('body-parser');
-const cookieParser = require('cookie-parser');
 const express = require('express');
 const favicon = require('serve-favicon');
+const http = require('http');
 const logger = require('morgan');
-const passport = require('./auth').passport;
 const path = require('path');
-const Redis = require('redis');
-const session = require('express-session');
-const url = require('url');
 
-const RedisStore = require('connect-redis')(session);
+const auth = require('./auth');
+const { getToken, getUserFromToken, refreshToken, verifyToken } = auth;
 const { routes } = require('./config');
 
 const app = express();
 
-//session setup
-
-//  If there is a env variable for redis_url (like in staging/prod), create a redis client
-// If there isn't, we're probably in local, so just use memory store so there's one less thing to worry about
-let redis;
-
-if (process.env.REDIS_URL) {
-  const rtg = url.parse(process.env.REDIS_URL);
-
-  redis = Redis.createClient({ port: rtg.port, host: rtg.hostname, password: process.env.REDIS_PASSWORD });
-} else {
-  redis = Redis.createClient();
-}
-
-app.use(session({
-  secret: process.env.PASSPORT_SECRET || 'notMuchOfASecret',
-  resave: true,
-  saveUninitialized: true,
-  store: new RedisStore({ client: redis })
-}));
-
-app.use(passport.initialize());
-app.use(passport.session());
-
-app.use(favicon(path.join(__dirname, 'public/images', 'favicon.ico')));
-app.use(logger('dev'));
+app.use(favicon(path.join(__dirname, 'build', 'favicon.ico')));
+if (process.env.NODE_ENV !== 'production') app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
-app.use(cookieParser());
-app.use('/dist', express.static(path.join(__dirname, '/dist')));
-app.use('/public/images', express.static(path.join(__dirname, '/public/images')));
+app.use(express.static(path.join(__dirname, '/dist')));
+app.use('/static', express.static(path.join(__dirname, '/build/static')));
 
-//routing
-app.use('/', routes);
 
-routes.setup(app);
+console.log(process.env.NODE_ENV);
 
-// catch 404 and forward to error handler
 app.use((req, res, next) => {
-  const err = new Error('Not Found');
+  // Website you wish to allow to connect
+  res.setHeader('Access-Control-Allow-Origin', 'http://localhost:5100');
 
-  err.status = 404;
-  next(err);
+  // Request methods you wish to allow
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+
+  // Request headers you wish to allow
+  res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+
+  next();
 });
+// This middleware verifies a possible token coming in from a request
+// If there is a valid token, add the corresponding user to req.user and refreshes expiration date on token
+// It also appends token to res.locals.token
+app.use((req, res, next) => {
+  const token = getToken(req);
 
-// error handlers
-
-// development error handler
-// will print stacktrace
-if (app.get('env') === 'development') {
-  app.use((err, req, res) => {
-    res.status(err.status || 500);
-    res.render('static-pages/error', {
-      error: err,
-      message: err.message,
-      user: req.user
+  verifyToken(token)
+    .then((verified) => {
+      if (verified) {
+        req.user = getUserFromToken(token);
+        res.locals.token = refreshToken(req.user);
+      }
+      if (!verified) req.user = null;
+      next();
+    })
+    .catch((err) => {
+      console.error(err);
+      req.user = null;
+      next();
     });
-  });
-}
-
-// production error handler
-// no stacktraces leaked to user
-app.use((err, req, res) => {
-  res.status(err.status || 500);
-  res.render('static-pages/error', {
-    error: {},
-    message: err.message,
-    user: req.user
-  });
 });
 
+// Api middleware assumes appends response (if successful) to res.locals.jsonResp
+// Failed responses won't make it past this middleware
+app.use('/api', routes(auth));
+
+// After controllers attach response, combine with token and send
+app.use('/api', (req, res) => res.json(Object.assign({}, { token: res.locals.token }, res.locals.jsonResp)));
+
+app.use((req, res) => {
+  res.sendFile(path.resolve(__dirname, './build/index.html'));
+});
+
+app.set('port', 3001);
+const server = http.createServer(app);
+
+server.listen(3001);
 exports.app = app;
