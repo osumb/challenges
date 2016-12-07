@@ -6,7 +6,7 @@ import 'whatwg-fetch';
 class App extends Component {
 
   componentDidMount() {
-    fetch('http://localhost:3001/api/token', {
+    fetch(`http://localhost:${process.env.PORT}/api/token`, {
       headers: { // eslint-disable-line quote-props
         Accept: 'application/json, text/html',
         'Content-Type': 'application/json'
