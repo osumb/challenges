@@ -9,6 +9,7 @@
   "private": true,
   "scripts": {
     "lint": "eslint .",
+    "heroku-postbuild": "node client/scripts/build.js",
     "mock-data": "script/mock-data",
     "schema": "script/schema",
     "server": "nodemon server.js",
@@ -87,5 +88,25 @@
     "jasmine": "^2.4.1",
     "node-xlsx": "^0.7.1"
   },
-  "proxy": "http://localhost:3001/"
+  "jest": {
+    "collectCoverageFrom": [
+      "src/**/*.{js,jsx}"
+    ],
+    "moduleNameMapper": {
+      "^.+\\.(ico|jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/config/jest/FileStub.js",
+      "^.+\\.css$": "<rootDir>/config/jest/CSSStub.js"
+    },
+    "setupFiles": [
+      "<rootDir>/config/polyfills.js"
+    ],
+    "testPathIgnorePatterns": [
+      "<rootDir>/(build|docs|node_modules)/"
+    ],
+    "testEnvironment": "node"
+  },
+  "babel": {
+    "presets": [
+      "react-app"
+    ]
+  }
 }
