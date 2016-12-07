@@ -19,3 +19,5 @@ echo "==> Done!"
 
 echo "==> Running tests..."
 jasmine
+
+# THIS WILL NEED TO BE HERE! "test": "react-scripts test --env=jsdom",
