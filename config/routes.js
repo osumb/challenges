@@ -1,18 +1,15 @@
 const express = require('express');
 const router = express.Router(); // eslint-disable-line new-cap
 
-const { controllers } = require('../api');
-
-const Auth = controllers.Auth;
-const Challenges = new controllers.Challenges();
-const PasswordChangeRequests = controllers.PasswordChangeRequests;
-const Performances = new controllers.Performances();
-const Results = new controllers.Results();
-const Users = new controllers.Users();
+const Challenges = require('../api/controllers/challenges-controller');
+const PasswordChangeRequests = require('../api/controllers/password-change-requests-controller');
+const Performances = require('../api/controllers/performances-controller');
+const Results = require('../api/controllers/results-controller');
+const Users = require('../api/controllers/users-controller');
 
 const routes = (auth) => {
-  //Auth Controller
-  router.post('/token', Auth.getToken);
+  // Get token
+  router.post('/token', auth.getTokenForUser);
 
   // Challenges Controller
   router.get('/challengeableUsers', auth.ensureAuthenticated, Challenges.challengeableUsers);
