@@ -1,0 +1,28 @@
+.Login {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+}
+
+.Login-inputs {
+  display: flex;
+  margin-bottom: 10px;
+}
+
+.Login-input {
+  margin-right: 10px;
+}
+
+.Login-button button {
+  color: white;
+}
+
+@media (max-width: 769px) {
+  .Login-input {
+    margin-bottom: 10px;
+  }
+
+  .Login-inputs {
+    flex-direction: column;
+  }
+}

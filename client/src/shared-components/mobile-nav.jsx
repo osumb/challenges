@@ -1,0 +1,117 @@
+import React, { Component, PropTypes } from 'react';
+import ActionList from 'material-ui/svg-icons/action/list';
+import AppBar from 'material-ui/AppBar';
+import Divider from 'material-ui/Divider';
+import Drawer from 'material-ui/Drawer';
+import ActionHighlightOff from 'material-ui/svg-icons/action/highlight-off';
+import IconButton from 'material-ui/IconButton';
+import { Link } from 'react-router';
+import { List, ListItem } from 'material-ui/List';
+import { red900 } from 'material-ui/styles/colors';
+import { routes } from '../utils';
+
+const { mainRoutes, canUserSeeLink } = routes;
+
+export default class MobileNav extends Component {
+
+  static get propTypes() {
+    return {
+      onLogout: PropTypes.func.isRequired,
+      user: PropTypes.shape({
+        admin: PropTypes.bool.isRequired,
+        director: PropTypes.bool.isRequired,
+        email: PropTypes.string.isRequired,
+        expires: PropTypes.number.isRequired,
+        instrument: PropTypes.string.isRequired,
+        name: PropTypes.string.isRequired,
+        nameNumber: PropTypes.string.isRequired,
+        part: PropTypes.string.isRequired,
+        revokeTokenDate: PropTypes.number.isRequired,
+        spotOpen: PropTypes.bool.isRequired,
+        squadLeader: PropTypes.bool.isRequired
+      })
+    };
+  }
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      open: false
+    };
+    this.handleClose = this.handleClose.bind(this);
+    this.handleLogout = this.handleLogout.bind(this);
+    this.handleOpen = this.handleOpen.bind(this);
+  }
+
+  handleClose() {
+    this.setState({
+      open: false
+    });
+  }
+
+  handleLogout() {
+    this.setState({
+      open: false
+    });
+    this.props.onLogout();
+  }
+
+  handleOpen() {
+    this.setState({
+      open: true
+    });
+  }
+
+  render() {
+    const style = {
+      backgroundColor: red900
+    };
+    const visibleRoutes = Object.keys(mainRoutes).filter((key) => mainRoutes[key].links.some((link) => canUserSeeLink(link, this.props.user)));
+
+    return (
+      <AppBar
+        iconElementLeft={this.props.user ?
+          <IconButton onClick={this.handleOpen}><ActionList /></IconButton> :
+          <span />
+        }
+        style={style}
+        title="OSUMB Challenges"
+      >
+        {this.props.user && this.state.open &&
+          <Drawer
+            docked
+            onOpenRequest
+            open={this.state.open}
+            width={200}
+          >
+            <IconButton onClick={this.handleClose}><ActionHighlightOff /></IconButton>
+            <List>
+              <ListItem>
+                <span onClick={this.handleClose}><Link to="/">Home</Link></span>
+              </ListItem>
+              {visibleRoutes.map((key) =>
+                <span key={key}>
+                  <Divider />
+                  <ListItem
+                    nestedItems={mainRoutes[key].links.filter((route) => canUserSeeLink(route, this.props.user)).map((route) =>
+                      <ListItem key={route.path}>
+                        <span onClick={this.handleClose}><Link to={route.path}>{route.name}</Link></span>
+                      </ListItem>
+                    )}
+                    primaryText={mainRoutes[key].displayName}
+                    primaryTogglesNestedList
+                  />
+                </span>
+              )}
+              <Divider />
+              <ListItem
+                onClick={this.handleLogout}
+                primaryText="Logout"
+              />
+            </List>
+          </Drawer>
+        }
+      </AppBar>
+    );
+  }
+}
