@@ -7,6 +7,6 @@ set -e
 cd "$(dirname "$0")/.."
 
 export NODE_ENV="development"
-export PORT=3001
+export SERVER_PORT=3001
 
 npm run server
