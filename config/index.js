@@ -9,6 +9,6 @@ module.exports = {
   },
   routes,
   server: {
-    port: process.env.PORT || 3000
+    port: process.env.SERVER_PORT || 3000
   }
 };

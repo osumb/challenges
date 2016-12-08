@@ -5,12 +5,12 @@ const http = require('http');
 const logger = require('morgan');
 const path = require('path');
 
-const auth = require('./auth');
+const auth = require('./utils/auth');
 const { getToken, getUserFromToken, refreshToken, verifyToken } = auth;
-const { routes } = require('./config');
+const routes = require('./config/routes');
 
 const app = express();
-const port = parseInt(process.env.PORT, 10) || 3001;
+const port = parseInt(process.env.SERVER_PORT, 10) || 3001;
 
 app.use(favicon(path.join(__dirname, 'build', 'favicon.ico')));
 if (process.env.NODE_ENV !== 'production') app.use(logger('dev'));
