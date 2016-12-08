@@ -3,6 +3,7 @@ var autoprefixer = require('autoprefixer');
 var webpack = require('webpack');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 var CaseSensitivePathsPlugin = require('case-sensitive-paths-webpack-plugin');
+var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var InterpolateHtmlPlugin = require('react-dev-utils/InterpolateHtmlPlugin');
 var WatchMissingNodeModulesPlugin = require('react-dev-utils/WatchMissingNodeModulesPlugin');
 var getClientEnvironment = require('./env');
@@ -57,8 +58,8 @@ module.exports = {
         }
       },
       {
-        test: /\.css$/,
-        loader: 'style!css?importLoaders=1!postcss'
+        test: /\.(css|scss)$/,
+        loader: ExtractTextPlugin.extract('style-loader', 'css-loader', 'postcss-loader', 'sass-loader')
       },
       {
         test: /\.json$/,
@@ -89,6 +90,7 @@ module.exports = {
     new webpack.DefinePlugin(env),
     new webpack.HotModuleReplacementPlugin(),
     new CaseSensitivePathsPlugin(),
+    new ExtractTextPlugin('static/css/[name].[contenthash:8].css'),
     new WatchMissingNodeModulesPlugin(paths.appNodeModules)
   ],
   node: {
