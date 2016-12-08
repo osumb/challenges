@@ -1,9 +1,9 @@
-const models = require('../models');
-const { logger } = require('../../utils');
-const Result = models.Result;
+const logger = require('../../utils/logger');
+const Result = require('../models/result-model');
 
-function ResultsController() {
-  this.approve = (req, res, next) => {
+class ResultsController {
+
+  static approve(req, res, next) {
     const { ids } = req.body;
 
     Result.approve(ids)
@@ -27,9 +27,9 @@ function ResultsController() {
       logger.errorLog('Results.approve: Result.approve', err);
       res.json({ success: false });
     });
-  };
+  }
 
-  this.evaluate = (req, res, next) => {
+  static evaluate(req, res, next) {
     Result.update({
       id: req.body.id,
       needsApproval: true,
@@ -47,9 +47,9 @@ function ResultsController() {
       logger.errorLog('Results.evaluate', err);
       res.status(500).send({ success: false });
     });
-  };
+  }
 
-  this.getForApproval = (req, res, next) => {
+  static getForApproval(req, res, next) {
     Result.findAllForApproval(req.user)
     .then((results) => {
       res.locals.jsonResp = { results: results.map((result) => result.toJSON()) };
@@ -59,21 +59,9 @@ function ResultsController() {
       logger.errorLog('Results.getForApproval', err);
       res.status(500).send();
     });
-  };
+  }
 
-  this.index = (req, res, next) => {
-    Result.index()
-    .then((performanceResultsMap) => {
-      res.locals.jsonResp = { performanceResultsMap };
-      next();
-    })
-    .catch((err) => {
-      logger.errorLog('Results.index', err);
-      res.render('static-pages/error', { user: req.user });
-    });
-  };
-
-  this.getForEvaluation = (req, res, next) => {
+  static getForEvaluation(req, res, next) {
     return Result.findAllForEval(req.user.nameNumber, (req.user.spotId || '')[0])
       .then((results) => {
         res.locals.jsonResp = { results: results.map((result) => result.toJSON()) };
@@ -83,7 +71,20 @@ function ResultsController() {
         logger.errorLog('Results.showForEvaluation', err);
         res.status(500).send();
       });
-  };
+  }
+
+  static index(req, res, next) {
+    Result.index()
+    .then((performanceResultsMap) => {
+      res.locals.jsonResp = { performanceResultsMap };
+      next();
+    })
+    .catch((err) => {
+      logger.errorLog('Results.index', err);
+      res.render('static-pages/error', { user: req.user });
+    });
+  }
+
 }
 
 module.exports = ResultsController;

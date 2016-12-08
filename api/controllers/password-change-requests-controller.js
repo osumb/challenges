@@ -1,5 +1,6 @@
 const { email, logger } = require('../../utils');
-const { PasswordChangeRequest, User } = require('../models');
+const PasswordChangeRequest = require('../models/password-change-request-model');
+const User = require('../models/user-model');
 
 class PasswordChangeRequestsController {
 

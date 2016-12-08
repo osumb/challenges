@@ -1,11 +1,10 @@
 const email = require('../../utils').email;
 const { logger } = require('../../utils');
-const models = require('../models');
-const Challenge = models.Challenge;
-const Performance = models.Performance;
-const User = models.User;
+const Challenge = require('../models/challenge-model');
+const Performance = require('../models/performance-model');
+const User = require('../models/user-model');
 
-function ChallengersController() {
+class ChallengersController {
 
   /*
   * So, this code thing...
@@ -14,7 +13,7 @@ function ChallengersController() {
   * 1 - someone already challenged the requested spot
   * 2 - the user requesting to make a challenge already made a challenge
   */
-  this.create = (req, res, next) => {
+  static create(req, res, next) {
     const { spotId } = req.body;
     const userId = req.user.nameNumber;
 
@@ -44,10 +43,10 @@ function ChallengersController() {
               logger.errorLog('Challenges.create', err);
               res.status(400).send(err);
             });
-  };
+  }
 
-  this.challengeableUsers = (req, res, next) => {
-    Promise.all([Performance.findCurrent(), User.findByNameNumber(req.user.nameNumber)])
+  static challengeableUsers(req, res, next) {
+    return Promise.all([Performance.findCurrent(), User.findByNameNumber(req.user.nameNumber)])
     .then(([[performance], user]) => Promise.all([performance, Challenge.findAllChallengeablePeopleForUser(user, performance && performance.id)]))
     .then(([performance, challengeableUsers]) => {
       res.locals.jsonResp = {
@@ -60,7 +59,9 @@ function ChallengersController() {
       logger.errorLog('Challenges.challengeablePeople', err);
       res.status(500).send();
     });
-  };
+  }
+
 }
+
 
 module.exports = ChallengersController;

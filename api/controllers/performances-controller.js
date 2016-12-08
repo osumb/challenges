@@ -1,11 +1,10 @@
-const models = require('../models');
-const { logger } = require('../../utils');
+const logger = require('../../utils/logger');
+const Performance = require('../models/performance-model');
 
-const Performance = models.Performance;
+class PerformancesController {
 
-function PerformanceController() {
   // This assumes `openAt` and `closeAt` are already coming in ISO 8601 format as UTC time
-  this.create = (req, res, next) => {
+  static create(req, res, next) {
     const { closeAt, performanceName, performanceDate, openAt } = req.body;
 
     Performance.create(performanceName, performanceDate, openAt, closeAt)
@@ -17,9 +16,9 @@ function PerformanceController() {
       logger.errorLog('Performances.new', err);
       res.render('static-pages/error', { user: req.user });
     });
-  };
+  }
 
-  this.index = (req, res) => {
+  static index(req, res) {
     Performance.findAll('MMMM Do, h:mm:ss a')
     .then((performances) => {
       res.render('performances/index', { user: req.user, performances: performances.map((performance) => performance.toJSON()) });
@@ -28,12 +27,8 @@ function PerformanceController() {
       logger.errorLog('Performances.index', err);
       res.render('static-pages/error', { user: req.user });
     });
-  };
-
-  this.new = (req, res) => {
-    res.render('performances/new', { user: req.user });
-  };
+  }
 
 }
 
-module.exports = PerformanceController;
+module.exports = PerformancesController;

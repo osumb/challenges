@@ -1,16 +1,16 @@
 const bcrypt = require('bcrypt');
 
-const models = require('../models');
-const { logger } = require('../../utils');
-const Challenge = models.Challenge;
-const Manage = models.Manage;
-const Performance = models.Performance;
-const Result = models.Result;
-const Spot = models.Spot;
-const User = models.User;
+const logger = require('../../utils/logger');
+const Challenge = require('../models/challenge-model');
+const Manage = require('../models/manage-model');
+const Performance = require('../models/performance-model');
+const Result = require('../models/result-model');
+const Spot = require('../models/spot-model');
+const User = require('../models/user-model');
 
-function UsersController() {
-  this.profile = ({ user }, res, next) => {
+class UsersController {
+
+  static profile({ user }, res, next) {
     Promise.all([
       Challenge.findForUser(user.nameNumber),
       Performance.findCurrent(),
@@ -36,9 +36,9 @@ function UsersController() {
       logger.errorLog('Users.profile', err);
       res.status(500).send();
     });
-  };
+  }
 
-  this.userProfileForAdmin = ({ query }, res, next) => {
+  static userProfileForAdmin({ query }, res, next) {
     Promise.all([
       Challenge.findForUser(query.nameNumber),
       Manage.findAllForUser(query.nameNumber),
@@ -55,9 +55,9 @@ function UsersController() {
       logger.errorLog('Users.profileForAdmin', err);
       res.status(500).send();
     });
-  };
+  }
 
-  this.changePassword = (req, res, next) => {
+  static changePassword(req, res, next) {
     const { oldPassword, newPassword } = req.body;
 
     if (bcrypt.compareSync(oldPassword, req.user.password)) { // eslint-disable-line no-sync
@@ -75,9 +75,9 @@ function UsersController() {
       res.locals.jsonResp = { success: false, error: false };
       next(); // eslint-disable-line callback-return
     }
-  };
+  }
 
-  this.roster = (req, res, next) => {
+  static roster(req, res, next) {
     User.indexMembers()
     .then((users) => {
       res.locals.jsonResp = { users };
@@ -87,9 +87,9 @@ function UsersController() {
       logger.errorLog('Users.index', err);
       res.status(500).send();
     });
-  };
+  }
 
-  this.manage = (req, res, next) => {
+  static manage(req, res, next) {
     const { nameNumber, performanceId, reason, spotId, spotOpen, voluntary } = req.body;
     const manageAttributes = {
       performanceId,
@@ -109,22 +109,18 @@ function UsersController() {
       logger.errorLog('Users.manage', err);
       res.status(500).send();
     });
-  };
+  }
 
-  this.search = (req, res, next) => {
+  static search(req, res, next) {
     User.search(req.query.q)
     .then(users => {
       res.locals.jsonResp = { users };
       next();
     })
     .catch(err => res.status(500).json({ message: err }));
-  };
+  }
 
-  this.settings = (req, res) => {
-    res.render('users/settings', { user: req.user });
-  };
-
-  this.update = (req, res, next) => {
+  static update(req, res, next) {
     const { nameNumber } = req.body;
 
     delete req.body.nameNumber;
@@ -138,7 +134,8 @@ function UsersController() {
       logger.errorLog('Users.update', err);
       res.json({ success: false });
     });
-  };
+  }
+
 }
 
 const challengeAlreadyInResults =
