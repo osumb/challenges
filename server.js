@@ -18,7 +18,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, '/dist')));
 app.use('/static', express.static(path.join(__dirname, '/build/static')));
-
+app.use('/images', express.static(path.join(__dirname, '/client/public/images')));
 
 if (process.env.NODE_ENV === 'development') {
   app.use((req, res, next) => {
