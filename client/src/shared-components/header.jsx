@@ -15,7 +15,6 @@ const Header = () => (
     iconElementRight={<img className="Header-image" src="/images/script-ohio-white.png" />}
     title="OSUMB Challenge Manager"
   />
-
 );
 
 export default Header;

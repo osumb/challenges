@@ -8,6 +8,25 @@ export const canUserSeeLink = (link, user = {}) =>
   (user.squadLeader && link.roles.some((role) => role === SQUAD_LEADER)) ||
   (user.admin && link.roles.some((role) => role === ADMIN));
 
+export const canUserAccessPattern = (user, pattern) => {
+  if (typeof user === 'undefined' || user === null) {
+    return false;
+  }
+  const patternMainRoute = Object.keys(mainRoutes).find((key) => mainRoutes[key].links.some(({ path }) => path === 'pattern'));
+  const link = patternMainRoute.links.find(({ path }) => path === pattern);
+  const { roles } = link;
+
+  return roles.includes(ANY) || (user.squadLeader && roles.includes(SQUAD_LEADER)) || (user.admin && roles.includes(ADMIN));
+};
+
+export const getVisibleMainRoutesForUser = (user) => {
+  if (typeof user === 'undefined' || user === null) {
+    return [];
+  }
+
+  return Object.keys(mainRoutes).filter((key) => mainRoutes[key].links.some((link) => canUserSeeLink(link, user)));
+};
+
 export const mainRoutes = {
   challenges: {
     displayName: 'Challenges',

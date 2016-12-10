@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-import { grey600, grey400 } from 'material-ui/styles/colors';
+import { grey400, grey600 } from 'material-ui/styles/colors';
 import keycode from 'keycode';
 import { Link, Redirect } from 'react-router';
 import RaisedButton from 'material-ui/RaisedButton';
@@ -90,7 +90,7 @@ export default class Login extends Component {
 
     return (
       <div className="Login">
-        {this.state.failed && <div className="Login-failed">Sorry, the username or password is incorrect</div>}
+        {this.state.failed && <div>Sorry, the username or password is incorrect</div>}
         <div className="Login-inputs">
           <div className="Login-input">
             <TextField

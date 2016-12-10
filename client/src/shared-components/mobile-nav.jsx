@@ -10,7 +10,7 @@ import { List, ListItem } from 'material-ui/List';
 import { red900 } from 'material-ui/styles/colors';
 import { routes } from '../utils';
 
-const { mainRoutes, canUserSeeLink } = routes;
+const { canUserSeeLink, getVisibleMainRoutesForUser, mainRoutes } = routes;
 
 export default class MobileNav extends Component {
 
@@ -66,7 +66,7 @@ export default class MobileNav extends Component {
     const style = {
       backgroundColor: red900
     };
-    const visibleRoutes = Object.keys(mainRoutes).filter((key) => mainRoutes[key].links.some((link) => canUserSeeLink(link, this.props.user)));
+    const visibleRoutes = getVisibleMainRoutesForUser(this.props.user);
 
     return (
       <AppBar

@@ -30,16 +30,16 @@ const renderBasedOnAuth = (Component, pattern, props, user) => {
   }
 };
 
+const MatchWhenAuthorized = ({ component: Component, pattern, user, ...rest }) => (
+  <Match {...rest} pattern={pattern} render={props => (renderBasedOnAuth(Component, pattern, props, user))} />
+);
+
 const MatchWhenNotLoggedIn = ({ component: Component, pattern, ...rest }) => (
   <Match {...rest} pattern={pattern} render={(props) => {
     if (!auth.isAuthenticated()) return <Component {...props} />;
     return <Redirect to={{ pathname: '/' }} />;
   }}
   />
-);
-
-const MatchWhenAuthorized = ({ component: Component, pattern, user, ...rest }) => (
-  <Match {...rest} pattern={pattern} render={props => (renderBasedOnAuth(Component, pattern, props, user))} />
 );
 
 const handleLogout = (router) => {

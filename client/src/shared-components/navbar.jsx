@@ -12,7 +12,7 @@ const Navbar = ({ onLogout, user }) => (
   <Media query={{ minWidth }}>
     {(matches) =>
       matches ?
-        <div className="Navbar">
+        <div>
           <Header />
           <DesktopNav onLogout={onLogout} user={user} />
         </div> :

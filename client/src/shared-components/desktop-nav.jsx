@@ -7,7 +7,7 @@ import './desktop-nav.scss';
 import { routes } from '../utils';
 import LinkDropdown from './link-dropdown';
 
-const { mainRoutes, canUserSeeLink } = routes;
+const { canUserSeeLink, getVisibleMainRoutesForUser, mainRoutes } = routes;
 
 export default class DesktopNav extends Component {
 
@@ -32,11 +32,10 @@ export default class DesktopNav extends Component {
 
   render() {
     const { user } = this.props;
-    const visibleRoutes = Object.keys(mainRoutes).filter((key) => mainRoutes[key].links.some((link) => canUserSeeLink(link, user)));
+    const visibleRoutes = getVisibleMainRoutesForUser(this.props.user);
 
     return (
       <div
-        className="DesktopNav"
         style={{
           backgroundColor: grey300
         }}

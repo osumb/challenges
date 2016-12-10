@@ -1,21 +1,11 @@
-import 'whatwg-fetch';
 import jwtDecode from 'jwt-decode';
 
+import * as routes from './routes';
+
 const LOCAL_STORE_STRING = 'userJWT';
-const ADMIN_ROUTES = [
-  '/performances',
-  '/performances/new',
-  '/results',
-  '/users',
-  '/users/search'
-];
-const SL_ROUTES = [
-  '/challenges/evaluate'
-];
 const url = process.env.NODE_ENV === 'development'
   ? `http://localhost:${process.env.SERVER_PORT}`
   : '';
-
 
 const authenticate = (nameNumber, password) =>
   fetch(`${url}/api/token`, {
@@ -33,6 +23,8 @@ const authenticate = (nameNumber, password) =>
   .then(({ token }) => {
     localStorage.userJWT = token;
   });
+
+const canUserAccess = (pattern) => routes.canUserAccessPattern(getUser(), pattern);
 
 const getToken = () => localStorage[LOCAL_STORE_STRING];
 
@@ -58,8 +50,4 @@ const refreshToken = (token) => {
   localStorage.userJWT = token;
 };
 
-const userCanAccess = (pattern) =>
-  getUser() &&
-  (getUser().admin || (!getUser().squadLeader && !SL_ROUTES.includes(pattern)) || !ADMIN_ROUTES.includes(pattern));
-
-export default { authenticate, getToken, getUser, isAuthenticated, logout, refreshToken, userCanAccess };
+export default { authenticate, canUserAccess, getToken, getUser, isAuthenticated, logout, refreshToken };
