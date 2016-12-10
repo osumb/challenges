@@ -1,7 +1,6 @@
 const bodyParser = require('body-parser');
 const express = require('express');
 const favicon = require('serve-favicon');
-const http = require('http');
 const logger = require('morgan');
 const path = require('path');
 
@@ -10,7 +9,6 @@ const { getToken, getUserFromToken, refreshToken, verifyToken } = auth;
 const routes = require('./config/routes');
 
 const app = express();
-const port = parseInt(process.env.SERVER_PORT, 10) || 3001;
 
 app.use(favicon(path.join(__dirname, 'build', 'favicon.ico')));
 if (process.env.NODE_ENV !== 'production') app.use(logger('dev'));
@@ -64,8 +62,4 @@ app.use((req, res) => {
   res.sendFile(path.resolve(__dirname, './build/index.html'));
 });
 
-app.set('port', port);
-const server = http.createServer(app);
-
-server.listen(port);
 exports.app = app;
