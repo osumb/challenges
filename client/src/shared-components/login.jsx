@@ -127,6 +127,7 @@ export default class Login extends Component {
             <RaisedButton
               backgroundColor={grey600}
               className="Login-button"
+              disableRippleTouch
               onClick={this.handleClick}
             >
               Submit

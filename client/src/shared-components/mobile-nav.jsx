@@ -74,7 +74,12 @@ export default class MobileNav extends Component {
       <AppBar
         className="MobileNav"
         iconElementLeft={this.props.user ?
-          <IconButton onClick={this.handleOpen}><ActionList /></IconButton> :
+          <IconButton
+            disableRippleTouch
+            onClick={this.handleOpen}
+          >
+            <ActionList />
+          </IconButton> :
           <span />
         }
         style={style}
@@ -87,7 +92,12 @@ export default class MobileNav extends Component {
             open={this.state.open}
             width={200}
           >
-            <IconButton onClick={this.handleClose}><ActionHighlightOff /></IconButton>
+            <IconButton
+              disableRippleTouch
+              onClick={this.handleClose}
+            >
+              <ActionHighlightOff />
+            </IconButton>
             <List>
               <ListItem>
                 <span onClick={this.handleClose}><Link to="/">Home</Link></span>
