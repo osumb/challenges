@@ -41,16 +41,24 @@ export default class DesktopNav extends Component {
           backgroundColor: grey300
         }}
       >
-        <MenuItem>
-          <Link to="/">Home</Link>
-        </MenuItem>
-        {visibleRoutes.map((key) =>
-          <LinkDropdown
-            displayName={mainRoutes[key].displayName}
-            key={key}
-            links={mainRoutes[key].links.filter((link) => canUserSeeLink(link, user))}
+        <div className="DesktopNav-left">
+          <MenuItem>
+            <Link to="/">Home</Link>
+          </MenuItem>
+          {visibleRoutes.map((key) =>
+            <LinkDropdown
+              displayName={mainRoutes[key].displayName}
+              key={key}
+              links={mainRoutes[key].links.filter((link) => canUserSeeLink(link, user))}
+            />
+          )}
+        </div>
+        {user &&
+          <MenuItem
+            onClick={this.props.onLogout}
+            primaryText="Logout"
           />
-        )}
+        }
       </div>
     );
   }
