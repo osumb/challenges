@@ -7,8 +7,10 @@ import ActionHighlightOff from 'material-ui/svg-icons/action/highlight-off';
 import IconButton from 'material-ui/IconButton';
 import { Link } from 'react-router';
 import { List, ListItem } from 'material-ui/List';
-import { red900 } from 'material-ui/styles/colors';
+import { grey800 } from 'material-ui/styles/colors';
 import { routes } from '../utils';
+
+import './mobile-nav.scss';
 
 const { canUserSeeLink, getVisibleMainRoutesForUser, mainRoutes } = routes;
 
@@ -64,12 +66,13 @@ export default class MobileNav extends Component {
 
   render() {
     const style = {
-      backgroundColor: red900
+      backgroundColor: grey800
     };
     const visibleRoutes = getVisibleMainRoutesForUser(this.props.user);
 
     return (
       <AppBar
+        className="MobileNav"
         iconElementLeft={this.props.user ?
           <IconButton onClick={this.handleOpen}><ActionList /></IconButton> :
           <span />

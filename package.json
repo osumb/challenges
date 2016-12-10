@@ -9,9 +9,10 @@
   "private": true,
   "scripts": {
     "start": "./bin/www",
+    "build": "node client/scripts/build.js",
     "dev": "foreman start -f Procfile.dev",
     "lint": "eslint .",
-    "heroku-postbuild": "node client/scripts/build.js",
+    "heroku-postbuild": "npm run build",
     "mock-data": "script/mock-data",
     "schema": "script/schema",
     "server": "nodemon --ignore client/ server.js",
