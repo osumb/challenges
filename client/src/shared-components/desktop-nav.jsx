@@ -45,7 +45,6 @@ export default class DesktopNav extends Component {
         </MenuItem>
         {visibleRoutes.map((key) =>
           <LinkDropdown
-            className="DesktopNav-dropdown"
             displayName={mainRoutes[key].displayName}
             key={key}
             links={mainRoutes[key].links.filter((link) => canUserSeeLink(link, user))}

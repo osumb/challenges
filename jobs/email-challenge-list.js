@@ -1,4 +1,4 @@
-const { logger } = require('../utils/logger');
+const logger = require('../utils/logger');
 const Performance = require('../api/models/performance-model');
 const { sendChallengeListEmail, createEmptyResults } = require('./utils');
 
