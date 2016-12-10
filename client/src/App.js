@@ -15,7 +15,7 @@ import Profile from './profile/profile';
 injectTapEventPlugin();
 
 const renderBasedOnAuth = (Component, pattern, props, user) => {
-  if (auth.isAuthenticated() && auth.userCanAccess(pattern)) {
+  if (auth.isAuthenticated() && auth.canUserAccess(pattern)) {
     return <Component {...props} user={user} />;
   } else if (auth.isAuthenticated()) {
     return <NotFound />;

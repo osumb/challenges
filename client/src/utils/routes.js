@@ -12,8 +12,13 @@ export const canUserAccessPattern = (user, pattern) => {
   if (typeof user === 'undefined' || user === null) {
     return false;
   }
-  const patternMainRoute = Object.keys(mainRoutes).find((key) => mainRoutes[key].links.some(({ path }) => path === 'pattern'));
-  const link = patternMainRoute.links.find(({ path }) => path === pattern);
+
+  if (pattern === '/') {
+    return true;
+  }
+
+  const patternMainRouteKey = Object.keys(mainRoutes).find((key) => mainRoutes[key].links.some(({ path }) => path === 'pattern'));
+  const link = mainRoutes[patternMainRouteKey].links.find(({ path }) => path === pattern);
   const { roles } = link;
 
   return roles.includes(ANY) || (user.squadLeader && roles.includes(SQUAD_LEADER)) || (user.admin && roles.includes(ADMIN));

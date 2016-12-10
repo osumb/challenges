@@ -36,6 +36,7 @@ export default class DesktopNav extends Component {
 
     return (
       <div
+        className="DesktopNav"
         style={{
           backgroundColor: grey300
         }}
