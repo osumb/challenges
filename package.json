@@ -16,7 +16,7 @@
     "mock-data": "script/mock-data",
     "schema": "script/schema",
     "server": "nodemon --ignore client/ server.js",
-    "test": "script/test"
+    "test": "bin/test"
   },
   "dependencies": {
     "async": "^2.0.0-rc.5",

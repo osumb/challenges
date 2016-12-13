@@ -3,7 +3,6 @@ const Pool = require('pg-pool');
 const url = require('url');
 
 const dbURL = require('../db/url');
-const config = require('../config');
 const identityFunction = require('./identity-function');
 
 const postgresParams = url.parse(dbURL);
