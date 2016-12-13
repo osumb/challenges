@@ -15,7 +15,7 @@
     "heroku-postbuild": "npm run build",
     "mock-data": "script/mock-data",
     "schema": "script/schema",
-    "server": "nodemon --ignore client/ server.js",
+    "server": "nodemon --ignore client/ bin/www",
     "test": "bin/test"
   },
   "dependencies": {

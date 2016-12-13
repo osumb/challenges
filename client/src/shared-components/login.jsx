@@ -30,8 +30,7 @@ export default class Login extends Component {
     };
     this.handleClick = this.handleClick.bind(this);
     this.handleEnterKey = this.handleEnterKey.bind(this);
-    this.handlePasswordChange = this.handlePasswordChange.bind(this);
-    this.handleNameNumberChange = this.handleNameNumberChange.bind(this);
+    this.handleChange = this.handleChange.bind(this);
     this.login = this.login.bind(this);
   }
 
@@ -71,15 +70,9 @@ export default class Login extends Component {
     }
   }
 
-  handleNameNumberChange({ target }) {
+  handleChange({ target }) {
     this.setState({
-      nameNumber: target.value
-    });
-  }
-
-  handlePasswordChange({ target }) {
-    this.setState({
-      password: target.value
+      [target.name]: target.value
     });
   }
 
@@ -99,7 +92,8 @@ export default class Login extends Component {
               onKeyUp={this.handleEnterKey}
               errorText={this.state.invalidNameNumber && 'This field is required'}
               id="Login-username"
-              onChange={this.handleNameNumberChange}
+              name="nameNumber"
+              onChange={this.handleChange}
               placeholder="name.number"
               underlineFocusStyle={{
                 color: grey400
@@ -114,7 +108,8 @@ export default class Login extends Component {
               onKeyUp={this.handleEnterKey}
               errorText={this.state.invalidPassword && 'This field is required'}
               id="Login-password"
-              onChange={this.handlePasswordChange}
+              name="password"
+              onChange={this.handleChange}
               placeholder="********"
               type="password"
               underlineFocusStyle={{
@@ -127,7 +122,6 @@ export default class Login extends Component {
             <RaisedButton
               backgroundColor={grey600}
               className="Login-button"
-              disableRippleTouch
               onClick={this.handleClick}
             >
               Submit

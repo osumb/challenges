@@ -1,4 +1,5 @@
-const { email, logger } = require('../../utils');
+const email = require('../../utils/email');
+const logger = require('../../utils/logger');
 const PasswordChangeRequest = require('../models/password-change-request-model');
 const User = require('../models/user-model');
 
