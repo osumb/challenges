@@ -1,7 +1,7 @@
-const models = require('../../models');
-const Challenge = models.Challenge;
-const Result = models.Result;
-const { db, logger } = require('../../utils');
+const db = require('../../utils/db');
+const Challenge = require('../../api/models/challenge-model');
+const logger = require('../../utils/logger');
+const Result = require('../../api/models/result-model');
 
 const client = db.createClient();
 let PERFORMANCEID;

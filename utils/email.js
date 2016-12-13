@@ -9,8 +9,8 @@ const helper = sendGrid.mail;
 const sg = sendGrid.SendGrid(process.env.SENDGRID_API_KEY);
 const fromMail = new helper.Email('osumbit@gmail.com');
 
-const challengeListSource = fs.readFileSync(path.resolve(__dirname, '../views/emails/challenge-list.handlebars'), 'utf8');
-const userCreateSource = fs.readFileSync(path.resolve(__dirname, '../views/emails/user-create.handlebars'), 'utf8');
+const challengeListSource = fs.readFileSync(path.resolve(__dirname, './email-templates/challenge-list.handlebars'), 'utf8');
+const userCreateSource = fs.readFileSync(path.resolve(__dirname, './email-templates/user-create.handlebars'), 'utf8');
 
 const challengeListTemplate = Handlebars.compile(challengeListSource);
 const userCreateTemplate = Handlebars.compile(userCreateSource);
@@ -58,12 +58,42 @@ const sendChallengeList = (recipients, fileData) => {
   });
 };
 
+const sendPasswordRecoveryEmail = (email, id) => {
+  let url = 'http://localhost:3000/resetPassword';
+
+  if (process.env.NODE_ENV === 'production') {
+    url = 'https://osumbchallenges.herokuapp.com/resetPassword';
+  } else if (process.env.NODE_ENV === 'staging') {
+    url = 'https://osumbchallengesdev.herokuapp.com/resetPassword';
+  }
+
+  url = `${url}?id=${id}`;
+
+  const to = new helper.Email(email);
+  const subject = 'Challenge App Email Recovery';
+  const source = fs.readFileSync(path.resolve(__dirname, './email-templates/password-recovery.handlebars'), 'utf8');
+  const template = Handlebars.compile(source);
+
+  const content = new helper.Content('text/html', template({ url }));
+  const requestBody = new helper.Mail(fromMail, subject, to, content).toJSON();
+
+  const request = sg.emptyRequest();
+
+  request.method = 'POST';
+  request.path = '/v3/mail/send';
+  request.body = requestBody;
+
+  return new Promise((resolve) => {
+    sg.API(request, resolve);
+  });
+};
+
 const sendChallengeSuccessEmail = (options) => {
   if (process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'staging') {
     const { email, spotId, performanceName } = options;
     const to = new helper.Email(email);
     const subject = `Challenges for ${performanceName}`;
-    const source = fs.readFileSync(path.resolve(__dirname, '../views/emails/challenge-signup-confirmation.handlebars'), 'utf8');
+    const source = fs.readFileSync(path.resolve(__dirname, './email-templates/challenge-signup-confirmation.handlebars'), 'utf8');
     const template = Handlebars.compile(source);
 
     const content = new helper.Content('text/html', template({ performanceName, spotId }));
@@ -117,5 +147,6 @@ module.exports = {
   sendChallengeList,
   sendChallengeSuccessEmail,
   sendErrorEmail,
+  sendPasswordRecoveryEmail,
   sendUserCreateEmail
 };

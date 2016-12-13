@@ -1,0 +1,2 @@
+api: bin/server
+create-react-app: bin/create-react-app

@@ -45,3 +45,6 @@ dist
 jobs/*.csv
 
 .DS_Store
+
+# build stuff
+build/

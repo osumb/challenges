@@ -1,5 +1,5 @@
-const { logger } = require('../utils');
-const { Performance } = require('../models');
+const logger = require('../utils/logger');
+const Performance = require('../api/models/performance-model');
 const { sendChallengeListEmail, createEmptyResults } = require('./utils');
 
 const helper = (id) =>

@@ -1,0 +1,10 @@
+.Header h1 {
+  /* I'm really sorry about this !important. Material-UI does inline styles and this NEEDS to have a margin */
+  margin-top: 14px !important;
+}
+
+.Header-image {
+  height: 65px;
+  padding: 5px 5px 5px 0;
+  width: 130px;
+}

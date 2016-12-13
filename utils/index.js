@@ -1,7 +1,11 @@
-/* eslint-disable global-require */
+const auth = require('./auth');
+const db = require('./db');
+const identityFunction = require('./identity-function');
+const logger = require('./logger');
+
 module.exports = {
-  db: require('./db'),
-  email: require('./email'),
-  identityFunction: require('./identity-function'),
-  logger: require('./logger')
+  auth,
+  db,
+  identityFunction,
+  logger
 };
