@@ -13,8 +13,8 @@
     "dev": "foreman start -f Procfile.dev",
     "lint": "eslint .",
     "heroku-postbuild": "npm run build",
-    "mock-data": "script/mock-data",
     "schema": "script/schema",
+    "seed": "./bin/seed",
     "server": "nodemon --ignore client/ bin/www",
     "test": "bin/test"
   },
