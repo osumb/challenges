@@ -18,3 +18,5 @@ DROP FUNCTION modified_stamp();
 DROP TYPE part;
 DROP TYPE instrument;
 DROP TYPE role;
+
+DROP EXTENSION citext;
