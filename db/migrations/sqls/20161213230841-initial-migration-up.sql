@@ -49,7 +49,7 @@ CREATE TABLE spots (
 CREATE TRIGGER spots_created_stamp BEFORE INSERT ON spots
 FOR EACH ROW EXECUTE PROCEDURE created_stamp();
 
-CREATE TRIGGER spots_modified_stamp BEFORE UPDATE ON spots
+CREATE TRIGGER spots_modified_stamp BEFORE INSERT OR UPDATE ON spots
 FOR EACH ROW EXECUTE PROCEDURE modified_stamp();
 
 ----------------------------------------
@@ -72,7 +72,7 @@ CREATE TABLE users (
 CREATE TRIGGER users_created_stamp BEFORE INSERT ON users
 FOR EACH ROW EXECUTE PROCEDURE created_stamp();
 
-CREATE TRIGGER users_modified_stamp BEFORE UPDATE ON users
+CREATE TRIGGER users_modified_stamp BEFORE INSERT OR UPDATE ON users
 FOR EACH ROW EXECUTE PROCEDURE modified_stamp();
 
 ----------------------------------------
@@ -92,7 +92,7 @@ CREATE TABLE performances (
 CREATE TRIGGER performances_created_stamp BEFORE INSERT ON performances
 FOR EACH ROW EXECUTE PROCEDURE created_stamp();
 
-CREATE TRIGGER performances_modified_stamp BEFORE UPDATE ON performances
+CREATE TRIGGER performances_modified_stamp BEFORE INSERT OR UPDATE ON performances
 FOR EACH ROW EXECUTE PROCEDURE modified_stamp();
 
 ----------------------------------------
@@ -110,7 +110,7 @@ CREATE TABLE challenges (
 CREATE TRIGGER challenges_created_stamp BEFORE INSERT ON challenges
 FOR EACH ROW EXECUTE PROCEDURE created_stamp();
 
-CREATE TRIGGER challenges_modified_stamp BEFORE UPDATE ON challenges
+CREATE TRIGGER challenges_modified_stamp BEFORE INSERT OR UPDATE ON challenges
 FOR EACH ROW EXECUTE PROCEDURE modified_stamp();
 
 ----------------------------------------
@@ -134,7 +134,7 @@ CREATE TABLE results (
 CREATE TRIGGER results_created_stamp BEFORE INSERT ON results
 FOR EACH ROW EXECUTE PROCEDURE created_stamp();
 
-CREATE TRIGGER results_modified_stamp BEFORE UPDATE ON results
+CREATE TRIGGER results_modified_stamp BEFORE INSERT OR UPDATE ON results
 FOR EACH ROW EXECUTE PROCEDURE modified_stamp();
 
 ----------------------------------------
@@ -154,7 +154,7 @@ CREATE TABLE manage (
 CREATE TRIGGER manage_created_stamp BEFORE INSERT ON manage
 FOR EACH ROW EXECUTE PROCEDURE created_stamp();
 
-CREATE TRIGGER manage_modified_stamp BEFORE UPDATE ON manage
+CREATE TRIGGER manage_modified_stamp BEFORE INSERT OR UPDATE ON manage
 FOR EACH ROW EXECUTE PROCEDURE modified_stamp();
 
 ----------------------------------------
@@ -172,7 +172,7 @@ CREATE TABLE results_approve (
 CREATE TRIGGER results_approve_created_stamp BEFORE INSERT ON results_approve
 FOR EACH ROW EXECUTE PROCEDURE created_stamp();
 
-CREATE TRIGGER results_approve_modified_stamp BEFORE UPDATE ON results_approve
+CREATE TRIGGER results_approve_modified_stamp BEFORE INSERT OR UPDATE ON results_approve
 FOR EACH ROW EXECUTE PROCEDURE modified_stamp();
 
 ----------------------------------------
