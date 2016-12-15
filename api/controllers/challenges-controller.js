@@ -1,5 +1,5 @@
-const email = require('../../utils').email;
-const { logger } = require('../../utils');
+const email = require('../../utils/email');
+const logger = require('../../utils/logger');
 const Challenge = require('../models/challenge-model');
 const Performance = require('../models/performance-model');
 const User = require('../models/user-model');

@@ -1,12 +1,10 @@
 /* eslint-disable no-undef */
 const { createEmptyResults } = require('../jobs/utils');
-const { testData } = require('../spec/fixtures');
-const models = require('../models');
+const testData = require('./fixtures/test');
+const Result = require('../api/models/result-model');
 
-const { testPerformance, testResults } = testData;
-const { id } = testPerformance;
-
-const Result = models.Result;
+const { performance, results } = testData;
+const { id } = performance;
 
 console.log('==> CREATE EMPTY RESULTS');
 describe('Create Empty Results', () => {
@@ -14,10 +12,10 @@ describe('Create Empty Results', () => {
     createEmptyResults(id)
     .then(() => {
       Result.findAllRawForPerformance(id)
-      .then((results) => {
-        expect(results.length).toEqual(testResults.length);
+      .then((resultsResp) => {
+        expect(resultsResp.length).toEqual(results.length);
         jasmine.addCustomEqualityTester(resultsCompare);
-        expect(results).toEqual(testResults);
+        expect(resultsResp).toEqual(results);
         done();
       });
     });
@@ -26,21 +24,21 @@ describe('Create Empty Results', () => {
 
 const resultsCompare = (actual, expected) => {
   actual.sort((a, b) => a.spotId.localeCompare(b.spotId));
-  expected.sort((a, b) => a.SpotId.localeCompare(b.SpotId));
+  expected.sort((a, b) => a.spotId.localeCompare(b.spotId));
 
-  return expected.every(({ firstNameNumber, secondNameNumber, SpotId }, i) => {
+  return expected.every(({ firstNameNumber, secondNameNumber, spotId }, i) => {
     if (secondNameNumber) {
-      if (!(firstNameNumber === actual[i].firstNameNumber && secondNameNumber === actual[i].secondNameNumber && SpotId === actual[i].spotId)) {
+      if (!(firstNameNumber === actual[i].firstNameNumber && secondNameNumber === actual[i].secondNameNumber && spotId === actual[i].spotId)) {
         console.log(expected[i]);
         console.log(actual[i]);
       }
-      return firstNameNumber === actual[i].firstNameNumber && secondNameNumber === actual[i].secondNameNumber && SpotId === actual[i].spotId;
+      return firstNameNumber === actual[i].firstNameNumber && secondNameNumber === actual[i].secondNameNumber && spotId === actual[i].spotId;
     } else {
-      if (!(firstNameNumber === actual[i].firstNameNumber && SpotId === actual[i].spotId)) {
+      if (!(firstNameNumber === actual[i].firstNameNumber && spotId === actual[i].spotId)) {
         console.log(expected[i]);
         console.log(actual[i]);
       }
-      return firstNameNumber === actual[i].firstNameNumber && SpotId === actual[i].spotId;
+      return firstNameNumber === actual[i].firstNameNumber && spotId === actual[i].spotId;
     }
   });
 };

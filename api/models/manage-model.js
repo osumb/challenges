@@ -1,4 +1,4 @@
-const db = require('../../utils');
+const db = require('../../utils/db');
 
 const modelAttributes = ['id', 'performanceId', 'userNameNumber', 'reason', 'spotId', 'voluntary'];
 

@@ -5,5 +5,12 @@
     "user": "",
     "password": "",
     "database": "challenges_dev"
+  },
+  "test": {
+    "driver": "pg",
+    "host": "localhost",
+    "user": "",
+    "password": "",
+    "database": "challenges_test"
   }
 }

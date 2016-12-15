@@ -1,6 +1,6 @@
 #!/bin/sh
 
-# script/bootstrap: Resolve all dependencies that the application requires to
+# bin/bootstrap: Resolve all dependencies that the application requires to
 #                   run.
 
 set -e

@@ -8,13 +8,14 @@ const parseChallengeListFromExcelFile = (type) => {
 
   return parsedXlsx[0].data.slice(1).map((e) => ({
     userNameNumber: e[1],
-    PerformanceId: 1,
-    spotId: e[2]
+    performanceId: 1,
+    spotId: e[2],
+    errorCode: e[3]
   }));
 };
 
 const parseFinalSpotsFromTest = () => {
-  const fileLocation = path.resolve(__dirname, '../test-data/test-final-spots.xlsx');
+  const fileLocation = path.resolve(__dirname, '../test/final-spots.xlsx');
   const parsedXlsx = xlsx.parse(fileLocation);
   const spotsList = [];
 

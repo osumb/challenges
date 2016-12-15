@@ -1,9 +1,8 @@
 /* eslint-disable no-undef */
 const queryBuilder = require('../utils').db.queryBuilder;
-const models = require('../models');
-const Challenge = models.Challenge;
-const Result = models.Result;
-const User = models.User;
+const Challenge = require('../api/models/challenge-model');
+const Result = require('../api/models/result-model');
+const User = require('../api/models/user-model');
 
 console.log('==> QUERY BUILDER');
 describe('UPDATE', () => {

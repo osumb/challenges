@@ -1,8 +1,8 @@
 /* eslint-disable no-undef */
 const { sendChallengeListEmail } = require('../jobs/utils');
-const { testData } = require('../spec/fixtures');
+const { performance } = require('./fixtures/test');
 
-const { id } = testData.testPerformance;
+const { id } = performance;
 
 console.log('==> SEND CHALLENGE LIST EMAIL');
 describe('Send Challenge List Email', () => {
