@@ -12,17 +12,15 @@ echo "==> Linting..."
 ./node_modules/.bin/eslint .
 echo "==> Done!"
 
-if [ -z "$TRAVIS" ]; then
+if [ -z "$TRAVIS_DB_NAME" ]; then
 echo "==> Creating test database"
 createdb challenges_test
 fi
 
-if [ -z "$TRAVIS"]; then
 echo "==> Running latest migrations"
 cd db
 ./../node_modules/.bin/db-migrate up -e test
 cd ..
-fi
 
 echo "==> Loading test data"
 node db/test.js
@@ -30,7 +28,7 @@ node db/test.js
 echo "==> Running tests..."
 ./node_modules/.bin/jasmine
 
-if [ -z "$TRAVIS"]; then
+if [ -z "$TRAVIS_DB_NAME"]; then
 echo "==> Dropping test database"
 dropdb challenges_test
 fi
