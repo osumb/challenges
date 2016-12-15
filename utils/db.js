@@ -21,6 +21,10 @@ const pool = new Pool(poolConfig);
 
 const createClient = () => new pg.Client(dbURL);
 
+const closePool = () => {
+  pool.end();
+};
+
 const query = (sql, params, parseRow = identityFunction) =>
   pool.query(sql, params)
   .then((data) => (data.rows || []).map((row) => parseRow(row)))
@@ -124,6 +128,7 @@ function buildUpdateString(attributes, params, tableName = '') {
 }
 
 module.exports = {
+  closePool,
   createClient,
   query,
   queryBuilder

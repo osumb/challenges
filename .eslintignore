@@ -3,6 +3,7 @@ bin/*
 build/*
 client/config/*
 client/scripts/*
+db/migrations/*
 spec/fixtures/*
 spec/support/*
 LICENSE
