@@ -16,8 +16,7 @@ class PasswordChangeRequestsController {
     .then(() => {
       res.jsonResp = { success: true };
       next();
-    }).catch((err) => {
-      console.log(err);
+    }).catch(() => {
       res.status(403).send();
     });
   }

@@ -1,11 +1,10 @@
 /* eslint-disable no-undef */
-const controllers = require('../controllers');
-const { testData } = require('../spec/fixtures');
+const Results = require('../api/controllers/results-controller');
+const testData = require('./fixtures/test');
 
-const Results = new controllers.Results();
-const { testSquadLeaderResultsPermission } = testData;
+const { squadLeaderPermissions } = testData;
 
-const headSquadLeaders = testData.testUsers.filter(({ nameNumber }) => testSquadLeaderResultsPermission[nameNumber]);
+const headSquadLeaders = testData.users.filter(({ nameNumber }) => squadLeaderPermissions[nameNumber]);
 
 console.log('==> SQUAD LEADER EVAL PERMISSION CHECK');
 describe('Squad eval permission', () => {
@@ -45,7 +44,7 @@ describe('Squad eval permission', () => {
 });
 
 const sLGotCorrectChallenges = (results, sLNameNumber) => {
-  const sLResults = testSquadLeaderResultsPermission[sLNameNumber];
+  const sLResults = squadLeaderPermissions[sLNameNumber];
 
   if (results.length !== sLResults.length) {
     return false;

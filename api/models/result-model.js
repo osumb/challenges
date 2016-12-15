@@ -1,6 +1,6 @@
 const moment = require('moment');
 
-const db = require('../../utils');
+const db = require('../../utils/db');
 const queries = require('../../db/queries');
 
 const modelAttributes = ['id', 'performanceId', 'spotId', 'firstNameNumber', 'secondNameNumber', 'firstComments', 'secondComments', 'winnerId', 'pending', 'needsApproval'];

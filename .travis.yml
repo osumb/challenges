@@ -6,11 +6,11 @@ notifications: # set notification options
 sudo: false
 
 node_js:
-  - "6"
+  - "7"
 
 
 env:
-  - CXX=g++-4.8
+  - CXX=g++-4.8 TRAVIS_DB_NAME=postgres
 
 addons:
   apt:
@@ -23,6 +23,6 @@ services:
   - postgresql
 
 before_script:
-  - psql -c 'create database challenges_dev;' -U postgres
+  - psql -c 'create database challenges_test;' -U postgres
 script:
   - "npm test"

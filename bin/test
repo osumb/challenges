@@ -1,6 +1,6 @@
 #!/bin/sh
 
-# script/test: Do everything related to testing
+# bin/test: Do everything related to testing
 
 set -e
 
@@ -9,13 +9,30 @@ cd "$(dirname "$0")/.."
 export NODE_ENV="test"
 
 echo "==> Linting..."
-eslint .
+./node_modules/.bin/eslint .
 echo "==> Done!"
 
-# We'll do some integration tests later
-echo "==> Setting Up Test Database..."
-node db/load-test-data.js
-echo "==> Done!"
+if [ -z "$TRAVIS" ]; then
+echo "==> Creating test database"
+createdb challenges_test
+fi
+
+if [ -z "$TRAVIS"]; then
+echo "==> Running latest migrations"
+cd db
+./../node_modules/.bin/db-migrate up -e test
+cd ..
+fi
+
+echo "==> Loading test data"
+node db/test.js
 
 echo "==> Running tests..."
-jasmine
+./node_modules/.bin/jasmine
+
+if [ -z "$TRAVIS"]; then
+echo "==> Dropping test database"
+dropdb challenges_test
+fi
+
+echo "==> All done!"
