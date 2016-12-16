@@ -28,8 +28,6 @@ export default class MobileNav extends Component {
         name: PropTypes.string.isRequired,
         nameNumber: PropTypes.string.isRequired,
         part: PropTypes.string.isRequired,
-        revokeTokenDate: PropTypes.number.isRequired,
-        spotOpen: PropTypes.bool.isRequired,
         squadLeader: PropTypes.bool.isRequired
       })
     };
@@ -75,7 +73,6 @@ export default class MobileNav extends Component {
         className="MobileNav"
         iconElementLeft={this.props.user ?
           <IconButton
-            disableRippleTouch
             onClick={this.handleOpen}
           >
             <ActionList />
@@ -93,7 +90,6 @@ export default class MobileNav extends Component {
             width={200}
           >
             <IconButton
-              disableRippleTouch
               onClick={this.handleClose}
             >
               <ActionHighlightOff />

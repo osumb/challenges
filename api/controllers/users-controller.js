@@ -24,10 +24,10 @@ class UsersController {
       res.locals.jsonResp = {
         admin: dbUser.admin,
         canChallenge: canChallenge[0],
-        challenge: !challengeAlreadyInResults(challenge, results) && challenge,
+        challenge: challengeAlreadyInResults(challenge, results) ? null : challenge,
         name: dbUser.name,
         performance: performance && performance.toJSON(),
-        results: results.map((result) => result.toJSON()),
+        results: results.map((result) => result.toJSON(user.nameNumber)),
         spotId: dbUser.spotId
       };
       next();

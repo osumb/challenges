@@ -21,7 +21,7 @@ const authenticate = (nameNumber, password) =>
     return response.json();
   })
   .then(({ token }) => {
-    localStorage.userJWT = token;
+    localStorage[LOCAL_STORE_STRING] = token;
   });
 
 const canUserAccess = (pattern) => routes.canUserAccessPattern(getUser(), pattern);

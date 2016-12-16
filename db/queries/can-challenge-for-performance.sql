@@ -6,7 +6,7 @@ NOT EXISTS (SELECT * FROM challenges WHERE user_name_number = $1 AND performance
   -- The user is an alternate and hasn't had their spot 'Closed' (made ineligible)
   (
     SELECT count(*) > 0 FROM users
-    WHERE namenumber = $1 and substring(spotid, 2)::integer > 12 AND
+    WHERE name_number = $1 and substring(spot_id, 2)::integer > 12 AND
     (
       NOT EXISTS (
         SELECT * FROM manage AS m
@@ -23,7 +23,7 @@ NOT EXISTS (SELECT * FROM challenges WHERE user_name_number = $1 AND performance
   OR
   -- The user isn't an alternate and they have a voluntary manage action made for them (opened spot on purpose)
   (
-    SELECT count(*) > 0 FROM users WHERE namenumber = $1 and substring(spotid, 2)::integer <= 12 AND
+    SELECT count(*) > 0 FROM users WHERE name_number = $1 and substring(spot_id, 2)::integer <= 12 AND
     (
       SELECT COALESCE(voluntary, true) FROM manage AS m
       WHERE m.user_name_number = $1 AND m.performance_id = $2

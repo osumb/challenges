@@ -42,7 +42,7 @@ export const mainRoutes = {
         roles: [ANY]
       },
       {
-        name: 'Make A Challenges',
+        name: 'Make A Challenge',
         path: '/challenges/new',
         roles: [ANY]
       },

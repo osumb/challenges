@@ -1,0 +1,32 @@
+.UserHeader {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  padding-top: 10px;
+}
+
+.UserHeader-admin {
+  color: rgb(183, 28, 28);
+}
+
+.UserHeader-spot {
+  background: rgb(183, 28, 28);
+  border-radius: 50%;
+  color: #fff;
+  display: flex;
+  font-size: 30px;
+  height: 100px;
+  justify-content: center;
+  text-align: center;
+  vertical-align: middle;
+  width: 100px;
+}
+
+.UserHeader-text {
+  align-self: center;
+}
+
+.UserHeader-name {
+  align-self: center;
+  padding-left: 10px;
+}

@@ -7,7 +7,8 @@ SELECT * FROM
       P.name,
       R1.winner_id,
       R1.spot_id,
-      P.performdate
+      P.perform_date,
+      P.name AS performance_name
     FROM Results AS R1, Performances AS P
     WHERE (R1.first_name_number = $1 OR R1.second_name_number = $1) AND R1.performance_id = P.id AND NOT R1.pending AND NOT R1.needs_approval
   ) t1

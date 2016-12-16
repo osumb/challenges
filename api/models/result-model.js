@@ -122,7 +122,7 @@ class Result extends Model {
   static findAllForUser(nameNumber) {
     const sql = queries.resultsForUser;
 
-    return db.query(sql, [nameNumber], instanceFromRow(nameNumber));
+    return db.query(sql, [nameNumber], instanceFromRow);
   }
 
   static index() {
@@ -255,7 +255,7 @@ class Result extends Model {
     return this._id;
   }
 
-  toJSON() {
+  toJSON(nameNumber) {
     return {
       comments: this._comments,
       firstComments: this._firstComments,
@@ -264,27 +264,15 @@ class Result extends Model {
       id: this._id,
       opponentName: this._opponentName,
       pending: this._pending,
-      performanceDate: this._performanceDate,
+      performanceDate: moment(this._performDate).format('MMM D, YYYY'),
       performanceId: this._performanceId,
       performanceName: this._performanceName,
       secondComments: this._secondComments,
       secondName: this._secondName,
       secondNameNumber: this._secondNameNumber,
       spotId: this._spotId,
-      winner: this._winner,
+      winner: this._winnerId === nameNumber,
       winnerId: this._winnerId
-    };
-  }
-
-  // This function is only for results returned by findForUser
-  toJSONForUser(nameNumber) {
-    return {
-      comments: this._firstComments,
-      opponentName: this._opponentName,
-      performanceDate: moment(this._performanceDate).format('MMM D, YYYY'),
-      performanceName: this._performanceName,
-      spotId: this._spotId,
-      winner: this._winnerId === nameNumber
     };
   }
 }

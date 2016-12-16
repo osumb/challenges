@@ -1,5 +1,7 @@
 import React, { Component, PropTypes } from 'react';
+import CircularProgress from 'material-ui/CircularProgress';
 
+import './api-wrapper.scss';
 import { api } from '../utils';
 
 export default class ApiWrapper extends Component {
@@ -35,7 +37,7 @@ export default class ApiWrapper extends Component {
     const { data } = this.state;
 
     if (!data) {
-      return <div>Loading...</div>;
+      return <div className="ApiWrapper"><CircularProgress /></div>;
     }
 
     return <Container {...data} />;

@@ -9,7 +9,7 @@ import { auth } from './utils';
 import Login from './shared-components/login';
 import Navbar from './shared-components/navbar';
 import NotFound from './shared-components/not-found';
-import Profile from './profile/profile';
+import Profile from './profile/container';
 
 // Material-Ui needs this for click/tap events
 injectTapEventPlugin();

@@ -32,8 +32,6 @@ Navbar.propTypes = {
     name: PropTypes.string.isRequired,
     nameNumber: PropTypes.string.isRequired,
     part: PropTypes.string.isRequired,
-    revokeTokenDate: PropTypes.number.isRequired,
-    spotOpen: PropTypes.bool.isRequired,
     squadLeader: PropTypes.bool.isRequired
   })
 };

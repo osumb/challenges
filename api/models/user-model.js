@@ -164,7 +164,7 @@ class User extends Model {
   toJSON() {
     return {
       admin: this._role === 'Admin' || this._role === 'Director',
-      director: this._director,
+      director: this._role === 'Director',
       email: this._email,
       instrument: this._instrument,
       name: this._name,
@@ -175,7 +175,7 @@ class User extends Model {
       revokeTokenDate: this._revokeTokenDate,
       spotId: this._spotId,
       spotOpen: this._spotOpen,
-      squadLeader: this._squadLeader
+      squadLeader: this._role === 'Squad Leader'
     };
   }
 }

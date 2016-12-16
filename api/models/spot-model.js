@@ -26,7 +26,7 @@ class Spot extends Model {
   static findByOwnerNameNumber(nameNumber) {
     const sql = `
       SELECT s.challenged_count, s.id, s.open
-      FROM spots AS s JOIN users AS u ON u.spotid = s.id
+      FROM spots AS s JOIN users AS u ON u.spot_id = s.id
       WHERE u.name_number = $1
     `;
 
