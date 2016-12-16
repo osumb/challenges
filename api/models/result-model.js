@@ -2,8 +2,9 @@ const moment = require('moment');
 
 const db = require('../../utils/db');
 const queries = require('../../db/queries');
+const { snakeCase } = require('../../utils/object-keys-case-change');
 
-const modelAttributes = ['id', 'performanceId', 'spotId', 'firstNameNumber', 'secondNameNumber', 'firstComments', 'secondComments', 'winnerId', 'pending', 'needsApproval'];
+const modelAttributes = ['id', 'performance_id', 'spot_id', 'first_name_number', 'second_name_number', 'first_comments', 'second_comments', 'winner_id', 'pending', 'needs_approval'];
 const alternateVersusRegular = result =>
   (!result.userOneAlternate && result.userTwoAlternate) ||
   (result.userOneAlternate && !result.userTwoAlternate);
@@ -89,19 +90,19 @@ class Result {
   }
 
   static approve(ids) {
-    const sql = 'UPDATE results SET needsApproval = FALSE, pending = FALSE WHERE id = ANY($1) RETURNING performanceId';
+    const sql = 'UPDATE results SET needs_approval = FALSE, pending = FALSE WHERE id = ANY($1) RETURNING performance_id';
 
     return db.query(sql, [ids], ({ performanceid }) => performanceid);
   }
 
   static checkAllDoneForPerformance(id) {
-    const sql = 'SELECT count(*) FROM results WHERE performanceid = $1 AND needsApproval';
+    const sql = 'SELECT count(*) FROM results WHERE performance_id = $1 AND needs_approval';
 
     return db.query(sql, [id], ({ count }) => parseInt(count, 10) === 0);
   }
 
   static createWithClient(attributes, client) {
-    const { sql, values } = db.queryBuilder(Result, attributes);
+    const { sql, values } = db.queryBuilder(Result, snakeCase(attributes));
 
     return new Promise((resolve, reject) => {
       const query = client.query(sql, values);
@@ -130,7 +131,7 @@ class Result {
   }
 
   static findAllRawForPerformance(performanceId) {
-    const sql = 'SELECT * FROM results WHERE performanceId = $1';
+    const sql = 'SELECT * FROM results WHERE performance_id = $1';
 
     return db.query(sql, [performanceId], instanceFromRowResultForAdmin);
   }
@@ -190,7 +191,7 @@ class Result {
   }
 
   static updateForTestsOnly(firstNameNumber, comments1, comments2, winnerId) {
-    const sql = 'UPDATE results SET firstComments = $1, secondComments = $2, winnerId = $3 WHERE firstNameNumber = $4';
+    const sql = 'UPDATE results SET first_comments = $1, second_comments = $2, winner_id = $3 WHERE first_name_number = $4';
 
     return db.query(sql, [comments1, comments2 || null, winnerId, firstNameNumber]);
   }
@@ -441,78 +442,78 @@ class ResultForUser {
 }
 
 const instanceFromRowResultForAdmin = ({
-  resultid,
-  firstcomments,
-  nameone,
-  firstnamenumber,
+  result_id,
+  first_comments,
+  name_one,
+  first_name_number,
   pending,
-  performanceid,
-  performancename,
-  secondcomments,
-  nametwo,
-  secondnamenumber,
-  spotid,
-  winnerid
+  performance_id,
+  performance_name,
+  second_comments,
+  name_two,
+  second_name_number,
+  spot_id,
+  winner_id
 }) => new ResultForAdmin(
-  resultid,
-  firstcomments,
-  nameone,
-  firstnamenumber,
+  result_id,
+  first_comments,
+  name_one,
+  first_name_number,
   pending,
-  performanceid,
-  performancename,
-  secondcomments,
-  nametwo,
-  secondnamenumber,
-  spotid,
-  winnerid
+  performance_id,
+  performance_name,
+  second_comments,
+  name_two,
+  second_name_number,
+  spot_id,
+  winner_id
 );
 
 const instanceFromRowResultForEval = ({
-  nameone,
-  firstnamenumber,
-  resultid,
-  nametwo,
-  secondnamenumber,
-  spotid
-}) => new ResultForEvaluation(nameone, firstnamenumber, resultid, nametwo, secondnamenumber, spotid);
+  name_one,
+  first_name_number,
+  result_id,
+  name_two,
+  second_name_number,
+  spot_id
+}) => new ResultForEvaluation(name_one, first_name_number, result_id, name_two, second_name_number, spot_id);
 
 const instanceFromRowResultForUser = (nameNumber) =>
-  ({ comments, opponentname, performdate, performanceid, name, spotid, winnerid }) =>
-    new ResultForUser(comments, opponentname, performdate, performanceid, name, spotid, nameNumber, winnerid);
+  ({ comments, opponent_name, perform_date, performance_id, name, spot_id, winner_id }) =>
+    new ResultForUser(comments, opponent_name, perform_date, performance_id, name, spot_id, nameNumber, winner_id);
 
 const instanceFromForResult = ({
   id,
-  firstcomments,
-  firstnamenumber,
-  needsapproval,
-  opponentname,
+  first_comments,
+  first_name_number,
+  needs_approval,
+  opponent_name,
   pending,
-  performdate,
+  perform_date,
   name,
-  performanceid,
-  secondcomments,
-  secondnamenumber,
-  spotid,
-  useronealternate,
-  usertwoalternate,
-  winnerid
+  performance_id,
+  second_comments,
+  second_name_number,
+  spot_id,
+  user_one_alternate,
+  user_two_alternate,
+  winner_id
 }) => new Result(
   id,
-  firstcomments,
-  firstnamenumber,
-  needsapproval,
-  opponentname,
+  first_comments,
+  first_name_number,
+  needs_approval,
+  opponent_name,
   pending,
-  performdate,
+  perform_date,
   name,
-  performanceid,
-  secondcomments,
-  secondnamenumber,
-  spotid,
-  useronealternate,
-  usertwoalternate,
-  winnerid
+  performance_id,
+  second_comments,
+  second_name_number,
+  spot_id,
+  user_one_alternate,
+  user_two_alternate,
+  winner_id
 );
 
 module.exports = Result;

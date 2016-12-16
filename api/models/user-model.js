@@ -4,7 +4,7 @@ const db = require('../../utils/db');
 const identityFunction = require('../../utils/identity-function');
 const queries = require('../../db/queries');
 
-const attributes = ['email', 'instrument', 'name', 'nameNumber', 'new', 'part', 'password', 'revoke_token_date', 'role', 'spotId'];
+const attributes = ['email', 'instrument', 'name', 'name_number', 'new', 'part', 'password', 'revoke_token_date', 'role', 'spot_id'];
 
 class User {
 
@@ -29,7 +29,7 @@ class User {
   }
 
   static get idName() {
-    return 'nameNumber';
+    return 'name_number';
   }
 
   static get tableName() {
@@ -39,7 +39,7 @@ class User {
   static create(name, nN, instrument, part, role, spotId, email, password) {
     const sql = `
       INSERT INTO users
-      (name, namenumber, instrument, part, role, spotId, email, password)
+      (name, name_number, instrument, part, role, spot_id, email, password)
       VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
       `;
 
@@ -62,7 +62,7 @@ class User {
   }
 
   static findByNameNumber(id) {
-    const sql = 'SELECT * FROM users WHERE nameNumber = $1';
+    const sql = 'SELECT * FROM users WHERE name_number = $1';
 
     return db.query(sql, [id], instanceFromRowUser).then(([user]) => user);
   }
@@ -70,7 +70,7 @@ class User {
   static indexMembers() {
     const sql = `
       SELECT * FROM users
-      WHERE NOT spotId IS NULL
+      WHERE NOT spot_id IS NULL
       ORDER BY substring(spotId, 1, 1), substring(spotId, 2, 2)::int
     `;
 
@@ -78,7 +78,7 @@ class User {
   }
 
   static search(searchQuery) {
-    const sql = 'SELECT * FROM users AS u, spots AS s WHERE lower(name) LIKE \'%\' || lower($1) || \'%\' and u.spotId = s.id';
+    const sql = 'SELECT * FROM users AS u, spots AS s WHERE lower(name) LIKE \'%\' || lower($1) || \'%\' and u.spot_id = s.id';
 
     return db.query(sql, [searchQuery], instanceFromRowUser);
   }
@@ -102,7 +102,7 @@ class User {
   }
 
   static verifyEmail(email, nameNumber) {
-    const sql = 'SELECT count(*) > 0 AS verified FROM users WHERE email = $1 and namenumber = $2';
+    const sql = 'SELECT count(*) > 0 AS verified FROM users WHERE email = $1 and name_number = $2';
 
     return db.query(sql, [email, nameNumber], ({ verified }) => verified).then(([verified]) => {
       if (!verified) {
@@ -223,11 +223,11 @@ class UserForIndividualManage {
 
 }
 
-const instanceFromRowUser = ({ email, instrument, name, namenumber, new: isNew, part, password, role, spotid, revoke_token_date }) =>
-  new User(email, instrument, name, namenumber, isNew, part, password, revoke_token_date, role, spotid);
+const instanceFromRowUser = ({ email, instrument, name, name_number, new: isNew, part, password, role, spot_id, revoke_token_date }) =>
+  new User(email, instrument, name, name_number, isNew, part, password, revoke_token_date, role, spot_id);
 
 
-const instanceFromRowUserIndividualManage = ({ name, namenumber, performanceid, performancename, spotid, spotopen, reason, voluntary }) =>
-  new UserForIndividualManage(name, namenumber, performanceid, performancename, spotid, spotopen, reason, voluntary);
+const instanceFromRowUserIndividualManage = ({ name, name_number, performance_id, performance_name, spot_id, spot_open, reason, voluntary }) =>
+  new UserForIndividualManage(name, name_number, performance_id, performance_name, spot_id, spot_open, reason, voluntary);
 
 module.exports = User;

@@ -1,6 +1,6 @@
 const db = require('../../utils/db');
 
-const modelAttributes = ['id', 'performanceId', 'userNameNumber', 'reason', 'spotId', 'voluntary'];
+const modelAttributes = ['id', 'performance_id', 'user_name_number', 'reason', 'spot_id', 'voluntary'];
 
 class Manage {
   constructor(id, performanceId, userName, userNameNumber, reason, spotId, voluntary) {
@@ -34,9 +34,9 @@ class Manage {
   static findAllForPerformanceCSV(performanceId) {
     const sql = `
       SELECT *
-      FROM manage AS m JOIN users AS u ON m.usernamenumber = u.namenumber
-      WHERE m.performanceId = $1
-      ORDER BY (substring(u.spotid, 0, 2), substring(u.spotid, 2)::int)
+      FROM manage AS m JOIN users AS u ON m.user_name_number = u.name_number
+      WHERE m.performance_id = $1
+      ORDER BY (substring(u.spot_id, 0, 2), substring(u.spot_id, 2)::int)
     `;
 
     return db.query(sql, [performanceId], instanceFromRowManage);
@@ -44,9 +44,9 @@ class Manage {
 
   static findAllForUser(nameNumber) {
     const sql = `
-      SELECT m.id AS id, p.name AS performanceName, m.usernamenumber, m.reason, m.spotid, m.voluntary
-      FROM manage AS m JOIN performances AS p on m.performanceid = p.id
-      WHERE m.usernamenumber = $1
+      SELECT m.id AS id, p.name AS performance_name, m.user_name_number, m.reason, m.spot_id, m.voluntary
+      FROM manage AS m JOIN performances AS p on m.performance_id = p.id
+      WHERE m.user_name_number = $1
       ORDER BY id DESC
     `;
 
@@ -94,18 +94,18 @@ class Manage {
   }
 }
 
-const instanceFromRowPerformance = ({ id, performancename, usernamenumber, reason, voluntary, spotid }) => (
+const instanceFromRowPerformance = ({ id, performance_name, user_name_number, reason, voluntary, spot_id }) => (
   {
     id,
-    performanceName: performancename,
-    userNameNumber: usernamenumber,
+    performanceName: performance_name,
+    userNameNumber: user_name_number,
     reason,
-    spotId: spotid,
+    spotId: spot_id,
     voluntary
   }
 );
 
-const instanceFromRowManage = ({ id, performanceid, name, namenumber, reason, spotid, voluntary }) =>
-  new Manage(id, performanceid, name, namenumber, reason, spotid, voluntary);
+const instanceFromRowManage = ({ id, performance_id, name, name_number, reason, spot_id, voluntary }) =>
+  new Manage(id, performance_id, name, name_number, reason, spot_id, voluntary);
 
 module.exports = Manage;

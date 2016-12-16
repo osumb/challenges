@@ -1,7 +1,7 @@
 const db = require('../../utils/db');
 const queries = require('../../db/queries');
 
-const attributes = ['id', 'performanceId', 'userNameNumber', 'spotId'];
+const attributes = ['id', 'performance_id', 'user_name_number', 'spot_id'];
 
 class Challenge {
 
@@ -56,13 +56,13 @@ class Challenge {
   }
 
   static findAllRawForPerformance(performanceId) {
-    const sql = 'SELECT * FROM challenges WHERE performanceId = $1';
+    const sql = 'SELECT * FROM challenges WHERE performance_id = $1';
 
     return db.query(sql, [performanceId]);
   }
 
   static findForUser(nameNumber) {
-    const sql = 'SELECT * FROM challenges AS C, performances AS P WHERE userNameNumber = $1 AND C.performanceId = P.id ORDER BY C.id LIMIT 1';
+    const sql = 'SELECT * FROM challenges AS C, performances AS P WHERE user_name_number = $1 AND C.performance_id = P.id ORDER BY C.id LIMIT 1';
 
     return db.query(sql, [nameNumber], instanceFromRowChallenge);
   }
@@ -180,13 +180,13 @@ class ChallengeableUser {
 
 const codeFromRow = ({ make_challenge }) => make_challenge;
 
-const instanceFromRowChallenge = ({ id, name, performanceid, spotid }) =>
-  new Challenge(id, performanceid, name, spotid);
+const instanceFromRowChallenge = ({ id, name, performance_id, spot_id }) =>
+  new Challenge(id, performance_id, name, spot_id);
 
-const instanceFromRowChallengeableUser = ({ challengedcount, name, spotid, open }) =>
-  new ChallengeableUser(challengedcount, name, spotid, open);
+const instanceFromRowChallengeableUser = ({ challenged_count, name, spot_id, open }) =>
+  new ChallengeableUser(challenged_count, name, spot_id, open);
 
-const instanceFromRowChallengeForCSV = ({ challengee, challenger, challengeespot, challengerspot, firstnamenumber, secondnamenumber, spotopen }) =>
-  new ChallengeForCSV(challengee, challenger, challengeespot, challengerspot, firstnamenumber, secondnamenumber, spotopen);
+const instanceFromRowChallengeForCSV = ({ challengee, challenger, challengee_spot, challenger_spot, first_name_number, second_name_number, spot_open }) =>
+  new ChallengeForCSV(challengee, challenger, challengee_spot, challenger_spot, first_name_number, second_name_number, spot_open);
 
 module.exports = Challenge;

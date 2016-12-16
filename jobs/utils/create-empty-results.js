@@ -41,8 +41,9 @@ const reduce = (challenges) => {
   return reducedChallenges;
 };
 
-const insertChallengesAsResults = (challenges) =>
-  Promise.all(challenges.map(insertChallengeAsResult));
+const insertChallengesAsResults = (challenges) => {
+  return Promise.all(challenges.map(insertChallengeAsResult));
+};
 
 const insertChallengeAsResult = ({ firstNameNumber, performanceId, secondNameNumber, spotId }) =>
   Result.createWithClient({ firstNameNumber, performanceId, secondNameNumber, spotId }, client);

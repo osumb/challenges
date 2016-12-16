@@ -1,6 +1,6 @@
 const db = require('../../utils/db');
 
-const modelAttributes = ['closeAt', 'id', 'list_exported', 'name', 'openAt', 'performDate'];
+const modelAttributes = ['close_at', 'id', 'list_exported', 'name', 'open_at', 'perform_date'];
 
 let cachedCurrentPerformance;
 
@@ -28,7 +28,7 @@ class Performance {
   }
 
   static create(name, performDate, openAt, closeAt) {
-    const sql = 'INSERT INTO performances (name, performDate, openAt, closeAt) VALUES ($1, $2, $3, $4) RETURNING id, closeAt';
+    const sql = 'INSERT INTO performances (name, perform_date, open_at, close_at) VALUES ($1, $2, $3, $4) RETURNING id, close_at';
 
     if (
       Number.isNaN(Date.parse(openAt)) ||
@@ -55,7 +55,7 @@ class Performance {
     if (cachedCurrentPerformance && Date.now() < cachedCurrentPerformance.closeAt) {
       return Promise.resolve(cachedCurrentPerformance);
     }
-    const sql = 'SELECT * FROM performances WHERE now() < closeAt ORDER BY openAt ASC LIMIT 1';
+    const sql = 'SELECT * FROM performances WHERE now() < close_at ORDER BY open_at ASC LIMIT 1';
 
     return db.query(sql, [], instanceFromRowPerformance)
     .then(([currentPerformance]) => {
@@ -65,7 +65,7 @@ class Performance {
   }
 
   static findForListExporting() {
-    const sql = 'SELECT * from performances WHERE not list_exported AND closeat < now() ORDER BY id asc';
+    const sql = 'SELECT * from performances WHERE not list_exported AND close_at < now() ORDER BY id asc';
 
     return db.query(sql, [], instanceFromRowPerformance);
   }
@@ -125,10 +125,10 @@ class Performance {
 
 }
 
-const instanceFromRowPerformance = ({ id, list_exported, name, openat, closeat, performdate }) =>
-  new Performance(id, list_exported, name, openat, closeat, performdate);
+const instanceFromRowPerformance = ({ id, list_exported, name, open_at, close_at, perform_date }) =>
+  new Performance(id, list_exported, name, open_at, close_at, perform_date);
 
-const instanceFromRowPerformanceWithoutId = (name, openAt, closeAt, performDate) =>
-  ({ id }) => new Performance(id, false, name, openAt, closeAt, performDate);
+const instanceFromRowPerformanceWithoutId = (name, open_at, close_at, perform_date) =>
+  ({ id }) => new Performance(id, false, name, open_at, close_at, perform_date);
 
 module.exports = Performance;

@@ -89,10 +89,10 @@ describe('Created Challenges Are Valid', () => {
 });
 
 const challengeArraysAreEqual = (actual, expected) => {
-  actual.sort((a, b) => a.spotid.localeCompare(b.spotid));
+  actual.sort((a, b) => a.spot_id.localeCompare(b.spot_id));
   expected.sort((a, b) => a.spotId.localeCompare(b.spotId));
 
   return expected.every(({ userNameNumber, spotId }, i) =>
-    userNameNumber === actual[i].usernamenumber && spotId === actual[i].spotid
+    userNameNumber === actual[i].user_name_number && spotId === actual[i].spot_id
   );
 };
