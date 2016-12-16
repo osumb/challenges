@@ -1,14 +1,9 @@
 const db = require('../../utils/db');
+const Model = require('./model');
 
 const attributes = ['id', 'open', 'challenged_count'];
 
-class Spot {
-
-  constructor(id, open, challengedCount) {
-    this._id = id;
-    this._open = open;
-    this._challengedCount = challengedCount;
-  }
+class Spot extends Model {
 
   static get attributes() {
     return attributes;
@@ -66,7 +61,6 @@ class Spot {
   }
 }
 
-const instanceFromDBRow = ({ challenged_count, id, open }) =>
-  new Spot(id, open, challenged_count);
+const instanceFromDBRow = (props) => new Spot(props);
 
 module.exports = Spot;
