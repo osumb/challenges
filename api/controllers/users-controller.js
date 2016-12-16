@@ -17,10 +17,10 @@ class UsersController {
       Result.findAllForUser(user.nameNumber),
       User.findByNameNumber(user.nameNumber)
     ])
-    .then(([challenge, performances, results, dbUser]) =>
-      Promise.all([challenge, performances, results, dbUser, User.canChallengeForPerformance(user.nameNumber, performances[0] && performances[0].id)])
+    .then(([challenge, performance, results, dbUser]) =>
+      Promise.all([challenge, performance, results, dbUser, User.canChallengeForPerformance(user.nameNumber, performance && performance.id)])
     )
-    .then(([[challenge], [performance], results, dbUser, canChallenge]) => {
+    .then(([[challenge], performance, results, dbUser, canChallenge]) => {
       res.locals.jsonResp = {
         admin: dbUser.admin,
         canChallenge: canChallenge[0],

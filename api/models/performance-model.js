@@ -58,7 +58,7 @@ class Performance {
     const sql = 'SELECT * FROM performances WHERE now() < closeAt ORDER BY openAt ASC LIMIT 1';
 
     return db.query(sql, [], instanceFromRowPerformance)
-    .then((currentPerformance) => {
+    .then(([currentPerformance]) => {
       cachedCurrentPerformance = currentPerformance;
       return currentPerformance;
     });
