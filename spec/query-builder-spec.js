@@ -1,5 +1,5 @@
 /* eslint-disable no-undef */
-const queryBuilder = require('../utils').db.queryBuilder;
+const { queryBuilder } = require('../utils/db');
 const Challenge = require('../api/models/challenge-model');
 const Result = require('../api/models/result-model');
 const User = require('../api/models/user-model');
