@@ -10,11 +10,11 @@ const {
 } = seedData;
 
 const [performance] = performances;
-const insertChallengeQueryString = `INSERT INTO challenges (performanceId, userNameNumber, spotId) VALUES(${performance.id}, $1, $2)`;
-const insertPerformanceQueryString = 'INSERT INTO performances (name, openAt, closeAt, performDate) VALUES($1, $2, $3, $4)';
-const insertResultQueryString = `INSERT INTO results (performanceId, spotId, firstNameNumber, secondNameNumber, firstComments, secondComments, winnerId, pending) VALUES(${performance.id}, $1, $2, $3, $4, $5, $6, $7)`;
+const insertChallengeQueryString = `INSERT INTO challenges (performance_id, user_name_number, spot_id) VALUES(${performance.id}, $1, $2)`;
+const insertPerformanceQueryString = 'INSERT INTO performances (name, open_at, close_at, perform_date) VALUES($1, $2, $3, $4)';
+const insertResultQueryString = `INSERT INTO results (performance_id, spot_id, first_name_number, second_name_number, first_comments, second_comments, winner_id, pending) VALUES(${performance.id}, $1, $2, $3, $4, $5, $6, $7)`;
 const insertSpotQueryString = 'INSERT INTO spots VALUES ($1, $2, $3)';
-const insertUserQueryString = 'INSERT INTO users (nameNumber, instrument, name, part, password, role, spotId, email) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)';
+const insertUserQueryString = 'INSERT INTO users (name_number, instrument, name, part, password, role, spot_id, email) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)';
 
 const insertChallenge = (challenge) =>
   db.query(insertChallengeQueryString, [challenge.userNameNumber, challenge.spotId]);

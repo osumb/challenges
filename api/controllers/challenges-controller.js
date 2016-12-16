@@ -19,10 +19,10 @@ class ChallengersController {
 
     logger.challengesLog(`${req.user.name} request to challenge ${spotId}`);
     return Performance.findCurrent()
-            .then(([performance]) => Promise.all([performance, Challenge.create(userId, spotId, performance && performance.id)]))
+            .then((performance) => Promise.all([performance, Challenge.create(userId, spotId, performance && performance.id)]))
             .then(([performance, [code]]) => {
               if (!performance) {
-                res.json({ code: 4 });
+                res.locals.jsonResp = { code: 4 };
               }
               if (!code) {
                 email.sendChallengeSuccessEmail({
@@ -40,6 +40,7 @@ class ChallengersController {
               next();
             })
             .catch((err) => {
+              console.trace(err);
               logger.errorLog('Challenges.create', err);
               res.status(400).send(err);
             });

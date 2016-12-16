@@ -8,10 +8,10 @@ const {
   users
 } = testData;
 
-const insertManageActionQuery = 'INSERT INTO manage (performanceId, usernamenumber, reason, spotId, voluntary) VALUES($1, $2, $3, $4, $5)';
-const insertPerformanceQueryString = 'INSERT INTO performances (name, openAt, closeAt, performDate) VALUES($1, $2, $3, $4)';
+const insertManageActionQuery = 'INSERT INTO manage (performance_id, user_name_number, reason, spot_id, voluntary) VALUES($1, $2, $3, $4, $5)';
+const insertPerformanceQueryString = 'INSERT INTO performances (name, open_at, close_at, perform_date) VALUES($1, $2, $3, $4)';
 const insertSpotQueryString = 'INSERT INTO spots VALUES ($1, $2, $3)';
-const insertUserQueryString = 'INSERT INTO users (nameNumber, instrument, name, part, password, role, spotId, email) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)';
+const insertUserQueryString = 'INSERT INTO users (name_number, instrument, name, part, password, role, spot_id, email) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)';
 
 const insertManageAction = (action) => {
   return db.query(insertManageActionQuery, [action.performanceId, action.userNameNumber, action.reason, action.spotId, action.voluntary]);

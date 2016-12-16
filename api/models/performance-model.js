@@ -1,19 +1,11 @@
 const db = require('../../utils/db');
+const Model = require('./model');
 
-const modelAttributes = ['closeAt', 'id', 'list_exported', 'name', 'openAt', 'performDate'];
+const modelAttributes = ['close_at', 'id', 'list_exported', 'name', 'open_at', 'perform_date'];
 
 let cachedCurrentPerformance;
 
-class Performance {
-
-  constructor(id, listExported, name, openAt, closeAt, performDate) {
-    this._id = id;
-    this._listExported = listExported;
-    this._name = name;
-    this._openAt = new Date(openAt);
-    this._closeAt = new Date(closeAt);
-    this._performDate = new Date(performDate);
-  }
+class Performance extends Model {
 
   static get attributes() {
     return modelAttributes;
@@ -28,7 +20,7 @@ class Performance {
   }
 
   static create(name, performDate, openAt, closeAt) {
-    const sql = 'INSERT INTO performances (name, performDate, openAt, closeAt) VALUES ($1, $2, $3, $4) RETURNING id, closeAt';
+    const sql = 'INSERT INTO performances (name, perform_date, open_at, close_at) VALUES ($1, $2, $3, $4) RETURNING id, close_at';
 
     if (
       Number.isNaN(Date.parse(openAt)) ||
@@ -48,26 +40,26 @@ class Performance {
   static findAll() {
     const sql = 'SELECT * FROM performances ORDER BY id';
 
-    return db.query(sql, [], instanceFromRowPerformance);
+    return db.query(sql, [], instanceFromRow);
   }
 
   static findCurrent() {
     if (cachedCurrentPerformance && Date.now() < cachedCurrentPerformance.closeAt) {
       return Promise.resolve(cachedCurrentPerformance);
     }
-    const sql = 'SELECT * FROM performances WHERE now() < closeAt ORDER BY openAt ASC LIMIT 1';
+    const sql = 'SELECT * FROM performances WHERE now() < close_at ORDER BY open_at ASC LIMIT 1';
 
-    return db.query(sql, [], instanceFromRowPerformance)
-    .then((currentPerformance) => {
+    return db.query(sql, [], instanceFromRow)
+    .then(([currentPerformance]) => {
       cachedCurrentPerformance = currentPerformance;
       return currentPerformance;
     });
   }
 
   static findForListExporting() {
-    const sql = 'SELECT * from performances WHERE not list_exported AND closeat < now() ORDER BY id asc';
+    const sql = 'SELECT * from performances WHERE not list_exported AND close_at < now() ORDER BY id asc';
 
-    return db.query(sql, [], instanceFromRowPerformance);
+    return db.query(sql, [], instanceFromRow);
   }
 
   static update(attributes) {
@@ -84,7 +76,7 @@ class Performance {
   }
 
   get closeAt() {
-    return this._closeAt;
+    return new Date(this._closeAt);
   }
 
   get id() {
@@ -92,7 +84,7 @@ class Performance {
   }
 
   get listExported() {
-    return this._listExported;
+    return this._listExported || false;
   }
 
   get name() {
@@ -100,35 +92,34 @@ class Performance {
   }
 
   get openAt() {
-    return this._openAt;
+    return new Date(this._openAt);
   }
 
   get performDate() {
-    return this._performDate;
+    return new Date(this._performDate);
   }
 
   inPerformanceWindow() {
-    return this._openAt < Date.now() && Date.now() < this._closeAt;
+    return new Date(this._openAt) < Date.now() && Date.now() < new Date(this._closeAt);
   }
 
   toJSON() {
     return {
-      closeAt: this._closeAt.toISOString(),
+      closeAt: new Date(this._closeAt).toISOString(),
       id: this._id,
       listExported: this._listExported,
       name: this._name,
-      openAt: this._openAt.toISOString(),
-      performDate: this._performDate.toISOString(),
+      openAt: new Date(this._openAt).toISOString(),
+      performDate: new Date(this._performDate).toISOString(),
       windowOpen: this.inPerformanceWindow()
     };
   }
 
 }
 
-const instanceFromRowPerformance = ({ id, list_exported, name, openat, closeat, performdate }) =>
-  new Performance(id, list_exported, name, openat, closeat, performdate);
+const instanceFromRow = (props) => new Performance(props);
 
-const instanceFromRowPerformanceWithoutId = (name, openAt, closeAt, performDate) =>
-  ({ id }) => new Performance(id, false, name, openAt, closeAt, performDate);
+const instanceFromRowPerformanceWithoutId = (name, open_at, close_at, perform_date) =>
+  ({ id }) => new Performance({ id, listExported: false, name, open_at, close_at, perform_date });
 
 module.exports = Performance;

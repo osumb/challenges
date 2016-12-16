@@ -1,17 +1,9 @@
 const db = require('../../utils/db');
+const Model = require('./model');
 
-const modelAttributes = ['id', 'performanceId', 'userNameNumber', 'reason', 'spotId', 'voluntary'];
+const modelAttributes = ['id', 'performance_id', 'user_name_number', 'reason', 'spot_id', 'voluntary'];
 
-class Manage {
-  constructor(id, performanceId, userName, userNameNumber, reason, spotId, voluntary) {
-    this._id = id;
-    this._performanceId = performanceId;
-    this._userName = userName;
-    this._userNameNumber = userNameNumber;
-    this._reason = reason;
-    this._spotId = spotId;
-    this._voluntary = voluntary;
-  }
+class Manage extends Model {
 
   static get attributes() {
     return modelAttributes;
@@ -34,23 +26,23 @@ class Manage {
   static findAllForPerformanceCSV(performanceId) {
     const sql = `
       SELECT *
-      FROM manage AS m JOIN users AS u ON m.usernamenumber = u.namenumber
-      WHERE m.performanceId = $1
-      ORDER BY (substring(u.spotid, 0, 2), substring(u.spotid, 2)::int)
+      FROM manage AS m JOIN users AS u ON m.user_name_number = u.name_number
+      WHERE m.performance_id = $1
+      ORDER BY (substring(u.spot_id, 0, 2), substring(u.spot_id, 2)::int)
     `;
 
-    return db.query(sql, [performanceId], instanceFromRowManage);
+    return db.query(sql, [performanceId], instanceFromRow);
   }
 
   static findAllForUser(nameNumber) {
     const sql = `
-      SELECT m.id AS id, p.name AS performanceName, m.usernamenumber, m.reason, m.spotid, m.voluntary
-      FROM manage AS m JOIN performances AS p on m.performanceid = p.id
-      WHERE m.usernamenumber = $1
+      SELECT m.id AS id, p.name AS performance_name, m.user_name_number, m.reason, m.spot_id, m.voluntary
+      FROM manage AS m JOIN performances AS p on m.performance_id = p.id
+      WHERE m.user_name_number = $1
       ORDER BY id DESC
     `;
 
-    return db.query(sql, [nameNumber], instanceFromRowPerformance);
+    return db.query(sql, [nameNumber], instanceFromRow);
   }
 
   get id() {
@@ -94,18 +86,6 @@ class Manage {
   }
 }
 
-const instanceFromRowPerformance = ({ id, performancename, usernamenumber, reason, voluntary, spotid }) => (
-  {
-    id,
-    performanceName: performancename,
-    userNameNumber: usernamenumber,
-    reason,
-    spotId: spotid,
-    voluntary
-  }
-);
-
-const instanceFromRowManage = ({ id, performanceid, name, namenumber, reason, spotid, voluntary }) =>
-  new Manage(id, performanceid, name, namenumber, reason, spotid, voluntary);
+const instanceFromRow = (props) => new Manage(props);
 
 module.exports = Manage;

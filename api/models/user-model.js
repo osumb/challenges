@@ -2,34 +2,19 @@ const bcrypt = require('bcrypt');
 
 const db = require('../../utils/db');
 const identityFunction = require('../../utils/identity-function');
+const Model = require('./model');
 const queries = require('../../db/queries');
 
-const attributes = ['email', 'instrument', 'name', 'nameNumber', 'new', 'part', 'password', 'revoke_token_date', 'role', 'spotId'];
+const attributes = ['email', 'instrument', 'name', 'name_number', 'new', 'part', 'password', 'revoke_token_date', 'role', 'spot_id'];
 
-class User {
-
-  constructor(email, instrument, name, nameNumber, isNew, part, password, revoke, role, spotId, spotOpen = false) {
-    this._admin = role === 'Admin' || role === 'Director';
-    this._director = role === 'Director';
-    this._email = email;
-    this._instrument = instrument;
-    this._name = name;
-    this._nameNumber = nameNumber;
-    this._new = isNew;
-    this._part = part;
-    this._password = password;
-    this._revokeTokenDate = new Date(revoke).getTime();
-    this._spotId = spotId;
-    this._spotOpen = spotOpen;
-    this._squadLeader = role === 'Squad Leader';
-  }
+class User extends Model {
 
   static get attributes() {
     return attributes;
   }
 
   static get idName() {
-    return 'nameNumber';
+    return 'name_number';
   }
 
   static get tableName() {
@@ -39,7 +24,7 @@ class User {
   static create(name, nN, instrument, part, role, spotId, email, password) {
     const sql = `
       INSERT INTO users
-      (name, namenumber, instrument, part, role, spotId, email, password)
+      (name, name_number, instrument, part, role, spot_id, email, password)
       VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
       `;
 
@@ -58,29 +43,29 @@ class User {
   static findForIndividualManage(nameNumber) {
     const sql = queries.findForIndividualManage;
 
-    return db.query(sql, [nameNumber], instanceFromRowUserIndividualManage);
+    return db.query(sql, [nameNumber], instanceFromRow);
   }
 
   static findByNameNumber(id) {
-    const sql = 'SELECT * FROM users WHERE nameNumber = $1';
+    const sql = 'SELECT * FROM users WHERE name_number = $1';
 
-    return db.query(sql, [id], instanceFromRowUser).then(([user]) => user);
+    return db.query(sql, [id], instanceFromRow).then(([user]) => user);
   }
 
   static indexMembers() {
     const sql = `
       SELECT * FROM users
-      WHERE NOT spotId IS NULL
+      WHERE NOT spot_id IS NULL
       ORDER BY substring(spotId, 1, 1), substring(spotId, 2, 2)::int
     `;
 
-    return db.query(sql, [], instanceFromRowUser);
+    return db.query(sql, [], instanceFromRow);
   }
 
   static search(searchQuery) {
-    const sql = 'SELECT * FROM users AS u, spots AS s WHERE lower(name) LIKE \'%\' || lower($1) || \'%\' and u.spotId = s.id';
+    const sql = 'SELECT * FROM users AS u, spots AS s WHERE lower(name) LIKE \'%\' || lower($1) || \'%\' and u.spot_id = s.id';
 
-    return db.query(sql, [searchQuery], instanceFromRowUser);
+    return db.query(sql, [searchQuery], instanceFromRow);
   }
 
   static update(nameNumber, params) {
@@ -102,7 +87,7 @@ class User {
   }
 
   static verifyEmail(email, nameNumber) {
-    const sql = 'SELECT count(*) > 0 AS verified FROM users WHERE email = $1 and namenumber = $2';
+    const sql = 'SELECT count(*) > 0 AS verified FROM users WHERE email = $1 and name_number = $2';
 
     return db.query(sql, [email, nameNumber], ({ verified }) => verified).then(([verified]) => {
       if (!verified) {
@@ -112,7 +97,7 @@ class User {
   }
 
   get admin() {
-    return this._admin;
+    return this._role === 'Admin' || this._role === 'Director';
   }
 
   get email() {
@@ -156,9 +141,29 @@ class User {
     return this._spotId;
   }
 
+  get performanceId() {
+    return this._performanceId;
+  }
+
+  get performanceName() {
+    return this._performanceName;
+  }
+
+  get spotOpen() {
+    return this._spotOpen;
+  }
+
+  get reason() {
+    return this._reason;
+  }
+
+  get voluntary() {
+    return this._voluntary;
+  }
+
   toJSON() {
     return {
-      admin: this._admin,
+      admin: this._role === 'Admin' || this._role === 'Director',
       director: this._director,
       email: this._email,
       instrument: this._instrument,
@@ -175,59 +180,6 @@ class User {
   }
 }
 
-class UserForIndividualManage {
-
-  constructor(name, nameNumber, performanceId, performanceName, spotId, spotOpen, reason, voluntary) {
-    this._name = name;
-    this._nameNumber = nameNumber;
-    this._performanceId = performanceId;
-    this._performanceName = performanceName;
-    this._spotId = spotId;
-    this._spotOpen = spotOpen;
-    this._reason = reason;
-    this._voluntary = voluntary;
-  }
-
-  get name() {
-    return this._name;
-  }
-
-  get nameNumber() {
-    return this._nameNumber;
-
-  }
-
-  get performanceId() {
-    return this._performanceId;
-  }
-
-  get performanceName() {
-    return this._performanceName;
-  }
-
-  get spotId() {
-    return this._spotId;
-  }
-
-  get spotOpen() {
-    return this._spotOpen;
-  }
-
-  get reason() {
-    return this._reason;
-  }
-
-  get voluntary() {
-    return this._voluntary;
-  }
-
-}
-
-const instanceFromRowUser = ({ email, instrument, name, namenumber, new: isNew, part, password, role, spotid, revoke_token_date }) =>
-  new User(email, instrument, name, namenumber, isNew, part, password, revoke_token_date, role, spotid);
-
-
-const instanceFromRowUserIndividualManage = ({ name, namenumber, performanceid, performancename, spotid, spotopen, reason, voluntary }) =>
-  new UserForIndividualManage(name, namenumber, performanceid, performancename, spotid, spotopen, reason, voluntary);
+const instanceFromRow = (props) => new User(props);
 
 module.exports = User;

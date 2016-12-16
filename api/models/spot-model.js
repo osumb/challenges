@@ -1,14 +1,9 @@
 const db = require('../../utils/db');
+const Model = require('./model');
 
-const attributes = ['id', 'open', 'challengedCount'];
+const attributes = ['id', 'open', 'challenged_count'];
 
-class Spot {
-
-  constructor(id, open, challengedCount) {
-    this._id = id;
-    this._open = open;
-    this._challengedCount = challengedCount;
-  }
+class Spot extends Model {
 
   static get attributes() {
     return attributes;
@@ -30,9 +25,9 @@ class Spot {
 
   static findByOwnerNameNumber(nameNumber) {
     const sql = `
-      SELECT s.challengedcount, s.id, s.open
+      SELECT s.challenged_count, s.id, s.open
       FROM spots AS s JOIN users AS u ON u.spotid = s.id
-      WHERE u.namenumber = $1
+      WHERE u.name_number = $1
     `;
 
     return db.query(sql, [nameNumber], instanceFromDBRow);
@@ -66,7 +61,6 @@ class Spot {
   }
 }
 
-const instanceFromDBRow = ({ challengedcount, id, open }) =>
-  new Spot(id, open, challengedcount);
+const instanceFromDBRow = (props) => new Spot(props);
 
 module.exports = Spot;

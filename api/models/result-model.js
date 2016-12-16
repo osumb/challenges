@@ -1,9 +1,11 @@
 const moment = require('moment');
 
 const db = require('../../utils/db');
+const Model = require('./model');
 const queries = require('../../db/queries');
+const { snakeCase } = require('../../utils/object-keys-case-change');
 
-const modelAttributes = ['id', 'performanceId', 'spotId', 'firstNameNumber', 'secondNameNumber', 'firstComments', 'secondComments', 'winnerId', 'pending', 'needsApproval'];
+const modelAttributes = ['id', 'performance_id', 'spot_id', 'first_name_number', 'second_name_number', 'first_comments', 'second_comments', 'winner_id', 'pending', 'needs_approval'];
 const alternateVersusRegular = result =>
   (!result.userOneAlternate && result.userTwoAlternate) ||
   (result.userOneAlternate && !result.userTwoAlternate);
@@ -56,25 +58,7 @@ const groupResultsByPerformance = (results) => {
   return performanceResultsMap;
 };
 
-class Result {
-
-  constructor(id, fC, fNN, nA, opponentName, pending, perfDate, perfName, perfId, sC, sNN, spotId, uOA, uTA, winnerId) {
-    this._id = id;
-    this._firstComments = fC;
-    this._firstNameNumber = fNN;
-    this._needsApproval = nA;
-    this._opponentName = opponentName;
-    this._pending = pending;
-    this._performanceDate = new Date(perfDate);
-    this._performanceName = perfName;
-    this._performanceId = perfId;
-    this._secondComments = sC;
-    this._secondNameNumber = sNN;
-    this._spotId = spotId;
-    this._userOneAlternate = uOA;
-    this._userTwoAlternate = uTA;
-    this._winnerId = winnerId;
-  }
+class Result extends Model {
 
   static get attributes() {
     return modelAttributes;
@@ -89,19 +73,19 @@ class Result {
   }
 
   static approve(ids) {
-    const sql = 'UPDATE results SET needsApproval = FALSE, pending = FALSE WHERE id = ANY($1) RETURNING performanceId';
+    const sql = 'UPDATE results SET needs_approval = FALSE, pending = FALSE WHERE id = ANY($1) RETURNING performance_id';
 
     return db.query(sql, [ids], ({ performanceid }) => performanceid);
   }
 
   static checkAllDoneForPerformance(id) {
-    const sql = 'SELECT count(*) FROM results WHERE performanceid = $1 AND needsApproval';
+    const sql = 'SELECT count(*) FROM results WHERE performance_id = $1 AND needs_approval';
 
     return db.query(sql, [id], ({ count }) => parseInt(count, 10) === 0);
   }
 
   static createWithClient(attributes, client) {
-    const { sql, values } = db.queryBuilder(Result, attributes);
+    const { sql, values } = db.queryBuilder(Result, snakeCase(attributes));
 
     return new Promise((resolve, reject) => {
       const query = client.query(sql, values);
@@ -114,37 +98,37 @@ class Result {
   static findAllForApproval(user) {
     const sql = queries.resultsForApproval;
 
-    return db.query(sql, [user.instrument, user.part], instanceFromRowResultForAdmin);
+    return db.query(sql, [user.instrument, user.part], instanceFromRow);
   }
 
   static findAllForEval(nameNumber, row) {
     const sql = queries.resultsForEval;
 
-    return db.query(sql, [nameNumber, row], instanceFromRowResultForEval);
+    return db.query(sql, [nameNumber, row], instanceFromRow);
   }
 
   static findAllForPerformance(performanceId) {
     const sql = queries.resultsForPerformance;
 
-    return db.query(sql, [performanceId], instanceFromRowResultForAdmin);
+    return db.query(sql, [performanceId], instanceFromRow);
   }
 
   static findAllRawForPerformance(performanceId) {
-    const sql = 'SELECT * FROM results WHERE performanceId = $1';
+    const sql = 'SELECT * FROM results WHERE performance_id = $1';
 
-    return db.query(sql, [performanceId], instanceFromRowResultForAdmin);
+    return db.query(sql, [performanceId], instanceFromRow);
   }
 
   static findAllForUser(nameNumber) {
     const sql = queries.resultsForUser;
 
-    return db.query(sql, [nameNumber], instanceFromRowResultForUser(nameNumber));
+    return db.query(sql, [nameNumber], instanceFromRow(nameNumber));
   }
 
   static index() {
     const sql = queries.resultsIndex;
 
-    return db.query(sql, ['Any', 'Any'], instanceFromRowResultForAdmin).then(groupResultsByPerformance);
+    return db.query(sql, ['Any', 'Any'], instanceFromRow).then(groupResultsByPerformance);
   }
 
   static switchSpotsForPerformance(id) {
@@ -154,7 +138,7 @@ class Result {
       const oneUserSql = 'SELECT switch_spots_based_on_results_one_user($1)';
       const onePersonResultIds = [];
 
-      db.query(resultsSql, [id], instanceFromForResult)
+      db.query(resultsSql, [id], instanceFromRow)
       .then((results) => {
         const filteredResults = results.filter(({ secondNameNumber }, i) => {
           if (!secondNameNumber) {
@@ -190,7 +174,7 @@ class Result {
   }
 
   static updateForTestsOnly(firstNameNumber, comments1, comments2, winnerId) {
-    const sql = 'UPDATE results SET firstComments = $1, secondComments = $2, winnerId = $3 WHERE firstNameNumber = $4';
+    const sql = 'UPDATE results SET first_comments = $1, second_comments = $2, winner_id = $3 WHERE first_name_number = $4';
 
     return db.query(sql, [comments1, comments2 || null, winnerId, firstNameNumber]);
   }
@@ -243,6 +227,55 @@ class Result {
     return this._userTwoAlternate;
   }
 
+  get comments() {
+    return this._comments;
+  }
+
+  get performanceDate() {
+    return this._performanceDate;
+  }
+
+  get performanceName() {
+    return this._performanceName;
+  }
+
+  get winner() {
+    return this._winner;
+  }
+
+  get firstName() {
+    return this._firstName;
+  }
+
+  get secondName() {
+    return this._secondName;
+  }
+
+  get resultId() {
+    return this._id;
+  }
+
+  toJSON() {
+    return {
+      comments: this._comments,
+      firstComments: this._firstComments,
+      firstName: this._firstName,
+      firstNameNumber: this._firstNameNumber,
+      id: this._id,
+      opponentName: this._opponentName,
+      pending: this._pending,
+      performanceDate: this._performanceDate,
+      performanceId: this._performanceId,
+      performanceName: this._performanceName,
+      secondComments: this._secondComments,
+      secondName: this._secondName,
+      secondNameNumber: this._secondNameNumber,
+      spotId: this._spotId,
+      winner: this._winner,
+      winnerId: this._winnerId
+    };
+  }
+
   // This function is only for results returned by findForUser
   toJSONForUser(nameNumber) {
     return {
@@ -256,263 +289,6 @@ class Result {
   }
 }
 
-class ResultForAdmin {
-
-  constructor(id, fC, fN, fNN, pending, perfId, perfName, sC, sN, sNN, spotId, winnerId) {
-    this._firstComments = fC;
-    this._firstName = fN;
-    this._firstNameNumber = fNN;
-    this._id = id;
-    this._pending = pending;
-    this._performanceId = perfId;
-    this._performanceName = perfName;
-    this._secondComments = sC;
-    this._secondName = sN;
-    this._secondNameNumber = sNN;
-    this._spotId = spotId;
-    this._winnerId = winnerId;
-  }
-
-  get firstComments() {
-    return this._firstComments;
-  }
-
-  get firstName() {
-    return this._firstName;
-  }
-
-  get firstNameNumber() {
-    return this._firstNameNumber;
-  }
-
-  get id() {
-    return this._id;
-  }
-
-  get pending() {
-    return this._pending;
-  }
-
-  get performanceId() {
-    return this._performanceId;
-  }
-
-  get performanceName() {
-    return this._performanceName;
-  }
-
-  get secondComments() {
-    return this._secondComments;
-  }
-
-  get secondName() {
-    return this._secondName;
-  }
-
-  get secondNameNumber() {
-    return this._secondNameNumber;
-  }
-
-  get spotId() {
-    return this._spotId;
-  }
-
-  get winner() {
-    return this._winnerId === this._firstNameNumber ? this._firstName : this._secondName;
-  }
-
-  toJSON() {
-    return {
-      firstComments: this._firstComments,
-      firstName: this._firstName,
-      firstNameNumber: this._firstNameNumber,
-      id: this._id,
-      pending: this._pending,
-      performanceId: this._performanceId,
-      performanceName: this._performanceName,
-      secondComments: this._secondComments,
-      secondName: this._secondName,
-      secondNameNumber: this._secondNameNumber,
-      spotId: this._spotId,
-      winnerId: this._winnerId
-    };
-  }
-}
-
-class ResultForEvaluation {
-
-  constructor(firstName, firstNameNumber, id, secondName, secondNameNumber, spotId) {
-    this._firstName = firstName;
-    this._firstNameNumber = firstNameNumber;
-    this._id = id;
-    this._secondName = secondName;
-    this._secondNameNumber = secondNameNumber;
-    this._spotId = spotId;
-  }
-
-  get firstName() {
-    return this._firstName;
-  }
-
-  get firstNameNumber() {
-    return this._firstNameNumber;
-  }
-
-  get resultId() {
-    return this._id;
-  }
-
-  get secondName() {
-    return this._secondName;
-  }
-
-  get secondNameNumber() {
-    return this._secondNameNumber;
-  }
-
-  get spotId() {
-    return this._spotId;
-  }
-
-  toJSON() {
-    return {
-      firstName: this._firstName,
-      firstNameNumber: this._firstNameNumber,
-      id: this._id,
-      secondName: this._secondName,
-      secondNameNumber: this._secondNameNumber,
-      spotId: this._spotId
-    };
-  }
-}
-
-class ResultForUser {
-
-  constructor(comments, opponentName, performanceDate, performanceId, performanceName, spotId, userNameNumber, winner) {
-    this._comments = comments;
-    this._opponentName = opponentName;
-    this._performanceDate = moment(performanceDate).format('MMMM D, YYYY');
-    this._performanceId = performanceId;
-    this._performanceName = performanceName;
-    this._spotId = spotId;
-    this._winner = winner === userNameNumber;
-  }
-
-  get comments() {
-    return this._comments;
-  }
-
-  get opponentName() {
-    return this._opponentName;
-  }
-
-  get performanceDate() {
-    return this._performanceDate;
-  }
-
-  get performanceId() {
-    return this._performanceId;
-  }
-
-  get performanceName() {
-    return this._performanceName;
-  }
-
-  get spotId() {
-    return this._spotId;
-  }
-
-  get winner() {
-    return this._winner;
-  }
-
-  toJSON() {
-    return {
-      comments: this._comments,
-      id: this._id,
-      opponentName: this._opponentName,
-      performanceDate: this._performanceDate,
-      performanceId: this._performanceId,
-      performanceName: this._performanceName,
-      spotId: this._spotId,
-      winner: this._winner
-    };
-  }
-}
-
-const instanceFromRowResultForAdmin = ({
-  resultid,
-  firstcomments,
-  nameone,
-  firstnamenumber,
-  pending,
-  performanceid,
-  performancename,
-  secondcomments,
-  nametwo,
-  secondnamenumber,
-  spotid,
-  winnerid
-}) => new ResultForAdmin(
-  resultid,
-  firstcomments,
-  nameone,
-  firstnamenumber,
-  pending,
-  performanceid,
-  performancename,
-  secondcomments,
-  nametwo,
-  secondnamenumber,
-  spotid,
-  winnerid
-);
-
-const instanceFromRowResultForEval = ({
-  nameone,
-  firstnamenumber,
-  resultid,
-  nametwo,
-  secondnamenumber,
-  spotid
-}) => new ResultForEvaluation(nameone, firstnamenumber, resultid, nametwo, secondnamenumber, spotid);
-
-const instanceFromRowResultForUser = (nameNumber) =>
-  ({ comments, opponentname, performdate, performanceid, name, spotid, winnerid }) =>
-    new ResultForUser(comments, opponentname, performdate, performanceid, name, spotid, nameNumber, winnerid);
-
-const instanceFromForResult = ({
-  id,
-  firstcomments,
-  firstnamenumber,
-  needsapproval,
-  opponentname,
-  pending,
-  performdate,
-  name,
-  performanceid,
-  secondcomments,
-  secondnamenumber,
-  spotid,
-  useronealternate,
-  usertwoalternate,
-  winnerid
-}) => new Result(
-  id,
-  firstcomments,
-  firstnamenumber,
-  needsapproval,
-  opponentname,
-  pending,
-  performdate,
-  name,
-  performanceid,
-  secondcomments,
-  secondnamenumber,
-  spotid,
-  useronealternate,
-  usertwoalternate,
-  winnerid
-);
+const instanceFromRow = (props) => new Result(props);
 
 module.exports = Result;
