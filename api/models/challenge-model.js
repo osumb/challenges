@@ -24,6 +24,12 @@ class Challenge extends Model {
     return db.query(sql, [userId, performanceId, spotId], codeFromRow);
   }
 
+  static delete(id) {
+    const sql = 'DELETE FROM challenges where id = $1';
+
+    return db.query(sql, [id]);
+  }
+
   static findAllChallengeablePeopleForUser(user, performanceId) {
     if (!performanceId) {
       return Promise.resolve(null);
@@ -55,8 +61,19 @@ class Challenge extends Model {
     return db.query(sql, [performanceId]);
   }
 
+  static findById(id) {
+    const sql = 'SELECT * FROM challenges WHERE id = $1';
+
+    return db.query(sql, [id], instanceFromRow).then((challengeArr) => challengeArr[0]);
+  }
+
   static findForUser(nameNumber) {
-    const sql = 'SELECT * FROM challenges AS C, performances AS P WHERE user_name_number = $1 AND C.performance_id = P.id ORDER BY C.id LIMIT 1';
+    const sql = `
+      SELECT C.id, P.name, C.spot_id
+      FROM challenges AS C, performances AS P
+      WHERE user_name_number = $1 AND C.performance_id = P.id
+      ORDER BY C.id LIMIT 1
+      `;
 
     return db.query(sql, [nameNumber], instanceFromRow);
   }
@@ -115,6 +132,10 @@ class Challenge extends Model {
 
   get secondNameNumber() {
     return this._secondNameNumber;
+  }
+
+  get userNameNumber() {
+    return this._userNameNumber;
   }
 
   toJSON() {

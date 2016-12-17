@@ -1,0 +1,19 @@
+.CurrentChallenge {
+  display: flex;
+  justify-content: center;
+}
+
+.CurrentChallenge-buttonWrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+.CurrentChallenge-buttonPadding {
+  flex: 1;
+}
+
+#CurrentChallenge-button {
+  background-color: rgb(183, 28, 28) !important;
+  color: white !important;
+  height: 100% !important;
+}

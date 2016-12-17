@@ -18,7 +18,7 @@ const request = (url, { method, body }) =>
     body: JSON.stringify(body)
   })
   .then((response) => {
-    if (response.status >= 300) throw response.status;
+    if (!response.ok) throw response.status;
 
     return response.json()
     .then(({ token, ...rest }) => {

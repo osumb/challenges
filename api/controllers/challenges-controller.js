@@ -62,6 +62,16 @@ class ChallengersController {
     });
   }
 
+  static delete({ params }, res, next) {
+    Challenge.delete(params.id)
+      .then(() => {
+        next();
+      })
+      .catch((err) => {
+        logger.errorLog('Challenges.delete', err);
+        res.status(500).send();
+      });
+  }
 }
 
 

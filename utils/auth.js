@@ -5,6 +5,7 @@ const jwtDecode = require('jwt-decode');
 
 const config = require('../config');
 const logger = require('./logger');
+const Challenge = require('../api/models/challenge-model');
 const User = require('../api/models/user-model');
 
 const ensureAdmin = ({ user }, res, next) => {
@@ -14,6 +15,25 @@ const ensureAdmin = ({ user }, res, next) => {
 const ensureAdminOrSquadLeader = ({ user }, res, next) => (user && user.admin || user.squadLeader) ? next() : res.status(404).send();
 
 const ensureAuthenticated = ({ user }, res, next) => (user && user !== {}) ? next() : res.status(404).send();
+
+const ensureOwnerChallenge = ({ params, user }, res, next) => {
+  if (user.admin) {
+    next();
+  } else {
+    Challenge.findById(params.id)
+      .then((challenge) => {
+        if (challenge.userNameNumber === user.nameNumber) {
+          next();
+        } else {
+          res.status(401).send();
+        }
+      })
+      .catch((err) => {
+        console.error(err);
+        res.status(500).send();
+      });
+  }
+};
 
 const ensureResultsIndexAbility = ({ user }, res, next) => {
   (user.admin && user.instrument === 'Any' && user.instrument === 'Any') ?
@@ -99,6 +119,9 @@ module.exports = {
   ensureAdmin,
   ensureAdminOrSquadLeader,
   ensureAuthenticated,
+  ensureOwner: {
+    challenge: ensureOwnerChallenge
+  },
   ensureResultsIndexAbility,
   getToken,
   getTokenForUser,
