@@ -30,6 +30,7 @@ const request = (url, { method, body }) =>
   })
   .catch((err) => {
     console.error(err);
+    throw err;
   });
 
 const del = (url) => request(url, { method: 'delete' });
