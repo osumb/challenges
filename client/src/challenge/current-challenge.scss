@@ -1,0 +1,26 @@
+.CurrentChallenge {
+  align-items: center;
+  display: flex;
+  height: 100%;
+  justify-content: center;
+}
+
+.CurrentChallenge-button {
+  align-items: center;
+  background-color: rgb(183, 28, 28);
+  color: white;
+  cursor: hand;
+  cursor: pointer;
+  display: flex;
+  height: 100%;
+  padding: 0 10px;
+  text-align: center;
+}
+
+.CurrentChallenge-button:hover {
+  cursor: hand;
+}
+
+.CurrentChallenge-header {
+  margin: 0 5px;
+}

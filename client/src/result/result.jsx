@@ -29,7 +29,6 @@ export default class Result extends Component {
   render() {
     const { forProfile } = this.props;
 
-    console.log(this.props);
     if (forProfile) {
       return (
         <Card>

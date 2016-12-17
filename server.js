@@ -57,12 +57,12 @@ app.use('/api', routes(auth));
 
 // After controllers attach response, combine with token and send
 app.use('/api', (req, res) => {
-  Object.keys(res.locals.jsonResp).forEach((key) => {
+  Object.keys(res.locals.jsonResp || {}).forEach((key) => {
     if (typeof res.locals.jsonResp[key] === 'undefined') {
       res.locals.jsonResp[key] = null;
     }
   });
-  res.json(Object.assign({}, { token: res.locals.token }, res.locals.jsonResp));
+  res.json(Object.assign({}, { token: res.locals.token }, res.locals.jsonResp || {}));
 });
 
 app.use((req, res) => {
