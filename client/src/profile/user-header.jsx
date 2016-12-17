@@ -5,9 +5,10 @@ import './user-header.scss';
 const UserHeader = ({ name, spotId, admin }) => (
   <div className="UserHeader">
     <div className={admin ? 'UserHeader-admin' : 'UserHeader-spot'}>
-      <h1 className="UserHeader-text">
-        {admin ? 'Admin' : spotId}
-      </h1>
+      {admin ?
+        <h1 className="UserHeader-text">Admin</h1> :
+        <h3 className="UserHeader-text">{spotId}</h3>
+      }
     </div>
     <h1 className="UserHeader-name">
       {name}
