@@ -1,0 +1,45 @@
+.Performances {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  width: 80%;
+}
+
+.Performances-wrapper {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+}
+
+.Performances-edit {
+  align-items: center;
+  background-color: #f2f2f2;
+  border: black 1px solid;
+  display: flex;
+  flex-direction: column;
+  margin: 2px 0 2px 0;
+  padding: 4px 8px 4px 8px;
+}
+
+.Performance-editField {
+  align-items: baseline;
+  display: flex;
+  flex-direction: row;
+}
+
+.Performance-editName {
+  margin-right: 4px;
+}
+
+.Performance-editListExported {
+  margin-right: 4px;
+}
+
+.Performance-editCloseAt {
+  margin-right: 4px;
+}
+
+.Performance-editOpenAt {
+  margin-right: 4px;
+}

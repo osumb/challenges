@@ -1,21 +1,22 @@
 const { db } = require('../utils');
 
-const attributes = ['id', 'name', 'openAt', 'closeAt', 'performDate'];
+const modelAttributes = ['closeAt', 'id', 'list_exported', 'name', 'openAt', 'performDate'];
 
 let cachedCurrentPerformance;
 
 class Performance {
 
-  constructor(id, name, openAt, closeAt, performDate) {
+  constructor(id, listExported, name, openAt, closeAt, performDate) {
     this._id = id;
+    this._listExported = listExported;
     this._name = name;
     this._openAt = new Date(openAt);
     this._closeAt = new Date(closeAt);
     this._performDate = new Date(performDate);
   }
 
-  static get Attributes() {
-    return attributes;
+  static get attributes() {
+    return modelAttributes;
   }
 
   static get idName() {
@@ -45,7 +46,7 @@ class Performance {
   }
 
   static findAll() {
-    const sql = 'SELECT * FROM performances';
+    const sql = 'SELECT * FROM performances ORDER BY id';
 
     return db.query(sql, [], instanceFromRowPerformance);
   }
@@ -63,12 +64,35 @@ class Performance {
     });
   }
 
+  static findForListExporting() {
+    const sql = 'SELECT * from performances WHERE not list_exported AND closeat < now() ORDER BY id asc';
+
+    return db.query(sql, [], instanceFromRowPerformance);
+  }
+
+  static update(attributes) {
+    const id = attributes.id;
+
+    if (typeof id === 'undefined') {
+      return Promise.reject(new Error('No id provided with attributes'));
+    }
+
+    delete attributes.id;
+    const { sql, values } = db.queryBuilder(Performance, attributes, { statement: 'UPDATE', id });
+
+    return db.query(sql, values);
+  }
+
   get closeAt() {
     return this._closeAt;
   }
 
   get id() {
     return this._id;
+  }
+
+  get listExported() {
+    return this._listExported;
   }
 
   get name() {
@@ -79,6 +103,10 @@ class Performance {
     return this._openAt;
   }
 
+  get performDate() {
+    return this._performDate;
+  }
+
   inPerformanceWindow() {
     return this._openAt < Date.now() && Date.now() < this._closeAt;
   }
@@ -87,6 +115,7 @@ class Performance {
     return {
       closeAt: this._closeAt.toISOString(),
       id: this._id,
+      listExported: this._listExported,
       name: this._name,
       openAt: this._openAt.toISOString(),
       performDate: this._performDate.toISOString(),
@@ -96,10 +125,10 @@ class Performance {
 
 }
 
-const instanceFromRowPerformance = ({ id, name, openat, closeat, performdate }) =>
-  new Performance(id, name, openat, closeat, performdate);
+const instanceFromRowPerformance = ({ id, list_exported, name, openat, closeat, performdate }) =>
+  new Performance(id, list_exported, name, openat, closeat, performdate);
 
 const instanceFromRowPerformanceWithoutId = (name, openAt, closeAt, performDate) =>
-  ({ id }) => new Performance(id, name, openAt, closeAt, performDate);
+  ({ id }) => new Performance(id, false, name, openAt, closeAt, performDate);
 
 module.exports = Performance;

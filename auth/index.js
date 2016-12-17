@@ -1,3 +1,4 @@
+/* eslint-disable callback-return */
 const passport = require('passport');
 const Strategy = require('passport-local').Strategy;
 const models = require('../models');
@@ -13,7 +14,11 @@ passport.use(new Strategy((username, password, done) => {
       if (!bcrypt.compareSync(password, user.password)) { // eslint-disable-line no-sync
         return done(null, false);
       }
-      return done(null, user);
+
+      const serializedUser = user.toJSON();
+
+      serializedUser.resultsIndexPermission = serializedUser.instrument === 'Any' && serializedUser.part === 'Any';
+      return done(null, serializedUser);
     })
     .catch((err) => done(err));
 }));
@@ -82,11 +87,20 @@ function ensureNotFirstLogin(req, res, next) {
   }
 }
 
+function ensureResultsIndexAbility(req, res, next) {
+  if (isAuthenticated(req) && req.user.admin && req.user.instrument === 'Any' && req.user.part === 'Any') {
+    next();
+  } else {
+    res.redirect('notAdmin');
+  }
+}
+
 module.exports = {
   ensureAuthenticated,
   ensureAdmin,
   ensureAuthAndNameNumberRoute,
   ensureEvalAbility,
   ensureNotFirstLogin,
+  ensureResultsIndexAbility,
   passport
 };

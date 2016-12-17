@@ -31,6 +31,31 @@ const resultsSort = (a, b) => { // eslint-disable-line consistent-return, array-
   if (regularVersusRegular(a) && regularVersusRegular(b)) return 0;
 };
 
+const sortBySpotId = (a, b) => a.spotId[0] === b.spotId[0] ?
+  parseInt(a.spotId.substring(1), 10) > parseInt(b.spotId.substring(1), 10) :
+  a.spotId.localeCompare(b.spotId);
+
+const groupResultsByPerformance = (results) => {
+  const performanceResultsMap = [];
+
+  results.sort(sortBySpotId);
+
+  results.forEach((result) => {
+    const { performanceId, performanceName } = result;
+
+    if (performanceResultsMap[performanceId]) {
+      performanceResultsMap[performanceId].results.push(result);
+    } else {
+      performanceResultsMap[performanceId] = {
+        performanceName,
+        results: [result]
+      };
+    }
+  });
+
+  return performanceResultsMap.reverse();
+};
+
 class Result {
 
   constructor(id, fC, fNN, nA, opponentName, pending, perfDate, perfName, perfId, sC, sNN, spotId, uOA, uTA, winnerId) {
@@ -72,7 +97,7 @@ class Result {
   static checkAllDoneForPerformance(id) {
     const sql = 'SELECT count(*) FROM results WHERE performanceid = $1 AND needsApproval';
 
-    return db.query(sql, [id], ({ count }) => parseInt(count, 10));
+    return db.query(sql, [id], ({ count }) => parseInt(count, 10) === 0);
   }
 
   static createWithClient(attributes, client) {
@@ -114,6 +139,12 @@ class Result {
     const sql = queries.resultsForUser;
 
     return db.query(sql, [nameNumber], instanceFromRowResultForUser(nameNumber));
+  }
+
+  static index() {
+    const sql = queries.resultsIndex;
+
+    return db.query(sql, ['Any', 'Any'], instanceFromRowResultForAdmin).then(groupResultsByPerformance);
   }
 
   static switchSpotsForPerformance(id) {

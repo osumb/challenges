@@ -9,7 +9,8 @@ const {
   ensureAdmin,
   ensureAuthAndNameNumberRoute,
   ensureEvalAbility,
-  ensureNotFirstLogin
+  ensureNotFirstLogin,
+  ensureResultsIndexAbility
 } = auth;
 const passport = auth.passport;
 
@@ -24,16 +25,18 @@ router.setup = (app) => {
   //Challenges Controller
   app.get('/performances/challenges/new', ensureAuthenticated, Challenges.new);
   app.post('/performances/challenge', ensureAuthenticated, Challenges.create);
+  app.post('/emailList', ensureAdmin, Challenges.emailList);
 
   //Performance Controller
-  app.get('/performances', ensureAuthenticated, Performances.showAll);
+  app.get('/performances', ensureAuthenticated, Performances.index);
   app.get('/performances/new', ensureAdmin, Performances.new);
   app.post('/performances/create', ensureAdmin, Performances.create);
+  // app.put('/performances', ensureAdmin, Performances.update);
 
   //Results Controller
   app.get('/performances/results/evaluate', ensureEvalAbility, Results.showForEvaluation);
   app.get('/performances/results/toapprove', ensureAdmin, Results.getForApproval);
-  app.get('/performances/:performanceId/results', ensureAdmin, Results.showAll);
+  app.get('/results', ensureResultsIndexAbility, Results.index);
   app.post('/performances/results/evaulate', ensureEvalAbility, Results.evaluate);
   app.post('/results/approve', ensureAdmin, Results.approve);
 
@@ -45,14 +48,17 @@ router.setup = (app) => {
   app.get('/logout', Sessions.logout);
 
   //Users Controller
+  app.get('/users', ensureAdmin, Users.indexMembers);
   app.get('/:nameNumber', [ensureAuthAndNameNumberRoute, ensureNotFirstLogin], Users.show);
   app.get('/:nameNumber/settings', ensureAuthAndNameNumberRoute, Users.settings);
   app.get('/users/manage', ensureAdmin, Users.showManage);
   app.get('/users/manage/:nameNumber', ensureAdmin, Users.showIndividualManage);
   app.get('/users/search', ensureAdmin, Users.search);
-  app.post('/users/changePassword', ensureAuthenticated, Users.changePassword);
   app.post('/users/manage', ensureAdmin, Users.manage);
   app.post('/users/manage/close', ensureAdmin, Users.closeSpot);
+  app.put('/users', ensureAdmin, Users.update);
+  app.put('/users/password', ensureAuthenticated, Users.changePassword);
+
 };
 
 module.exports = router;

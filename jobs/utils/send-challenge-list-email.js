@@ -1,10 +1,10 @@
-const models = require('../models');
+const models = require('../../models');
 const Challenge = models.Challenge;
 const Manage = models.Manage;
-const { sendChallengeList } = require('../utils').email;
-const { logger } = require('../utils');
+const { sendChallengeList } = require('../../utils').email;
+const { logger } = require('../../utils');
 
-const recipients = (process.env.NODE_ENV === 'test' || process.env.NODE_ENV === 'dev') ?
+const recipients = process.env.NODE_ENV !== 'production' ?
 [
   {
     email: 'tareshawty.3@osu.edu',

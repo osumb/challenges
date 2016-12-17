@@ -255,6 +255,7 @@ FOR EACH ROW EXECUTE PROCEDURE modified_stamp();
 ----------------------------------------
 CREATE TABLE performances (
   id serial PRIMARY KEY,
+  list_exported BOOLEAN DEFAULT FALSE,
   name varchar(256) NOT NULL,
   performDate timestamptz NOT NULL,
   openAt timestamptz NOT NULL,

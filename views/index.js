@@ -7,6 +7,7 @@ module.exports = (app) => {
   app.engine('handlebars', exphbs({
     defaultLayout: 'main',
     helpers: {
+      evenOdd: (index) => index % 2 === 0 ? 'EvenRow' : 'OddRow',
       usersIndividualManageActionItem: (name, performanceName, reason, voluntary) => {
         let action = voluntary ? `${name} opened their spot` : 'an admin opened the spot';
 

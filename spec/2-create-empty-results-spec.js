@@ -1,5 +1,5 @@
 /* eslint-disable no-undef */
-const { createEmptyResults } = require('../jobs');
+const { createEmptyResults } = require('../jobs/utils');
 const { testData } = require('../spec/fixtures');
 const models = require('../models');
 

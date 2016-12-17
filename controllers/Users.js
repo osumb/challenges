@@ -14,8 +14,8 @@ function UsersController() {
     const { oldPassword, newPassword } = req.body;
 
     if (bcrypt.compareSync(oldPassword, req.user.password)) { // eslint-disable-line no-sync
-      User.changePassword(req.user.nameNumber, newPassword)
-      .then((hashPassword) => {
+      User.update(req.user.nameNumber, { new: false, password: newPassword })
+      .then(([hashPassword]) => {
         req.user.new = false;
         req.user.password = hashPassword;
         res.json({ success: true });
@@ -47,6 +47,17 @@ function UsersController() {
     .catch((err) => {
       logger.errorLog('Users.close', err);
       res.status(500).send();
+    });
+  };
+
+  this.indexMembers = (req, res) => {
+    User.indexMembers()
+    .then((users) => {
+      res.render('users/index', { user: req.user, users });
+    })
+    .catch((err) => {
+      logger.errorLog('Users.index', err);
+      res.render('static-pages/error', { user: req.user });
     });
   };
 
@@ -102,7 +113,7 @@ function UsersController() {
         Promise.all([challenge, results, currentPerformance, User.canChallengeForPerformance(req.user, currentPerformance && currentPerformance.id)])
       )
       .then(data => {
-        const canChallenge = data[3], challenge = data[0][0], performance = data[2], results = data[1];
+        const canChallenge = data[3][0], challenge = data[0][0], performance = data[2], results = data[1];
 
         res.render('users/show', {
           canChallenge: canChallenge && (performance && performance.inPerformanceWindow()),
@@ -137,6 +148,19 @@ function UsersController() {
 
   this.showManage = (req, res) => {
     res.render('users/manage', { user: req.user });
+  };
+
+  this.update = (req, res) => {
+    const { nameNumber } = req.body;
+
+    delete req.body.nameNumber;
+
+    User.update(nameNumber, req.body)
+    .then(() => res.json({ success: true }))
+    .catch((err) => {
+      logger.errorLog('Users.update', err);
+      res.json({ success: false });
+    });
   };
 }
 

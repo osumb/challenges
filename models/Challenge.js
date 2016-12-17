@@ -48,6 +48,12 @@ class Challenge {
     return db.query(sql, [performanceId], instanceFromRowChallengeForCSV);
   }
 
+  static findAllforEmptyResultsCreation(performanceId) {
+    const sql = queries.challengesForEmptyResults;
+
+    return db.query(sql, [performanceId], instanceFromRowChallengeForCSV);
+  }
+
   static findAllRawForPerformance(performanceId) {
     const sql = 'SELECT * FROM challenges WHERE performanceId = $1';
 

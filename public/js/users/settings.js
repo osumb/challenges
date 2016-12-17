@@ -10,13 +10,13 @@ $(changePasswordButtonClass).on('click', () => {
   const reTypePassword = $(changePasswordReTypeClass)[0].value;
 
   if (validInput(newPassword, reTypePassword)) {
-    fetch('/users/changePassword', {
+    fetch('/users/password', {
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
       },
       credentials: 'same-origin',
-      method: 'post',
+      method: 'put',
       body: JSON.stringify({
         oldPassword,
         newPassword
