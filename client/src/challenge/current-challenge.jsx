@@ -34,20 +34,25 @@ export default class CurrentChallenge extends Component {
 
   render() {
     const paperStyle = {
-      width: '75%'
+      height: '100px'
     };
+
+    if (this.state.deleted) {
+      return (
+        <div className="CurrentChallenge">
+          <h2 className="CurrentChallenge-header">Successfully deleted challenge. Remember to go make another</h2>
+        </div>
+      );
+    }
 
     return (
       <Paper style={paperStyle}>
-        {!this.state.deleted ?
-          <div className="CurrentChallenge">
-            <h2>You are currently signed up to challenge spot {this.props.spotId} for the {this.props.name}</h2>
-            <RaisedButton id="CurrentChallenge-button" onClick={this.handleDelete}>Delete</RaisedButton>
-          </div> :
-          <div className="CurrentChallenge">
-            <h2>Successfully deleted challenge. Remember to go make another</h2>
+        <div className="CurrentChallenge">
+          <h2 className="CurrentChallenge-header">Challenging spot {this.props.spotId} for the {this.props.name}</h2>
+          <div className="CurrentChallenge-button" onClick={this.handleDelete}>
+            Delete
           </div>
-        }
+        </div>
       </Paper>
     );
   }
