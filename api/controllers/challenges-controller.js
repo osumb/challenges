@@ -48,7 +48,7 @@ class ChallengersController {
 
   static challengeableUsers(req, res, next) {
     return Promise.all([Performance.findCurrent(), User.findByNameNumber(req.user.nameNumber)])
-    .then(([[performance], user]) => Promise.all([performance, Challenge.findAllChallengeablePeopleForUser(user, performance && performance.id)]))
+    .then(([performance, user]) => Promise.all([performance, Challenge.findAllChallengeablePeopleForUser(user, performance && performance.id)]))
     .then(([performance, challengeableUsers]) => {
       res.locals.jsonResp = {
         challengeableUsers: (challengeableUsers || []).map((user) => user.toJSON()),

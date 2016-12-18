@@ -2,6 +2,11 @@
   align-items: center;
   display: flex;
   flex-direction: column;
+  justify-content: center;
+}
+
+.Profile > * {
+  margin: 4px 0;
 }
 
 .Profile-results {

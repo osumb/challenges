@@ -1,5 +1,6 @@
 import React, { PropTypes } from 'react';
 
+import './profile.scss';
 import ChallengeWindow from '../performance/challenge-window';
 import UserHeader from './user-header';
 

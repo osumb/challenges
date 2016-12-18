@@ -17,7 +17,12 @@ export const canUserAccessPattern = (user, pattern) => {
     return true;
   }
 
-  const patternMainRouteKey = Object.keys(mainRoutes).find((key) => mainRoutes[key].links.some(({ path }) => path === 'pattern'));
+  const patternMainRouteKey = Object.keys(mainRoutes).find((key) => mainRoutes[key].links.some(({ path }) => path === pattern));
+
+  if (!patternMainRouteKey) {
+    return false;
+  }
+
   const link = mainRoutes[patternMainRouteKey].links.find(({ path }) => path === pattern);
   const { roles } = link;
 
