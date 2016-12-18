@@ -8,7 +8,7 @@
   },
   "private": true,
   "scripts": {
-    "start": "./bin/www",
+    "start": "node bin/www",
     "build": "node client/scripts/build.js",
     "dev": "foreman start -f Procfile.dev",
     "lint": "eslint .",
