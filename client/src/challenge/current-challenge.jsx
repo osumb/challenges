@@ -1,6 +1,5 @@
 import React, { Component, PropTypes } from 'react';
 import Paper from 'material-ui/Paper';
-import RaisedButton from 'material-ui/RaisedButton';
 
 import './current-challenge.scss';
 import { api } from '../utils';
@@ -39,9 +38,9 @@ export default class CurrentChallenge extends Component {
 
     if (this.state.deleted) {
       return (
-        <div className="CurrentChallenge">
+        <Paper style={paperStyle}>
           <h2 className="CurrentChallenge-header">Successfully deleted challenge. Remember to go make another</h2>
-        </div>
+        </Paper>
       );
     }
 

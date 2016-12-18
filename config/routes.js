@@ -12,8 +12,8 @@ const routes = (auth) => {
   router.post('/token', auth.getTokenForUser);
 
   // Challenges Controller
-  router.get('/challengeableUsers', auth.ensureAuthenticated, Challenges.challengeableUsers);
-  router.post('/challenges/create', auth.ensureAuthenticated, Challenges.create);
+  router.get('/challenges', auth.ensureAuthenticated, Challenges.challengeableUsers);
+  router.post('/challenges', auth.ensureAuthenticated, Challenges.create);
   router.delete('/challenges/:id', auth.ensureOwner.challenge, Challenges.delete);
 
   // PasswordChangeRequests Controller

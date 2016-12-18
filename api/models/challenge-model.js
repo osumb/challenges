@@ -25,7 +25,7 @@ class Challenge extends Model {
   }
 
   static delete(id) {
-    const sql = 'DELETE FROM challenges where id = $1';
+    const sql = 'SELECT delete_challenge($1)';
 
     return db.query(sql, [id]);
   }
