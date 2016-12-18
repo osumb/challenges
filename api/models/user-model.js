@@ -37,7 +37,7 @@ class User extends Model {
     }
     const sql = queries.canChallengeForPerformance;
 
-    return db.query(sql, [nameNumber, performanceId], ({ can_challenge }) => can_challenge);
+    return db.query(sql, [nameNumber, performanceId], ({ can_challenge }) => can_challenge).then((arr) => arr[0]);
   }
 
   static findForIndividualManage(nameNumber) {

@@ -11,7 +11,7 @@ const UserProfile = ({ canChallenge, challenge, name, performance, results, spot
     {performance && <ChallengeWindow {...performance} />}
     {canChallenge ?
       <h2>You still need to make a challenge!</h2> :
-      <CurrentChallenge {...challenge} />
+      (challenge && <CurrentChallenge {...challenge} />)
     }
     {results.length > 0 ?
       <div>

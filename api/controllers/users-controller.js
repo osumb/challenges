@@ -23,7 +23,7 @@ class UsersController {
     .then(([[challenge], performance, results, dbUser, canChallenge]) => {
       res.locals.jsonResp = {
         admin: dbUser.admin,
-        canChallenge: canChallenge[0],
+        canChallenge,
         challenge: challengeAlreadyInResults(challenge, results) ? null : challenge,
         name: dbUser.name,
         performance: performance && performance.toJSON(),
