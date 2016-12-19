@@ -35,7 +35,6 @@ class ResultsController {
       needsApproval: true,
       firstComments: req.body.firstComments,
       secondComments: req.body.secondComments || '',
-      spotId: req.body.spotId,
       winnerId: req.body.winnerId
     })
     .then(() => {

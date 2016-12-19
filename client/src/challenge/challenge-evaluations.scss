@@ -1,0 +1,45 @@
+.ChallengeEvaluations {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  margin: 0 10px;
+}
+
+.ChallengeEvaluations-header {
+  align-content: center;
+  display: flex;
+  justify-content: center;
+}
+
+.ChallengeEvaluations-header > * {
+  margin: 0 8px;
+}
+
+.ChallengeEvaluations-userComments {
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+.ChallengeEvaluations-userComments > * {
+  flex: 1;
+  margin: 0 5px;
+}
+
+.ChallengeEvaluations-userComparisons {
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 5px;
+  width: 100%;
+}
+
+.ChallengeEvaluations-userComparisons > * {
+  flex: 1;
+  margin: 0 5px;
+}
+
+#ChallengeEvaluations-headerButton {
+  background-color: rgb(66, 66, 66) !important;
+  color: white !important;
+  padding: 0 4px !important;
+}

@@ -1,0 +1,27 @@
+.UserComparison-textContainer {
+  display: flex;
+  flex-wrap: nowrap;
+}
+
+.UserComparison-text {
+  line-height: 1.25;
+  flex: 1;
+}
+
+.UserComparison-text--winner {
+  background-color: rgba(36, 243, 47, 0.3) !important;
+}
+
+.UserComparison-text--loser {
+  background-color: rgba(360, 0, 0, 0.3) !important;
+}
+
+.UserComparison-text:hover {
+  cursor: pointer;
+  cursor: hand;
+}
+
+.UserComparison-button {
+  background-color: rgb(66, 66, 66) !important;
+  color: white !important;
+}
