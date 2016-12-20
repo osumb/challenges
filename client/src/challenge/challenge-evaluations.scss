@@ -15,26 +15,11 @@
   margin: 0 8px;
 }
 
-.ChallengeEvaluations-userComments {
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-}
-
-.ChallengeEvaluations-userComments > * {
-  margin: 0 5px;
-}
-
-.ChallengeEvaluations-userComparisons {
+.ChallengeEvaluations-items {
   display: flex;
   flex-direction: column;
   margin-top: 5px;
   width: 100%;
-}
-
-.ChallengeEvaluations-userComparisons > * {
-  flex: 1;
-  margin: 10px 5px;
 }
 
 #ChallengeEvaluations-headerButton {

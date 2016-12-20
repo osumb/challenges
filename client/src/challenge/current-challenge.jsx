@@ -6,7 +6,7 @@ import { api } from '../utils';
 
 export default class CurrentChallenge extends Component {
 
-  static propTypes() {
+  static get propTypes() {
     return {
       id: PropTypes.number.isRequired,
       name: PropTypes.string.isRequired,

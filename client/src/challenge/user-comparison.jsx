@@ -8,7 +8,7 @@ import './user-comparison.scss';
 
 export default class UserComparison extends Component {
 
-  static propTypes() {
+  static get propTypes() {
     return {
       id: PropTypes.number.isRequired,
       firstComments: PropTypes.string.isRequired,

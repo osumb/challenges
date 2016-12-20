@@ -6,6 +6,22 @@ import './user-comments.scss';
 
 class UserComments extends Component {
 
+  static get propTypes() {
+    return {
+      firstComments: PropTypes.string.isRequired,
+      firstName: PropTypes.string.isRequired,
+      secondComments: PropTypes.string,
+      secondName: PropTypes.string,
+      spotId: PropTypes.string.isRequired
+    };
+  }
+
+  static get defaultProps() {
+    return {
+      firstComments: ''
+    };
+  }
+
   constructor(props) {
     super(props);
     this.state = {
@@ -65,17 +81,5 @@ class UserComments extends Component {
     );
   }
 }
-
-UserComments.propTypes = {
-  firstComments: PropTypes.string.isRequired,
-  firstName: PropTypes.string.isRequired,
-  secondComments: PropTypes.string,
-  secondName: PropTypes.string,
-  spotId: PropTypes.string.isRequired
-};
-
-UserComments.defaultProps = {
-  firstComments: ''
-};
 
 export default UserComments;
