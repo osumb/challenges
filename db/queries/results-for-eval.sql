@@ -16,4 +16,4 @@ ON
   t1.id = t2.id
 WHERE t1.name_number != $1 AND
   (t2.name_number is NULL OR t2.name_number != $1) AND
-  can_sl_eval($2, substring(t1.spot_id, 1, 1), t1.name_number, t2.name_number);
+  can_user_eval($1, t1.id);

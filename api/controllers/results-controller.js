@@ -61,7 +61,7 @@ class ResultsController {
   }
 
   static getForEvaluation(req, res, next) {
-    return Result.findAllForEval(req.user.nameNumber, (req.user.spotId || '')[0])
+    return Result.findAllForEval(req.user.nameNumber)
       .then((results) => {
         res.locals.jsonResp = { results: results.map((result) => result.toJSON()) };
         next();

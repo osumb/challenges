@@ -101,10 +101,10 @@ class Result extends Model {
     return db.query(sql, [user.instrument, user.part], instanceFromRow);
   }
 
-  static findAllForEval(nameNumber, row) {
+  static findAllForEval(nameNumber) {
     const sql = queries.resultsForEval;
 
-    return db.query(sql, [nameNumber, row], instanceFromRow);
+    return db.query(sql, [nameNumber], instanceFromRow);
   }
 
   static findAllForPerformance(performanceId) {
