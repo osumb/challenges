@@ -17,25 +17,24 @@
 
 .ChallengeEvaluations-userComments {
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: column;
   width: 100%;
 }
 
 .ChallengeEvaluations-userComments > * {
-  flex: 1;
   margin: 0 5px;
 }
 
 .ChallengeEvaluations-userComparisons {
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: column;
   margin-top: 5px;
   width: 100%;
 }
 
 .ChallengeEvaluations-userComparisons > * {
   flex: 1;
-  margin: 0 5px;
+  margin: 10px 5px;
 }
 
 #ChallengeEvaluations-headerButton {

@@ -28,41 +28,32 @@ class ChallengeEvaluations extends Component {
 
   constructor(props) {
     super(props);
-    const userMap = props.results.reduce((acc, { firstNameNumber, secondNameNumber }) => {
-      acc[firstNameNumber] = '';
-      if (secondNameNumber) {
-        acc[secondNameNumber] = '';
-      }
-      return acc;
-    }, {});
-
     this.state = {
       evaluating: true,
-      results: props.results,
-      userMap
+      results: props.results
     };
-    this.handleCommentsChange = this.handleCommentsChange.bind(this);
     this.handleEvaluationToggle = this.handleEvaluationToggle.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-  handleCommentsChange(nameNumber, comments) {
-    const { userMap } = this.state;
-
-    this.setState({
-      userMap: {
-        ...userMap,
-        [nameNumber]: comments
-      }
-    });
-  }
-
   handleEvaluationToggle() {
-    const { evaluating } = this.state;
+    const { evaluating, results } = this.state;
 
-    this.setState({
-      evaluating: !evaluating
-    });
+    if (evaluating) {
+      this.setState({
+        evaluating: !evaluating,
+        results: results.map(({ id, ...rest }) => ({
+          ...rest,
+          id,
+          firstComments: this.refs[id].value().firstComments,
+          secondComments: this.refs[id].value().secondComments
+        }))
+      });
+    } else {
+      this.setState({
+        evaluating: !evaluating
+      });
+    }
   }
 
   handleSubmit({ id, ...rest }) {
@@ -77,14 +68,7 @@ class ChallengeEvaluations extends Component {
   }
 
   render() {
-    const { evaluating, results, userMap } = this.state;
-    const userComments = results.reduce((acc, { firstName, firstNameNumber, secondName, secondNameNumber }) => {
-      acc.push({ comments: userMap[firstNameNumber], name: firstName, nameNumber: firstNameNumber });
-      if (secondName && secondNameNumber) {
-        acc.push({ comments: userMap[secondNameNumber], name: secondName, nameNumber: secondNameNumber });
-      }
-      return acc;
-    }, []);
+    const { evaluating, results } = this.state;
 
     if ((results || []).length < 1) {
       return (
@@ -102,13 +86,11 @@ class ChallengeEvaluations extends Component {
             <FlatButton id="ChallengeEvaluations-headerButton" onClick={this.handleEvaluationToggle}>Turn in Evaluations</FlatButton>
           </div>
           <div className="ChallengeEvaluations-userComments">
-            {userComments.map(({ comments, name, nameNumber }) =>
+            {results.map(({ id, ...rest }) =>
               <UserComments
-                key={nameNumber}
-                comments={comments}
-                name={name}
-                nameNumber={nameNumber}
-                onChange={this.handleCommentsChange}
+                ref={id}
+                key={id}
+                {...rest}
               />
             )}
           </div>
@@ -118,9 +100,7 @@ class ChallengeEvaluations extends Component {
 
     const userComparisons = results.map((result) => ({
       ...result,
-      firstComments: userMap[result.firstNameNumber],
-      onSubmit: this.handleSubmit,
-      secondComments: userMap[result.secondNameNumber]
+      onSubmit: this.handleSubmit
     }));
 
     return (
