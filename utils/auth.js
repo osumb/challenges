@@ -80,7 +80,6 @@ const refreshToken = (user) => tokenFromUser(user);
 
 const tokenFromUser = (user) => {
   delete user.password;
-  delete user.spotId;
 
   const now = new Date();
 

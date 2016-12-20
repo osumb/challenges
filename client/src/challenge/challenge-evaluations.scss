@@ -1,0 +1,29 @@
+.ChallengeEvaluations {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  margin: 0 10px;
+}
+
+.ChallengeEvaluations-header {
+  align-content: center;
+  display: flex;
+  justify-content: center;
+}
+
+.ChallengeEvaluations-header > * {
+  margin: 0 8px;
+}
+
+.ChallengeEvaluations-items {
+  display: flex;
+  flex-direction: column;
+  margin-top: 5px;
+  width: 100%;
+}
+
+#ChallengeEvaluations-headerButton {
+  background-color: rgb(66, 66, 66) !important;
+  color: white !important;
+  padding: 0 4px !important;
+}

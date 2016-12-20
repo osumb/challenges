@@ -6,6 +6,7 @@ import injectTapEventPlugin from 'react-tap-event-plugin';
 
 import './App.scss';
 import { auth } from './utils';
+import ChallengeEvaluations from './challenge/challenge-evaluations';
 import ChallengeSelect from './challenge/challenge-select';
 import Login from './shared-components/login';
 import Navbar from './shared-components/navbar';
@@ -57,6 +58,7 @@ const App = () => (
             <Navbar onLogout={() => handleLogout(router)} user={auth.getUser()} />
             <div id="App-container">
               <MatchWhenAuthorized exactly pattern="/" component={Profile} />
+              <MatchWhenAuthorized exactly pattern="/challenges/evaluate" component={ChallengeEvaluations} />
               <MatchWhenAuthorized exactly pattern="/challenges/new" component={ChallengeSelect} />
               <MatchWhenNotLoggedIn pattern="/login" component={Login} />
               <Miss component={NotFound} />

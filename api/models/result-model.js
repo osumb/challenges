@@ -101,10 +101,10 @@ class Result extends Model {
     return db.query(sql, [user.instrument, user.part], instanceFromRow);
   }
 
-  static findAllForEval(nameNumber, row) {
+  static findAllForEval(nameNumber) {
     const sql = queries.resultsForEval;
 
-    return db.query(sql, [nameNumber, row], instanceFromRow);
+    return db.query(sql, [nameNumber], instanceFromRow);
   }
 
   static findAllForPerformance(performanceId) {
@@ -168,7 +168,7 @@ class Result extends Model {
     }
 
     delete attributes.id;
-    const { sql, values } = db.queryBuilder(Result, attributes, { statement: 'UPDATE', id });
+    const { sql, values } = db.queryBuilder(Result, snakeCase(attributes), { statement: 'UPDATE', id });
 
     return db.query(sql, values);
   }
@@ -261,7 +261,7 @@ class Result extends Model {
       firstComments: this._firstComments,
       firstName: this._firstName,
       firstNameNumber: this._firstNameNumber,
-      id: this._id,
+      id: this._id || this._resultId,
       opponentName: this._opponentName,
       pending: this._pending,
       performanceDate: moment(this._performDate).format('MMM D, YYYY'),

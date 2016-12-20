@@ -4,7 +4,7 @@ import Divider from 'material-ui/Divider';
 
 export default class Result extends Component {
 
-  static propTypes() {
+  static get propTypes() {
     return {
       comments: PropTypes.string,
       firstComments: PropTypes.string,

@@ -12,7 +12,7 @@ const postEndPoint = '/challenges';
 
 class ChallengeSelect extends Component {
 
-  static propTypes() {
+  static get propTypes() {
     return {
       challengeableUsers: PropTypes.arrayOf(PropTypes.shape({
         challengeCount: PropTypes.number.isRequired,
@@ -25,7 +25,7 @@ class ChallengeSelect extends Component {
     };
   }
 
-  static defaultProps() {
+  static get defaultProps() {
     return {
       challengeableUsers: []
     };
