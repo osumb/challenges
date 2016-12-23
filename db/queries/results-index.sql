@@ -1,8 +1,8 @@
 SELECT
-  user1.name AS name_one,
-  user2.name AS name_two,
+  user1.name AS first_name,
+  user2.name AS second_name,
   user1.spot_id AS spot_id,
-  user1.id AS resultid,
+  user1.id AS result_id,
   user1.name_number AS first_name_number,
   user2.name_number AS second_name_number,
   user1.comments AS first_comments,

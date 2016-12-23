@@ -62,8 +62,8 @@ export const mainRoutes = {
     displayName: 'Results',
     links: [
       {
-        name: 'Previous',
-        path: '/results',
+        name: 'Completed',
+        path: '/results/completed',
         roles: [ANY]
       },
       {

@@ -72,7 +72,7 @@ class ResultsController {
       });
   }
 
-  static index(req, res, next) {
+  static getCompleted(req, res, next) {
     Result.index()
     .then((performanceResultsMap) => {
       res.locals.jsonResp = { performanceResultsMap };
@@ -80,7 +80,25 @@ class ResultsController {
     })
     .catch((err) => {
       logger.errorLog('Results.index', err);
-      res.render('static-pages/error', { user: req.user });
+      res.status(500).send();
+    });
+  }
+
+  static updateCompleted({ body }, res, next) {
+    const { id, firstComments, secondComments } = body;
+
+    Result.update({
+      id,
+      firstComments,
+      secondComments
+    })
+    .then(() => {
+      res.locals.jsonResp = { success: true };
+      next();
+    })
+    .catch((err) => {
+      logger.errorLog('Results.updateCompleted', err);
+      res.status(500).send();
     });
   }
 
