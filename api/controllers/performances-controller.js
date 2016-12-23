@@ -12,9 +12,9 @@ class PerformancesController {
       res.locals.jsonResp = { success: true };
       next();
     })
-    .catch(err => {
+    .catch((err) => {
       logger.errorLog('Performances.new', err);
-      res.render('static-pages/error', { user: req.user });
+      res.status(500).send();
     });
   }
 

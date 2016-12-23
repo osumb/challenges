@@ -37,7 +37,7 @@ const routes = (auth) => {
   router.put('/users', auth.ensureAdmin, Users.update);
 
   //Performance Controller
-  router.post('/performances/create', auth.ensureAdmin, Performances.create);
+  router.post('/performances', auth.ensureAdmin, Performances.create);
   // router.put('/performances', auth.ensureAdmin, Performances.update);
 
   //Users Controller
