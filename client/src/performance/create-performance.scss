@@ -1,0 +1,27 @@
+.CreatePerformance {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+}
+
+.CreatePerformance-form {
+  align-items: flex-start;
+  display: flex;
+  flex-direction: column;
+}
+
+.CreatePerformance-item {
+  margin: 5px 0;
+}
+
+.CreatePerformance-item label {
+  font-size: 16px;
+}
+
+.CreatePerformance-dateInput input {
+  border: 1px solid #efefef;
+  border-radius: 3px;
+  font-size: 16px;
+  height: 2em;
+  width: 16em;
+}
