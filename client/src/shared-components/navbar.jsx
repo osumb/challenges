@@ -8,21 +8,22 @@ import MobileNav from './mobile-nav';
 // width of iPad in portrait
 const minWidth = 769;
 
-const Navbar = ({ onLogout, user }) => (
+const Navbar = ({ onLogout, router, user }) => (
   <Media query={{ minWidth }}>
     {(matches) =>
       matches ?
         <div>
           <Header />
-          <DesktopNav onLogout={onLogout} user={user} />
+          <DesktopNav onLogout={onLogout} router={router} user={user} />
         </div> :
-        <MobileNav onLogout={onLogout} user={user} />
+        <MobileNav onLogout={onLogout} router={router} user={user} />
     }
   </Media>
 );
 
 Navbar.propTypes = {
   onLogout: PropTypes.func.isRequired,
+  router: PropTypes.object.isRequired,
   user: PropTypes.shape({
     admin: PropTypes.bool.isRequired,
     director: PropTypes.bool.isRequired,

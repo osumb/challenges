@@ -48,7 +48,7 @@ export default class CurrentChallenge extends Component {
       <Paper style={paperStyle}>
         <div className="CurrentChallenge">
           <h2 className="CurrentChallenge-header">Challenging spot {this.props.spotId} for the {this.props.name}</h2>
-          <div className="CurrentChallenge-button" onClick={this.handleDelete}>
+          <div className="CurrentChallenge-button" onTouchTap={this.handleDelete}>
             Delete
           </div>
         </div>

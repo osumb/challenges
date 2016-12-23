@@ -86,7 +86,7 @@ class ChallengeEvaluations extends Component {
       <div className="ChallengeEvaluations">
         <div className="ChallengeEvaluations-header">
           <h2>{evaluating ? 'Type your comments for each person involved' : 'Turn in your evaluations'}</h2>
-          <FlatButton id="ChallengeEvaluations-headerButton" onClick={this.handleEvaluationToggle}>
+          <FlatButton id="ChallengeEvaluations-headerButton" onTouchTap={this.handleEvaluationToggle}>
             {evaluating ? 'Turn in Evaluations' : 'Back'}
           </FlatButton>
         </div>

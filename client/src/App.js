@@ -56,7 +56,7 @@ const App = () => (
       {
         ({ router }) => (
           <div id="App">
-            <Navbar onLogout={() => handleLogout(router)} user={auth.getUser()} />
+            <Navbar onLogout={() => handleLogout(router)} router={router} user={auth.getUser()} />
             <div id="App-container">
               <MatchWhenAuthorized exactly pattern="/" component={Profile} />
               <MatchWhenAuthorized exactly pattern="/challenges/evaluate" component={ChallengeEvaluations} />
