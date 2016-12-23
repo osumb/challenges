@@ -72,14 +72,14 @@ class ResultsController {
       });
   }
 
-  static getCompleted(req, res, next) {
-    Result.index()
+  static getCompleted({ user }, res, next) {
+    Result.getCompleted(user)
     .then((performanceResultsMap) => {
       res.locals.jsonResp = { performanceResultsMap };
       next();
     })
     .catch((err) => {
-      logger.errorLog('Results.index', err);
+      logger.errorLog('Results.getCompleted', err);
       res.status(500).send();
     });
   }

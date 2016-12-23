@@ -30,5 +30,5 @@ LEFT OUTER JOIN (
   WHERE r2.second_name_number = u2.name_number
 ) user2
 ON user1.id = user2.id
-WHERE (user1.instrument = $1 OR $1 = 'Any') AND (user1.part = $2 OR $2 = 'Any')
+WHERE can_user_eval($1, user1.id)
 ORDER BY user1.performance_id;

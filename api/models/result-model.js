@@ -125,10 +125,10 @@ class Result extends Model {
     return db.query(sql, [nameNumber], instanceFromRow);
   }
 
-  static index() {
+  static getCompleted(user) {
     const sql = queries.resultsIndex;
 
-    return db.query(sql, ['Any', 'Any'], instanceFromRow).then(groupResultsByPerformance);
+    return db.query(sql, [user.nameNumber], instanceFromRow).then(groupResultsByPerformance);
   }
 
   static switchSpotsForPerformance(id) {
