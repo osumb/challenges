@@ -71,22 +71,29 @@ export default class CompletedResult extends Component {
   }
 
   handleSubmit() {
-    const { firstComments, secondComments } = this.state;
+    const { firstComments, originalFirstComments, originalSecondComments, secondComments } = this.state;
 
-    api.put('/results/completed', {
-      id: this.props.id,
-      firstComments,
-      secondComments
-    })
-    .then(() => {
+    if (firstComments !== originalFirstComments || secondComments !== originalSecondComments) {
+      api.put('/results/completed', {
+        id: this.props.id,
+        firstComments,
+        secondComments
+      })
+      .then(() => {
+        this.setState({
+          confirming: false,
+          editing: false,
+          originalFirstComments: firstComments,
+          originalSecondComments: secondComments,
+          success: true
+        });
+      });
+    } else {
       this.setState({
         confirming: false,
-        editing: false,
-        originalFirstComments: firstComments,
-        originalSecondComments: secondComments,
-        success: true
+        editing: false
       });
-    });
+    }
   }
 
   render() {

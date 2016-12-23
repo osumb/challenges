@@ -64,7 +64,6 @@ const App = () => (
               <MatchWhenAuthorized exactly pattern="/challenges/new" component={ChallengeSelect} />
               <MatchWhenAuthorized exactly pattern="/performances/new" component={CreatePerformance} />
               <MatchWhenAuthorized exactly pattern="/results/completed" component={CompletedResults} />
-              <MatchWhenAuthorized exactly pattern="/results/pending" component />
               <MatchWhenNotLoggedIn pattern="/login" component={Login} />
               <Miss component={NotFound} />
             </div>
