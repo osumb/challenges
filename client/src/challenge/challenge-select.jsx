@@ -134,7 +134,7 @@ class ChallengeSelect extends Component {
           >
             {challengeableUsersList}
           </SelectField>
-          <RaisedButton onClick={this.handleSubmit}>Submit</RaisedButton>
+          <RaisedButton onTouchTap={this.handleSubmit}>Submit</RaisedButton>
         </div>
       </div>
     );

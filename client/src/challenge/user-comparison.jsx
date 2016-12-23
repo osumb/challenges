@@ -82,8 +82,8 @@ export default class UserComparison extends Component {
       'UserComparison-text--loser': winnerId !== secondNameNumber
     });
     const dialogActions = [
-      <FlatButton key="cancel" onClick={this.handleConfirmClose}>Cancel</FlatButton>,
-      <FlatButton key="submit" onClick={this.handleSubmit}>Submit</FlatButton>
+      <FlatButton key="cancel" onTouchTap={this.handleConfirmClose}>Cancel</FlatButton>,
+      <FlatButton key="submit" onTouchTap={this.handleSubmit}>Submit</FlatButton>
     ];
 
     return (
@@ -101,19 +101,19 @@ export default class UserComparison extends Component {
             subtitle={<strong>{winner}</strong>}
           />
           <div className="UserComparison-textContainer">
-            <div data-nameNumber={firstNameNumber} className={firstCommentsClassName} onClick={this.handleWinnerIdChange}>
+            <div data-nameNumber={firstNameNumber} className={firstCommentsClassName} onTouchTap={this.handleWinnerIdChange}>
               <CardText data-nameNumber={firstNameNumber}>
                 <strong data-nameNumber={firstNameNumber}>Comments for {firstName}:</strong> {firstComments}
               </CardText>
             </div>
-            <div data-nameNumber={firstNameNumber} className={secondCommentsClassName} onClick={this.handleWinnerIdChange}>
+            <div data-nameNumber={firstNameNumber} className={secondCommentsClassName} onTouchTap={this.handleWinnerIdChange}>
               <CardText data-nameNumber={secondNameNumber}>
                 <strong data-nameNumber={secondNameNumber}>Comments for {secondName}:</strong> {secondComments}
               </CardText>
             </div>
           </div>
           <CardActions>
-            <FlatButton className="UserComparison-button" onClick={this.handleConfirmOpen}>Submit</FlatButton>
+            <FlatButton className="UserComparison-button" onTouchTap={this.handleConfirmOpen}>Submit</FlatButton>
           </CardActions>
         </Card>
       </div>

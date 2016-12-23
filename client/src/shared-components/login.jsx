@@ -122,7 +122,7 @@ export default class Login extends Component {
             <RaisedButton
               backgroundColor={grey600}
               className="Login-button"
-              onClick={this.handleClick}
+              onTouchTap={this.handleClick}
             >
               Submit
             </RaisedButton>
