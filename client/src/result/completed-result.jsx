@@ -55,19 +55,19 @@ export default class CompletedResult extends Component {
   }
 
   handleConfirmClose() {
-    this.setState({ confirming: false });
+    this.setState({ confirming: false, success: false });
   }
 
   handleCommentsChange({ target }) {
-    this.setState({ [target.name]: target.value });
+    this.setState({ [target.name]: target.value, success: false });
   }
 
   handleConfirm() {
-    this.setState({ confirming: true });
+    this.setState({ confirming: true, success: false });
   }
 
   handleEditClick() {
-    this.setState({ editing: true });
+    this.setState({ editing: true, success: false });
   }
 
   handleSubmit() {
