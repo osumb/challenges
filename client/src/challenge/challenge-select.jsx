@@ -21,13 +21,14 @@ class ChallengeSelect extends Component {
         spotId: PropTypes.string.isRequired,
         spotOpen: PropTypes.bool.isRequired
       })).isRequired,
-      performanceName: PropTypes.string.isRequired
+      performanceName: PropTypes.string
     };
   }
 
   static get defaultProps() {
     return {
-      challengeableUsers: []
+      challengeableUsers: [],
+      performanceName: ''
     };
   }
 

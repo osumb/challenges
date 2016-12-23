@@ -14,6 +14,7 @@ export default class DesktopNav extends Component {
   static get propTypes() {
     return {
       onLogout: PropTypes.func.isRequired,
+      router: PropTypes.object.isRequired,
       user: PropTypes.shape({
         admin: PropTypes.bool.isRequired,
         director: PropTypes.bool.isRequired,
@@ -48,12 +49,13 @@ export default class DesktopNav extends Component {
               displayName={mainRoutes[key].displayName}
               key={key}
               links={mainRoutes[key].links.filter((link) => canUserSeeLink(link, user))}
+              router={this.props.router}
             />
           )}
         </div>
         {user &&
           <MenuItem
-            onClick={this.props.onLogout}
+            onTouchTap={this.props.onLogout}
             primaryText="Logout"
           />
         }
