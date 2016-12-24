@@ -140,7 +140,7 @@ export default class CompletedResult extends Component {
                 value={firstComments}
               />
             }
-            {(secondNameNumber && !editing) ?
+            {secondNameNumber && (!editing ?
               <CardText className="CompletedResult-text"><span><strong>{secondName}: </strong>{secondComments}</span></CardText> :
               <TextField
                 multiLine
@@ -150,7 +150,7 @@ export default class CompletedResult extends Component {
                 rowsMax={4}
                 value={secondComments}
               />
-            }
+            )}
           </div>
           <CardActions>
             {editing && <FlatButton className="CompletedResult-button" onTouchTap={this.handleCancel}>Cancel</FlatButton>}
