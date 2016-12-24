@@ -97,7 +97,7 @@ export default class CompletedResult extends Component {
   }
 
   render() {
-    const { firstName, firstNameNumber, secondName, spotId, winnerId } = this.props;
+    const { firstName, firstNameNumber, secondName, secondNameNumber, spotId, winnerId } = this.props;
     const { confirming, editing, firstComments, secondComments, success } = this.state;
     const dialogActions = [
       <FlatButton key="cancel" onTouchTap={this.handleConfirmClose}>No</FlatButton>,
@@ -139,7 +139,7 @@ export default class CompletedResult extends Component {
                 value={firstComments}
               />
             }
-            {(secondComments && !editing) ?
+            {(secondNameNumber && !editing) ?
               <CardText className="CompletedResult-text"><span><strong>{secondName}: </strong>{secondComments}</span></CardText> :
               <TextField
                 multiLine

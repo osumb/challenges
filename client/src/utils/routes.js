@@ -67,9 +67,9 @@ export const mainRoutes = {
         roles: [ANY]
       },
       {
-        name: 'Edit',
-        path: '/results/edit',
-        roles: [ADMIN, SQUAD_LEADER]
+        name: 'Approve',
+        path: '/results/pending',
+        roles: [ADMIN]
       }
     ]
   },

@@ -13,6 +13,7 @@ import CreatePerformance from './performance/create-performance';
 import Login from './shared-components/login';
 import Navbar from './shared-components/navbar';
 import NotFound from './shared-components/not-found';
+import PendingResults from './result/pending-results';
 import Profile from './profile/container';
 
 // Material-Ui needs this for click/tap events
@@ -64,6 +65,7 @@ const App = () => (
               <MatchWhenAuthorized exactly pattern="/challenges/new" component={ChallengeSelect} />
               <MatchWhenAuthorized exactly pattern="/performances/new" component={CreatePerformance} />
               <MatchWhenAuthorized exactly pattern="/results/completed" component={CompletedResults} />
+              <MatchWhenAuthorized exactly pattern="/results/pending" component={PendingResults} />
               <MatchWhenNotLoggedIn pattern="/login" component={Login} />
               <Miss component={NotFound} />
             </div>
