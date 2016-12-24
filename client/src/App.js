@@ -14,7 +14,7 @@ import Login from './shared-components/login';
 import Navbar from './shared-components/navbar';
 import NotFound from './shared-components/not-found';
 import PendingResults from './result/pending-results';
-import Profile from './profile/container';
+import Profile from './profile/profile';
 
 // Material-Ui needs this for click/tap events
 injectTapEventPlugin();

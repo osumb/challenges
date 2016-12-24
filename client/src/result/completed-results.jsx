@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 
 import './completed-results.scss';
-import ApiWrapper from '../shared-components/api-wrapper';
+import { apiWrapper } from '../utils';
 import CompletedResult from './completed-result';
 
 const getEndPoint = '/results/completed';
@@ -39,6 +39,6 @@ class CompletedResults extends Component {
   }
 }
 
-const Wrapper = () => <ApiWrapper endPoint={getEndPoint} container={CompletedResults} />;
+const Wrapper = apiWrapper(CompletedResults, getEndPoint);
 
 export default Wrapper;

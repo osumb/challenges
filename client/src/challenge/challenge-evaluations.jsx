@@ -3,7 +3,7 @@ import FlatButton from 'material-ui/FlatButton';
 
 import './challenge-evaluations.scss';
 import { api } from '../utils';
-import ApiWrapper from '../shared-components/api-wrapper';
+import { apiWrapper } from '../utils';
 import UserComments from './user-comments';
 import UserComparison from './user-comparison';
 
@@ -109,6 +109,6 @@ class ChallengeEvaluations extends Component {
   }
 }
 
-const Wrapper = () => <ApiWrapper container={ChallengeEvaluations} endPoint={endPoint} />;
+const Wrapper = apiWrapper(ChallengeEvaluations, endPoint);
 
 export default Wrapper;

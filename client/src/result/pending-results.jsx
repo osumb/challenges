@@ -3,7 +3,7 @@ import Snackbar from 'material-ui/Snackbar';
 
 import './pending-results.scss';
 import { api } from '../utils';
-import ApiWrapper from '../shared-components/api-wrapper';
+import { apiWrapper } from '../utils';
 import PendingResult from './pending-result';
 import RaisedButton from 'material-ui/RaisedButton';
 
@@ -106,6 +106,6 @@ class PendingResults extends Component {
   }
 }
 
-const Wrapper = () => <ApiWrapper endPoint={endPoint} container={PendingResults} />;
+const Wrapper = apiWrapper(PendingResults, endPoint);
 
 export default Wrapper;
