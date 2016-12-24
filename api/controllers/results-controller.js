@@ -48,8 +48,8 @@ class ResultsController {
     });
   }
 
-  static getForApproval(req, res, next) {
-    Result.findAllForApproval(req.user)
+  static getPending(req, res, next) {
+    Result.findPending(req.user)
     .then((results) => {
       res.locals.jsonResp = { results: results.map((result) => result.toJSON()) };
       next();
@@ -102,6 +102,24 @@ class ResultsController {
     });
   }
 
+  static updatePending({ body }, res, next) {
+    const { id, firstComments, secondComments, winnerId } = body;
+
+    Result.update({
+      id,
+      firstComments,
+      secondComments,
+      winnerId
+    })
+    .then(() => {
+      res.locals.jsonResp = { success: true };
+      next();
+    })
+    .catch((err) => {
+      logger.errorLog('Results.updatePending', err);
+      res.status(500).send();
+    });
+  }
 }
 
 module.exports = ResultsController;

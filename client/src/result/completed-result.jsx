@@ -55,19 +55,19 @@ export default class CompletedResult extends Component {
   }
 
   handleConfirmClose() {
-    this.setState({ confirming: false });
+    this.setState({ confirming: false, success: false });
   }
 
   handleCommentsChange({ target }) {
-    this.setState({ [target.name]: target.value });
+    this.setState({ [target.name]: target.value, success: false });
   }
 
   handleConfirm() {
-    this.setState({ confirming: true });
+    this.setState({ confirming: true, success: false });
   }
 
   handleEditClick() {
-    this.setState({ editing: true });
+    this.setState({ editing: true, success: false });
   }
 
   handleSubmit() {
@@ -97,7 +97,7 @@ export default class CompletedResult extends Component {
   }
 
   render() {
-    const { firstName, firstNameNumber, secondName, spotId, winnerId } = this.props;
+    const { firstName, firstNameNumber, secondName, secondNameNumber, spotId, winnerId } = this.props;
     const { confirming, editing, firstComments, secondComments, success } = this.state;
     const dialogActions = [
       <FlatButton key="cancel" onTouchTap={this.handleConfirmClose}>No</FlatButton>,
@@ -135,20 +135,22 @@ export default class CompletedResult extends Component {
                 multiLine
                 name="firstComments"
                 onChange={this.handleCommentsChange}
+                rows={4}
                 rowsMax={4}
                 value={firstComments}
               />
             }
-            {(secondComments && !editing) ?
+            {secondNameNumber && (!editing ?
               <CardText className="CompletedResult-text"><span><strong>{secondName}: </strong>{secondComments}</span></CardText> :
               <TextField
                 multiLine
                 name="secondComments"
                 onChange={this.handleCommentsChange}
+                rows={4}
                 rowsMax={4}
                 value={secondComments}
               />
-            }
+            )}
           </div>
           <CardActions>
             {editing && <FlatButton className="CompletedResult-button" onTouchTap={this.handleCancel}>Cancel</FlatButton>}

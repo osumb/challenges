@@ -95,7 +95,7 @@ class Result extends Model {
     });
   }
 
-  static findAllForApproval(user) {
+  static findPending(user) {
     const sql = queries.resultsForApproval;
 
     return db.query(sql, [user.instrument, user.part], instanceFromRow);

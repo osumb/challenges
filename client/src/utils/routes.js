@@ -62,14 +62,14 @@ export const mainRoutes = {
     displayName: 'Results',
     links: [
       {
+        name: 'Approve',
+        path: '/results/pending',
+        roles: [ADMIN]
+      },
+      {
         name: 'Completed',
         path: '/results/completed',
         roles: [ANY]
-      },
-      {
-        name: 'Edit',
-        path: '/results/edit',
-        roles: [ADMIN, SQUAD_LEADER]
       }
     ]
   },

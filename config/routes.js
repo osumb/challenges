@@ -23,11 +23,12 @@ const routes = (auth) => {
 
   // Results Controller
   router.get('/results/completed', auth.ensureAdminOrSquadLeader, Results.getCompleted);
-  router.get('/results/approve', auth.ensureAdmin, Results.getForApproval);
+  router.get('/results/pending', auth.ensureAdmin, Results.getPending);
   router.get('/results/evaluate', auth.ensureAdminOrSquadLeader, Results.getForEvaluation);
   router.put('/results/approve', auth.ensureAdmin, Results.approve);
   router.put('/results/completed', auth.ensureAdminOrSquadLeader, Results.updateCompleted);
   router.put('/results/evaluate', auth.ensureAdminOrSquadLeader, Results.evaluate);
+  router.put('/results/pending', auth.ensureAdmin, Results.updatePending);
 
   // Users Controller
   router.get('/profile', auth.ensureAuthenticated, Users.profile);
