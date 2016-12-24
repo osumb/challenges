@@ -135,6 +135,7 @@ export default class CompletedResult extends Component {
                 multiLine
                 name="firstComments"
                 onChange={this.handleCommentsChange}
+                rows={4}
                 rowsMax={4}
                 value={firstComments}
               />
@@ -145,6 +146,7 @@ export default class CompletedResult extends Component {
                 multiLine
                 name="secondComments"
                 onChange={this.handleCommentsChange}
+                rows={4}
                 rowsMax={4}
                 value={secondComments}
               />

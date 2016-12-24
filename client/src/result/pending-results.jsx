@@ -5,6 +5,7 @@ import './pending-results.scss';
 import { api } from '../utils';
 import ApiWrapper from '../shared-components/api-wrapper';
 import PendingResult from './pending-result';
+import RaisedButton from 'material-ui/RaisedButton';
 
 const endPoint = '/results/pending';
 const approveEndPoint = '/results/approve';
@@ -36,6 +37,7 @@ class PendingResults extends Component {
       success: false
     };
     this.handleApproveOne = this.handleApproveOne.bind(this);
+    this.handleApproveAll = this.handleApproveAll.bind(this);
   }
 
   handleApproveOne(id) {
@@ -50,8 +52,33 @@ class PendingResults extends Component {
     });
   }
 
+  handleApproveAll() {
+    api.put(approveEndPoint, {
+      ids: this.state.results.map(({ id }) => id)
+    })
+    .then(() => {
+      this.setState({
+        results: [],
+        success: true
+      });
+    });
+  }
+
   render() {
     const { results, success } = this.state;
+
+    if (results.length < 1) {
+      return (
+        <div>
+          <h2 style={{ textAlign: 'center' }}>No results to approve</h2>
+          <Snackbar
+            autoHideDuration={3000}
+            message="Approved Result(s)"
+            open={success}
+          />
+        </div>
+      );
+    }
 
     return (
       <div className="PendingResults">
@@ -60,9 +87,20 @@ class PendingResults extends Component {
           message="Approved Result(s)"
           open={success}
         />
-        {results.map(({ id, ...rest }) => (
-          <PendingResult key={id} id={id} {...rest} onApprove={this.handleApproveOne} />
-        ))}
+        <div className="PendingResults-header">
+          <h2>Approve/Edit Pending Results</h2>
+          <RaisedButton
+            className="PendingResults-button"
+            onTouchTap={this.handleApproveAll}
+          >
+            Approve All
+          </RaisedButton>
+        </div>
+        <div className="PendingResults-results">
+          {results.map(({ id, ...rest }) => (
+            <PendingResult key={id} id={id} {...rest} onApprove={this.handleApproveOne} />
+          ))}
+        </div>
       </div>
     );
   }
