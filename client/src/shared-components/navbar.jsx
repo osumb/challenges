@@ -1,15 +1,15 @@
 import React, { PropTypes } from 'react';
 import Media from 'react-media';
 
+import { screenSizes } from '../utils';
 import DesktopNav from './desktop-nav';
 import Header from './header';
 import MobileNav from './mobile-nav';
 
-// width of iPad in portrait
-const minWidth = 769;
+const { portraitIPad } = screenSizes;
 
 const Navbar = ({ onLogout, router, user }) => (
-  <Media query={{ minWidth }}>
+  <Media query={{ minWidth: portraitIPad.width + 1 }}>
     {(matches) =>
       matches ?
         <div>
