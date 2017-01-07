@@ -69,11 +69,11 @@ class Challenge extends Model {
 
   static findForUser(nameNumber) {
     const sql = `
-      SELECT C.id, P.name, C.spot_id
+      SELECT C.id, P.name, C.spot_id, C.performance_id, P.name AS performance_name
       FROM challenges AS C, performances AS P
       WHERE user_name_number = $1 AND C.performance_id = P.id
       ORDER BY C.id LIMIT 1
-      `;
+    `;
 
     return db.query(sql, [nameNumber], instanceFromRow);
   }
