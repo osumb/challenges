@@ -4,9 +4,12 @@ export const HOME = 'Home';
 export const SQUAD_LEADER = 'SQUAD_LEADER';
 
 export const canUserSeeLink = (link, user = {}) =>
-  link.roles.includes(ANY) ||
-  (user.squadLeader && link.roles.some((role) => role === SQUAD_LEADER)) ||
-  (user.admin && link.roles.some((role) => role === ADMIN));
+  link.show &&
+  (
+    link.roles.includes(ANY) ||
+    (user.squadLeader && link.roles.some((role) => role === SQUAD_LEADER)) ||
+    (user.admin && link.roles.some((role) => role === ADMIN))
+  );
 
 export const canUserAccessPattern = (user, pattern) => {
   if (typeof user === 'undefined' || user === null) {
@@ -44,17 +47,20 @@ export const mainRoutes = {
       {
         name: 'Previous',
         path: '/challenges',
-        roles: [ANY]
+        roles: [ANY],
+        show: true
       },
       {
         name: 'Make A Challenge',
         path: '/challenges/new',
-        roles: [ANY]
+        roles: [ANY],
+        show: true
       },
       {
         name: 'Evaluate',
         path: '/challenges/evaluate',
-        roles: [ADMIN, SQUAD_LEADER]
+        roles: [ADMIN, SQUAD_LEADER],
+        show: true
       }
     ]
   },
@@ -64,12 +70,14 @@ export const mainRoutes = {
       {
         name: 'Approve',
         path: '/results/pending',
-        roles: [ADMIN]
+        roles: [ADMIN],
+        show: true
       },
       {
         name: 'Completed',
         path: '/results/completed',
-        roles: [ANY]
+        roles: [ANY],
+        show: true
       }
     ]
   },
@@ -79,12 +87,30 @@ export const mainRoutes = {
       {
         name: 'All',
         path: '/performances',
-        roles: [ADMIN]
+        roles: [ADMIN],
+        show: true
       },
       {
         name: 'Create',
         path: '/performances/new',
-        roles: [ADMIN]
+        roles: [ADMIN],
+        show: true
+      }
+    ]
+  },
+  users: {
+    displayName: 'Users',
+    links: [
+      {
+        path: '/users/:nameNumber',
+        roles: [ADMIN],
+        show: false
+      },
+      {
+        name: 'Search',
+        path: '/search',
+        roles: [ADMIN],
+        show: true
       }
     ]
   }

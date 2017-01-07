@@ -10,9 +10,12 @@ class Fetch extends Component {
     return {
       container: PropTypes.func.isRequired,
       endPoint: PropTypes.string.isRequired,
+      location: PropTypes.shape({
+        query: PropTypes.object
+      }),
+      locationKey: PropTypes.string,
       paramId: PropTypes.string,
-      params: PropTypes.object.isRequired,
-      query: PropTypes.bool
+      params: PropTypes.object
     };
   }
 
@@ -24,11 +27,13 @@ class Fetch extends Component {
   }
 
   componentDidMount() {
-    const { endPoint, paramId, params, query } = this.props;
+    const { endPoint, location, locationKey, paramId, params } = this.props;
     let url = endPoint;
 
-    if (paramId && query) {
-      url = `${url}/?${paramId}=${params[paramId]}`;
+    if (paramId) {
+      url = `${url}?${paramId}=${params[paramId]}`;
+    } else if (location && locationKey) {
+      url = `${url}?${locationKey}=${location.query[locationKey]}`;
     }
 
     api.get(url)
@@ -54,16 +59,28 @@ class Fetch extends Component {
   }
 }
 
-const wrapper = (container, endPoint, paramId, query) => {
-  function ApiWrapper({ params }) {
-    return <Fetch container={container} endPoint={endPoint} paramId={paramId} params={params} query={query} />;
+const wrapper = (container, endPoint, paramId, locationKey) => {
+  function ApiWrapper({ location, params }) {
+    return (
+      <Fetch
+        container={container}
+        endPoint={endPoint}
+        location={location}
+        locationKey={locationKey}
+        paramId={paramId}
+        params={params}
+      />
+    );
   }
 
   ApiWrapper.propTypes = {
+    location: PropTypes.object.isRequired,
     params: PropTypes.object.isRequired
   };
 
   return ApiWrapper;
 };
+
+wrapper.Fetch = Fetch;
 
 export default wrapper;
