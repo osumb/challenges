@@ -5,6 +5,7 @@ import ActionList from 'material-ui/svg-icons/action/list';
 import AppBar from 'material-ui/AppBar';
 import Divider from 'material-ui/Divider';
 import Drawer from 'material-ui/Drawer';
+import FlatButton from 'material-ui/FlatButton';
 import { grey800 } from 'material-ui/styles/colors';
 import IconButton from 'material-ui/IconButton';
 import { List, ListItem } from 'material-ui/List';
@@ -80,6 +81,7 @@ export default class MobileNav extends Component {
 
   handleSearchSubmit(e) {
     e.preventDefault();
+    this.setState({ searching: false });
     this.props.router.transitionTo(`/search?q=${this.state.searchQuery}`);
   }
 
@@ -96,8 +98,8 @@ export default class MobileNav extends Component {
     return (
       <span
         id="MobileNav-searchHeader"
-        onTouchTap={this.handleSearchToggle}
         style={{
+          marginLeft: '-10px',
           marginTop
         }}
       >
@@ -114,9 +116,14 @@ export default class MobileNav extends Component {
             )}
           />
         }
-        <SearchIcon
-          style={{ color: 'white', marginRight: '4px' }}
-        />
+        <FlatButton
+          onTouchTap={this.handleSearchToggle}
+          rippleColor="None"
+        >
+          <SearchIcon
+            style={{ color: 'white' }}
+          />
+        </FlatButton>
       </span>
     );
   }
@@ -132,9 +139,7 @@ export default class MobileNav extends Component {
         <AppBar
           className="MobileNav"
           iconElementLeft={this.props.user ?
-            <IconButton
-              onTouchTap={this.handleOpen}
-            >
+            <IconButton onTouchTap={this.handleOpen}>
               <ActionList />
             </IconButton> :
             <span />
