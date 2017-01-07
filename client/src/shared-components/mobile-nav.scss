@@ -5,3 +5,13 @@
 .MobileNav h1 {
   margin-left: 1px !important;
 }
+
+#MobileNav-searchHeader {
+  display: flex;
+}
+
+#MobileNav-searchInput {
+  font-size: 14px;
+  position: absolute;
+  width: 100%;
+}
