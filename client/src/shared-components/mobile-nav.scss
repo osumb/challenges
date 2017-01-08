@@ -1,9 +1,19 @@
+.MobileNav-container {
+  display: flex;
+  flex-direction: column;
+}
+
 .MobileNav {
+  flex: 1;
   min-height: 50px;
 }
 
 .MobileNav h1 {
   margin-left: 1px !important;
+}
+
+#MobileNav-headerInput {
+  border-radius: 15px;
 }
 
 #MobileNav-searchHeader {
@@ -12,6 +22,7 @@
 
 #MobileNav-searchInput {
   font-size: 14px;
+  margin-top: 5px;
   position: absolute;
-  width: 100%;
+  width: 98%;
 }
