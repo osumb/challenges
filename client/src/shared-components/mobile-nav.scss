@@ -1,6 +1,7 @@
 .MobileNav-container {
   display: flex;
   flex-direction: column;
+  min-height: 60px;
 }
 
 .MobileNav {
@@ -13,7 +14,7 @@
 }
 
 #MobileNav-headerInput {
-  border-radius: 15px;
+  border-radius: 4px;
 }
 
 #MobileNav-searchHeader {

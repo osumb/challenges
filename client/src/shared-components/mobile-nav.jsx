@@ -107,7 +107,6 @@ export default class MobileNav extends Component {
           <Media query={{ minWidth: portraitIPhone6Plus.width + 1, maxWidth: portraitIPad.width }} render={() => (
             <form onSubmit={this.handleSearchSubmit}>
               <input
-                autoFocus
                 id="MobileNav-headerInput"
                 onChange={this.handleSearchChange}
                 placeholder="User Search"
@@ -136,7 +135,7 @@ export default class MobileNav extends Component {
     const visibleRoutes = getVisibleMainRoutesForUser(this.props.user);
 
     return (
-      <span className="MobileNav-container">
+      <div className="MobileNav-container">
         <AppBar
           className="MobileNav"
           iconElementLeft={this.props.user ?
@@ -192,7 +191,6 @@ export default class MobileNav extends Component {
           <Media query={{ maxWidth: portraitIPhone6Plus.width }} render={() => (
             <form id="MobileNav-searchForm" onSubmit={this.handleSearchSubmit}>
               <input
-                autoFocus
                 id="MobileNav-searchInput"
                 onChange={this.handleSearchChange}
                 placeholder="User Search"
@@ -201,7 +199,7 @@ export default class MobileNav extends Component {
             )}
           />
         }
-      </span>
+      </div>
     );
   }
 }

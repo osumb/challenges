@@ -1,0 +1,13 @@
+.SearchListItem {
+  cursor: auto !important;
+}
+
+.SearchListItem-link {
+  font-size: 18px;
+  text-decoration: underline;
+}
+
+.SearchListItem-link:hover {
+  cursor: hand;
+  cursor: pointer;
+}
