@@ -54,6 +54,6 @@ branch anymore. I've just been doing a deploy to staging from the branch I want 
 [the same](https://osumbchallengesdev.herokuapp.com)
 
 ### Production
-When code gets merged into master, it triggers a deploy to (prod)[https://osumbchallenges.herokuapp.com]. The master
+When code gets merged into master, it triggers a deploy to [prod](https://osumbchallenges.herokuapp.com). The master
 branch is protected from force pushes and PR's must pass CI in order to get merged. **AGAIN... merges into master get
 AUTOMATICALLY DEPLOYED TO PROD** so be careful when merging to master!
