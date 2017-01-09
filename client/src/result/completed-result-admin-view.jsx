@@ -1,8 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-import { Card, CardText } from 'material-ui/Card';
-import Divider from 'material-ui/Divider';
-
-import './completed-result-admin-view.scss';
+import { Card, CardTitle, CardText } from 'material-ui/Card';
 
 export default class CompletedIndividualResult extends Component {
 
@@ -35,7 +32,7 @@ export default class CompletedIndividualResult extends Component {
       userNameNumber,
       winnerId
     } = this.props;
-    const winnerName = winnerId === firstNameNumber ? firstName : secondName;
+    const textDivPadding = '0 16px';
     let displayName, userComments;
 
     if (userNameNumber === firstNameNumber) {
@@ -47,13 +44,29 @@ export default class CompletedIndividualResult extends Component {
     }
 
     return (
-      <Card>
-        <h2 className="CompletedResultAdminView-text">{performanceName}</h2>
-        <h2 className="CompletedResultAdminView-text">{`${firstName}${secondName ? ` faced ${secondName}` : 'was unchallenged'}`}</h2>
-        <h2 className="CompletedResultAdminView-text">{`The spot ${spotId} was being challenged`}</h2>
-        <h2 className="CompletedResultAdminView-text">{`${winnerName} won`}</h2>
-        <Divider />
-        <CardText className="CompletedResultAdminView-comments"><strong>Comments for {displayName}: </strong>{userComments}</CardText>
+      <Card style={{ margin: '10px' }}>
+        <CardTitle
+          title={performanceName}
+          subtitle={spotId}
+        />
+        <div style={{ display: 'flex', padding: textDivPadding }}>
+          <h3 style={{ flex: '1', textAlign: 'left', fontWeight: winnerId === firstNameNumber ? 'bold' : 'lighter' }}>
+            {firstName}
+          </h3>
+          {secondName &&
+            <h3 style={{ flex: '1', textAlign: 'center', fontWeight: 'lighter' }}>vs</h3>
+          }
+          {secondName &&
+            <h3 style={{ flex: '1', textAlign: 'right', fontWeight: winnerId !== firstNameNumber ? 'bold' : 'lighter' }}>
+              {secondName}
+            </h3>
+          }
+        </div>
+        <div style={{ display: 'flex', marginTop: '-20px', padding: textDivPadding }}>
+          <p style={{ color: 'rgb(183, 28, 28)', flex: '1', textAlign: winnerId === firstNameNumber ? 'left' : 'right' }}>*Winner</p>
+        </div>
+        <h3 style={{ padding: textDivPadding }}>{`${displayName.split(' ')[0]}'s`} comments: </h3>
+        <CardText className="CompletedResultAdminView-comments" style={{ fontSize: '18px', padding: textDivPadding }}>{userComments}</CardText>
       </Card>
     );
   }

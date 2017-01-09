@@ -1,18 +1,12 @@
 import React, { PropTypes } from 'react';
-import { CardTitle } from 'material-ui/Card';
-import Divider from 'material-ui/Divider';
 import { List } from 'material-ui/List';
 
 import PreviousChallenge from './previous-challenge';
 
 const PreviousChallenges = ({ challenges, userName }) => (
   <List>
-    <CardTitle title="Previous Challenges" />
     {challenges.map((challenge) =>
-      <span key={challenge.id}>
-        <Divider />
-        <PreviousChallenge userName={userName} {...challenge} />
-      </span>
+      <PreviousChallenge key={challenge.id} userName={userName} {...challenge} />
     )}
   </List>
 );

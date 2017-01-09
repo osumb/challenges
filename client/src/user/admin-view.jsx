@@ -1,4 +1,5 @@
 import React, { PropTypes } from 'react';
+import Paper from 'material-ui/Paper';
 
 import './admin-view.scss';
 import { apiWrapper } from '../utils';
@@ -10,6 +11,9 @@ import PreviousChallenges from '../challenge/previous-challenges';
 const endPoint = '/users/profile';
 
 const AdminView = ({ challenges, results, spot, user }) => {
+  const headerStyle = {
+    textAlign: 'center'
+  };
   let mostRecentChallenge = challenges[0];
   let previousChallenges = challenges.splice(1);
 
@@ -24,15 +28,18 @@ const AdminView = ({ challenges, results, spot, user }) => {
       {mostRecentChallenge &&
         <CurrentChallenge {...mostRecentChallenge} />
       }
-      {previousChallenges.length > 0 && <PreviousChallenges challenges={previousChallenges} userName={user.name} />}
+      {previousChallenges.length > 0 &&
+        <div>
+          <h2 style={headerStyle}>Previous Challenges</h2>
+          <Paper>
+            <PreviousChallenges challenges={previousChallenges} userName={user.name} />
+          </Paper>
+        </div>
+      }
       {results.length > 0 &&
         <div className="AdminView-results">
-          <h2
-            style={{
-              textAlign: 'center'
-            }}
-          >
-            Previous Results for {user.name.split(' ')[0]}
+          <h2 style={headerStyle}>
+            Previous Results
           </h2>
           {results.map(({ id, ...rest }) => <CompletedResultAdminView key={id} id={id} {...rest} userNameNumber={user.nameNumber} />)}
         </div>
