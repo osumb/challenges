@@ -2,7 +2,7 @@ import React, { PropTypes } from 'react';
 
 import './profile.scss';
 import ChallengeWindow from '../performance/challenge-window';
-import UserHeader from './user-header';
+import UserHeader from '../shared-components/user-header';
 
 const adminText = (
   <div>

@@ -8,6 +8,7 @@ module.exports = {
   challengesForCSV: fs.readFileSync(path.resolve(__dirname, 'challenges-for-csv.sql')).toString(),
   challengesForEmptyResults: fs.readFileSync(path.resolve(__dirname, 'challenges-for-empty-results.sql')).toString(),
   findForIndividualManage: fs.readFileSync(path.resolve(__dirname, 'find-for-individual-manage.sql')).toString(),
+  resultsForAdminView: fs.readFileSync(path.resolve(__dirname, 'results-for-admin-view.sql')).toString(),
   resultsForApproval: fs.readFileSync(path.resolve(__dirname, 'results-for-approval.sql')).toString(),
   resultsForEval: fs.readFileSync(path.resolve(__dirname, 'results-for-eval.sql')).toString(),
   resultsForPerformance: fs.readFileSync(path.resolve(__dirname, 'results-for-performance.sql')).toString(),

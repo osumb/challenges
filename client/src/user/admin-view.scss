@@ -1,0 +1,13 @@
+.AdminView {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+}
+
+.AdminView * {
+  margin: 5px 0;
+}
+
+.AdminView-results * {
+  margin: 10px;
+}

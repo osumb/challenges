@@ -6,6 +6,7 @@ import injectTapEventPlugin from 'react-tap-event-plugin';
 
 import './App.scss';
 import { auth } from './utils';
+import AdminView from './user/admin-view';
 import ChallengeEvaluations from './challenge/challenge-evaluations';
 import ChallengeSelect from './challenge/challenge-select';
 import CompletedResults from './result/completed-results';
@@ -15,6 +16,7 @@ import Navbar from './shared-components/navbar';
 import NotFound from './shared-components/not-found';
 import PendingResults from './result/pending-results';
 import Profile from './profile/profile';
+import UserSearch from './user/user-search';
 
 // Material-Ui needs this for click/tap events
 injectTapEventPlugin();
@@ -36,7 +38,11 @@ const renderBasedOnAuth = (Component, pattern, props, user) => {
 };
 
 const MatchWhenAuthorized = ({ component: Component, pattern, user, ...rest }) => (
-  <Match {...rest} pattern={pattern} render={props => (renderBasedOnAuth(Component, pattern, props, user))} />
+  <Match
+    {...rest}
+    pattern={pattern}
+    render={props => (renderBasedOnAuth(Component, pattern, Object.assign({}, props, rest), user))}
+  />
 );
 
 const MatchWhenNotLoggedIn = ({ component: Component, pattern, ...rest }) => (
@@ -66,6 +72,8 @@ const App = () => (
               <MatchWhenAuthorized exactly pattern="/performances/new" component={CreatePerformance} />
               <MatchWhenAuthorized exactly pattern="/results/completed" component={CompletedResults} />
               <MatchWhenAuthorized exactly pattern="/results/pending" component={PendingResults} />
+              <MatchWhenAuthorized exactly pattern="/search" component={UserSearch} router={router} />
+              <MatchWhenAuthorized exactly pattern="/users/:nameNumber" component={AdminView} />
               <MatchWhenNotLoggedIn pattern="/login" component={Login} />
               <Miss component={NotFound} />
             </div>
