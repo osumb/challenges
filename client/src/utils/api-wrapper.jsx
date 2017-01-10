@@ -41,9 +41,6 @@ class Fetch extends Component {
       this.setState({
         data: response
       });
-    })
-    .catch((err) => {
-      console.error(err);
     });
   }
 

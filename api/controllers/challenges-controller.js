@@ -40,7 +40,6 @@ class ChallengersController {
               next();
             })
             .catch((err) => {
-              console.trace(err);
               logger.errorLog('Challenges.create', err);
               res.status(400).send(err);
             });
