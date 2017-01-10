@@ -5,7 +5,7 @@ import SelectField from 'material-ui/SelectField';
 
 import './challenge-select.scss';
 import { api } from '../utils';
-import ApiWrapper from '../shared-components/api-wrapper';
+import { apiWrapper } from '../utils';
 
 const getEndPoint = '/challenges';
 const postEndPoint = '/challenges';
@@ -123,7 +123,7 @@ class ChallengeSelect extends Component {
 
     return (
       <div className="ChallengeSelect">
-        <h2>Who do you want to challenge for the {performanceName}?</h2>
+        <h2>Who do you want to challenge for the {performanceName}&#63;</h2>
         <div className="ChallengeSelect-wrapper">
           <SelectField
             errorText={errorText}
@@ -141,6 +141,6 @@ class ChallengeSelect extends Component {
   }
 }
 
-const Wrapper = () => <ApiWrapper endPoint={getEndPoint} container={ChallengeSelect} />;
+const Wrapper = apiWrapper(ChallengeSelect, getEndPoint);
 
 export default Wrapper;

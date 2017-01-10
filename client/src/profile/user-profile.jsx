@@ -4,7 +4,7 @@ import './profile.scss';
 import ChallengeWindow from '../performance/challenge-window';
 import CurrentChallenge from '../challenge/current-challenge';
 import Result from '../result/result';
-import UserHeader from './user-header';
+import UserHeader from '../shared-components/user-header';
 
 const UserProfile = ({ canChallenge, challenge, name, performance, results, spotId }) => (
   <div className="Profile">

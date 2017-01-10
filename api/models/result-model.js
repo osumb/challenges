@@ -119,6 +119,12 @@ class Result extends Model {
     return db.query(sql, [performanceId], instanceFromRow);
   }
 
+  static findForAdminView(memberNameNumber) {
+    const sql = queries.resultsForAdminView;
+
+    return db.query(sql, [memberNameNumber], instanceFromRow);
+  }
+
   static findAllForUser(nameNumber) {
     const sql = queries.resultsForUser;
 

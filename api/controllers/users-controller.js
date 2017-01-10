@@ -43,12 +43,12 @@ class UsersController {
       Challenge.findForUser(query.nameNumber),
       Manage.findAllForUser(query.nameNumber),
       Performance.findCurrent(),
-      Result.findAllForUser(query.nameNumber),
+      Result.findForAdminView(query.nameNumber),
       Spot.findByOwnerNameNumber(query.nameNumber),
       User.findByNameNumber(query.nameNumber)
     ])
-    .then(([challenges, manages, [performance], results, [spot], user]) => {
-      res.locals.jsonResp = { challenges, manages, performance, results, spot, user };
+    .then(([challenges, manageActions, performance, results, [spot], user]) => {
+      res.locals.jsonResp = { challenges, manageActions, performance, results, spot, user };
       next();
     })
     .catch((err) => {

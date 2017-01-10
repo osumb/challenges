@@ -1,8 +1,11 @@
 import React, { PropTypes } from 'react';
 
 import './profile.scss';
+import { apiWrapper } from '../utils';
 import AdminProfile from './admin-profile';
 import UserProfile from './user-profile';
+
+const endPoint = '/profile';
 
 const Profile = (props) => {
   const { admin, name, performance, results, spotId } = props;
@@ -33,4 +36,6 @@ Profile.propTypes = {
   spotId: PropTypes.string
 };
 
-export default Profile;
+const Wrapper = apiWrapper(Profile, endPoint);
+
+export default Wrapper;
