@@ -31,4 +31,4 @@ LEFT OUTER JOIN (
 ) user2
 ON user1.id = user2.id
 WHERE can_user_eval($1, user1.id)
-ORDER BY user1.performance_id;
+ORDER BY user1.performance_id DESC;
