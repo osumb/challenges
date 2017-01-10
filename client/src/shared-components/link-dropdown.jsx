@@ -20,6 +20,7 @@ export default class LinkDropdown extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      anchorEl: null,
       open: false
     };
     this.handleClose = this.handleClose.bind(this);
@@ -30,6 +31,9 @@ export default class LinkDropdown extends Component {
   }
 
   componentDidMount() {
+    this.setState({
+      anchorEl: this.refs.dropdown
+    });
     window.addEventListener('click', this.handleOutsideClick);
     window.addEventListener('keyup', this.handleKeyClick);
     window.addEventListener('touchend', this.handleOutsideClick);
@@ -84,12 +88,14 @@ export default class LinkDropdown extends Component {
 
   render() {
     const { displayName, links } = this.props;
+    const { anchorEl } = this.state;
 
     return (
       <div ref="dropdown">
         <ListItem onTouchTap={this.handleToggle} primaryText={displayName} />
         <span>
           <Popover
+            anchorEl={anchorEl}
             onCloseRequest={this.handleClose}
             open={this.state.open}
             useLayerForClickAway={false}
