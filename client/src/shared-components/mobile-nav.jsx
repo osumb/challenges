@@ -93,16 +93,9 @@ export default class MobileNav extends Component {
 
   renderSearchHeader() {
     const { searching } = this.state;
-    const marginTop = '14px';
 
     return (
-      <span
-        id="MobileNav-searchHeader"
-        style={{
-          marginLeft: '-10px',
-          marginTop
-        }}
-      >
+      <span id="MobileNav-searchHeader">
         {searching &&
           <Media query={{ minWidth: portraitIPhone6Plus.width + 1, maxWidth: portraitIPad.width }} render={() => (
             <form onSubmit={this.handleSearchSubmit}>
@@ -110,7 +103,6 @@ export default class MobileNav extends Component {
                 id="MobileNav-headerInput"
                 onChange={this.handleSearchChange}
                 placeholder="User Search"
-                style={{ fontSize: '14px', marginRight: '4px' }}
               />
             </form>
             )}
@@ -129,7 +121,7 @@ export default class MobileNav extends Component {
   }
 
   render() {
-    const style = {
+    const AppBarStyle = {
       backgroundColor: grey800
     };
     const visibleRoutes = getVisibleMainRoutesForUser(this.props.user);
@@ -145,7 +137,7 @@ export default class MobileNav extends Component {
             <span />
           }
           iconElementRight={this.renderSearchHeader()}
-          style={style}
+          style={AppBarStyle}
           title="OSUMB Challenges"
         >
           {this.props.user && this.state.open &&

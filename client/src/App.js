@@ -2,7 +2,6 @@
 import React from 'react';
 import { BrowserRouter, Match, Miss, Redirect } from 'react-router';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import injectTapEventPlugin from 'react-tap-event-plugin';
 
 import './App.scss';
 import { auth } from './utils';
@@ -17,9 +16,6 @@ import NotFound from './shared-components/not-found';
 import PendingResults from './result/pending-results';
 import Profile from './profile/profile';
 import UserSearch from './user/user-search';
-
-// Material-Ui needs this for click/tap events
-injectTapEventPlugin();
 
 const renderBasedOnAuth = (Component, pattern, props, user) => {
   if (auth.isAuthenticated() && auth.canUserAccess(pattern)) {
