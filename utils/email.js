@@ -7,7 +7,7 @@ const sendGrid = require('sendgrid');
 
 const helper = sendGrid.mail;
 const sg = sendGrid.SendGrid(process.env.SENDGRID_API_KEY);
-const fromMail = new helper.Email('osumbit@gmail.com');
+const fromMail = new helper.Email(process.env.FROM_EMAIL);
 
 const challengeListSource = fs.readFileSync(path.resolve(__dirname, './email-templates/challenge-list.handlebars'), 'utf8');
 const userCreateSource = fs.readFileSync(path.resolve(__dirname, './email-templates/user-create.handlebars'), 'utf8');
@@ -35,7 +35,7 @@ const sendChallengeList = (recipients, fileData) => {
       }
     ],
     from: {
-      email: 'osumbit@gmail.com',
+      email: process.env.FROM_EMAIL,
       name: 'Challenge App'
     },
     mail_settings: {
@@ -112,7 +112,7 @@ const sendChallengeSuccessEmail = (options) => {
 };
 
 const sendErrorEmail = (errMessage) => {
-  const to = new helper.Email('atareshawty@gmail.com');
+  const to = new helper.Email(process.env.ERROR_EMAIL);
   const subject = 'Error From Challenge App';
   const content = new helper.Content('text/plain', `${errMessage}`);
   const requestBody = new helper.Mail(fromMail, subject, to, content).toJSON();

@@ -48,3 +48,6 @@ jobs/*.csv
 
 # build stuff
 build/
+
+# environment variables
+.env

@@ -43,7 +43,7 @@
     "db-migrate-pg": "^0.1.11",
     "debug": "~2.2.0",
     "detect-port": "1.0.1",
-    "dotenv": "2.0.0",
+    "dotenv": "^2.0.0",
     "es6-promise": "^3.2.1",
     "express": "~4.13.1",
     "express-handlebars": "^3.0.0",

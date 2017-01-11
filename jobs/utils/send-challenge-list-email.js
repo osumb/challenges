@@ -6,28 +6,13 @@ const { sendChallengeList } = require('../../utils/email');
 const recipients = process.env.NODE_ENV !== 'production' ?
 [
   {
-    email: 'tareshawty.3@osu.edu',
-    name: 'Alex Tareshawty'
+    email: process.env.MAINTAINER_EMAIL
   }
 ] :
-[
-  {
-    email: 'green.1128@osu.edu',
-    name: 'Tess Green'
-  },
-  {
-    email: 'hoch.4@osu.edu',
-    name: 'Chris Hoch'
-  },
-  {
-    email: 'osumb@osu.edu',
-    name: 'Band Office'
-  },
-  {
-    email: 'tareshawty.3@osu.edu',
-    name: 'Alex Tareshawty'
-  }
-];
+process.env.NODE_ENV.CHALLENGE_LIST_RECIPIENTS.split(',').map((recipient) => ({
+  email: recipient.split(':')[0],
+  name: recipient.split(':')[1]
+}));
 
 const filterManageActions = (arr) => {
   const filtered = [];
