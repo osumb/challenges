@@ -7,10 +7,10 @@ class ResultsController {
     const { ids } = req.body;
 
     Result.approve(ids)
-    .then(([performanceId]) => {
+    .then((performanceId) => {
       res.locals.jsonResp = { success: true };
       Result.checkAllDoneForPerformance(performanceId)
-      .then(([done]) => {
+      .then((done) => {
         if (done) {
           logger.actionLog(`Starting to switch spots for performance ${performanceId}`);
           Result.switchSpotsForPerformance(performanceId)
@@ -48,14 +48,14 @@ class ResultsController {
     });
   }
 
-  static getPending(req, res, next) {
-    Result.findPending(req.user)
-    .then((results) => {
-      res.locals.jsonResp = { results: results.map((result) => result.toJSON()) };
+  static getCompleted({ user }, res, next) {
+    Result.getCompleted(user)
+    .then((performanceResultsMap) => {
+      res.locals.jsonResp = { performanceResultsMap };
       next();
     })
     .catch((err) => {
-      logger.errorLog('Results.getForApproval', err);
+      logger.errorLog('Results.getCompleted', err);
       res.status(500).send();
     });
   }
@@ -72,14 +72,14 @@ class ResultsController {
       });
   }
 
-  static getCompleted({ user }, res, next) {
-    Result.getCompleted(user)
-    .then((performanceResultsMap) => {
-      res.locals.jsonResp = { performanceResultsMap };
+  static getPending(req, res, next) {
+    Result.findPending(req.user)
+    .then((results) => {
+      res.locals.jsonResp = { results: results.map((result) => result.toJSON()) };
       next();
     })
     .catch((err) => {
-      logger.errorLog('Results.getCompleted', err);
+      logger.errorLog('Results.getForApproval', err);
       res.status(500).send();
     });
   }

@@ -75,13 +75,13 @@ class Result extends Model {
   static approve(ids) {
     const sql = 'UPDATE results SET needs_approval = FALSE, pending = FALSE WHERE id = ANY($1) RETURNING performance_id';
 
-    return db.query(sql, [ids], ({ performanceid }) => performanceid);
+    return db.query(sql, [ids], ({ performance_id }) => performance_id).then(([pId]) => pId);
   }
 
   static checkAllDoneForPerformance(id) {
-    const sql = 'SELECT count(*) FROM results WHERE performance_id = $1 AND needs_approval';
+    const sql = 'SELECT count(*) = 0 AS done FROM results WHERE performance_id = $1 AND needs_approval';
 
-    return db.query(sql, [id], ({ count }) => parseInt(count, 10) === 0);
+    return db.query(sql, [id], ({ done }) => done).then(([done]) => done);
   }
 
   static createWithClient(attributes, client) {

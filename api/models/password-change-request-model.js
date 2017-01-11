@@ -1,4 +1,5 @@
 const db = require('../../utils/db');
+const { snakeCase } = require('../../utils/object-keys-case-change');
 
 const attributes = ['id', 'expires', 'usernamenumber', 'used'];
 
@@ -36,11 +37,11 @@ class PasswordChangeRequest {
   static findById(id) {
     const sql = 'SELECT * FROM password_change_requests WHERE id = $1';
 
-    return db.query(sql, [id], requestFromRow);
+    return db.query(sql, [id], requestFromRow).then(([request]) => request);
   }
 
   static update(id, params) {
-    const { sql, values } = db.queryBuilder(PasswordChangeRequest, params, { statement: 'UPDATE', id });
+    const { sql, values } = db.queryBuilder(PasswordChangeRequest, snakeCase(params), { statement: 'UPDATE', id });
 
     return db.query(sql, values);
   }

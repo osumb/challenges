@@ -15,7 +15,7 @@ class ChallengeSelect extends Component {
   static get propTypes() {
     return {
       challengeableUsers: PropTypes.arrayOf(PropTypes.shape({
-        challengeCount: PropTypes.number.isRequired,
+        challengedCount: PropTypes.number.isRequired,
         challengeFull: PropTypes.bool.isRequired,
         name: PropTypes.string.isRequired,
         spotId: PropTypes.string.isRequired,

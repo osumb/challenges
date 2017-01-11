@@ -21,7 +21,7 @@ class Challenge extends Model {
   static create(userId, spotId, performanceId) {
     const sql = 'SELECT make_challenge($1, $2, $3)';
 
-    return db.query(sql, [userId, performanceId, spotId], codeFromRow);
+    return db.query(sql, [userId, performanceId, spotId], codeFromRow).then(([code]) => code);
   }
 
   static delete(id) {

@@ -10,8 +10,8 @@ class PasswordChangeRequestsController {
 
     PasswordChangeRequest.verify(id, nameNumber)
     .then(() => Promise.all([
-      User.update(nameNumber, { 'revoke_token_date': new Date().toISOString(), password }), // eslint-disable-line quote-props
-      PasswordChangeRequest.update(id, { usernamenumber: nameNumber, used: true })
+      User.update(nameNumber, { revokeTokenDate: new Date().toISOString(), password }), // eslint-disable-line quote-props
+      PasswordChangeRequest.update(id, { userNameNumber: nameNumber, used: true })
     ]))
     .then(() => {
       res.jsonResp = { success: true };
@@ -41,7 +41,7 @@ class PasswordChangeRequestsController {
     const { id } = query;
 
     PasswordChangeRequest.findById(id)
-    .then(([request]) => {
+    .then((request) => {
       res.locals.jsonResp = { request };
       next();
     })

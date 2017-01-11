@@ -4,6 +4,7 @@ const db = require('../../utils/db');
 const identityFunction = require('../../utils/identity-function');
 const Model = require('./model');
 const queries = require('../../db/queries');
+const { snakeCase } = require('../../utils/object-keys-case-change');
 
 const attributes = ['email', 'instrument', 'name', 'name_number', 'new', 'part', 'password', 'revoke_token_date', 'role', 'spot_id'];
 
@@ -37,7 +38,7 @@ class User extends Model {
     }
     const sql = queries.canChallengeForPerformance;
 
-    return db.query(sql, [nameNumber, performanceId], ({ can_challenge }) => can_challenge).then((arr) => arr[0]);
+    return db.query(sql, [nameNumber, performanceId], ({ can_challenge }) => can_challenge).then(([can]) => can);
   }
 
   static findForIndividualManage(nameNumber) {
@@ -81,7 +82,7 @@ class User extends Model {
       parsingFunction = ({ password }) => password;
     }
 
-    const { sql, values } = db.queryBuilder(User, params, { statement: 'UPDATE', id: nameNumber });
+    const { sql, values } = db.queryBuilder(User, snakeCase(params), { statement: 'UPDATE', id: nameNumber });
 
     return db.query(`${sql} ${extraSql}`, values, parsingFunction);
   }
