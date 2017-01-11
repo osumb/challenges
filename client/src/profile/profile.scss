@@ -1,0 +1,21 @@
+.Profile {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.Profile > * {
+  margin: 4px 0;
+}
+
+.Profile-results {
+  display: flex;
+  margin-top: 10px;
+}
+
+@media(max-width: 414px) {
+  .Profile {
+    margin: 0 4px;
+  }
+}

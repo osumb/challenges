@@ -1,22 +1,20 @@
 /* eslint-disable no-undef */
-const controllers = require('../controllers');
-const { testData } = require('../spec/fixtures');
+const Results = require('../api/controllers/results-controller');
+const testData = require('./fixtures/test');
 
-const Results = new controllers.Results();
-const { testSquadLeaderResultsPermission } = testData;
+const { squadLeaderPermissions } = testData;
 
-const headSquadLeaders = testData.testUsers.filter(({ nameNumber }) => testSquadLeaderResultsPermission[nameNumber]);
+const headSquadLeaders = testData.users.filter(({ nameNumber }) => squadLeaderPermissions[nameNumber]);
 
 console.log('==> SQUAD LEADER EVAL PERMISSION CHECK');
 describe('Squad eval permission', () => {
   const res = {
-    render() {
-      return;
-    }
+    locals: {}
   };
+  const next = () => Promise.resolve;
 
   beforeEach(() => {
-    spyOn(res, 'render');
+    res.locals = {};
   });
 
   headSquadLeaders.forEach(({ nameNumber, spotId }) => {
@@ -27,14 +25,14 @@ describe('Squad eval permission', () => {
       }
     };
 
-    it('should render the eval page with the correct results', (done) => {
-      Results.showForEvaluation(req, res)
+    it('should send json with the correct results', (done) => {
+      Results.getForEvaluation(req, res, next)
       .then(() => {
-        expect(res.render).toHaveBeenCalledWith(jasmine.any(String), jasmine.objectContaining({
-          results: jasmine.any(Array)
-        }));
+        // expect(res.json).toHaveBeenCalledWith(jasmine.objectContaining({
+        //   results: jasmine.any(Array)
+        // }));
         jasmine.addCustomEqualityTester(sLGotCorrectChallenges);
-        expect(res.render.calls.mostRecent().args[1].results).toEqual(req.user.nameNumber);
+        expect(res.locals.jsonResp.results).toEqual(req.user.nameNumber);
         done();
       })
       .catch((err) => {
@@ -46,7 +44,7 @@ describe('Squad eval permission', () => {
 });
 
 const sLGotCorrectChallenges = (results, sLNameNumber) => {
-  const sLResults = testSquadLeaderResultsPermission[sLNameNumber];
+  const sLResults = squadLeaderPermissions[sLNameNumber];
 
   if (results.length !== sLResults.length) {
     return false;

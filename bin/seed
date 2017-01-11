@@ -1,0 +1,18 @@
+#!/bin/sh
+
+# bin/seed: Create seed data
+
+set -e
+
+# Revert migrations
+echo "Revert db"
+cd db
+./../node_modules/.bin/db-migrate reset
+
+# Add migrations
+cd .. && ./bin/migrate
+
+# Add Seed Data
+echo "==> Adding Seed Data..."
+node db/seed
+echo "==> Done!"

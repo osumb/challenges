@@ -1,7 +1,7 @@
-const models = require('../../models');
-const Challenge = models.Challenge;
-const Result = models.Result;
-const { db, logger } = require('../../utils');
+const db = require('../../utils/db');
+const Challenge = require('../../api/models/challenge-model');
+const logger = require('../../utils/logger');
+const Result = require('../../api/models/result-model');
 
 const client = db.createClient();
 let PERFORMANCEID;
@@ -41,8 +41,9 @@ const reduce = (challenges) => {
   return reducedChallenges;
 };
 
-const insertChallengesAsResults = (challenges) =>
-  Promise.all(challenges.map(insertChallengeAsResult));
+const insertChallengesAsResults = (challenges) => {
+  return Promise.all(challenges.map(insertChallengeAsResult));
+};
 
 const insertChallengeAsResult = ({ firstNameNumber, performanceId, secondNameNumber, spotId }) =>
   Result.createWithClient({ firstNameNumber, performanceId, secondNameNumber, spotId }, client);

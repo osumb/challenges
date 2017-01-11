@@ -2,10 +2,10 @@ const pg = require('pg');
 const Pool = require('pg-pool');
 const url = require('url');
 
-const config = require('../config');
+const dbURL = require('../db/url');
 const identityFunction = require('./identity-function');
 
-const postgresParams = url.parse(config.db.postgres);
+const postgresParams = url.parse(dbURL);
 
 const auth = postgresParams.auth && postgresParams.auth.split(':');
 const poolConfig = {
@@ -19,7 +19,11 @@ const poolConfig = {
 
 const pool = new Pool(poolConfig);
 
-const createClient = () => new pg.Client(config.db.postgres);
+const createClient = () => new pg.Client(dbURL);
+
+const closePool = () => {
+  pool.end();
+};
 
 const query = (sql, params, parseRow = identityFunction) =>
   pool.query(sql, params)
@@ -124,6 +128,7 @@ function buildUpdateString(attributes, params, tableName = '') {
 }
 
 module.exports = {
+  closePool,
   createClient,
   query,
   queryBuilder

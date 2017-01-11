@@ -1,8 +1,7 @@
-const models = require('../../models');
-const Challenge = models.Challenge;
-const Manage = models.Manage;
-const { sendChallengeList } = require('../../utils').email;
-const { logger } = require('../../utils');
+const Challenge = require('../../api/models/challenge-model');
+const logger = require('../../utils/logger');
+const Manage = require('../../api/models/manage-model');
+const { sendChallengeList } = require('../../utils/email');
 
 const recipients = process.env.NODE_ENV !== 'production' ?
 [

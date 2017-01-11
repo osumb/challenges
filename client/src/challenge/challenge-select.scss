@@ -1,0 +1,23 @@
+.ChallengeSelect {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+}
+
+.ChallengeSelect-wrapper {
+  align-items: center;
+  display: flex;
+}
+
+.ChallengeSelect-wrapper > div:first-child {
+  margin-right: 10px;
+}
+
+@media(max-width: 414px) {
+  .ChallengeSelect-wrapper {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+}

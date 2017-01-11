@@ -1,132 +1,76 @@
-// const path = require('path');
-// const xlsx = require('node-xlsx');
-// const bcrypt = require('bcrypt');
-//
-// const config = require('../../../config');
-// // the order of columns in execl file is SpotId, name, instrument, part, name.number, role, password
-// function getMockUsersFromExcelFile(filePath) {
-//   filePath = filePath || path.resolve(__dirname, '../mock-data/FakeUsers.xlsx');
-//   const parseObj = xlsx.parse(filePath);
-//   const userArr = [];
-//   let UserObj = {};
-//
-//   parseObj[0].data.forEach((e, index) => {
-//     //first line of file is column names
-//     if (index !== 0) {
-//       UserObj = {};
-//       UserObj.name = e[1];
-//       UserObj.spotId = e[0];
-//       UserObj.instrument = e[2];
-//       UserObj.part = e[3];
-//       UserObj.nameNumber = e[4];
-//       UserObj.role = e[5];
-//       UserObj.password = bcrypt.hashSync('this will not get used', bcrypt.genSaltSync(1)); // eslint-disable-line no-sync
-//       UserObj.email = e[7];
-//       userArr.push(UserObj);
-//     }
-//   });
-//   return userArr;
-// }
-//
-// function getTestUsersFromExcelFile(filePath) {
-//   return getMockUsersFromExcelFile(path.resolve(__dirname, '../test-data/test-users.xlsx'))
-// }
-//
-// function getSpotsFromExcelFile(filePath) {
-//   const path = filePath || config.db.fakeSpotDataPath;
-//   const parseObj = xlsx.parse(path);
-//   const spotArr = [];
-//   let spotObj = {};
-//
-//   parseObj[0].data.forEach((e, index) => {
-//     if (index !== 0) {
-//       spotObj = {};
-//       spotObj.id = e[0];
-//       spotObj.open = e[1];
-//       spotObj.challengedAmount = e[2];
-//       spotArr.push(spotObj);
-//     }
-//   });
-//   return spotArr;
-// }
-//
-// function getTestSpotsFromExcelFile() {
-//   return getSpotsFromExcelFile(path.resolve(__dirname, '../test-data/test-spots.xlsx'));
-// }
-//
-// function getFakeResults(filePath) {
-//   const path = filePath || config.db.fakeResultsDataPath;
-//   const parseObj = xlsx.parse(path);
-//   const resultsArray = [];
-//   let resultObj;
-//
-//   parseObj[0].data.forEach((e, i) => {
-//     if (i !== 0) {
-//       resultObj = {};
-//       resultObj.firstNameNumber = e[0];
-//       resultObj.secondNameNumber = e[1];
-//       resultObj.PerformanceId = e[2];
-//       resultObj.SpotId = e[3];
-//       resultObj.winnerId = e[4];
-//       resultObj.comments1 = e[5];
-//       resultObj.comments2 = e[6];
-//       resultObj.pending = false;
-//       resultsArray.push(resultObj);
-//     }
-//   });
-//   return resultsArray;
-// }
-//
-// function getTestResultsFromExcelFile() {
-//   return getFakeResults(path.resolve(__dirname, '../test-data/test-results.xlsx'));
-// }
-//
-// function getMockChallengesList(filePath) {
-//   const path = filePath || config.db.fakeChallengeListPath;
-//   const parseObj = xlsx.parse(path);
-//   const challengeList = [];
-//   let challengeObj = {};
-//
-//   parseObj[0].data.forEach((e) => {
-//     challengeObj = {};
-//     challengeObj.UserNameNumber = e[1];
-//     challengeObj.PerformanceId = 1;
-//     challengeObj.SpotId = e[2];
-//     challengeObj.ErrorCode = e[3];
-//     challengeList.push(challengeObj);
-//   });
-//   return challengeList;
-// }
-//
-// function getTestChallengesFromExcelFile() {
-//   return getMockChallengesList(path.resolve(__dirname, '../test-data/test-challenges.xlsx'));
-// }
-//
-// function getTestFinalSpotsFromExcelFile() {
-//   const fileLocation = path.resolve(__dirname, '../test-data/test-final-spots.xlsx');
-//   const parseObj = xlsx.parse(fileLocation);
-//   const spotsList = [];
-//
-//   parseObj[0].data.forEach(([nameNumber, spotId], i) => {
-//     if (i !== 0) {
-//       spotsList.push({
-//         nameNumber,
-//         spotId
-//       });
-//     }
-//   });
-//
-//   return spotsList;
-// }
-//
-// module.exports = {
-//   getMockUsersFromExcelFile,
-//   getTestChallengesFromExcelFile,
-//   getTestFinalSpotsFromExcelFile,
-//   getTestResultsFromExcelFile,
-//   getTestSpotsFromExcelFile,
-//   getTestUsersFromExcelFile,
-//   getSpotsFromExcelFile,
-//   getMockChallengesList,
-//   getFakeResults
-// }
+const path = require('path');
+const xlsx = require('node-xlsx');
+const bcrypt = require('bcrypt');
+
+const parseChallengeListFromExcelFile = (type) => {
+  const filePath = path.resolve(__dirname, `../${type}/challenges.xlsx`);
+  const parsedXlsx = xlsx.parse(filePath);
+
+  return parsedXlsx[0].data.slice(1).map((e) => ({
+    userNameNumber: e[1],
+    performanceId: 1,
+    spotId: e[2],
+    errorCode: e[3]
+  }));
+};
+
+const parseFinalSpotsFromTest = () => {
+  const fileLocation = path.resolve(__dirname, '../test/final-spots.xlsx');
+  const parsedXlsx = xlsx.parse(fileLocation);
+  const spotsList = [];
+
+  return parsedXlsx[0].data.slice(1).map(([nameNumber, spotId]) => ({
+    nameNumber,
+    spotId
+  }));
+};
+
+const parseResultsFromExcelFile = (type) => {
+  const filePath = path.resolve(__dirname, `../${type}/results.xlsx`);
+  const parsedXlsx = xlsx.parse(filePath);
+
+  return parsedXlsx[0].data.slice(1).map((e) => ({
+    firstNameNumber: e[0],
+    secondNameNumber: e[1],
+    spotId: e[3],
+    winnerId: e[4],
+    comments1: e[5],
+    comments2: e[6],
+    pending: false
+  }));
+};
+
+const parseSpotsFromExcelFile = (type) => {
+  const filePath = path.resolve(__dirname, `../${type}/spots.xlsx`);
+  const parsedXlsx = xlsx.parse(filePath);
+
+  return parsedXlsx[0].data.slice(1).map((e) => ({
+    id: e[0],
+    open: e[1],
+    challengedAmount: e[2]
+  }));
+};
+
+const parseUsersFromExcelFile = (type) => {
+  const filePath = path.resolve(__dirname, `../${type}/users.xlsx`);
+  const parsedXlsx = xlsx.parse(filePath);
+
+  return parsedXlsx[0].data.slice(1).map((e) => ({
+    spotId: e[0],
+    name: e[1],
+    instrument: e[2],
+    part: e[3],
+    nameNumber: e[4],
+    role: e[5],
+    password: bcrypt.hashSync(e[6], bcrypt.genSaltSync(1)),
+    email: e[7]
+  }));
+};
+
+module.exports = {
+  parseChallengeListFromExcelFile,
+  parseFinalSpotsFromTest,
+  parseResultsFromExcelFile,
+  parseSpotsFromExcelFile,
+  parseUsersFromExcelFile
+}
