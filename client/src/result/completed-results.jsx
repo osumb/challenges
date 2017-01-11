@@ -16,7 +16,7 @@ class CompletedResults extends Component {
 
   render() {
     const { performanceResultsMap } = this.props;
-    const performanceIds = Object.keys(performanceResultsMap).sort();
+    const performanceIds = Object.keys(performanceResultsMap).sort((a, b) => b - a);
 
     if (performanceIds.length < 1) {
       return <h2>There are no completed results</h2>;
