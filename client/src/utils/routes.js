@@ -76,7 +76,7 @@ export const mainRoutes = {
       {
         name: 'Completed',
         path: '/results/completed',
-        roles: [ANY],
+        roles: [ADMIN, SQUAD_LEADER],
         show: true
       }
     ]
