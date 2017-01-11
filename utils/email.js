@@ -112,7 +112,7 @@ const sendChallengeSuccessEmail = (options) => {
 };
 
 const sendErrorEmail = (errMessage) => {
-  const to = new helper.Email('atareshawty@gmail.com');
+  const to = new helper.Email(process.env.ERROR_EMAIL);
   const subject = 'Error From Challenge App';
   const content = new helper.Content('text/plain', `${errMessage}`);
   const requestBody = new helper.Mail(fromMail, subject, to, content).toJSON();
