@@ -6,7 +6,5 @@ set -e
 
 cd "$(dirname "$0")/.."
 
-export NODE_ENV="development"
-export SERVER_PORT=3001
-
+node config/set-environment-variables.js
 npm run server
