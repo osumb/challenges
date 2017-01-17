@@ -84,7 +84,7 @@ class UsersController {
       next();
     })
     .catch((err) => {
-      logger.errorLog('Users.index', err);
+      logger.errorLog('Users.roster', err);
       res.status(500).send();
     });
   }
