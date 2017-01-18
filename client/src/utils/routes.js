@@ -111,6 +111,12 @@ export const mainRoutes = {
         path: '/search',
         roles: [ADMIN],
         show: true
+      },
+      {
+        name: 'Roster',
+        path: '/roster',
+        roles: [ADMIN],
+        show: true
       }
     ]
   }

@@ -15,6 +15,7 @@ import Navbar from './shared-components/navbar';
 import NotFound from './shared-components/not-found';
 import PendingResults from './result/pending-results';
 import Profile from './profile/profile';
+import Roster from './user/roster';
 import UserSearch from './user/user-search';
 
 const renderBasedOnAuth = (Component, pattern, props, user) => {
@@ -70,6 +71,7 @@ const App = () => (
               <MatchWhenAuthorized exactly pattern="/results/pending" component={PendingResults} />
               <MatchWhenAuthorized exactly pattern="/search" component={UserSearch} router={router} />
               <MatchWhenAuthorized exactly pattern="/users/:nameNumber" component={AdminView} />
+              <MatchWhenAuthorized exactly pattern="/roster" component={Roster} />
               <MatchWhenNotLoggedIn pattern="/login" component={Login} />
               <Miss component={NotFound} />
             </div>
