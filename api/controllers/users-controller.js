@@ -132,7 +132,7 @@ class UsersController {
     })
     .catch((err) => {
       logger.errorLog('Users.update', err);
-      res.json({ success: false });
+      res.status(400).send();
     });
   }
 

@@ -1,4 +1,6 @@
 import React, { Component, PropTypes } from 'react';
+import FlatButton from 'material-ui/FlatButton';
+import { grey500, grey700 } from 'material-ui/styles/colors';
 import TextField from 'material-ui/TextField';
 
 import './update-spot.scss';
@@ -64,12 +66,25 @@ export default class UpdateSpot extends Component {
 
   render() {
     const { badInput, editing, spotId, updating } = this.state;
+    const buttonStyle = {
+      color: 'white',
+      margin: '0 4px'
+    };
 
     if (!editing) {
       return (
         <div className="UpdateSpot">
-          <span className="UpdateSpot-spot">{spotId}</span>
-          <button onTouchTap={this.handleEditingToggle}>Edit</button>
+          <div className="UpdateSpot-wrapper">
+            <span className="UpdateSpot-spot">{spotId}</span>
+            <FlatButton
+              backgroundColor={grey500}
+              hoverColor={grey700}
+              onTouchTap={this.handleEditingToggle}
+              style={buttonStyle}
+            >
+              Edit
+            </FlatButton>
+          </div>
         </div>
       );
     }
@@ -85,8 +100,23 @@ export default class UpdateSpot extends Component {
           type="text"
           value={spotId}
         />
-        <button onTouchTap={this.handleEditingToggle}>Cancel</button>
-        <button disabled={updating} onTouchTap={this.handleEdit}>Confirm</button>
+        <FlatButton
+          backgroundColor={grey500}
+          hoverColor={grey700}
+          onTouchTap={this.handleEditingToggle}
+          style={buttonStyle}
+        >
+          Cancel
+        </FlatButton>
+        <FlatButton
+          backgroundColor={grey500}
+          disabled={updating}
+          hoverColor={grey700}
+          onTouchTap={this.handleEdit}
+          style={buttonStyle}
+        >
+          Confirm
+        </FlatButton>
       </div>
     );
   }

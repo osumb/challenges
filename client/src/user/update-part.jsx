@@ -1,4 +1,6 @@
 import React, { Component, PropTypes } from 'react';
+import FlatButton from 'material-ui/FlatButton';
+import { grey500, grey700 } from 'material-ui/styles/colors';
 import MenuItem from 'material-ui/MenuItem';
 import SelectField from 'material-ui/SelectField';
 
@@ -78,13 +80,24 @@ export default class UpdatePart extends Component {
     const { instrument } = this.props;
     const { editing, part, requesting, selectedSamePart } = this.state;
     const fontSize = '13px';
+    const buttonStyle = {
+      color: 'white',
+      margin: '0 4px'
+    };
 
     if (!editing) {
       return (
         <div className="UpdatePart">
-          <div>
+          <div className="UpdatePart-wrapper">
             <span className="UpdatePart-part">{part}</span>
-            <button onTouchTap={this.handleEditToggle}>Edit</button>
+            <FlatButton
+              backgroundColor={grey500}
+              hoverColor={grey700}
+              onTouchTap={this.handleEditToggle}
+              style={buttonStyle}
+            >
+              Edit
+            </FlatButton>
           </div>
         </div>
       );
@@ -114,8 +127,23 @@ export default class UpdatePart extends Component {
           }
         </SelectField>
         <div>
-          <button onTouchTap={this.handleEditToggle}>Cancel</button>
-          <button disabled={requesting} onTouchTap={this.handleEdit}>Confirm</button>
+          <FlatButton
+            backgroundColor={grey500}
+            hoverColor={grey700}
+            onTouchTap={this.handleEditToggle}
+            style={buttonStyle}
+          >
+            Cancel
+          </FlatButton>
+          <FlatButton
+            backgroundColor={grey500}
+            disabled={requesting}
+            hoverColor={grey700}
+            onTouchTap={this.handleEdit}
+            style={buttonStyle}
+          >
+            Confirm
+          </FlatButton>
         </div>
       </div>
     );
