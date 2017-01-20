@@ -14,6 +14,7 @@ class Roster extends Component {
       users: PropTypes.arrayOf(PropTypes.shape({
         instrument: PropTypes.string.isRequired,
         name: PropTypes.string.isRequired,
+        nameNumber: PropTypes.string.isRequired,
         part: PropTypes.string.isRequired,
         spotId: PropTypes.string.isRequired
       })).isRequired

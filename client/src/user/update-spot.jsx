@@ -27,7 +27,7 @@ export default class UpdateSpot extends Component {
       updating: false
     };
     this.handleEdit = this.handleEdit.bind(this);
-    this.handleEditingToggle = this.handleEditingToggle.bind(this);
+    this.handleEditToggle = this.handleEditToggle.bind(this);
     this.handleSpotIdChange = this.handleSpotIdChange.bind(this);
   }
 
@@ -52,7 +52,7 @@ export default class UpdateSpot extends Component {
     }
   }
 
-  handleEditingToggle() {
+  handleEditToggle() {
     this.setState(({ editing }, { spotId }) => ({
       badInput: false,
       editing: !editing,
@@ -79,7 +79,7 @@ export default class UpdateSpot extends Component {
             <FlatButton
               backgroundColor={grey500}
               hoverColor={grey700}
-              onTouchTap={this.handleEditingToggle}
+              onTouchTap={this.handleEditToggle}
               style={buttonStyle}
             >
               Edit
@@ -103,7 +103,7 @@ export default class UpdateSpot extends Component {
         <FlatButton
           backgroundColor={grey500}
           hoverColor={grey700}
-          onTouchTap={this.handleEditingToggle}
+          onTouchTap={this.handleEditToggle}
           style={buttonStyle}
         >
           Cancel

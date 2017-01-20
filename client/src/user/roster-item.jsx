@@ -4,7 +4,7 @@ import { TableRow, TableRowColumn } from 'material-ui/Table';
 import UpdatePart from './update-part';
 import UpdateSpot from './update-spot';
 
-function RosterItem({ onUserChange, ...rest }) {
+const RosterItem = ({ onUserChange, ...rest }) => {
   const { instrument, name, nameNumber, part, spotId } = rest;
 
   function handleSpotChange(newSpot) {
