@@ -11,7 +11,7 @@ const instrumentPartMap = {
   Trumpet: ['Efer', 'Solo', 'First', 'Second', 'Flugel'],
   Mellophone: ['First', 'Second'],
   Trombone: ['First', 'Second', 'Bass'],
-  Bariton: ['First'],
+  Baritone: ['First'],
   Percussion: ['Snare', 'Cymbals', 'Tenor', 'Bass'],
   Sousaphone: ['First']
 };
