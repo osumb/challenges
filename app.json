@@ -7,9 +7,6 @@
     },
     "DATABASE_URL": {
       "required": true
-    },
-    "REDIS_URL": {
-      "required": true
     }
   },
   "formation": {
@@ -18,8 +15,7 @@
     }
   },
   "addons": [
-    "heroku-postgresql",
-    "heroku-redis"
+    "heroku-postgresql"
   ],
   "buildpacks": [
     {
