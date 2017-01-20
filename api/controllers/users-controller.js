@@ -84,7 +84,7 @@ class UsersController {
       next();
     })
     .catch((err) => {
-      logger.errorLog('Users.index', err);
+      logger.errorLog('Users.roster', err);
       res.status(500).send();
     });
   }
@@ -132,7 +132,7 @@ class UsersController {
     })
     .catch((err) => {
       logger.errorLog('Users.update', err);
-      res.json({ success: false });
+      res.status(400).send();
     });
   }
 

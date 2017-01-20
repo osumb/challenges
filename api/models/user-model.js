@@ -57,7 +57,7 @@ class User extends Model {
     const sql = `
       SELECT * FROM users
       WHERE NOT spot_id IS NULL
-      ORDER BY substring(spotId, 1, 1), substring(spotId, 2, 2)::int
+      ORDER BY substring(spot_id, 1, 1), substring(spot_id, 2, 2)::int
     `;
 
     return db.query(sql, [], instanceFromRow);

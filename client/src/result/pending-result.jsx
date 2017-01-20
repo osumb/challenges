@@ -51,6 +51,7 @@ export default class PendingResult extends Component {
     this.handleEditClick = this.handleEditClick.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleWinnerIdChange = this.handleWinnerIdChange.bind(this);
+    this.renderRadioButtons = this.renderRadioButtons.bind(this);
   }
 
   handleApproveClick() {
@@ -111,6 +112,41 @@ export default class PendingResult extends Component {
     });
   }
 
+  renderRadioButtons(firstName, firstNameNumber, id, secondName, secondNameNumber, winnerId) {
+    if (secondName && secondNameNumber) {
+      return (
+        <RadioButtonGroup
+          name={`PendingResultWinner-${id}`}
+          onChange={this.handleWinnerIdChange}
+          valueSelected={winnerId}
+        >
+          <RadioButton
+            label={firstName}
+            value={firstNameNumber}
+          />
+          <RadioButton
+            label={secondName}
+            value={secondNameNumber}
+          />
+        </RadioButtonGroup>
+      );
+    } else {
+      return (
+        <RadioButtonGroup
+          name={`PendingResultWinner-${id}`}
+          onChange={this.handleWinnerIdChange}
+          valueSelected={winnerId}
+        >
+          <RadioButton
+            label={firstName}
+            value={firstNameNumber}
+          />
+        </RadioButtonGroup>
+      );
+    }
+
+  }
+
   render() {
     const { confirming, editing, firstComments, secondComments, success, winnerId } = this.state;
     const { firstName, firstNameNumber, id, secondName, secondNameNumber, spotId } = this.props;
@@ -146,22 +182,7 @@ export default class PendingResult extends Component {
           />
           {editing ?
             <div className="PendingResult-textHeaders">
-              <RadioButtonGroup
-                name={`PendingResultWinner-${id}`}
-                onChange={this.handleWinnerIdChange}
-                valueSelected={winnerId}
-              >
-                <RadioButton
-                  label={firstName}
-                  value={firstNameNumber}
-                />
-                {secondNameNumber &&
-                  <RadioButton
-                    label={secondName}
-                    value={secondNameNumber}
-                  />
-                }
-              </RadioButtonGroup>
+              {this.renderRadioButtons(firstName, firstNameNumber, id, secondName, secondNameNumber, winnerId)}
             </div> :
             <div className="PendingResult-textHeaders">
               <p>{firstName}</p>
@@ -195,7 +216,7 @@ export default class PendingResult extends Component {
           </div>
           <CardActions>
             {editing && <FlatButton className="PendingResult-button" onTouchTap={this.handleCancel}>Cancel</FlatButton>}
-            {editing && <FlatButton className="PendingResult-button" onTouchTap={this.handleConfirm}>Submit</FlatButton>}
+            {editing && <FlatButton className="PendingResult-button" onTouchTap={this.handleConfirm}>Update</FlatButton>}
             {!editing && <FlatButton className="PendingResult-button" onTouchTap={this.handleApproveClick}>Approve</FlatButton>}
             {!editing && <FlatButton className="PendingResult-button" onTouchTap={this.handleEditClick}>Edit</FlatButton>}
           </CardActions>

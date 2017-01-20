@@ -1,0 +1,13 @@
+.UpdatePart {
+  display: flex;
+  flex-direction: column;
+}
+
+.UpdatePart-part {
+  align-self: center;
+  width: 60px;
+}
+
+.UpdatePart-wrapper {
+  display: flex;
+}

@@ -9,7 +9,7 @@ const recipients = process.env.NODE_ENV !== 'production' ?
     email: process.env.MAINTAINER_EMAIL
   }
 ] :
-process.env.NODE_ENV.CHALLENGE_LIST_RECIPIENTS.split(',').map((recipient) => ({
+process.env.CHALLENGE_LIST_RECIPIENTS.split(',').map((recipient) => ({
   email: recipient.split(':')[0],
   name: recipient.split(':')[1]
 }));
