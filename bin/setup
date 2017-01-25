@@ -12,7 +12,15 @@ if [ -f "Brewfile" ] && [ "$(uname -s)" = "Darwin" ]; then
   brew tap homebrew/bundle 2>/dev/null
 fi
 
-script/bootstrap
+if [ -f "Brewfile" ] && [ "$(uname -s)" = "Darwin" ]; then
+  brew bundle check 2>&1 >/dev/null || {
+    echo "==> Installing Homebrew dependencies…"
+    brew bundle
+  }
+fi
+
+echo "==> Installing node modules"
+npm install
 
 if psql -lqt | cut -d \| -f 1 | grep -w challenges_dev; then
   echo "Database already exists"
@@ -20,14 +28,6 @@ else
   echo "===> Setting up DB..."
   createdb challenges_dev
 fi
-script/mock-data
 
-if redis-cli ping | grep PONG; then
-  echo "Redis server is running"
-else
-  echo "===> Setting up Redis server..."
-  ln -sfv /usr/local/opt/redis/*.plist ~/Library/LaunchAgents
-  launchctl load ~/Library/LaunchAgents/homebrew.mxcl.redis.plist
-fi
-
+npm run seed
 echo "==> App is now ready to go!"
