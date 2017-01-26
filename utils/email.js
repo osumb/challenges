@@ -59,7 +59,7 @@ const sendChallengeList = (recipients, fileData) => {
 };
 
 const sendPasswordRecoveryEmail = (email, id) => {
-  let url = 'http://localhost:3000/resetPassword';
+  let url = `http://localhost:${process.env.CLIENT_PORT || 5100}/resetPassword`;
 
   if (process.env.NODE_ENV === 'production') {
     url = 'https://osumbchallenges.herokuapp.com/resetPassword';
