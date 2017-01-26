@@ -12,9 +12,11 @@ import CompletedResults from './result/completed-results';
 import CreatePerformance from './performance/create-performance';
 import Login from './shared-components/login';
 import Navbar from './shared-components/navbar';
+import NewPasswordChangeRequest from './password-change-request/new-password-change-request.jsx';
 import NotFound from './shared-components/not-found';
 import PendingResults from './result/pending-results';
 import Profile from './profile/profile';
+import PasswordChangeRequest from './password-change-request/password-change-request';
 import Roster from './user/roster';
 import UserSearch from './user/user-search';
 
@@ -73,6 +75,8 @@ const App = () => (
               <MatchWhenAuthorized exactly pattern="/users/:nameNumber" component={AdminView} />
               <MatchWhenAuthorized exactly pattern="/roster" component={Roster} />
               <MatchWhenNotLoggedIn pattern="/login" component={Login} />
+              <MatchWhenNotLoggedIn exactly pattern="/newPassword" component={NewPasswordChangeRequest} />
+              <MatchWhenNotLoggedIn exactly pattern="/resetPassword" component={PasswordChangeRequest} />
               <Miss component={NotFound} />
             </div>
           </div>
