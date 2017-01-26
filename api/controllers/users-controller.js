@@ -72,8 +72,7 @@ class UsersController {
         next();
       });
     } else {
-      res.locals.jsonResp = { success: false, error: false };
-      next(); // eslint-disable-line callback-return
+      res.status(401).send('Username or password is incorrect');
     }
   }
 
