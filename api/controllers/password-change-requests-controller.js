@@ -17,7 +17,7 @@ class PasswordChangeRequestsController {
       res.jsonResp = { success: true };
       next();
     }).catch(() => {
-      res.status(403).send();
+      res.status(403).send('You are unauthorized to make that request');
     });
   }
 
@@ -33,7 +33,7 @@ class PasswordChangeRequestsController {
       });
     })
     .catch(() => {
-      res.status(403).send();
+      res.status(403).send('You are unauthorized to make a request for that email');
     });
   }
 
@@ -42,7 +42,7 @@ class PasswordChangeRequestsController {
 
     PasswordChangeRequest.findById(id)
     .then((request) => {
-      res.locals.jsonResp = { request };
+      res.locals.jsonResp = request && request.toJSON();
       next();
     })
     .catch((err) => {

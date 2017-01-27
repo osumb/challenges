@@ -37,6 +37,7 @@ export default class Login extends Component {
   login() {
     const { nameNumber, password } = this.state;
 
+    this.setState({ failed: false });
     auth.authenticate(nameNumber, password)
     .then(() => {
       this.setState({
@@ -128,7 +129,7 @@ export default class Login extends Component {
             </RaisedButton>
           </div>
         </div>
-        <Link to="/forgotPassword">Need A New Password?</Link>
+        <Link to="/newPassword">Need A New Password?</Link>
       </div>
     );
   }

@@ -37,13 +37,11 @@ const routes = (auth) => {
   router.get('/users/profile', auth.ensureAdmin, Users.userProfileForAdmin);
   router.post('/users/manage', auth.ensureAdmin, Users.manage);
   router.put('/users', auth.ensureAdmin, Users.update);
+  router.put('/users/password', Users.changePassword);
 
   //Performance Controller
   router.post('/performances', auth.ensureAdmin, Performances.create);
   // router.put('/performances', auth.ensureAdmin, Performances.update);
-
-  //Users Controller
-  router.put('/users/password', Users.changePassword);
 
   return router;
 };
