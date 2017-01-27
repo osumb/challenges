@@ -1,13 +1,10 @@
 import React, { Component, PropTypes } from 'react';
 import { Card, CardActions, CardHeader, CardText } from 'material-ui/Card';
-import Dialog from 'material-ui/Dialog';
 import Divider from 'material-ui/Divider';
 import FlatButton from 'material-ui/FlatButton';
-import Snackbar from 'material-ui/Snackbar';
 import TextField from 'material-ui/TextField';
 
 import './completed-result.scss';
-import { api } from '../utils';
 
 export default class CompletedResult extends Component {
 
@@ -17,6 +14,8 @@ export default class CompletedResult extends Component {
       firstName: PropTypes.string.isRequired,
       firstNameNumber: PropTypes.string.isRequired,
       id: PropTypes.number.isRequired,
+      onEditRequest: PropTypes.func.isRequired,
+      performanceId: PropTypes.number.isRequired,
       secondComments: PropTypes.string,
       secondName: PropTypes.string,
       secondNameNumber: PropTypes.string,
@@ -28,20 +27,25 @@ export default class CompletedResult extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      confirming: false,
       editing: false,
       firstComments: props.firstComments,
       originalFirstComments: props.firstComments,
       originalSecondComments: props.secondComments,
-      secondComments: props.secondComments,
-      success: false
+      secondComments: props.secondComments
     };
     this.handleCancel = this.handleCancel.bind(this);
     this.handleCommentsChange = this.handleCommentsChange.bind(this);
     this.handleConfirm = this.handleConfirm.bind(this);
-    this.handleConfirmClose = this.handleConfirmClose.bind(this);
     this.handleEditClick = this.handleEditClick.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
+  }
+
+  componentWillReceiveProps({ firstComments, secondComments }) {
+    this.setState({
+      firstComments,
+      originalFirstComments: firstComments,
+      originalSecondComments: secondComments,
+      secondComments
+    });
   }
 
   handleCancel() {
@@ -54,73 +58,36 @@ export default class CompletedResult extends Component {
     });
   }
 
-  handleConfirmClose() {
-    this.setState({ confirming: false, success: false });
-  }
-
   handleCommentsChange({ target }) {
     this.setState({ [target.name]: target.value, success: false });
   }
 
   handleConfirm() {
-    this.setState({ confirming: true, success: false });
+    const result = {
+      ...this.props,
+      firstComments: this.state.firstComments,
+      secondComments: this.state.secondComments
+    };
+
+    delete result.onEditRequest;
+
+    this.setState({ editing: false });
+    this.props.onEditRequest(result);
   }
 
   handleEditClick() {
     this.setState({ editing: true, success: false });
   }
 
-  handleSubmit() {
-    const { firstComments, originalFirstComments, originalSecondComments, secondComments } = this.state;
-
-    if (firstComments !== originalFirstComments || secondComments !== originalSecondComments) {
-      api.put('/results/completed', {
-        id: this.props.id,
-        firstComments,
-        secondComments
-      })
-      .then(() => {
-        this.setState({
-          confirming: false,
-          editing: false,
-          originalFirstComments: firstComments,
-          originalSecondComments: secondComments,
-          success: true
-        });
-      });
-    } else {
-      this.setState({
-        confirming: false,
-        editing: false
-      });
-    }
-  }
-
   render() {
     const { firstName, firstNameNumber, secondName, secondNameNumber, spotId, winnerId } = this.props;
-    const { confirming, editing, firstComments, secondComments, success } = this.state;
-    const dialogActions = [
-      <FlatButton key="cancel" onTouchTap={this.handleConfirmClose}>No</FlatButton>,
-      <FlatButton key="submit" onTouchTap={this.handleSubmit}>Submit</FlatButton>
-    ];
+    const { editing, firstComments, secondComments } = this.state;
     const winner = firstNameNumber === winnerId
       ? firstName
       : secondName;
 
     return (
       <div className="CompletedResult">
-        <Dialog
-          actions={dialogActions}
-          onRequestClose={this.handleConfirmClose}
-          open={confirming}
-        >
-          Are you sure you want to update this result&#63;
-        </Dialog>
-        <Snackbar
-          autoHideDuration={3000}
-          message="Updated Result"
-          open={success}
-        />
         <Card>
           <CardHeader className="CompletedResult-header" title={`Winner: ${winner} ${spotId}`} />
           <Divider />
@@ -135,6 +102,7 @@ export default class CompletedResult extends Component {
                 multiLine
                 name="firstComments"
                 onChange={this.handleCommentsChange}
+                placeholder={`Comments for ${firstName}`}
                 rows={4}
                 rowsMax={4}
                 value={firstComments}
@@ -146,6 +114,7 @@ export default class CompletedResult extends Component {
                 multiLine
                 name="secondComments"
                 onChange={this.handleCommentsChange}
+                placeholder={`Comments for ${secondName}`}
                 rows={4}
                 rowsMax={4}
                 value={secondComments}
@@ -155,7 +124,11 @@ export default class CompletedResult extends Component {
           <CardActions>
             {editing && <FlatButton className="CompletedResult-button" onTouchTap={this.handleCancel}>Cancel</FlatButton>}
             {editing ?
-              <FlatButton className="CompletedResult-button" onTouchTap={this.handleConfirm}>Submit</FlatButton> :
+              <FlatButton
+                className="CompletedResult-button"
+                disabled={firstComments === this.state.originalFirstComments && secondComments === this.state.originalSecondComments}
+                onTouchTap={this.handleConfirm}
+              >Submit</FlatButton> :
               <FlatButton className="CompletedResult-button" onTouchTap={this.handleEditClick}>Edit</FlatButton>
             }
           </CardActions>
