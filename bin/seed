@@ -4,13 +4,14 @@
 
 set -e
 
-# Revert migrations
-echo "Revert db"
-cd db
-./../node_modules/.bin/db-migrate reset
+if psql -lqt | cut -d \| -f 1 | grep -w challenges_dev; then
+  dropdb challenges_dev
+fi
+
+createdb challenges_dev
 
 # Add migrations
-cd .. && ./bin/migrate
+./bin/migrate
 
 # Add Seed Data
 echo "==> Adding Seed Data..."
