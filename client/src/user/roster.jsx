@@ -3,7 +3,7 @@ import Snackbar from 'material-ui/Snackbar';
 import { Table, TableBody, TableHeader, TableHeaderColumn, TableRow } from 'material-ui/Table';
 
 import './roster.scss';
-import { apiWrapper } from '../utils';
+import { apiWrapper, compareSpots } from '../utils';
 import RosterDownload from './roster-download';
 import RosterItem from './roster-item';
 
@@ -54,18 +54,7 @@ class Roster extends Component {
 
   render() {
     const { usersMap } = this.state;
-    const users = Object.keys(usersMap).map((key) => usersMap[key]).sort(({ spotId: a }, { spotId: b }) => {
-      const aNumber = parseInt(a.substring(1), 10),
-        aSpot = a.substring(0, 1),
-        bNumber = parseInt(b.substring(1), 10),
-        bSpot = b.substring(0, 1);
-
-      if (aSpot !== bSpot) {
-        return aSpot.localeCompare(bSpot);
-      }
-
-      return aNumber - bNumber;
-    });
+    const users = Object.keys(usersMap).map((key) => usersMap[key]).sort(({ spotId: a }, { spotId: b }) => compareSpots(a, b));
 
     return (
       <div className="Roster">
