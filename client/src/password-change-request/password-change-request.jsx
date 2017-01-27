@@ -42,7 +42,6 @@ class PasswordChangeRequest extends Component {
     if (keycode(keyCode) === 'enter') {
       this.handleRequest();
     }
-
   }
 
   handleRequest() {

@@ -73,7 +73,6 @@ export default class NewPasswordChangeRequest extends Component {
 
   handleSendEmailClick() {
     this.textFields.validate();
-
     if (this.textFields.areValid()) {
       request(this);
     }

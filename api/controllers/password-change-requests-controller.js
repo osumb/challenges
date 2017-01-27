@@ -16,8 +16,7 @@ class PasswordChangeRequestsController {
     .then(() => {
       res.jsonResp = { success: true };
       next();
-    }).catch((err) => {
-      console.error(err);
+    }).catch(() => {
       res.status(403).send('You are unauthorized to make that request');
     });
   }
@@ -33,8 +32,7 @@ class PasswordChangeRequestsController {
         next();
       });
     })
-    .catch((err) => {
-      console.error(err);
+    .catch(() => {
       res.status(403).send('You are unauthorized to make a request for that email');
     });
   }
