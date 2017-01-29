@@ -3,22 +3,26 @@ import Media from 'react-media';
 
 import { screenSizes } from '../utils';
 import DesktopNav from './desktop-nav';
+import ErrorBanner from './error-banner';
 import Header from './header';
 import MobileNav from './mobile-nav';
 
 const { portraitIPad } = screenSizes;
 
 const Navbar = ({ onLogout, router, user }) => (
-  <Media query={{ minWidth: portraitIPad.width + 1 }}>
-    {(matches) =>
-      matches ?
-        <div>
-          <Header />
-          <DesktopNav onLogout={onLogout} router={router} user={user} />
-        </div> :
-        <MobileNav onLogout={onLogout} router={router} user={user} />
-    }
-  </Media>
+  <div>
+    <Media query={{ minWidth: portraitIPad.width + 1 }}>
+      {(matches) =>
+        matches ?
+          <div>
+            <Header />
+            <DesktopNav onLogout={onLogout} router={router} user={user} />
+          </div> :
+          <MobileNav onLogout={onLogout} router={router} user={user} />
+      }
+    </Media>
+    <ErrorBanner />
+  </div>
 );
 
 Navbar.propTypes = {
