@@ -121,30 +121,32 @@ export default class MobileNav extends Component {
   }
 
   render() {
+    const { user } = this.props;
+    const { open } = this.state;
     const AppBarStyle = {
       backgroundColor: grey800
     };
-    const visibleRoutes = getVisibleMainRoutesForUser(this.props.user);
+    const visibleRoutes = getVisibleMainRoutesForUser(user);
 
     return (
       <div className="MobileNav-container">
         <AppBar
           className="MobileNav"
-          iconElementLeft={this.props.user ?
+          iconElementLeft={user ?
             <IconButton onTouchTap={this.handleOpen}>
               <ActionList />
             </IconButton> :
             <span />
           }
-          iconElementRight={this.renderSearchHeader()}
+          iconElementRight={user && user.admin && this.renderSearchHeader()}
           style={AppBarStyle}
           title="OSUMB Challenges"
         >
-          {this.props.user && this.state.open &&
+          {user &&
             <Drawer
               docked
               onOpenRequest
-              open={this.state.open}
+              open={open}
               width={200}
             >
               <IconButton
@@ -160,7 +162,7 @@ export default class MobileNav extends Component {
                   <span key={key}>
                     <Divider />
                     <ListItem
-                      nestedItems={mainRoutes[key].links.filter((route) => canUserSeeLink(route, this.props.user)).map((route) =>
+                      nestedItems={mainRoutes[key].links.filter((route) => canUserSeeLink(route, user)).map((route) =>
                         <ListItem key={route.path}>
                           <span data-route={route.path} onTouchTap={this.handleClose}>{route.name}</span>
                         </ListItem>
