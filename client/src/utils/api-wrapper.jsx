@@ -10,6 +10,7 @@ class Fetch extends Component {
     return {
       container: PropTypes.func.isRequired,
       endPoint: PropTypes.string.isRequired,
+      errorMessage: PropTypes.string,
       location: PropTypes.shape({
         query: PropTypes.object
       }),
@@ -27,7 +28,7 @@ class Fetch extends Component {
   }
 
   componentDidMount() {
-    const { endPoint, location, locationKey, paramId, params } = this.props;
+    const { endPoint, errorMessage, location, locationKey, paramId, params } = this.props;
     let url = endPoint;
 
     if (paramId) {
@@ -36,7 +37,7 @@ class Fetch extends Component {
       url = `${url}?${locationKey}=${location.query[locationKey]}`;
     }
 
-    api.get(url)
+    api.get(url, errorMessage)
     .then((response) => {
       this.setState({
         data: response
@@ -56,12 +57,14 @@ class Fetch extends Component {
   }
 }
 
-const wrapper = (container, endPoint, paramId, locationKey) => {
+const wrapper = (container, endPoint, paramId, locationKey, errorMessage) => {
+  // This component is getting rendered by something in React Router, so it's getting location and params as props
   function ApiWrapper({ location, params }) {
     return (
       <Fetch
         container={container}
         endPoint={endPoint}
+        errorMessage={errorMessage}
         location={location}
         locationKey={locationKey}
         paramId={paramId}

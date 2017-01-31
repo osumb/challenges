@@ -36,7 +36,7 @@ const RosterItem = ({ onUserChange, ...rest }) => {
       </TableRowColumn>
     </TableRow>
   );
-}
+};
 
 RosterItem.propTypes = {
   instrument: PropTypes.string.isRequired,

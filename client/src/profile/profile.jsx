@@ -36,6 +36,6 @@ Profile.propTypes = {
   spotId: PropTypes.string
 };
 
-const Wrapper = apiWrapper(Profile, endPoint);
+const Wrapper = apiWrapper(Profile, endPoint, null, null, 'Error fetching profile');
 
 export default Wrapper;
