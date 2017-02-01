@@ -15,6 +15,7 @@ import Navbar from './shared-components/navbar';
 import NewPasswordChangeRequest from './password-change-request/new-password-change-request.jsx';
 import NotFound from './shared-components/not-found';
 import PendingResults from './result/pending-results';
+import Performances from './performance/performances';
 import Profile from './profile/profile';
 import PasswordChangeRequest from './password-change-request/password-change-request';
 import Roster from './user/roster';
@@ -68,6 +69,7 @@ const App = () => (
               <MatchWhenAuthorized exactly pattern="/" component={Profile} />
               <MatchWhenAuthorized exactly pattern="/challenges/evaluate" component={ChallengeEvaluations} />
               <MatchWhenAuthorized exactly pattern="/challenges/new" component={ChallengeSelect} />
+              <MatchWhenAuthorized exactly pattern="/performances" component={Performances} />
               <MatchWhenAuthorized exactly pattern="/performances/new" component={CreatePerformance} />
               <MatchWhenAuthorized exactly pattern="/results/completed" component={CompletedResults} />
               <MatchWhenAuthorized exactly pattern="/results/pending" component={PendingResults} />

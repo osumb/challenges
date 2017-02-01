@@ -62,7 +62,7 @@ const request = (url, { method, body }, errorMessage) =>
 
 const del = (url, errorMessage) => request(url, { method: 'delete' }, errorMessage);
 const get = (url, errorMessage) => request(url, { method: 'get' }, errorMessage);
-const post = (url, errorMessage, body) => request(url, { method: 'post', body }, errorMessage);
-const put = (url, errorMessage, body) => request(url, { method: 'put', body }, errorMessage);
+const post = (url, body, errorMessage) => request(url, { method: 'post', body }, errorMessage);
+const put = (url, body, errorMessage) => request(url, { method: 'put', body }, errorMessage);
 
 export default { del, get, post, put };
