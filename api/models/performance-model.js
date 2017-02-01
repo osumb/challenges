@@ -1,5 +1,6 @@
 const db = require('../../utils/db');
 const Model = require('./model');
+const { snakeCase } = require('../../utils/object-keys-case-change');
 
 const modelAttributes = ['close_at', 'id', 'list_exported', 'name', 'open_at', 'perform_date'];
 
@@ -70,7 +71,7 @@ class Performance extends Model {
     }
 
     delete attributes.id;
-    const { sql, values } = db.queryBuilder(Performance, attributes, { statement: 'UPDATE', id });
+    const { sql, values } = db.queryBuilder(Performance, snakeCase(attributes), { statement: 'UPDATE', id });
 
     return db.query(sql, values);
   }
