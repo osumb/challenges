@@ -19,7 +19,7 @@ class PerformancesController {
   }
 
   static index(req, res, next) {
-    Performance.findAll('MMMM Do, h:mm:ss a')
+    Performance.findAll()
     .then((performances) => {
       res.locals.jsonResp = { performances };
       next();

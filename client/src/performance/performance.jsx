@@ -86,8 +86,7 @@ export default class Performance extends Component {
 
   render() {
     const { editing, requesting } = this.state;
-    const { closeAt, name, openAt, performDate } = this.state;
-    const listExported = false;
+    const { closeAt, listExported, name, openAt, performDate } = this.state;
 
     return (
       <Card>
@@ -111,7 +110,7 @@ export default class Performance extends Component {
             `Performance on ${moment(performDate).format(performDateFormat)}`
           }
         />
-        {editing ?
+        {editing && !listExported ?
           <CardText>
             <div className="Performance-dateWrapper">
               <label>Opens at:&nbsp;</label>
@@ -136,13 +135,13 @@ export default class Performance extends Component {
           </CardText>
         }
         <CardActions>
-          {!listExported && (editing ?
+          {editing ?
             [
               <RaisedButton key="cancel" onTouchTap={this.handleEditToggle}>Cancel</RaisedButton>,
               <RaisedButton key="confirm" disabled={requesting} onTouchTap={this.handleConfirm}>Confirm</RaisedButton>
             ] :
             <RaisedButton onTouchTap={this.handleEditToggle}>Edit</RaisedButton>
-          )}
+          }
         </CardActions>
       </Card>
     );
