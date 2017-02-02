@@ -2,7 +2,6 @@ import React, { PropTypes } from 'react';
 import Paper from 'material-ui/Paper';
 
 import './admin-view.scss';
-import { apiWrapper } from '../utils';
 import CompletedResultAdminView from '../result/completed-result-admin-view';
 import CurrentChallenge from '../challenge/current-challenge';
 import Fetch from '../shared-components/fetch';
@@ -57,7 +56,7 @@ AdminView.propTypes = {
   user: PropTypes.object
 };
 
-export default function AdminViewWrapper(props) {
+export default function AdminViewContainer(props) {
   return (
     <Fetch
       {...props}
@@ -67,9 +66,5 @@ export default function AdminViewWrapper(props) {
     >
       <AdminView />
     </Fetch>
-  )
+  );
 }
-//
-// const Wrapper = apiWrapper(AdminView, endPoint, 'nameNumber');
-//
-// export default Wrapper;

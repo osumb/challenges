@@ -29,8 +29,8 @@ export default class Fetch extends Component {
   }
 
   componentDidMount() {
-    const { endPoint, errorMessage, match } = this.props;
-    const { params, paramId } = match;
+    const { endPoint, errorMessage, match, paramId } = this.props;
+    const { params } = match;
 
     try {
       const url = paramId

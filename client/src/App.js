@@ -23,7 +23,7 @@ import PendingResults from './result/pending-results';
 import Profile from './profile/profile';
 import PasswordChangeRequest from './password-change-request/password-change-request';
 import Roster from './user/roster';
-// import UserSearch from './user/user-search';
+import UserSearch from './user/user-search';
 
 const handleLogout = (push) => {
   auth.logout();
@@ -76,10 +76,11 @@ const App = () => (
             <PrivateRoute exact path="/results/completed" component={CompletedResults} />
             <PrivateRoute exact path="/results/pending" component={PendingResults} />
             <PrivateRoute exact path="/roster" component={Roster} />
+            <PrivateRoute exact path="/search" component={UserSearch} />
             <PrivateRoute exact path="/users/:nameNumber" component={AdminView} />
             <PublicRoute exact path="/login" component={Login} />
             <PublicRoute exact path="/newPassword" component={NewPasswordChangeRequest} />
-            <PublicRoute exact path="/resetPassword" component={PasswordChangeRequest} />
+            <PublicRoute exact path="/resetPassword/:id" component={PasswordChangeRequest} />
             <Route component={NotFound} />
           </Switch>
         </div>

@@ -1,6 +1,6 @@
 import React, { PropTypes } from 'react';
 import { ListItem } from 'material-ui/List';
-import { Link } from 'react-router';
+import { Link } from 'react-router-dom';
 import PermIdentity from 'material-ui/svg-icons/action/perm-identity';
 
 import './search-list-item.scss';

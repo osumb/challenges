@@ -8,6 +8,19 @@ const baseRoute = process.env.NODE_ENV === 'development'
   ? `http://localhost:${process.env.SERVER_PORT}`
   : '';
 
+const DEFAULT_ERROR_MESSAGE = 'Sorry! Something wen\'t wrong. We\'re aware of and working on the issue';
+
+const getMessageFromStatus = (status) => {
+  /* eslint-disable indent, lines-around-comment */
+  switch (status) {
+    case 404:
+      return 'Sorry, that resource doesn\'t exist';
+    case 403:
+      return 'That resource is forbidden';
+    default:
+      return DEFAULT_ERROR_MESSAGE;
+  }
+};
 
 const request = (url, { method, body }, errorMessage) =>
   fetch(`${baseRoute}/api${url}`, {
@@ -35,34 +48,26 @@ const request = (url, { method, body }, errorMessage) =>
       errorEmitter.dispatch(errorMessage);
     } else {
       const { status } = response;
-      let message = 'Sorry! Something wen\'t wrong. We\'re aware of and working on the issue';
 
-      response.text()
-      .then((responseMessage) => {
-        if (responseMessage) {
-          errorEmitter.dispatch(responseMessage);
-        } else {
-          /* eslint-disable indent, lines-around-comment */
-          switch (status) {
-            case 404:
-              message = 'Sorry, that resource doesn\'t exist';
-              break;
-            case 403:
-              message = 'That resource is forbidden';
-              break;
-            default:
-              message = errorMessage || message;
+      try {
+        response.text()
+        .then((responseMessage) => {
+          if (responseMessage) {
+            errorEmitter.dispatch(responseMessage);
+          } else {
+            errorEmitter.dispatch(getMessageFromStatus(status));
           }
-
-          errorEmitter.dispatch(message);
-        }
-      });
+        });
+      } catch (e) {
+        errorEmitter.dispatch(getMessageFromStatus(status));
+        throw e;
+      }
     }
   });
 
 const del = (url, errorMessage) => request(url, { method: 'delete' }, errorMessage);
 const get = (url, errorMessage) => request(url, { method: 'get' }, errorMessage);
-const post = (url, errorMessage, body) => request(url, { method: 'post', body }, errorMessage);
-const put = (url, errorMessage, body) => request(url, { method: 'put', body }, errorMessage);
+const post = (url, body, errorMessage) => request(url, { method: 'post', body }, errorMessage);
+const put = (url, body, errorMessage) => request(url, { method: 'put', body }, errorMessage);
 
 export default { del, get, post, put };
