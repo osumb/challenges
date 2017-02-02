@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import Divider from 'material-ui/Divider';
 import keycode from 'keycode';
+import { Link } from 'react-router-dom';
 import { ListItem } from 'material-ui/List';
 import Popover from 'material-ui/Popover/Popover';
 
@@ -12,8 +13,7 @@ export default class LinkDropdown extends Component {
       links: PropTypes.arrayOf(PropTypes.shape({
         name: PropTypes.string.isRequired,
         path: PropTypes.string.isRequired
-      })),
-      router: PropTypes.object.isRequired
+      }))
     };
   }
 
@@ -31,6 +31,7 @@ export default class LinkDropdown extends Component {
   }
 
   componentDidMount() {
+    /* eslint-disable react/no-did-mount-set-state, lines-around-comment */
     this.setState({
       anchorEl: this.refs.dropdown
     });
@@ -45,10 +46,7 @@ export default class LinkDropdown extends Component {
     window.removeEventListener('touchend', this.handleOutsideClick);
   }
 
-  handleClose({ target }) {
-    if (target.dataset.route) {
-      this.props.router.transitionTo(target.dataset.route);
-    }
+  handleClose() {
     this.setState({
       open: false
     });
@@ -104,14 +102,14 @@ export default class LinkDropdown extends Component {
               <span key={path}>
                 <Divider />
                 <ListItem>
-                  <span data-route={path} onTouchTap={this.handleClose}>{name}</span>
+                  <Link to={path}>{name}</Link>
                 </ListItem>
               </span>
             )}
           </Popover>
         </span>
       </div>
-  );
+    );
   }
 
 }

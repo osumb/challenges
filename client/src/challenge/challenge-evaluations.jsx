@@ -3,7 +3,7 @@ import FlatButton from 'material-ui/FlatButton';
 
 import './challenge-evaluations.scss';
 import { api } from '../utils';
-import { apiWrapper } from '../utils';
+import Fetch from '../shared-components/fetch';
 import UserComments from './user-comments';
 import UserComparison from './user-comparison';
 
@@ -22,7 +22,7 @@ class ChallengeEvaluations extends Component {
         secondName: PropTypes.string,
         secondNameNumber: PropTypes.string,
         spotId: PropTypes.string.isRequired
-      })).isRequired
+      }))
     };
   }
 
@@ -109,6 +109,14 @@ class ChallengeEvaluations extends Component {
   }
 }
 
-const Wrapper = apiWrapper(ChallengeEvaluations, endPoint);
-
-export default Wrapper;
+export default function ChallengeEvaluationContainer(props) {
+  return (
+    <Fetch
+      {...props}
+      errorMessage="Error fetching challenges for evaluation"
+      endPoint={endPoint}
+    >
+      <ChallengeEvaluations />
+    </Fetch>
+  );
+}

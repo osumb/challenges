@@ -1,12 +1,13 @@
 import React, { Component, PropTypes } from 'react';
 import changeCase from 'change-case';
 import keycode from 'keycode';
-import { Link } from 'react-router';
+import { Link } from 'react-router-dom';
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
 
 import './password-change-request.scss';
-import { api, apiWrapper } from '../utils';
+import { api } from '../utils';
+import Fetch from '../shared-components/fetch';
 
 const TEXT_FIELDS = ['password', 'passwordConfirmation'];
 const TEXT_FIELD_STATE = TEXT_FIELDS.reduce((acc, curr) => {
@@ -20,10 +21,10 @@ class PasswordChangeRequest extends Component {
 
   static get propTypes() {
     return {
-      expires: PropTypes.string.isRequired,
-      id: PropTypes.string.isRequired,
-      used: PropTypes.bool.isRequired,
-      userNameNumber: PropTypes.string.isRequired
+      expires: PropTypes.string,
+      id: PropTypes.string,
+      used: PropTypes.bool,
+      userNameNumber: PropTypes.string
     };
   }
 
@@ -128,17 +129,16 @@ class PasswordChangeRequest extends Component {
   }
 }
 
-const PasswordChangeRequestWrapper = ({ location }) => {
-  const { Fetch } = apiWrapper;
-
-  if (location.query && location.query.id) {
+const PasswordChangeRequestWrapper = (props) => {
+  if (props.match.params && props.match.params.id) {
     return (
       <Fetch
-        container={PasswordChangeRequest}
+        {...props}
         endPoint="/passwordRequest"
-        location={location}
-        locationKey="id"
-      />
+        paramId="id"
+      >
+        <PasswordChangeRequest />
+      </Fetch>
     );
   }
 
@@ -156,10 +156,10 @@ const PasswordChangeRequestWrapper = ({ location }) => {
 };
 
 PasswordChangeRequestWrapper.propTypes = {
-  location: PropTypes.shape({
-    query: PropTypes.shape({
+  match: PropTypes.shape({
+    params: PropTypes.shape({
       id: PropTypes.string
-    })
+    }).isRequired
   }).isRequired
 };
 

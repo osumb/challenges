@@ -1,8 +1,8 @@
 import React, { PropTypes } from 'react';
 
 import './profile.scss';
-import { apiWrapper } from '../utils';
 import AdminProfile from './admin-profile';
+import Fetch from '../shared-components/fetch';
 import UserProfile from './user-profile';
 
 const endPoint = '/profile';
@@ -27,15 +27,23 @@ const Profile = (props) => {
 };
 
 Profile.propTypes = {
-  admin: PropTypes.bool.isRequired,
-  canChallenge: PropTypes.bool.isRequired,
+  admin: PropTypes.bool,
+  canChallenge: PropTypes.bool,
   challenge: PropTypes.object,
-  name: PropTypes.string.isRequired,
+  name: PropTypes.string,
   performance: PropTypes.object,
   results: PropTypes.arrayOf(PropTypes.object),
   spotId: PropTypes.string
 };
 
-const Wrapper = apiWrapper(Profile, endPoint, null, null, 'Error fetching profile');
-
-export default Wrapper;
+export default function ProfileContainer(props) {
+  return (
+    <Fetch
+      {...props}
+      errorMessage="Error fetching profile"
+      endPoint={endPoint}
+    >
+      <Profile />
+    </Fetch>
+  );
+}

@@ -3,9 +3,12 @@ import Snackbar from 'material-ui/Snackbar';
 import { Table, TableBody, TableHeader, TableHeaderColumn, TableRow } from 'material-ui/Table';
 
 import './roster.scss';
-import { apiWrapper, compareSpots } from '../utils';
+import { compareSpots } from '../utils';
+import Fetch from '../shared-components/fetch';
 import RosterDownload from './roster-download';
 import RosterItem from './roster-item';
+
+const endPoint = '/roster';
 
 class Roster extends Component {
 
@@ -17,7 +20,7 @@ class Roster extends Component {
         nameNumber: PropTypes.string.isRequired,
         part: PropTypes.string.isRequired,
         spotId: PropTypes.string.isRequired
-      })).isRequired
+      }))
     };
   }
 
@@ -97,4 +100,14 @@ class Roster extends Component {
   }
 }
 
-export default apiWrapper(Roster, '/roster');
+export default function RosterContainer(props) {
+  return (
+    <Fetch
+      {...props}
+      errorMessage="Error fetching roster"
+      endPoint={endPoint}
+    >
+      <Roster />
+    </Fetch>
+  );
+}

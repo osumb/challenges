@@ -67,7 +67,7 @@ const sendPasswordRecoveryEmail = (email, id) => {
     url = 'https://osumbchallengesdev.herokuapp.com/resetPassword';
   }
 
-  url = `${url}?id=${id}`;
+  url = `${url}/${id}`;
 
   const to = new helper.Email(email);
   const subject = 'Challenge App Email Recovery';
