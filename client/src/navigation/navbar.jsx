@@ -26,7 +26,7 @@ const Navbar = ({ onLogout, push }) => {
               <Header />
               <DesktopNav onLogout={handleLogout} user={user} />
             </div> :
-            <MobileNav onLogout={handleLogout} user={user} />
+            <MobileNav onLogout={handleLogout} push={push} user={user} />
         }
       </Media>
       <ErrorBanner />
