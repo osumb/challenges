@@ -4,7 +4,8 @@ import FlatButton from 'material-ui/FlatButton';
 import Snackbar from 'material-ui/Snackbar';
 
 import './performances.scss';
-import { api, apiWrapper, errorEmitter } from '../utils';
+import { api, errorEmitter } from '../utils';
+import Fetch from '../shared-components/fetch';
 import Performance from './performance';
 
 function getStateFromProps({ performances }) {
@@ -103,6 +104,14 @@ class Performances extends Component {
   }
 }
 
-const Wrapper = apiWrapper(Performances, '/performances', null, null, 'Error fetching performances');
-
-export default Wrapper;
+export default function PerformancesContainer(props) {
+  return (
+    <Fetch
+      {...props}
+      endPoint="/performances"
+      errorMessage="Error fetching performances"
+    >
+      <Performances />
+    </Fetch>
+  );
+}

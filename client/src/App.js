@@ -65,33 +65,6 @@ const PrivateRoute = ({ component, ...rest }) => (
 
 const App = () => (
   <MuiThemeProvider>
-<<<<<<< HEAD
-    <BrowserRouter>
-      {
-        ({ router }) => (
-          <div id="App">
-            <Navbar onLogout={() => handleLogout(router)} router={router} user={auth.getUser()} />
-            <div id="App-container">
-              <MatchWhenAuthorized exactly pattern="/" component={Profile} />
-              <MatchWhenAuthorized exactly pattern="/challenges/evaluate" component={ChallengeEvaluations} />
-              <MatchWhenAuthorized exactly pattern="/challenges/new" component={ChallengeSelect} />
-              <MatchWhenAuthorized exactly pattern="/performances" component={Performances} />
-              <MatchWhenAuthorized exactly pattern="/performances/new" component={CreatePerformance} />
-              <MatchWhenAuthorized exactly pattern="/results/completed" component={CompletedResults} />
-              <MatchWhenAuthorized exactly pattern="/results/pending" component={PendingResults} />
-              <MatchWhenAuthorized exactly pattern="/search" component={UserSearch} router={router} />
-              <MatchWhenAuthorized exactly pattern="/users/:nameNumber" component={AdminView} />
-              <MatchWhenAuthorized exactly pattern="/roster" component={Roster} />
-              <MatchWhenNotLoggedIn pattern="/login" component={Login} />
-              <MatchWhenNotLoggedIn exactly pattern="/newPassword" component={NewPasswordChangeRequest} />
-              <MatchWhenNotLoggedIn exactly pattern="/resetPassword" component={PasswordChangeRequest} />
-              <Miss component={NotFound} />
-            </div>
-          </div>
-        )
-      }
-    </BrowserRouter>
-=======
     <Router>
       <div id="App">
         <Navbar onLogout={handleLogout} />
@@ -100,6 +73,7 @@ const App = () => (
             <PrivateRoute exact path="/" component={Profile} />
             <PrivateRoute exact path="/challenges/evaluate" component={ChallengeEvaluations} />
             <PrivateRoute exact path="/challenges/new" component={ChallengeSelect} />
+            <PrivateRoute exact path="/performances" component={Performances} />
             <PrivateRoute exact path="/performances/new" component={CreatePerformance} />
             <PrivateRoute exact path="/results/completed" component={CompletedResults} />
             <PrivateRoute exact path="/results/pending" component={PendingResults} />
@@ -114,7 +88,6 @@ const App = () => (
         </div>
       </div>
     </Router>
->>>>>>> master
   </MuiThemeProvider>
 );
 
