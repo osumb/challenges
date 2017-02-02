@@ -10,18 +10,16 @@ import './performance.scss';
 const openCloseDateFormat = 'MMM, Do h:mm A';
 const performDateFormat = 'MMMM DD, YYYY';
 
-function getStateFromProps({ closeAt, id, listExported, name, openAt, performDate }) {
-  return {
-    closeAt: moment(closeAt),
-    editing: false,
-    id,
-    listExported,
-    name,
-    openAt: moment(openAt),
-    performDate: moment(performDate),
-    requesting: false
-  };
-}
+const getStateFromProps = ({ closeAt, id, listExported, name, openAt, performDate }) => ({
+  closeAt: moment(closeAt),
+  editing: false,
+  id,
+  listExported,
+  name,
+  openAt: moment(openAt),
+  performDate: moment(performDate),
+  requesting: false
+});
 
 export default class Performance extends Component {
 

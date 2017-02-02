@@ -8,17 +8,15 @@ import { api, errorEmitter } from '../utils';
 import Fetch from '../shared-components/fetch';
 import Performance from './performance';
 
-function getStateFromProps({ performances }) {
-  return {
-    performances: performances.reduce((acc, curr) => {
-      acc[curr.id] = curr;
+const getStateFromProps = ({ performances }) => ({
+  performances: performances.reduce((acc, curr) => {
+    acc[curr.id] = curr;
 
-      return acc;
-    }, {}),
-    requestingPerformance: null,
-    success: false
-  };
-}
+    return acc;
+  }, {}),
+  requestingPerformance: null,
+  success: false
+});
 
 class Performances extends Component {
 
