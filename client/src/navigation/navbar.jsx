@@ -4,8 +4,8 @@ import { withRouter } from 'react-router-dom';
 
 import { auth, screenSizes } from '../utils';
 import DesktopNav from './desktop-nav';
-import ErrorBanner from './error-banner';
-import Header from './header';
+import ErrorBanner from '../shared-components/error-banner';
+import Header from '../shared-components/header';
 import MobileNav from './mobile-nav';
 
 const { portraitIPad } = screenSizes;

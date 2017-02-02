@@ -5,7 +5,7 @@ import { MenuItem } from 'material-ui/Menu';
 
 import './desktop-nav.scss';
 import { routes } from '../utils';
-import LinkDropdown from './link-dropdown';
+import LinkDropdown from '../shared-components/link-dropdown';
 
 const { canUserSeeLink, getVisibleMainRoutesForUser, mainRoutes } = routes;
 
