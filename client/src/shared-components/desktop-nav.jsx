@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { grey300 } from 'material-ui/styles/colors';
-import { Link } from 'react-router';
+import { Link } from 'react-router-dom';
 import { MenuItem } from 'material-ui/Menu';
 
 import './desktop-nav.scss';
@@ -14,7 +14,6 @@ export default class DesktopNav extends Component {
   static get propTypes() {
     return {
       onLogout: PropTypes.func.isRequired,
-      router: PropTypes.object.isRequired,
       user: PropTypes.shape({
         admin: PropTypes.bool.isRequired,
         director: PropTypes.bool.isRequired,
@@ -30,7 +29,7 @@ export default class DesktopNav extends Component {
   }
 
   render() {
-    const { user } = this.props;
+    const { onLogout, user } = this.props;
     const visibleRoutes = getVisibleMainRoutesForUser(this.props.user);
 
     return (
@@ -49,13 +48,12 @@ export default class DesktopNav extends Component {
               displayName={mainRoutes[key].displayName}
               key={key}
               links={mainRoutes[key].links.filter((link) => canUserSeeLink(link, user))}
-              router={this.props.router}
             />
           )}
         </div>
         {user &&
           <MenuItem
-            onTouchTap={this.props.onLogout}
+            onTouchTap={onLogout}
             primaryText="Logout"
           />
         }

@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { grey400, grey600 } from 'material-ui/styles/colors';
 import keycode from 'keycode';
-import { Link, Redirect } from 'react-router';
+import { Link, Redirect } from 'react-router-dom';
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
 
@@ -13,8 +13,8 @@ export default class Login extends Component {
   static get propTypes() {
     return {
       location: PropTypes.shape({
-        state: PropTypes.string
-      })
+        state: PropTypes.object
+      }).isRequired
     };
   }
 
@@ -78,8 +78,10 @@ export default class Login extends Component {
   }
 
   render() {
+    const { from } = this.props.location.state || '/';
+
     if (this.state.redirectToRefferrer) {
-      return <Redirect to={(this.props.location && this.props.location.state) || '/'} />;
+      return <Redirect to={from || '/'} />;
     }
 
     return (

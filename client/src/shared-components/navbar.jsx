@@ -1,7 +1,8 @@
 import React, { PropTypes } from 'react';
 import Media from 'react-media';
+import { withRouter } from 'react-router-dom';
 
-import { screenSizes } from '../utils';
+import { auth, screenSizes } from '../utils';
 import DesktopNav from './desktop-nav';
 import ErrorBanner from './error-banner';
 import Header from './header';
@@ -9,36 +10,33 @@ import MobileNav from './mobile-nav';
 
 const { portraitIPad } = screenSizes;
 
-const Navbar = ({ onLogout, router, user }) => (
-  <div>
-    <Media query={{ minWidth: portraitIPad.width + 1 }}>
-      {(matches) =>
-        matches ?
-          <div>
-            <Header />
-            <DesktopNav onLogout={onLogout} router={router} user={user} />
-          </div> :
-          <MobileNav onLogout={onLogout} router={router} user={user} />
-      }
-    </Media>
-    <ErrorBanner />
-  </div>
-);
+const Navbar = ({ onLogout, push }) => {
+  const user = auth.getUser();
+
+  function handleLogout() {
+    onLogout(push);
+  }
+
+  return (
+    <div>
+      <Media query={{ minWidth: portraitIPad.width + 1 }}>
+        {(matches) =>
+          matches ?
+            <div>
+              <Header />
+              <DesktopNav onLogout={handleLogout} user={user} />
+            </div> :
+            <MobileNav onLogout={handleLogout} user={user} />
+        }
+      </Media>
+      <ErrorBanner />
+    </div>
+  );
+};
 
 Navbar.propTypes = {
   onLogout: PropTypes.func.isRequired,
-  router: PropTypes.object.isRequired,
-  user: PropTypes.shape({
-    admin: PropTypes.bool.isRequired,
-    director: PropTypes.bool.isRequired,
-    email: PropTypes.string.isRequired,
-    expires: PropTypes.number.isRequired,
-    instrument: PropTypes.string.isRequired,
-    name: PropTypes.string.isRequired,
-    nameNumber: PropTypes.string.isRequired,
-    part: PropTypes.string.isRequired,
-    squadLeader: PropTypes.bool.isRequired
-  })
+  push: PropTypes.func.isRequired
 };
 
-export default Navbar;
+export default withRouter(Navbar);

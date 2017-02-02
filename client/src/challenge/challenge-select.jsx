@@ -5,7 +5,7 @@ import SelectField from 'material-ui/SelectField';
 
 import './challenge-select.scss';
 import { api } from '../utils';
-import { apiWrapper } from '../utils';
+import Fetch from '../shared-components/fetch';
 
 const getEndPoint = '/challenges';
 const postEndPoint = '/challenges';
@@ -20,7 +20,7 @@ class ChallengeSelect extends Component {
         name: PropTypes.string.isRequired,
         spotId: PropTypes.string.isRequired,
         spotOpen: PropTypes.bool.isRequired
-      })).isRequired,
+      })),
       performanceName: PropTypes.string
     };
   }
@@ -141,6 +141,13 @@ class ChallengeSelect extends Component {
   }
 }
 
-const Wrapper = apiWrapper(ChallengeSelect, getEndPoint);
-
-export default Wrapper;
+export default function ChallengeSelectContainer(props) {
+  return (
+    <Fetch
+      {...props}
+      endPoint={getEndPoint}
+    >
+      <ChallengeSelect />
+    </Fetch>
+  );
+}
