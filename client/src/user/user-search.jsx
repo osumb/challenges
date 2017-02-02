@@ -3,28 +3,36 @@ import keycode from 'keycode';
 import RaisedButton from 'material-ui/RaisedButton';
 import SearchIcon from 'material-ui/svg-icons/action/search';
 import TextField from 'material-ui/TextField';
+import { withRouter } from 'react-router-dom';
 
 import './user-search.scss';
 import SearchList from './search-list';
 
-export default class UserSearch extends Component {
+const getStateFromProps = ({ location }) => {
+  const { search } = location;
+  const searchSplit = search.split('=');
+  const query = searchSplit.length
+    ? searchSplit[searchSplit.length - 1]
+    : '';
+
+  return { query };
+};
+
+class UserSearch extends Component {
 
   static get propTypes() {
     return {
       location: PropTypes.shape({
-        query: PropTypes.shape({
-          q: PropTypes.string.isRequired
-        })
+        search: PropTypes.string.isRequired
       }).isRequired,
-      router: PropTypes.object.isRequired
+      push: PropTypes.func.isRequired
     };
   }
 
   constructor(props) {
     super(props);
-    this.state = {
-      query: this.props.location.query && this.props.location.query.q
-    };
+    this.state = getStateFromProps(props);
+
     this.handleEnterCheck = this.handleEnterCheck.bind(this);
     this.handleQueryChange = this.handleQueryChange.bind(this);
     this.handleSearch = this.handleSearch.bind(this);
@@ -42,7 +50,7 @@ export default class UserSearch extends Component {
 
   handleSearch() {
     if (this.state.query) {
-      this.props.router.transitionTo(`/search?q=${this.state.query}`);
+      this.props.push(`/search?q=${this.state.query}`);
     }
   }
 
@@ -68,8 +76,10 @@ export default class UserSearch extends Component {
             <RaisedButton style={{ backgroundColor: 'blue' }} onTouchTap={this.handleSearch}><SearchIcon id="UserSearch-buttonIcon" /></RaisedButton>
           </span>
         </div>
-        <SearchList query={(this.props.location.query && this.props.location.query.q) || ''} />
+        <SearchList query={getStateFromProps(this.props).query} />
       </div>
     );
   }
 }
+
+export default withRouter(UserSearch);

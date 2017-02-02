@@ -2,9 +2,9 @@ import React, { PropTypes } from 'react';
 import Paper from 'material-ui/Paper';
 
 import './admin-view.scss';
-import { apiWrapper } from '../utils';
 import CompletedResultAdminView from '../result/completed-result-admin-view';
 import CurrentChallenge from '../challenge/current-challenge';
+import Fetch from '../shared-components/fetch';
 import UserHeader from '../shared-components/user-header';
 import PreviousChallenges from '../challenge/previous-challenges';
 
@@ -49,13 +49,22 @@ const AdminView = ({ challenges, results, spot, user }) => {
 };
 
 AdminView.propTypes = {
-  challenges: PropTypes.arrayOf(PropTypes.object).isRequired,
-  manageActions: PropTypes.arrayOf(PropTypes.object).isRequired,
-  results: PropTypes.arrayOf(PropTypes.object).isRequired,
-  spot: PropTypes.object.isRequired,
-  user: PropTypes.object.isRequired
+  challenges: PropTypes.arrayOf(PropTypes.object),
+  manageActions: PropTypes.arrayOf(PropTypes.object),
+  results: PropTypes.arrayOf(PropTypes.object),
+  spot: PropTypes.object,
+  user: PropTypes.object
 };
 
-const Wrapper = apiWrapper(AdminView, endPoint, 'nameNumber');
-
-export default Wrapper;
+export default function AdminViewContainer(props) {
+  return (
+    <Fetch
+      {...props}
+      endPoint={endPoint}
+      errorMessage="Couldn't load user's profile"
+      paramId="nameNumber"
+    >
+      <AdminView />
+    </Fetch>
+  );
+}

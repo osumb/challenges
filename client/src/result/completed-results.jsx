@@ -4,8 +4,9 @@ import FlatButton from 'material-ui/FlatButton';
 import Snackbar from 'material-ui/Snackbar';
 
 import './completed-results.scss';
-import { api, apiWrapper, compareSpots } from '../utils';
+import { api, compareSpots } from '../utils';
 import CompletedResult from './completed-result';
+import Fetch from '../shared-components/fetch';
 
 const getEndPoint = '/results/completed';
 
@@ -13,7 +14,7 @@ class CompletedResults extends Component {
 
   static get propTypes() {
     return {
-      performanceResultsMap: PropTypes.object.isRequired
+      performanceResultsMap: PropTypes.object
     };
   }
 
@@ -136,6 +137,13 @@ class CompletedResults extends Component {
   }
 }
 
-const Wrapper = apiWrapper(CompletedResults, getEndPoint);
-
-export default Wrapper;
+export default function CompletedResultsWrapper(props) {
+  return (
+    <Fetch
+      {...props}
+      endPoint={getEndPoint}
+    >
+      <CompletedResults />
+    </Fetch>
+  );
+}

@@ -23,7 +23,7 @@ export default class MobileNav extends Component {
   static get propTypes() {
     return {
       onLogout: PropTypes.func.isRequired,
-      router: PropTypes.object.isRequired,
+      push: PropTypes.func.isRequired,
       user: PropTypes.shape({
         admin: PropTypes.bool.isRequired,
         director: PropTypes.bool.isRequired,
@@ -55,7 +55,7 @@ export default class MobileNav extends Component {
 
   handleClose({ target }) {
     if (target.dataset.route) {
-      this.props.router.transitionTo(target.dataset.route);
+      this.props.push(target.dataset.route);
     }
     this.setState({
       open: false
@@ -82,7 +82,7 @@ export default class MobileNav extends Component {
   handleSearchSubmit(e) {
     e.preventDefault();
     this.setState({ searching: false });
-    this.props.router.transitionTo(`/search?q=${this.state.searchQuery}`);
+    this.props.push(`/search?q=${this.state.searchQuery}`);
   }
 
   handleSearchToggle() {
