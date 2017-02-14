@@ -90,7 +90,7 @@ class Performances extends Component {
           onRequestClose={this.handleConfirmClose}
           open={requestingPerformance !== null && typeof requestingPerformance !== 'undefined'}
         >
-          Are you sure you want to update this result&#63;
+          Are you sure you want to update this performance&#63;
         </Dialog>
         <Snackbar
           autoHideDuration={3000}

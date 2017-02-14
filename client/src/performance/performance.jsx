@@ -89,7 +89,13 @@ export default class Performance extends Component {
     const { closeAt, listExported, name, openAt, performDate } = this.state;
 
     return (
-      <Card>
+      <Card
+        style={{
+          margin: '5px',
+          height: '200px',
+          width: '400px'
+        }}
+      >
         <CardHeader
           title={editing ?
             <div className="Performance-dateWrapper">
