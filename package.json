@@ -10,7 +10,7 @@
   "scripts": {
     "start": "node bin/www",
     "build": "node client/scripts/build.js",
-    "dev": "foreman start -f Procfile.dev",
+    "dev": "heroku local -f Procfile.dev",
     "lint": "eslint .",
     "heroku-postbuild": "npm run build",
     "schema": "script/schema",
