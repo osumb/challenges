@@ -20,6 +20,7 @@ import Navbar from './navigation/navbar';
 import NewPasswordChangeRequest from './password-change-request/new-password-change-request.jsx';
 import NotFound from './navigation/not-found';
 import PendingResults from './result/pending-results';
+import Performances from './performance/performances';
 import Profile from './profile/profile';
 import PasswordChangeRequest from './password-change-request/password-change-request';
 import Roster from './user/roster';
@@ -72,6 +73,7 @@ const App = () => (
             <PrivateRoute exact path="/" component={Profile} />
             <PrivateRoute exact path="/challenges/evaluate" component={ChallengeEvaluations} />
             <PrivateRoute exact path="/challenges/new" component={ChallengeSelect} />
+            <PrivateRoute exact path="/performances" component={Performances} />
             <PrivateRoute exact path="/performances/new" component={CreatePerformance} />
             <PrivateRoute exact path="/results/completed" component={CompletedResults} />
             <PrivateRoute exact path="/results/pending" component={PendingResults} />

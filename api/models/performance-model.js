@@ -1,9 +1,8 @@
 const db = require('../../utils/db');
 const Model = require('./model');
+const { snakeCase } = require('../../utils/object-keys-case-change');
 
 const modelAttributes = ['close_at', 'id', 'list_exported', 'name', 'open_at', 'perform_date'];
-
-let cachedCurrentPerformance;
 
 class Performance extends Model {
 
@@ -44,14 +43,10 @@ class Performance extends Model {
   }
 
   static findCurrent() {
-    if (cachedCurrentPerformance && Date.now() < cachedCurrentPerformance.closeAt) {
-      return Promise.resolve(cachedCurrentPerformance);
-    }
     const sql = 'SELECT * FROM performances WHERE now() < close_at ORDER BY open_at ASC LIMIT 1';
 
     return db.query(sql, [], instanceFromRow)
     .then(([currentPerformance]) => {
-      cachedCurrentPerformance = currentPerformance;
       return currentPerformance;
     });
   }
@@ -70,7 +65,7 @@ class Performance extends Model {
     }
 
     delete attributes.id;
-    const { sql, values } = db.queryBuilder(Performance, attributes, { statement: 'UPDATE', id });
+    const { sql, values } = db.queryBuilder(Performance, snakeCase(attributes), { statement: 'UPDATE', id });
 
     return db.query(sql, values);
   }

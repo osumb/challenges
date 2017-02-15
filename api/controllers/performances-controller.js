@@ -18,14 +18,27 @@ class PerformancesController {
     });
   }
 
-  static index(req, res) {
-    Performance.findAll('MMMM Do, h:mm:ss a')
+  static index(req, res, next) {
+    Performance.findAll()
     .then((performances) => {
-      res.render('performances/index', { user: req.user, performances: performances.map((performance) => performance.toJSON()) });
+      res.locals.jsonResp = { performances };
+      next();
     })
     .catch((err) => {
       logger.errorLog('Performances.index', err);
       res.render('static-pages/error', { user: req.user });
+    });
+  }
+
+  static update({ body }, res, next) {
+    Performance.update(body)
+    .then(() => {
+      res.locals.jsonResp = { success: true };
+      next();
+    })
+    .catch((err) => {
+      logger.errorLog('Performances.update', err);
+      res.status(500).send('Error updating performance');
     });
   }
 

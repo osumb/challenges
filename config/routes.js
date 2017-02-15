@@ -40,8 +40,9 @@ const routes = (auth) => {
   router.put('/users/password', Users.changePassword);
 
   //Performance Controller
+  router.get('/performances', auth.ensureAdmin, Performances.index);
   router.post('/performances', auth.ensureAdmin, Performances.create);
-  // router.put('/performances', auth.ensureAdmin, Performances.update);
+  router.put('/performances', auth.ensureAdmin, Performances.update);
 
   return router;
 };

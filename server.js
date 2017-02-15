@@ -10,7 +10,7 @@ const routes = require('./config/routes');
 
 const app = express();
 
-app.use(favicon(path.join(__dirname, 'build', 'favicon.ico')));
+app.use(favicon(path.join(__dirname, '/client/public', 'favicon.ico')));
 if (process.env.NODE_ENV !== 'production') app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
