@@ -1,12 +1,2 @@
-node_modules/*
-bin/*
-build/*
 client/config/*
 client/scripts/*
-db/migrations/*
-spec/fixtures/*
-spec/support/*
-LICENSE
-package.json
-README.md
-npm-debug.log

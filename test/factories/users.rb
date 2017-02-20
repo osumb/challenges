@@ -9,7 +9,7 @@ FactoryGirl.define do
     part User.parts[:solo]
     role User.roles[:member]
     password_updated Time.zone.now
-    spot FactoryGirl.build(:spot, row: Spot.rows[:a])
+    association :spot, row: Spot.rows[:a], file: 2
   end
 
   factory :admin, parent: :user do

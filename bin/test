@@ -1,0 +1,14 @@
+#!/bin/sh
+
+# bin/test: Test script for CI
+
+bundle exec rubocop
+./node_modules/.bin/eslint client/**
+
+if [ -z "$TRAVIS_DB_NAME" ]; then
+echo "==> Creating test database..."
+bundle exec rake db:test:load
+echo "==> Done creating test database"
+fi
+
+bundle exec rake test
