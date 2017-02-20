@@ -28,5 +28,8 @@ Metrics/BlockLength:
   Exclude:
     - 'test/**/*'
 
+Style/FrozenStringLiteralComment:
+  Enabled: false
+
 ClassAndModuleChildren:
   Enabled: false
