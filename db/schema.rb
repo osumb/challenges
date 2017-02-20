@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170220012131) do
+ActiveRecord::Schema.define(version: 20170220035938) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -22,6 +22,31 @@ ActiveRecord::Schema.define(version: 20170220012131) do
     t.datetime "window_close", null: false
     t.datetime "created_at",   null: false
     t.datetime "updated_at",   null: false
+  end
+
+  create_table "spots", force: :cascade do |t|
+    t.integer  "row",        null: false
+    t.integer  "file",       null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "users", force: :cascade do |t|
+    t.string   "first_name",                                null: false
+    t.string   "last_name",                                 null: false
+    t.string   "email",                                     null: false
+    t.string   "password_digest",                           null: false
+    t.string   "buck_id",                                   null: false
+    t.integer  "instrument",                                null: false
+    t.integer  "part",                                      null: false
+    t.integer  "role",                                      null: false
+    t.datetime "password_updated", default: -> { "now()" }, null: false
+    t.integer  "spot_id"
+    t.datetime "created_at",                                null: false
+    t.datetime "updated_at",                                null: false
+    t.index ["buck_id"], name: "index_users_on_buck_id", using: :btree
+    t.index ["email"], name: "index_users_on_email", using: :btree
+    t.index ["spot_id"], name: "index_users_on_spot_id", using: :btree
   end
 
 end

@@ -36,5 +36,8 @@ node_modules
 # build stuff
 public/*
 
+# code coverage
+coverage/*
+
 # environment variables
 .env

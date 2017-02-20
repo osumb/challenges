@@ -8,7 +8,6 @@ class Spot < ApplicationRecord
   class << self
     # rubocop:disable Metrics/MethodLength, Metrics/CyclomaticComplexity, Metrics/AbcSize, Style/IndentationConsistency
     def valid_instrument_part_for_row(row, instrument, part)
-      # puts part
       case row
       when Spot.rows[:a], Spot.rows[:x]
         valid_a_x_row_instrument_part(instrument, part)
