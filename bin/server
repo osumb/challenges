@@ -1,0 +1,5 @@
+#!/bin/sh
+
+# bin/server: Start our dev server with Rails api and HMR
+
+heroku local -f Procfile.dev

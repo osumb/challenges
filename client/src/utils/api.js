@@ -30,6 +30,7 @@ const request = (url, { method, body }, errorMessage) =>
       'Content-Type': 'application/json'
     },
     method,
+    mode: 'cors',
     body: JSON.stringify(body)
   })
   .then((response) => {

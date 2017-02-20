@@ -1,0 +1,32 @@
+AllCops:
+  TargetRubyVersion: 2.4
+  Include:
+    - '**/Rakefile'
+    - '**/config.ru'
+  Exclude:
+    - 'bin/**/*'
+    - 'db/**/*'
+    - 'config/**/*'
+    - 'vendor/**/*'
+
+Rails:
+  Enabled: true
+
+TrailingBlankLines:
+  Enabled: true
+
+Documentation:
+  Enabled: false
+
+Metrics/ClassLength:
+  Max: 120
+
+Metrics/LineLength:
+  Max: 120
+
+Metrics/BlockLength:
+  Exclude:
+    - 'test/**/*'
+
+ClassAndModuleChildren:
+  Enabled: false
