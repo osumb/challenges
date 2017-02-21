@@ -1,10 +1,5 @@
 #!/bin/sh
 
-# bin/server: Start the api server for development
+# bin/server: Start our dev server with Rails api and HMR
 
-set -e
-
-cd "$(dirname "$0")/.."
-
-node config/set-environment-variables.js
-npm run server
+heroku local -f Procfile.dev

@@ -1,9 +1,13 @@
 # OSUMB Challenges
 [![Build Status](https://travis-ci.org/osumb/challenges.svg?branch=master)](https://travis-ci.org/osumb/challenges)
+[![Coverage Status](https://coveralls.io/repos/github/osumb/challenges/badge.svg?branch=master)](https://coveralls.io/github/osumb/challenges?branch=master)
 
 Application for members of the OSUMB to signup for challenges
 
 ## Installation and setup
+
+**NOTE: THIS IS ALL A LIE! THESE INSTRUCTIONS ARE OUT OF DATE. THIS WARNING WILL BE REMOVED ONCE THEY'RE NOT**
+
 First [download and install Homebrew](http://brew.sh/)
 
 Inside your terminal, run the following commands to get the project up and running.
@@ -44,7 +48,7 @@ Open [http://localhost:3000](http://localhost:3000) and enjoy!
 npm test
 ```
 ## Heroku
-The server lives on Heroku. @atareshawty has the logins. Ask him if you want the ability to deploy or have access to
+The server lives on Heroku. [@atareshawty](https://github.com/atareshawty) has the logins. Ask him if you want the ability to deploy or have access to
 the Heroku git remotes
 
 ## Staging vs Production

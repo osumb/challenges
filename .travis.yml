@@ -1,13 +1,12 @@
-language: node_js
-
-notifications: # set notification options
-  email: false
+language: ruby
+cache: bundler
+rvm:
+  - 2.4.0
 
 sudo: false
 
-node_js:
-  - "7"
-
+notifications: # set notification options
+  email: false
 
 env:
   - CXX=g++-4.8 TRAVIS_DB_NAME=postgres
@@ -19,10 +18,22 @@ addons:
     packages:
     - gcc-4.8
     - g++-4.8
+
 services:
   - postgresql
 
+before_install:
+  - gem update --system # update ruby gems
+  - if [[ `npm -v` != 4* ]]; then npm i -g npm@4; fi # get the latest version of npm
+  - nvm install 7.2.1 # node 7.2.1
+
+install:
+  - bundle install
+  - npm install
+
 before_script:
-  - psql -c 'create database challenges_test;' -U postgres
+  - psql -c 'create database challenges_test' -U postgres
+  - bundle exec rake db:test:prepare
+
 script:
-  - "npm test"
+  - "bin/test"

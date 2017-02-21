@@ -1,2 +1,2 @@
-api: bin/server
-create-react-app: bin/create-react-app
+api: bundle exec rails s -p 8080
+create-react-app: npm start
