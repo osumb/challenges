@@ -170,7 +170,8 @@ class UserTest < ActiveSupport::TestCase
 
   test 'two users can\'t have the same spot' do
     user_a = create(:user)
-    user_b = build(:user, spot: user_a.spot)
+    user_b = build(:user, spot: user_a.spot, email: user_a.email + '1', buck_id: user_a.buck_id + '1')
     refute user_b.valid?
+    assert_equal 'Spot has already been taken', user_b.errors.full_messages.join
   end
 end
