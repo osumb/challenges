@@ -5,7 +5,7 @@ import errorEmitter from './error-emitter';
 
 const { getToken, refreshToken } = auth;
 const baseRoute = process.env.NODE_ENV === 'development'
-  ? `http://localhost:${3001}`
+  ? `http://localhost:${process.env.SERVER_PORT}`
   : '';
 
 const DEFAULT_ERROR_MESSAGE = 'Sorry! Something wen\'t wrong. We\'re aware of and working on the issue';
