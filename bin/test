@@ -1,9 +1,10 @@
 #!/bin/sh
+set -e
 
 # bin/test: Test script for CI
 
 bundle exec rubocop
-./node_modules/.bin/eslint client/**
+./client/node_modules/.bin/eslint src/**
 
 if [ -z "$TRAVIS_DB_NAME" ]; then
 echo "==> Creating test database..."

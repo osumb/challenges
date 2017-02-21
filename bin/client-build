@@ -9,3 +9,4 @@ cd ..
 
 rm -rf public && mkdir public
 mv client/build/* ./public
+rm -rf client/build
