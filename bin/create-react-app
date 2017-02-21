@@ -1,9 +1,0 @@
-#!/bin/sh
-
-# bin/create-react-app: Start the react server for development
-
-set -e
-
-cd "$(dirname "$0")/.."
-
-node client/scripts/start.js

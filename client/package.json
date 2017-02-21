@@ -4,13 +4,12 @@
   "author": "Alex Tareshawty",
   "description": "Challenge signup manager for OSUMB",
   "engines": {
-    "node": "6.2.1"
+    "node": "7.2.1"
   },
   "private": true,
   "scripts": {
-    "start": "node client/scripts/start.js",
-    "build": "node client/scripts/build.js",
-    "dev": "heroku local -f Procfile.dev",
+    "start": "node scripts/start.js",
+    "build": "node scripts/build.js",
     "lint": "eslint .",
     "heroku-postbuild": "npm run build",
     "schema": "script/schema",
@@ -123,5 +122,6 @@
     "presets": [
       "react-app"
     ]
-  }
+  },
+  "proxy": "http://localhost:3001/"
 }
