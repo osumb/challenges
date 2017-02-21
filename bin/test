@@ -11,4 +11,4 @@ bundle exec rake db:test:load
 echo "==> Done creating test database"
 fi
 
-bundle exec rake test
+bin/rails test
