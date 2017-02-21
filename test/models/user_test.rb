@@ -167,4 +167,10 @@ class UserTest < ActiveSupport::TestCase
       assert_equal "Admin with instrument sousaphone can't have part #{key}", user.errors.full_messages.join
     end
   end
+
+  test 'two users can\'t have the same spot' do
+    user_a = create(:user)
+    user_b = build(:user, spot: user_a.spot)
+    refute user_b.valid?
+  end
 end

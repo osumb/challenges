@@ -51,6 +51,7 @@ GEM
       simplecov (>= 0.7)
       term-ansicolor
       thor
+    database_cleaner (1.5.3)
     docile (1.1.5)
     domain_name (0.5.20161129)
       unf (>= 0.0.5, < 1.0.0)
@@ -191,6 +192,7 @@ DEPENDENCIES
   bcrypt (~> 3.1.7)
   byebug
   coveralls
+  database_cleaner
   dotenv-rails
   factory_girl_rails (~> 4.8)
   jbuilder (~> 2.5)

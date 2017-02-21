@@ -1,4 +1,5 @@
 class Spot < ApplicationRecord
+  # enums
   enum row: [:a, :b, :c, :e, :f, :h, :i, :j, :k, :l, :m, :q, :r, :s, :t, :x]
 
   # validations
