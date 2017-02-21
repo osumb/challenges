@@ -29,7 +29,7 @@ before_install:
 
 install:
   - bundle install
-  - npm install
+  - cd client && npm install && cd ..
 
 before_script:
   - psql -c 'create database challenges_test' -U postgres
