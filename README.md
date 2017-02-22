@@ -2,62 +2,93 @@
 [![Build Status](https://travis-ci.org/osumb/challenges.svg?branch=master)](https://travis-ci.org/osumb/challenges)
 [![Coverage Status](https://coveralls.io/repos/github/osumb/challenges/badge.svg?branch=master)](https://coveralls.io/github/osumb/challenges?branch=master)
 
-Application for members of the OSUMB to signup for challenges
+Manage the challenge process for the Ohio State University Marching Band
 
 ## Installation and setup
 
-**NOTE: THIS IS ALL A LIE! THESE INSTRUCTIONS ARE OUT OF DATE. THIS WARNING WILL BE REMOVED ONCE THEY'RE NOT**
+This app has 4 dependencies you need to install yourself.
 
-First [download and install Homebrew](http://brew.sh/)
+- [Ruby](https://www.ruby-lang.org/en/) 2.4.0
+- [Node JS](https://nodejs.org/en/) latest (above 6.0 *should* work)
+- [PostgreSQL](https://www.postgresql.org/) 9.6.2
+- [Heroku Cli](https://devcenter.heroku.com/articles/heroku-cli)
 
-Inside your terminal, run the following commands to get the project up and running.
+If you're running a Mac, there is a [Brewfile](https://github.com/Homebrew/homebrew-bundle) for your convenience.
+
+### Get the Code
+Inside your terminal, run the following commands to get the code.
 
 ```bash
-git clone https://github.com/osumb/challenges.git
+git clone https://github.com/osumb/challenges.git # Or your fork, if you're not a contributor
 cd challenges
 ```
 
-Install [Node](https://nodejs.org/en/) through any means you see fit.
+### Rails
 
-__Make sure you're above v6 or the code won't run__
+The api layer is a [Ruby on Rails App](http://rubyonrails.org/)
 
-Then run:
+This means, we'll need to run the following to get the api up and running.
+This will install of your ruby gems and set up the dev/test databases along with add some seed data.
+
+```bash
+bundle install
+bin/rake db:reset
 ```
-script/setup
+
+Time to do that thing you've been meaning to do...
+
+### React
+
+All of the client side view/functionality is run as a [React App](https://facebook.github.io/react/).
+In order to get that up and running, we need to install some stuff
+
+```bash
+cd client && npm install && cd ..
 ```
 
-That's it! All your dependencies are ready to go
+Now go get some :coffee: or something...
 
 ## Start the app
-`./script` has some scripts for setup/testing/etc. While it may be tempting to run those as stand-alone scripts, use
-npm commands to access any of the scripts you may want to run. All modules used for dev/server are installed in the `challenges` directory. [Required reading](https://nodejs.org/en/blog/npm/npm-1-0-global-vs-local-installation/). The goal is to be minimally intrusive on your local dev machine since there's no virtual machine setup or anything like that.
 
-That being said, run the dev server:
+You should be good to go with dependencies and everything. To start app locally, just run
 ```bash
-npm run dev
-```
-If you want webpack to watch your public js/scss, run:
-```bash
-webpack --watch
+bin/server
 ```
 
-Open [http://localhost:3000](http://localhost:3000) and enjoy!
+This command will run two processes: the Rails api server and a [Webpack dev server](https://webpack.github.io/)
+
+The rails server will run at [localhost:3001](http://localhost:3001)
+
+The webpack dev server (where you want to go to use the app) will run at [localhost:3000](http://localhost:3000)
+
+
+The webpack server gives us all cool kinds of things thanks to [Create React App](https://github.com/facebookincubator/create-react-app). We get hot reloading, and if you look at `client/src/App.js`, you'll see that we have hot *module* reloading :tada:. In development only, the webpack server proxies all requests made from `localhost:3000` to the Rails server at `:3001`. The means, we had to turn on CORS in dev only (see `config/initializers/cors.rb`).
+
 
 ### Tests
+Tests are cool. You should run them sometimes
+
 ```bash
-npm test
+bin/test
 ```
+
+Right now, we only have Rails tests. Once a set of tests are run, you'll be able to see our *Rails* code coverage in `coverage/index.html`. This directory is in the `.gitignore`, please don't commit this.
+
 ## Heroku
-The server lives on Heroku. [@atareshawty](https://github.com/atareshawty) has the logins. Ask him if you want the ability to deploy or have access to
-the Heroku git remotes
+The app lives on Heroku. [@atareshawty](https://github.com/atareshawty) has the logins. Ask him if you want the ability to deploy or have access to
+the Heroku git remotes.
+
+For the interested, this app needs two `package.json` files. The one located at `./package.json` is for Heroku to notice that this app does indeed require Node. The one in `client/package.json` is where all the information for our React app lives. The outer file has instructions for client side code building that Heroku needs for a deploy.
 
 ## Staging vs Production
 ### Staging
-The staging instance is used to test new features, specifically ones that have made it into PRs. There is no staging
-branch anymore. I've just been doing a deploy to staging from the branch I want to test. The staging url is still
-[the same](https://osumbchallengesdev.herokuapp.com)
+The staging instance is used to test new features, specifically ones that have made it into PRs.
+There is no staging branch.
+To test, just do a manual deploy to the staging instance.
+The staging url is still
+[https://osumbchallengesdev.herokuapp.com](https://osumbchallengesdev.herokuapp.com)
 
 ### Production
-When code gets merged into master, it triggers a deploy to [prod](https://osumbchallenges.herokuapp.com). The master
-branch is protected from force pushes and PR's must pass CI in order to get merged. **AGAIN... merges into master get
-AUTOMATICALLY DEPLOYED TO PROD** so be careful when merging to master!
+When code gets merged into master, it triggers a deploy to [prod](https://osumbchallenges.herokuapp.com).
+The master branch is protected from force pushes and PR's must pass [CI](https://travis-ci.org/) in order to get merged.
+**AGAIN... merges into master get AUTOMATICALLY DEPLOYED TO PROD** so be careful when merging to master!
