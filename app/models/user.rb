@@ -16,7 +16,7 @@ class User < ApplicationRecord
   validates :instrument, presence: true
   validates :part, presence: true
   validates :role, presence: true
-  validates :spot_id, uniqueness: true
+  validates :spot_id, uniqueness: { allow_blank: true }
 
   validate :performing_member_has_spot
   validate :admin_does_not_have_spot
