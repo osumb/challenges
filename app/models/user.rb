@@ -1,4 +1,6 @@
 class User < ApplicationRecord
+  scope :performers, -> { where(role: [:member, :squad_leader]) }
+
   # enums
   enum instrument: [:any, :trumpet, :mellophone, :trombone, :baritone, :percussion, :sousaphone], _prefix: true
   enum part: [:any, :efer, :solo, :first, :second, :flugel, :bass, :snare, :cymbals, :tenor], _suffix: true
@@ -10,9 +12,16 @@ class User < ApplicationRecord
   # validations
   validates :first_name, presence: true
   validates :last_name, presence: true
-  validates :email, presence: true, uniqueness: true
+  validates :email, presence: true, uniqueness: true, format: {
+    with: /\A[^@\s]+@[^@\s]+\z/,
+    message: 'must be an email address'
+  }
+
   validates :password_digest, presence: true
-  validates :buck_id, presence: true, uniqueness: true
+  validates :buck_id, presence: true, uniqueness: true, format: {
+    with: /\A[a-z]+\.[1-9][0-9]*\z/,
+    message: 'must be a valid name.number'
+  }
   validates :instrument, presence: true
   validates :part, presence: true
   validates :role, presence: true
@@ -23,15 +32,12 @@ class User < ApplicationRecord
   validate :valid_instrument_part_for_user
   validate :valid_instrument_part_for_admin
 
+  before_validation :downcase_buck_id
+  before_save :downcase_email
+
   has_secure_password
 
   private
-
-  def admin_does_not_have_spot
-    return if !admin? && !director?
-    return if spot.nil?
-    errors.add(:role, 'admin or director can\'t have a spot')
-  end
 
   def performing_member_has_spot
     return if admin? || director?
@@ -39,9 +45,15 @@ class User < ApplicationRecord
     errors.add(:spot, 'can\'t be blank')
   end
 
+  def admin_does_not_have_spot
+    return if !admin? && !director?
+    return if spot.nil?
+    errors.add(:role, 'admin or director can\'t have a spot')
+  end
+
   # rubocop:disable Metrics/CyclomaticComplexity, Metrics/AbcSize
   def valid_instrument_part_for_user
-    return true if admin? || director?
+    return if admin? || director?
     return if instrument.nil? || part.nil?
     return if spot.nil?
     return if Spot.valid_instrument_part_for_row(Spot.rows[spot.row], User.instruments[instrument], User.parts[part])
@@ -62,6 +74,14 @@ class User < ApplicationRecord
     errors.add(:admin, "with instrument #{instrument} can't have part #{part}")
   end
   # rubocop:enable Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity, Metrics/AbcSize
+
+  def downcase_buck_id
+    buck_id.try(:downcase!)
+  end
+
+  def downcase_email
+    email.try(:downcase!)
+  end
 
   def valid_trumpet_part(part)
     parts = User.parts

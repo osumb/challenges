@@ -16,7 +16,6 @@ class UserTest < ActiveSupport::TestCase
   test 'user must have an email' do
     user = build(:user, email: nil)
     refute user.valid?
-    assert_equal 'Email can\'t be blank', user.errors.full_messages.join
   end
 
   test 'user must have a buck_id' do

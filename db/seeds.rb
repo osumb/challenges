@@ -1,4 +1,3 @@
-require 'bcrypt'
 require 'rubyXL'
 
 spots_worksheet = RubyXL::Parser.parse(Rails.root.join('lib', 'seed', 'spots.xlsx'))[0]
@@ -13,6 +12,7 @@ puts "Added #{Spot.count} spots"
 
 users_worksheet = RubyXL::Parser.parse(Rails.root.join('lib', 'seed', 'users.xlsx'))[0]
 i = 1
+password_digest = BCrypt::Password.create('password')
 while (users_worksheet[i] != nil) do
   row = users_worksheet[i]
   user_row = row[0] && row[0].value && row[0].value.downcase
@@ -32,7 +32,7 @@ while (users_worksheet[i] != nil) do
     part: User.parts[part],
     buck_id: buck_id,
     role: User.roles[role],
-    password: password,
+    password_digest: password_digest,
     email: email,
     spot: Spot.where(row: Spot.rows[user_row], file: user_file)[0]
   )
