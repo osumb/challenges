@@ -6,7 +6,7 @@
     "heroku-postbuild": "bin/client-build"
   },
   "engines": {
-    "node": "7.2.1",
+    "node": "7.6.0",
     "npm": "4.1.2"
   }
 }

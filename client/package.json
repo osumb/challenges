@@ -4,18 +4,12 @@
   "author": "Alex Tareshawty",
   "description": "Challenge signup manager for OSUMB",
   "engines": {
-    "node": "7.2.1"
+    "node": "7.6.0"
   },
   "private": true,
   "scripts": {
     "start": "node scripts/start.js",
-    "build": "node scripts/build.js",
-    "lint": "eslint .",
-    "heroku-postbuild": "npm run build",
-    "schema": "script/schema",
-    "seed": "./bin/seed",
-    "server": "nodemon --ignore client/ bin/www",
-    "test": "bin/test"
+    "build": "node scripts/build.js"
   },
   "dependencies": {
     "autoprefixer": "6.5.1",
