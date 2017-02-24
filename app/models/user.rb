@@ -1,5 +1,5 @@
 class User < ApplicationRecord
-  scope :performers, -> { where(role: :member).or(where(role: :squad_leader)) }
+  scope :performers, -> { where(role: [:member, :squad_leader]) }
 
   # enums
   enum instrument: [:any, :trumpet, :mellophone, :trombone, :baritone, :percussion, :sousaphone], _prefix: true
