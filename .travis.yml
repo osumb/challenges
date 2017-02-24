@@ -8,17 +8,6 @@ sudo: false
 notifications: # set notification options
   email: false
 
-env:
-  - CXX=g++-4.8 TRAVIS_DB_NAME=postgres
-
-addons:
-  apt:
-    sources:
-    - ubuntu-toolchain-r-test
-    packages:
-    - gcc-4.8
-    - g++-4.8
-
 services:
   - postgresql
 
@@ -29,11 +18,11 @@ before_install:
 
 install:
   - bundle install
-  - cd client && npm install && cd ..
+  - (cd client && npm install)
 
 before_script:
   - psql -c 'create database challenges_test' -U postgres
   - bundle exec rake db:test:prepare
 
 script:
-  - "bin/test"
+  - bin/test

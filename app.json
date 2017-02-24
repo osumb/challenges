@@ -1,13 +1,13 @@
 {
-  "name": "challenges",
-  "scripts": {},
-  "env": {
-    "PASSPORT_SECRET": {
-      "required": true
-    },
-    "DATABASE_URL": {
-      "required": true
-    }
+  "name": "OSUMB Challenges",
+  "description": "Manage the challenge process for the Ohio State University Marching Band",
+  "keywords": [
+    "OSUMB",
+    "Ruby on Rails",
+    "React"
+  ],
+  "scripts": {
+    "postdeploy": "bin/client-build"
   },
   "formation": {
     "web": {
@@ -18,6 +18,9 @@
     "heroku-postgresql"
   ],
   "buildpacks": [
+    {
+      "url": "heroku/ruby"
+    },
     {
       "url": "heroku/nodejs"
     }

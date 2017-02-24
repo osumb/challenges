@@ -1,3 +1,3 @@
-# rubocop:disable Style/FileName, Style/FrozenStringLiteralComment
+# rubocop:disable Style/FileName
 brew 'postgresql'
 brew 'heroku'

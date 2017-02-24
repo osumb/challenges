@@ -1,0 +1,12 @@
+{
+  "name": "osumbchallenges",
+  "description": "Manage the challenge process for the Ohio State University Marching Band",
+  "scripts": {
+    "heroku-prebuild": "cd client && npm i",
+    "heroku-postbuild": "bin/client-build"
+  },
+  "engines": {
+    "node": "7.6.0",
+    "npm": "4.1.2"
+  }
+}
