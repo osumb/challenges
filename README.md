@@ -13,49 +13,36 @@ This app has 4 dependencies you need to install yourself.
 - [PostgreSQL](https://www.postgresql.org/) 9.6.2
 - [Heroku Cli](https://devcenter.heroku.com/articles/heroku-cli)
 
-If you're running a Mac, there is a [Brewfile](https://github.com/Homebrew/homebrew-bundle) for your convenience.
+If you're running a Mac, there is a [Brewfile](./Brewfile) for your convenience.
 
 ### Get the Code
 Inside your terminal, run the following commands to get the code.
 
 ```bash
-git clone https://github.com/osumb/challenges.git # Or your fork, if you're not a contributor
+git clone https://github.com/osumb/challenges.git
 cd challenges
 ```
 
-### Rails
+### Environment variables
+Rails will yell at you if you don't have a `.env` file available, so add one! You can find the available
+variables in `.env.example`
 
-The api layer is a [Ruby on Rails App](http://rubyonrails.org/)
-
-This means, we'll need to run the following to get the api up and running.
-This will install of your ruby gems and set up the dev/test databases along with add some seed data.
-
-```bash
-bundle install
-bin/rake db:reset
-```
-
-Time to do that thing you've been meaning to do...
-
-### React
-
-All of the client side view/functionality is run as a [React App](https://facebook.github.io/react/).
-In order to get that up and running, we need to install some stuff
+### Setup
+Install some more dependencies and set up the database
 
 ```bash
-cd client && npm install && cd ..
+bin/setup
 ```
 
 Now go get some :coffee: or something...
 
 ## Start the app
-
 You should be good to go with dependencies and everything. To start app locally, just run
 ```bash
 bin/server
 ```
 
-This command will run two processes: the Rails api server and a [Webpack dev server](https://webpack.github.io/)
+This command will run two processes: the Rails API server and a [Webpack dev server](https://webpack.github.io/)
 
 The rails server will run at [localhost:3001](http://localhost:3001)
 
@@ -64,6 +51,17 @@ The webpack dev server (where you want to go to use the app) will run at [localh
 
 The webpack server gives us all cool kinds of things thanks to [Create React App](https://github.com/facebookincubator/create-react-app). We get hot reloading, and if you look at `client/src/App.js`, you'll see that we have hot *module* reloading :tada:. In development only, the webpack server proxies all requests made from `localhost:3000` to the Rails server at `:3001`. The means, we had to turn on CORS in dev only (see `config/initializers/cors.rb`).
 
+## Application Stack
+
+### Rails
+The API layer is a [Ruby on Rails App](http://rubyonrails.org/)
+
+### React
+All of the client side view/functionality is run as a [React App](https://facebook.github.io/react/).
+
+## Client Production Build
+Every once in a while, it's good to check whether the production bundle works as expected. To do this, run
+`bin/client-build`. The 'React app' will be built and put into `./public`. Then just start the rails server on any port you wish. It will serve the production client assets.
 
 ### Tests
 Tests are cool. You should run them sometimes

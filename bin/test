@@ -7,9 +7,9 @@ bundle exec rubocop
 ./client/node_modules/.bin/eslint src/**
 
 if [ -z "$TRAVIS_DB_NAME" ]; then
-echo "==> Creating test database..."
-bundle exec rake db:test:load
-echo "==> Done creating test database"
+  echo "==> Creating test database..."
+  bundle exec rake db:test:load
+  echo "==> Done creating test database"
 fi
 
 bin/rails test
