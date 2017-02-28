@@ -13,4 +13,44 @@ class Challenge < ApplicationRecord
   # validations
   validates :performance, presence: true
   validates :challenge_type, presence: true
+  validate :valid_normal_challenge
+  validate :valid_open_spot_challenge
+  validate :valid_tri_challenge
+  validate :all_users_have_same_instrument_and_part
+  validate :no_users_are_admin
+
+  private
+
+  def valid_normal_challenge
+    return if open_spot_challenge_type? || tri_challenge_type?
+    return if users.length == 2
+    errors.add(:users, 'only 2 users are allowed in a normal challenge')
+  end
+
+  def valid_open_spot_challenge
+    return if normal_challenge_type? || tri_challenge_type?
+    return if users.length == 2
+    errors.add(:users, 'only 2 users are allowed in an open spot challenge')
+  end
+
+  def valid_tri_challenge
+    return if normal_challenge_type? || open_spot_challenge_type?
+    return if users.length == 3
+    errors.add(:users, 'only 3 users are allowed in a tri challenge')
+  end
+
+  # rubocop:disable Metrics/AbcSize
+  def all_users_have_same_instrument_and_part
+    instrument = users[0].instrument
+    part = users[0].part
+    users_filter = users.select { |user| user.instrument == instrument && user.part == part }
+    return if users_filter.length == users.length
+    errors.add(:users, 'must all have the same instrument and part')
+  end
+  # rubocop:enable Metrics/AbcSize
+
+  def no_users_are_admin
+    return if users.all? { |user| user.member? || user.squad_leader? }
+    errors.add(:users, 'must all be non admin or director')
+  end
 end
