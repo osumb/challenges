@@ -1,5 +1,14 @@
 require 'rubyXL'
 
+current_performance = Performance.create!(
+  name: 'Oklahoma Game',
+  date: Time.zone.now + 2.days,
+  window_open: Time.zone.now,
+  window_close: Time.zone.now + 3.hours
+)
+
+puts "Added Performance"
+
 spots_worksheet = RubyXL::Parser.parse(Rails.root.join('lib', 'seed', 'spots.xlsx'))[0]
 i = 1
 while (spots_worksheet[i] != nil) do
@@ -40,3 +49,25 @@ while (users_worksheet[i] != nil) do
 end
 
 puts "Added #{User.count} users"
+
+challenges_worksheet = RubyXL::Parser.parse(Rails.root.join('lib', 'seed', 'challenges.xlsx'))[0]
+i = 1
+while (challenges_worksheet[i] != nil) do
+  row = challenges_worksheet[i]
+  challenger_buck_id = row[0].value
+  row_in_challenge = row[1].value[0].downcase
+  file_in_challenge = row[1].value[1..-1]
+  challenged_spot = Spot.where(row: row_in_challenge, file: file_in_challenge).first
+  challenge = Challenge.new(challenge_type: :normal)
+  challenge.performance = current_performance
+  challenge.spot = challenged_spot
+  challenger = User.where(buck_id: challenger_buck_id).first
+  challengee = User.where(spot: Spot.where(row: row_in_challenge, file: file_in_challenge)).first
+  challenge.users = [challenger, challengee]
+  challenge.user_challenges[0].spot = challenger.spot
+  challenge.user_challenges[1].spot = challengee.spot
+  challenge.save
+  i += 1
+end
+
+puts "Added #{Challenge.count} challenges"
