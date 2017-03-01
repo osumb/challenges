@@ -1,7 +1,7 @@
 export const ADMIN = 'ADMIN';
 export const ANY = 'ANY';
 export const HOME = 'Home';
-export const SQUAD_LEADER = 'SQUAD_LEADER';
+export const SQUAD_LEADER = 'SQUADLEADER';
 
 export const canUserSeeLink = (link, user = {}) =>
   link.show &&
@@ -29,7 +29,8 @@ export const canUserAccessPattern = (user, pattern) => {
   const link = mainRoutes[patternMainRouteKey].links.find(({ path }) => path === pattern);
   const { roles } = link;
 
-  return roles.includes(ANY) || (user.squadLeader && roles.includes(SQUAD_LEADER)) || (user.admin && roles.includes(ADMIN));
+  console.log(user);
+  return roles.includes(ANY) || (user.role === SQUAD_LEADER && roles.includes(SQUAD_LEADER)) || (user.role === ADMIN && roles.includes(ADMIN));
 };
 
 export const getVisibleMainRoutesForUser = (user) => {
