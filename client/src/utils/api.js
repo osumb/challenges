@@ -36,15 +36,7 @@ const request = (url, { method, body }, errorMessage) =>
     body: JSON.stringify(body)
   })
   .then((response) => {
-    if (!response.ok) {
-      console.log(response);
-      console.log(response.bodyUsed);
-      if (response.bodyUsed) {
-        console.log('bodyUsed');
-        throw response.body();
-      }
-      throw response;
-    }
+    if (!response.ok) throw response;
 
     return response.json()
     .then(({ token, ...rest }) => {
@@ -55,7 +47,6 @@ const request = (url, { method, body }, errorMessage) =>
     });
   })
   .catch((response) => {
-    console.log(response);
     if (errorMessage) {
       errorEmitter.dispatch(errorMessage);
     } else {

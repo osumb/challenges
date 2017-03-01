@@ -43,7 +43,6 @@ class User < ApplicationRecord
   end
 
   def self.from_token_payload(payload)
-    logger.info payload
     find_by buck_id: payload['sub']
   end
 

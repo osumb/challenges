@@ -7,21 +7,20 @@ const url = process.env.NODE_ENV === 'development'
   ? `http://localhost:${process.env.SERVER_PORT}`
   : '';
 
-const authenticate = (nameNumber, password) =>
+const authenticate = (buck_id, password) =>
   fetch(`${url}/api/user_token`, {
     headers: {
       Accept: 'application/json, text/html', // eslint-disable-line quote-props
       'Content-Type': 'application/json'
     },
     method: 'post',
-    body: JSON.stringify({ auth: { buck_id: nameNumber, password } })
+    body: JSON.stringify({ auth: { buck_id, password } })
   })
   .then((response) => {
     if (response.status >= 300) throw new Error(response.status);
     return response.json();
   })
   .then(({ jwt }) => {
-    console.log(jwtDecode(jwt));
     localStorage[LOCAL_STORE_STRING] = jwt;
   });
 
@@ -29,9 +28,7 @@ const canUserAccess = (pattern) => routes.canUserAccessPattern(getUser(), patter
 
 const getToken = () => localStorage[LOCAL_STORE_STRING];
 
-const getUser = () => {
-  return localStorage[LOCAL_STORE_STRING] && jwtDecode(localStorage[LOCAL_STORE_STRING]);
-};
+const getUser = () => localStorage[LOCAL_STORE_STRING] && jwtDecode(localStorage[LOCAL_STORE_STRING]);
 
 const isAuthenticated = () => {
   const user = getUser();
