@@ -22,13 +22,15 @@ const getMessageFromStatus = (status) => {
   }
 };
 
+const headers = () => ({
+  'Accept': 'application/json, text/html',
+  'Authorization': getToken() && `Bearer ${getToken()}`,
+  'Content-Type': 'application/json'
+});
+
 const request = (url, { method, body }, errorMessage) =>
   fetch(`${baseRoute}/api${url}`, {
-    headers: { // eslint-disable-line quote-props
-      'Accept': 'application/json, text/html',
-      'Authorization': getToken() && `Bearer ${getToken()}`,
-      'Content-Type': 'application/json'
-    },
+    headers: headers(),
     method,
     mode: 'cors',
     body: JSON.stringify(body)

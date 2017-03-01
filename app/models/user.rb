@@ -37,6 +37,32 @@ class User < ApplicationRecord
 
   has_secure_password
 
+  def self.from_token_request(request)
+    buck_id = request.params[:auth] && request.params[:auth][:buck_id]
+    find_by buck_id: buck_id
+  end
+
+  def self.from_token_payload(payload)
+    find_by buck_id: payload['sub']
+  end
+
+  # rubocop:disable Metrics/AbcSize
+  def to_token_payload
+    payload = {}
+
+    payload[:sub] = buck_id
+    payload[:buckId] = buck_id
+    payload[:firstName] = first_name
+    payload[:lastName] = last_name
+    payload[:spot] = spot && { row: spot.row.upcase, file: spot.file }
+    payload[:instrument] = instrument&.capitalize
+    payload[:part] = part&.capitalize
+    payload[:role] = role.camelize
+
+    payload
+  end
+  # rubocop:enable Metrics/AbcSize
+
   private
 
   def performing_member_has_spot
