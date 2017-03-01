@@ -10,6 +10,7 @@ class User < ApplicationRecord
   belongs_to :spot, optional: true
   has_many :user_challenges
   has_many :challenges, through: :user_challenges
+  has_many :disciplines
 
   # validations
   validates :first_name, presence: true

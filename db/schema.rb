@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170224051154) do
+ActiveRecord::Schema.define(version: 20170301160749) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -25,6 +25,18 @@ ActiveRecord::Schema.define(version: 20170224051154) do
     t.datetime "updated_at",                 null: false
     t.index ["performance_id"], name: "index_challenges_on_performance_id", using: :btree
     t.index ["spot_id"], name: "index_challenges_on_spot_id", using: :btree
+  end
+
+  create_table "disciplines", force: :cascade do |t|
+    t.string   "reason",                               null: false
+    t.boolean  "open_spot",            default: false, null: false
+    t.boolean  "allowed_to_challenge", default: false, null: false
+    t.integer  "performance_id"
+    t.integer  "user_id"
+    t.datetime "created_at",                           null: false
+    t.datetime "updated_at",                           null: false
+    t.index ["performance_id"], name: "index_disciplines_on_performance_id", using: :btree
+    t.index ["user_id"], name: "index_disciplines_on_user_id", using: :btree
   end
 
   create_table "performances", force: :cascade do |t|
