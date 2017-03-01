@@ -9,7 +9,6 @@ class Performance < ApplicationRecord
   validates :window_close, presence: true, uniqueness: true
 
   validate :window_open_before_window_close
-  # validate :uniqueness of spot in challenge for performance ie) A4 can only be challenged once for the Oklahoma Game
 
   private
 

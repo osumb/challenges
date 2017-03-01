@@ -19,6 +19,7 @@ class Challenge < ApplicationRecord
   validate :all_users_have_same_instrument_and_part
   validate :no_users_are_admin
   validate :unique_users_in_challenge
+  validate :no_duplicate_challenged_spots
 
   private
 
@@ -63,4 +64,10 @@ class Challenge < ApplicationRecord
     errors.add(:users, 'must be unique in a challenge')
   end
   # rubocop:enable Metrics/AbcSize, Metrics/CyclomaticComplexity
+
+  def no_duplicate_challenged_spots
+    challenges = Challenge.where(performance: performance)
+    return unless challenges.any? { |challenge| challenge.spot.id == spot&.id }
+    errors.add(:challenge, 'must have unique spots for performance')
+  end
 end
