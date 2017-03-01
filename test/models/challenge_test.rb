@@ -47,4 +47,12 @@ class ChallengeTest < ActiveSupport::TestCase
     refute challenge.valid?
     assert challenge.errors.full_messages.include? 'Users must all be non admin or director'
   end
+
+  test 'users in a challenge must be unique' do
+    challenge = build(:normal_challenge)
+    user = build(:user)
+    challenge.users = [user, user]
+    refute challenge.valid?
+    assert challenge.errors.full_messages.include? 'Users must be unique in a challenge'
+  end
 end

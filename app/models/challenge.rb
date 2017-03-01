@@ -18,6 +18,7 @@ class Challenge < ApplicationRecord
   validate :valid_tri_challenge
   validate :all_users_have_same_instrument_and_part
   validate :no_users_are_admin
+  validate :unique_users_in_challenge
 
   private
 
@@ -53,4 +54,13 @@ class Challenge < ApplicationRecord
     return if users.all? { |user| user.member? || user.squad_leader? }
     errors.add(:users, 'must all be non admin or director')
   end
+
+  # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity
+  def unique_users_in_challenge
+    user_one = users[0]
+    return if user_one.buck_id != users[1]&.buck_id && (normal_challenge_type? || open_spot_challenge_type?)
+    return if user_one.buck_id != users[1]&.buck_id && user_one.buck_id != users[2]&.buck_id && tri_challenge_type?
+    errors.add(:users, 'must be unique in a challenge')
+  end
+  # rubocop:enable Metrics/AbcSize, Metrics/CyclomaticComplexity
 end
