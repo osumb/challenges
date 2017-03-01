@@ -67,7 +67,7 @@ class Challenge < ApplicationRecord
 
   def no_duplicate_challenged_spots
     challenges = Challenge.where(performance: performance)
-    return unless challenges.any? { |challenge| challenge.spot.id == spot&.id }
+    return unless challenges.select { |challenge| challenge.spot.id == spot&.id }.length > 1
     errors.add(:challenge, 'must have unique spots for performance')
   end
 end

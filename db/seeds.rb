@@ -1,5 +1,12 @@
 require 'rubyXL'
 
+past_performance = Performance.create!(
+  name: 'Indiana Game',
+  date: Time.zone.now - 3.days,
+  window_open: Time.zone.now - 1.day,
+  window_close: Time.zone.now - 1.day + 3.hours
+)
+
 current_performance = Performance.create!(
   name: 'Oklahoma Game',
   date: Time.zone.now + 2.days,
@@ -59,13 +66,20 @@ while (challenges_worksheet[i] != nil) do
   file_in_challenge = row[1].value[1..-1]
   challenged_spot = Spot.where(row: row_in_challenge, file: file_in_challenge).first
   challenge = Challenge.new(challenge_type: :normal)
-  challenge.performance = current_performance
+  challenge.performance = past_performance
   challenge.spot = challenged_spot
+  challenge.stage = :done
   challenger = User.where(buck_id: challenger_buck_id).first
+  winner_id = row[2].value
+  challenger_comments = row[3].value
+  challengee_comments = row[4].value
   challengee = User.where(spot: Spot.where(row: row_in_challenge, file: file_in_challenge)).first
   challenge.users = [challenger, challengee]
   challenge.user_challenges[0].spot = challenger.spot
+  challenge.user_challenges[0].comments = challenger_comments
   challenge.user_challenges[1].spot = challengee.spot
+  challenge.user_challenges[1].comments = challengee_comments
+  challenge.winner = winner_id == challenger.buck_id ? challenger : challengee
   challenge.save
   i += 1
 end
