@@ -1,4 +1,7 @@
 class Performance < ApplicationRecord
+  # associations
+  has_many :challenges
+
   # validations
   validates :name, presence: true
   validates :date, presence: true, uniqueness: true

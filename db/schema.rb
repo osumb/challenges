@@ -10,10 +10,22 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170220035938) do
+ActiveRecord::Schema.define(version: 20170224051154) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "challenges", force: :cascade do |t|
+    t.integer  "challenge_type",             null: false
+    t.integer  "stage",          default: 0
+    t.integer  "spot_id"
+    t.integer  "performance_id"
+    t.integer  "winner_id"
+    t.datetime "created_at",                 null: false
+    t.datetime "updated_at",                 null: false
+    t.index ["performance_id"], name: "index_challenges_on_performance_id", using: :btree
+    t.index ["spot_id"], name: "index_challenges_on_spot_id", using: :btree
+  end
 
   create_table "performances", force: :cascade do |t|
     t.string   "name",         null: false
@@ -29,6 +41,16 @@ ActiveRecord::Schema.define(version: 20170220035938) do
     t.integer  "file",       null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "user_challenges", force: :cascade do |t|
+    t.integer "user_id"
+    t.integer "challenge_id"
+    t.integer "spot_id"
+    t.string  "comments"
+    t.index ["challenge_id"], name: "index_user_challenges_on_challenge_id", using: :btree
+    t.index ["spot_id"], name: "index_user_challenges_on_spot_id", using: :btree
+    t.index ["user_id"], name: "index_user_challenges_on_user_id", using: :btree
   end
 
   create_table "users", force: :cascade do |t|
