@@ -22,19 +22,29 @@ const getMessageFromStatus = (status) => {
   }
 };
 
+const headers = () => ({
+  'Accept': 'application/json, text/html',
+  'Authorization': getToken() && `Bearer ${getToken()}`,
+  'Content-Type': 'application/json'
+});
+
 const request = (url, { method, body }, errorMessage) =>
   fetch(`${baseRoute}/api${url}`, {
-    headers: { // eslint-disable-line quote-props
-      'Accept': 'application/json, text/html',
-      'Authorization': getToken() && `Bearer ${getToken()}`,
-      'Content-Type': 'application/json'
-    },
+    headers: headers(),
     method,
     mode: 'cors',
     body: JSON.stringify(body)
   })
   .then((response) => {
-    if (!response.ok) throw response;
+    if (!response.ok) {
+      console.log(response);
+      console.log(response.bodyUsed);
+      if (response.bodyUsed) {
+        console.log('bodyUsed');
+        throw response.body();
+      }
+      throw response;
+    }
 
     return response.json()
     .then(({ token, ...rest }) => {
@@ -45,6 +55,7 @@ const request = (url, { method, body }, errorMessage) =>
     });
   })
   .catch((response) => {
+    console.log(response);
     if (errorMessage) {
       errorEmitter.dispatch(errorMessage);
     } else {
