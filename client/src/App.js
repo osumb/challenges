@@ -20,7 +20,7 @@ import Navbar from './navigation/navbar';
 import NewPasswordChangeRequest from './password-change-request/new-password-change-request.jsx';
 import NotFound from './navigation/not-found';
 import PendingResults from './result/pending-results';
-import Profile from './profile/profile';
+import Profile from './scenes/user/profile';
 import PasswordChangeRequest from './password-change-request/password-change-request';
 import Roster from './user/roster';
 import UserSearch from './user/user-search';
