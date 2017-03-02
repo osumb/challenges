@@ -1,6 +1,6 @@
 FactoryGirl.define do
   factory :challenge do
-    performance Performance.first
+    performance { Performance.first || FactoryGirl.create(:performance) }
   end
 
   factory :open_spot_challenge, parent: :challenge do
