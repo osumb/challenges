@@ -2,44 +2,45 @@ import React, { Component, PropTypes } from 'react';
 import { grey300 } from 'material-ui/styles/colors';
 import { Link } from 'react-router-dom';
 import { MenuItem } from 'material-ui/Menu';
+import pick from 'lodash.pick';
+import styled from 'styled-components';
 
-import './desktop-nav.scss';
-import { routes } from '../utils';
-import LinkDropdown from '../shared-components/link-dropdown';
+import { isEmptyObject, routes } from '../../../utils';
+import { propTypes as userPropTypes } from '../../../data/user';
+import LinkDropdown from './link-dropdown';
 
 const { canUserSeeLink, getVisibleMainRoutesForUser, mainRoutes } = routes;
+const props = ['role'];
+const Container = styled.div`
+  display: flex;
+  flex-wrap: nowrap;
+  background-color: ${grey300}
+`;
+const LeftContainer = styled.div`
+  display: flex;
+  flex: 1;
+  flex-wrap: nowrap;
+`;
 
 export default class DesktopNav extends Component {
-
   static get propTypes() {
     return {
       onLogout: PropTypes.func.isRequired,
-      user: PropTypes.shape({
-        admin: PropTypes.bool.isRequired,
-        director: PropTypes.bool.isRequired,
-        email: PropTypes.string.isRequired,
-        expires: PropTypes.number.isRequired,
-        instrument: PropTypes.string.isRequired,
-        name: PropTypes.string.isRequired,
-        nameNumber: PropTypes.string.isRequired,
-        part: PropTypes.string.isRequired,
-        squadLeader: PropTypes.bool.isRequired
-      })
+      user: PropTypes.shape(pick(userPropTypes, props)).isRequired
     };
+  }
+
+  static get props() {
+    return props;
   }
 
   render() {
     const { onLogout, user } = this.props;
-    const visibleRoutes = getVisibleMainRoutesForUser(this.props.user);
+    const visibleRoutes = getVisibleMainRoutesForUser(user);
 
     return (
-      <div
-        className="DesktopNav"
-        style={{
-          backgroundColor: grey300
-        }}
-      >
-        <div className="DesktopNav-left">
+      <Container>
+        <LeftContainer className="DesktopNav-left">
           <MenuItem>
             <Link to="/">Home</Link>
           </MenuItem>
@@ -50,14 +51,14 @@ export default class DesktopNav extends Component {
               links={mainRoutes[key].links.filter((link) => canUserSeeLink(link, user))}
             />
           )}
-        </div>
-        {user &&
+        </LeftContainer>
+        {!isEmptyObject(user) &&
           <MenuItem
             onTouchTap={onLogout}
             primaryText="Logout"
           />
         }
-      </div>
+      </Container>
     );
   }
 }

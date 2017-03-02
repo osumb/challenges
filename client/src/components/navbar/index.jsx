@@ -1,12 +1,13 @@
 import React, { PropTypes } from 'react';
 import Media from 'react-media';
+import pick from 'lodash.pick';
 import { withRouter } from 'react-router-dom';
 
-import { auth, screenSizes } from '../utils';
-import DesktopNav from './desktop-nav';
-import ErrorBanner from '../shared-components/error-banner';
-import Header from '../shared-components/header';
-import MobileNav from './mobile-nav';
+import { auth, screenSizes } from '../../utils';
+import DesktopNav from './components/desktop-nav';
+import ErrorBanner from './components/error-banner';
+import Header from './components/header';
+import MobileNav from './components/mobile-nav';
 
 const { portraitIPad } = screenSizes;
 
@@ -20,13 +21,12 @@ const Navbar = ({ onLogout, push }) => {
   return (
     <div>
       <Media query={{ minWidth: portraitIPad.width + 1 }}>
-        {(matches) =>
-          matches ?
-            <div>
-              <Header />
-              <DesktopNav onLogout={handleLogout} user={user} />
-            </div> :
-            <MobileNav onLogout={handleLogout} push={push} user={user} />
+        {(matches) => matches ?
+          <div>
+            <Header />
+            <DesktopNav onLogout={handleLogout} user={pick(user, DesktopNav.props)} />
+          </div>
+          : <MobileNav onLogout={handleLogout} push={push} user={pick(user, MobileNav.props)} />
         }
       </Media>
       <ErrorBanner />

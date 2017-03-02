@@ -5,12 +5,11 @@ import './admin-view.scss';
 import CompletedResultAdminView from '../result/completed-result-admin-view';
 import CurrentChallenge from '../challenge/current-challenge';
 import Fetch from '../shared-components/fetch';
-import UserHeader from '../shared-components/user-header';
 import PreviousChallenges from '../challenge/previous-challenges';
 
 const endPoint = '/users/profile';
 
-const AdminView = ({ challenges, results, spot, user }) => {
+const AdminView = ({ challenges, results, user }) => {
   const headerStyle = {
     textAlign: 'center'
   };
@@ -24,7 +23,6 @@ const AdminView = ({ challenges, results, spot, user }) => {
 
   return (
     <div className="AdminView">
-      <UserHeader admin={user.admin} name={user.name} spotId={spot.id} />
       {mostRecentChallenge &&
         <CurrentChallenge {...mostRecentChallenge} />
       }

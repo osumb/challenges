@@ -1,14 +1,16 @@
-export const ADMIN = 'ADMIN';
-export const ANY = 'ANY';
-export const HOME = 'Home';
-export const SQUAD_LEADER = 'SQUADLEADER';
+import { helpers } from '../data/user';
+import { isEmptyObject } from '../utils';
+
+const ADMIN = 'ADMIN';
+const ANY = 'ANY';
+const SQUAD_LEADER = 'SQUADLEADER';
 
 export const canUserSeeLink = (link, user = {}) =>
   link.show &&
   (
     link.roles.includes(ANY) ||
-    (user.squadLeader && link.roles.some((role) => role === SQUAD_LEADER)) ||
-    (user.admin && link.roles.some((role) => role === ADMIN))
+    (helpers.isSquadLeader(user) && link.roles.some((role) => role === SQUAD_LEADER)) ||
+    (helpers.isAdmin(user) && link.roles.some((role) => role === ADMIN))
   );
 
 export const canUserAccessPattern = (user, pattern) => {
@@ -29,12 +31,11 @@ export const canUserAccessPattern = (user, pattern) => {
   const link = mainRoutes[patternMainRouteKey].links.find(({ path }) => path === pattern);
   const { roles } = link;
 
-  console.log(user);
-  return roles.includes(ANY) || (user.role === SQUAD_LEADER && roles.includes(SQUAD_LEADER)) || (user.role === ADMIN && roles.includes(ADMIN));
+  return roles.includes(ANY) || (helpers.isSquadLeader(user) && roles.includes(SQUAD_LEADER)) || (helpers.isAdmin(user) && roles.includes(ADMIN));
 };
 
 export const getVisibleMainRoutesForUser = (user) => {
-  if (typeof user === 'undefined' || user === null) {
+  if (typeof user === 'undefined' || user === null || isEmptyObject(user)) {
     return [];
   }
 

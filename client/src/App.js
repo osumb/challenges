@@ -16,7 +16,7 @@ import ChallengeSelect from './challenge/challenge-select';
 import CompletedResults from './result/completed-results';
 import CreatePerformance from './performance/create-performance';
 import Login from './navigation/login';
-import Navbar from './navigation/navbar';
+import Navbar from './components/navbar';
 import NewPasswordChangeRequest from './password-change-request/new-password-change-request.jsx';
 import NotFound from './navigation/not-found';
 import PendingResults from './result/pending-results';
