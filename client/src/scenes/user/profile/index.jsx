@@ -19,7 +19,7 @@ export default class Profile extends React.Component {
     const { state: user } = this;
 
     if (user === null) {
-      return <div>Hey</div>;
+      return null;
     }
 
     return helpers.isAdmin(user) || helpers.isDirector(user)

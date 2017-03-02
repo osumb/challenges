@@ -18,7 +18,7 @@ import CreatePerformance from './performance/create-performance';
 import Login from './navigation/login';
 import Navbar from './components/navbar';
 import NewPasswordChangeRequest from './password-change-request/new-password-change-request.jsx';
-import NotFound from './navigation/not-found';
+import NotFound from './components/not_found';
 import PendingResults from './result/pending-results';
 import Profile from './scenes/user/profile';
 import PasswordChangeRequest from './password-change-request/password-change-request';
