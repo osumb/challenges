@@ -1,4 +1,6 @@
 ENV['RAILS_ENV'] ||= 'test'
+ActiveRecord::Migration.maintain_test_schema!
+
 # code coverage tools
 require 'simplecov'
 SimpleCov.start
