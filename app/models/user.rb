@@ -1,3 +1,4 @@
+# rubocop:disable Metrics/ClassLength
 class User < ApplicationRecord
   scope :performers, -> { where(role: [:member, :squad_leader]) }
 
@@ -66,7 +67,33 @@ class User < ApplicationRecord
   end
   # rubocop:enable Metrics/AbcSize
 
+  def alternate?
+    spot.file > 12
+  end
+
+  def can_challenge_for_performance?(performance)
+    return false if admin? || director?
+    if alternate?
+      can_alternate_challenge_for_performance? performance
+    else
+      can_member_challenge_for_performance? performance
+    end
+  end
+
   private
+
+  # rubocop:disable Metrics/AbcSize
+  def can_alternate_challenge_for_performance?(performance)
+    return false if challenges.select { |c| c.performance.id == performance.id }.length.positive?
+    disciplines.select { |d| d.performance&.id == performance.id }.length <= 0
+  end
+
+  def can_member_challenge_for_performance?(performance)
+    return false if challenges.select { |c| c.performance.id == performance.id }.length.positive?
+    return false if disciplines.select { |d| d.performance == performance.id }.length <= 0
+    disciplines.select { |d| d.performance == performance.id }[0].allowed_to_challenge
+  end
+  # rubocop:enable Metrics/AbcSize
 
   def performing_member_has_spot
     return if admin? || director?
