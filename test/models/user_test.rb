@@ -1,5 +1,5 @@
 require 'test_helper'
-# rubocop:disable Metrics/ClassLength
+# rubocop:disable Metrics/ClassLength, Metrics/LineLength
 class UserTest < ActiveSupport::TestCase
   test 'user must have a first name' do
     user = build(:user, first_name: nil)
@@ -172,5 +172,65 @@ class UserTest < ActiveSupport::TestCase
     user_b = build(:user, spot: user_a.spot, email: user_a.email + '1', buck_id: user_a.buck_id + '1')
     refute user_b.valid?
     assert_equal 'Spot has already been taken', user_b.errors.full_messages.join
+  end
+
+  test 'an alternate with no disciplines can challenge for a performance' do
+    user = build(:user, spot: build(:spot, row: :a, file: 13))
+    performance = build(:performance)
+    assert user.can_challenge_for_performance? performance
+  end
+
+  test 'an alternate who has already made a challenge can\'t challenge again for a performance' do
+    user = build(:user, spot: build(:spot, row: :a, file: 13))
+    performance = build(:performance)
+    challenge = build(:challenge, performance: performance)
+    user.challenges << challenge
+    refute user.can_challenge_for_performance? performance
+  end
+
+  test 'an alternate with a discipline record for a performance can\'t challenge for that performance' do
+    user = build(:user, spot: build(:spot, row: :a, file: 13))
+    performance = build(:performance)
+    discipline = build(:discipline, performance: performance)
+    user.disciplines << discipline
+    refute user.can_challenge_for_performance? performance
+  end
+
+  test 'a regular member with no disciplines can\'t challenge for a performance' do
+    user = build(:user)
+    performance = build(:performance)
+    refute user.can_challenge_for_performance? performance
+  end
+
+  test 'a regular member who has already made a challenge can\'t challenge again for a performance' do
+    user = build(:user)
+    performance = build(:performance)
+    challenge = build(:challenge, performance: performance)
+    user.challenges << challenge
+    refute user.can_challenge_for_performance? performance
+  end
+
+  test 'a regular member whoe has a discipline with flag allowed_to_challenge is allowed_to_challenge' do
+    user = build(:user, spot: build(:spot, row: :a, file: 13))
+    performance = build(:performance)
+    discipline = build(:discipline, performance: performance, allowed_to_challenge: true)
+    user.disciplines << discipline
+    refute user.can_challenge_for_performance? performance
+  end
+
+  test 'a regular member whoe has a discipline with flag allowed_to_challenge, but has alread made a challenge, isn\'t allowed_to_challenge' do
+    user = build(:user, spot: build(:spot, row: :a, file: 13))
+    performance = build(:performance)
+    discipline = build(:discipline, performance: performance, allowed_to_challenge: true)
+    challenge = build(:challenge, performance: performance)
+    user.challenges << challenge
+    user.disciplines << discipline
+    refute user.can_challenge_for_performance? performance
+  end
+
+  test 'an admin can\'t challenge for any performance' do
+    user = build(:admin)
+    performance = build(:performance)
+    refute user.can_challenge_for_performance? performance
   end
 end

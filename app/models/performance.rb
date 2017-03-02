@@ -1,6 +1,7 @@
 class Performance < ApplicationRecord
   # associations
   has_many :challenges
+  has_many :disciplines
 
   # validations
   validates :name, presence: true
