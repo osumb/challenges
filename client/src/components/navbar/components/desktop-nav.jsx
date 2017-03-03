@@ -40,7 +40,7 @@ export default class DesktopNav extends Component {
 
     return (
       <Container>
-        <LeftContainer className="DesktopNav-left">
+        <LeftContainer>
           <MenuItem>
             <Link to="/">Home</Link>
           </MenuItem>
