@@ -1,2 +1,2 @@
-json.row spot.row.upcase
-json.file spot.file
+json.row spot&.row&.upcase
+json.file spot&.file
