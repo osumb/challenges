@@ -59,7 +59,7 @@ module.exports = {
       },
       {
         test: /\.(css|scss)$/,
-        loader: ExtractTextPlugin.extract('style-loader', 'css-loader', 'postcss-loader', 'sass-loader')
+        loader: ExtractTextPlugin.extract('style', 'css-loader!postcss!sass-loader')
       },
       {
         test: /\.json$/,
