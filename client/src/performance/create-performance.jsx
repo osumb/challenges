@@ -5,7 +5,7 @@ import RaisedButton from 'material-ui/RaisedButton';
 import Snackbar from 'material-ui/Snackbar';
 import TextField from 'material-ui/TextField';
 
-import '../../node_modules/react-datetime/css/react-datetime.css';
+import '../../../node_modules/react-datetime/css/react-datetime.css';
 import './create-performance.scss';
 import { api } from '../utils';
 
