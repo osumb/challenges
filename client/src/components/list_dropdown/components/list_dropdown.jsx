@@ -1,6 +1,6 @@
 import React from 'react';
-import ArrowUp from 'material-design-icons/hardware/svg/production/ic_keyboard_arrow_up_24px.svg';
-import ArrowDown from 'material-design-icons/hardware/svg/production/ic_keyboard_arrow_down_24px.svg';
+import ArrowDown from '../../../../public/images/ic_keyboard_arrow_down_black_24px.svg';
+import ArrowUp from '../../../../public/images/ic_keyboard_arrow_up_black_24px.svg';
 
 import ListDropdownItem from './list_dropdown_item';
 import ListDropdownSeparator from './list_dropdown_separator';

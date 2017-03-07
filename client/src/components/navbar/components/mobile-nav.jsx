@@ -1,9 +1,9 @@
 /* eslint-disable react/jsx-no-bind */
 import React, { Component, PropTypes } from 'react';
-import ListIcon from 'material-design-icons/action/1x_web/ic_list_white_36dp.png';
+import ListIcon from '../../../../public/images/ic_list_white_36px.svg';
 import Media from 'react-media';
 import pick from 'lodash.pick';
-import SearchIcon from 'material-design-icons/action/1x_web/ic_search_white_24dp.png';
+import SearchIcon from '../../../../public/images/ic_search_white_36px.svg';
 import styled from 'styled-components';
 
 import Button from '../../button';

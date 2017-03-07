@@ -6,6 +6,7 @@
     "build": "node client/scripts/start.js",
     "heroku-prebuild": "yarn install",
     "heroku-postbuild": "bin/client-build",
+    "test": "eslint . —ext js,jsx",
     "start": "node client/scripts/start.js"
   },
   "engines": {
@@ -41,7 +42,6 @@
     "keycode": "^2.1.7",
     "lodash.pick": "^4.4.0",
     "material-components-web": "^0.5.0",
-    "material-design-icons": "^3.0.1",
     "material-ui": "^0.16.4",
     "moment": "^2.12.0",
     "morgan": "^1.7.0",
@@ -55,7 +55,7 @@
     "react-dev-utils": "^0.4.0",
     "react-dom": "^15.4.1",
     "react-media": "^1.4.0",
-    "react-router-dom": "^4.0.0-beta.6",
+    "react-router-dom": "^4.0.0-beta.7",
     "react-tap-event-plugin": "^2.0.1",
     "recursive-readdir": "2.1.0",
     "sass-loader": "^3.2.3",

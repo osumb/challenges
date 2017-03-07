@@ -9,6 +9,7 @@ AllCops:
     - 'config/**/*'
     - 'vendor/**/*'
     - 'client/**/*'
+    - 'node_modules/**/*'
 
 Rails:
   Enabled: true
