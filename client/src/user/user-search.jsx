@@ -25,7 +25,9 @@ class UserSearch extends Component {
       location: PropTypes.shape({
         search: PropTypes.string.isRequired
       }).isRequired,
-      push: PropTypes.func.isRequired
+      history: PropTypes.shape({
+        push: PropTypes.func.isRequired
+      }).isRequired
     };
   }
 
@@ -50,7 +52,7 @@ class UserSearch extends Component {
 
   handleSearch() {
     if (this.state.query) {
-      this.props.push(`/search?q=${this.state.query}`);
+      this.props.history.push(`/search?q=${this.state.query}`);
     }
   }
 

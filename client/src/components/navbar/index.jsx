@@ -21,11 +21,11 @@ const HeaderDiv = styled.div`
   flex-direction: column;
 `;
 
-const Navbar = ({ onLogout, push }) => {
+const Navbar = ({ onLogout, history }) => {
   const user = auth.getUser();
 
   function handleLogout() {
-    onLogout(push);
+    onLogout(history.push);
   }
 
   return (
@@ -39,7 +39,7 @@ const Navbar = ({ onLogout, push }) => {
             />
             <DesktopNav onLogout={handleLogout} user={pick(user, DesktopNav.props)} />
           </HeaderDiv>
-          : <MobileNav onLogout={handleLogout} push={push} user={pick(user, MobileNav.props)} />
+          : <MobileNav onLogout={handleLogout} push={history.push} user={pick(user, MobileNav.props)} />
         }
       </Media>
       <ErrorBanner />
@@ -48,8 +48,10 @@ const Navbar = ({ onLogout, push }) => {
 };
 
 Navbar.propTypes = {
-  onLogout: PropTypes.func.isRequired,
-  push: PropTypes.func.isRequired
+  history: PropTypes.shape({
+    push: PropTypes.func.isRequired
+  }).isRequired,
+  onLogout: PropTypes.func.isRequired
 };
 
 export default withRouter(Navbar);
