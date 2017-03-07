@@ -3,9 +3,9 @@
   "version": "1.0.0",
   "description": "Manage the challenge process for the Ohio State University Marching Band",
   "scripts": {
-    "build": "node client/scripts/start.js",
+    "build": "node client/scripts/build.js",
     "heroku-prebuild": "yarn install",
-    "heroku-postbuild": "bin/client-build",
+    "heroku-postbuild": "bin/client_build",
     "test": "eslint . —ext js,jsx",
     "start": "node client/scripts/start.js"
   },
