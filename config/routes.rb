@@ -4,6 +4,7 @@ Rails.application.routes.draw do
     post 'user_token' => 'user_token#create'
 
     resources :users, only: [:index, :show], constraints: { id: /[0-z\.]+/ }
+    get 'users/profile/:id', to: 'users#profile', constraints: { id: /[0-z\.]+/ }
   end
 
   get '*path', to: 'index#index'

@@ -2,10 +2,11 @@ import React from 'react';
 import pick from 'lodash.pick';
 import styled from 'styled-components';
 
+import { propTypes as performancePropTypes } from '../../../../data/performance';
 import { propTypes as userPropTypes } from '../../../../data/user';
+import PerformanceWindow from '../../../../components/performance_window';
 import UserHeader from '../../../../components/user_header';
 
-const props = ['firstName', 'lastName', 'role', 'spot'];
 const Container = styled.div`
   align-items: center;
   display: flex;
@@ -13,13 +14,18 @@ const Container = styled.div`
   justify-content: center;
 `;
 
-const UserProfile = (userProps) => (
-  <Container>
-    <UserHeader {...pick(userProps, UserHeader.props)} />
-  </Container>
-);
+const MemberProfile = (props) => {
+  return (
+    <Container>
+      <UserHeader {...pick(props.user, UserHeader.props)} />
+      <PerformanceWindow {...props.nextPerformance} />
+    </Container>
+  );
+};
 
-UserProfile.propTypes = Object.assign({}, pick(userPropTypes, props));
-UserProfile.props = props;
+MemberProfile.propTypes = {
+  nextPerformance: React.PropTypes.shape(performancePropTypes),
+  user: React.PropTypes.shape(userPropTypes).isRequired
+};
 
-export default UserProfile;
+export default MemberProfile;

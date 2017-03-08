@@ -1,5 +1,4 @@
 import React from 'react';
-import pick from 'lodash.pick';
 
 import { fetch, helpers } from '../../../data/user';
 import AdminProfile from './components/admin_profile';
@@ -8,22 +7,27 @@ import MemberProfile from './components/member_profile';
 export default class Profile extends React.Component {
   constructor(props) {
     super(props);
-    this.state = null;
+    this.state = {
+      nextPerformance: null,
+      user: null
+    };
   }
 
   componentDidMount() {
-    fetch.byId().then(user => this.setState(user));
+    fetch.profile().then((data) => {
+      this.setState(data);
+    });
   }
 
   render() {
-    const { state: user } = this;
+    const { nextPerformance, user } = this.state;
 
     if (user === null) {
       return null;
     }
 
     return helpers.isAdmin(user) || helpers.isDirector(user)
-      ? <AdminProfile {...pick(user, AdminProfile.props)} />
-      : <MemberProfile {...pick(user, MemberProfile.props)} />;
+      ? <AdminProfile nextPerformance={nextPerformance} user={user} />
+      : <MemberProfile nextPerformance={nextPerformance} user={user} />;
   }
 }

@@ -1,4 +1,6 @@
 class Performance < ApplicationRecord
+  scope :next, -> { where('now() < window_close').order(window_open: :asc).first }
+
   # associations
   has_many :challenges
   has_many :disciplines
