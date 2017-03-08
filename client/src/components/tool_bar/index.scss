@@ -1,0 +1,8 @@
+@import "../../base.scss";
+
+.challenges-toolbar {
+  background-color: $challenges-secondary-gray !important;
+  border-bottom: 6px solid $challenges-primary-red !important;
+  padding: 40px 0 !important;
+  position: relative !important;
+}

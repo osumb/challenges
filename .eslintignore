@@ -1,0 +1,4 @@
+client/config/*
+client/scripts/*
+public/*
+node_modules/*

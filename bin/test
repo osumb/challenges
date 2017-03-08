@@ -4,7 +4,7 @@ set -e
 # bin/test: Test script for CI
 
 bundle exec rubocop
-./client/node_modules/.bin/eslint src/**
+npm test
 
 if [ -z "$TRAVIS" ]; then
   echo "==> Creating test database..."

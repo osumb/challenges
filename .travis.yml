@@ -1,9 +1,15 @@
 language: ruby
-cache: bundler
+cache:
+  bundler: true
+  yarn: true
+
 rvm:
   - 2.4.0
 
-sudo: false
+node_js:
+  - 7.7.1
+
+sudo: required
 
 notifications: # set notification options
   email: false
@@ -11,18 +17,20 @@ notifications: # set notification options
 services:
   - postgresql
 
-before_install:
-  - gem update --system # update ruby gems
-  - if [[ `npm -v` != 4* ]]; then npm i -g npm@4; fi # get the latest version of npm
-  - nvm install 7.2.1 # node 7.2.1
-
-install:
-  - bundle install
-  - (cd client && npm install)
-
 before_script:
   - psql -c 'create database challenges_test' -U postgres
   - bundle exec rake db:setup
+
+before_install:
+  - nvm install 7.7.1
+  - sudo apt-key adv --fetch-keys http://dl.yarnpkg.com/debian/pubkey.gpg
+  - echo "deb http://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
+  - sudo apt-get update -qq
+  - sudo apt-get install -y -qq yarn
+
+install:
+  - bundle install
+  - yarn install
 
 script:
   - bin/test

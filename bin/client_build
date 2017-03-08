@@ -3,10 +3,8 @@
 # bin/client-build: Run build for client side code and move up to /public
 
 # Run the build
-cd client
 npm run build
-cd ..
 
 rm -rf public && mkdir public
-mv client/build/* ./public
-rm -rf client/build
+mv build/* ./public
+rm -rf build
