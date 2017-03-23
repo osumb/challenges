@@ -40,7 +40,7 @@ const AdminProfile = (props) => (
 );
 
 AdminProfile.propTypes = {
-  nextPerformance: React.PropTypes.shape(performancePropTypes),
+  nextPerformance: React.PropTypes.shape(performancePropTypes.performance),
   user: React.PropTypes.shape(userPropTypes).isRequired
 };
 
