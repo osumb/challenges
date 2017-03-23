@@ -5,7 +5,17 @@ Rails.application.routes.draw do
 
     resources :users, only: [:index, :show], constraints: { id: /[0-z\.]+/ }
     get 'users/profile/:id', to: 'users#profile', constraints: { id: /[0-z\.]+/ }
+
+    resources :challenges, only: [:create, :destroy]
+    resources :user_challenges, only: [:create, :destroy]
+
+    resources :performances, only: [] do
+      collection do
+        get 'challengeable_users'
+      end
+    end
   end
 
   get '*path', to: 'index#index'
+  root to: 'index#index'
 end
