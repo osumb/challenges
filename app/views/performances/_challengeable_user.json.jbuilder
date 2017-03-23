@@ -6,4 +6,4 @@ json.firstName user[:first_name]
 json.lastName user[:last_name]
 json.openSpot(user[:open_spot].nil? ? false : user[:open_spot])
 json.row Spot.rows.key(user[:row]).upcase
-json.timesChallenged user[:times_challenged]
+json.membersInChallenge user[:members_in_challenge]
