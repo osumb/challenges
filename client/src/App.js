@@ -10,9 +10,8 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
 import './App.scss';
 import { auth } from './utils';
-import AdminView from './user/admin-view';
 import ChallengeEvaluations from './challenge/challenge-evaluations';
-import ChallengeSelect from './challenge/challenge-select';
+import ChallengeSelect from './scenes/performance/challenge_select';
 import CompletedResults from './result/completed-results';
 import CreatePerformance from './performance/create-performance';
 import Login from './navigation/login';
@@ -77,7 +76,6 @@ const App = () => (
             <PrivateRoute exact path="/results/pending" component={PendingResults} />
             <PrivateRoute exact path="/roster" component={Roster} />
             <PrivateRoute exact path="/search" component={UserSearch} />
-            <PrivateRoute exact path="/users/:nameNumber" component={AdminView} />
             <PublicRoute exact path="/login" component={Login} />
             <PublicRoute exact path="/newPassword" component={NewPasswordChangeRequest} />
             <PublicRoute exact path="/resetPassword/:id" component={PasswordChangeRequest} />
