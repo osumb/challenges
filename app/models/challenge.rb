@@ -64,7 +64,7 @@ class Challenge < ApplicationRecord
     errors.add(:users, 'must all be non admin or director')
   end
 
-  # rubocop:disable Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
+  # rubocop:disable Metrics/PerceivedComplexity
   def unique_users_in_challenge
     return if users.nil? || !users.length.positive?
     user_one = users[0]
@@ -72,7 +72,7 @@ class Challenge < ApplicationRecord
     return if user_one.buck_id != users[1]&.buck_id && user_one.buck_id != users[2]&.buck_id && tri_challenge_type?
     errors.add(:users, 'must be unique in a challenge')
   end
-  # rubocop:enable Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
+  # rubocop:enable Metrics/PerceivedComplexity
 
   def no_duplicate_challenged_spots
     challenges = Challenge.where(performance: performance)
