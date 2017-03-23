@@ -4,6 +4,7 @@ import styled from 'styled-components';
 
 import { helpers, propTypes as performancePropTypes } from '../../data/performance';
 import { isEmptyObject } from '../../utils';
+import Typography from '../../components/typography';
 
 const strFormat = 'MMM, Do h:mm A';
 const Container = styled.div`
@@ -16,7 +17,7 @@ export default function PerformanceWindow(performance) {
   if (performance === null || typeof performance === 'undefined' || isEmptyObject(performance)) {
     return (
       <Container>
-        <h2 className="mdc-typography--title">There is no upcoming performance in the system</h2>
+        <Typography category="title">There is no upcoming performance in the system</Typography>
       </Container>
     );
   }
@@ -24,21 +25,21 @@ export default function PerformanceWindow(performance) {
   if (helpers.isWindowOpen(performance)) {
     return (
       <Container>
-        <h2 className="mdc-typography--display1">{performance.name} challenges are now open!</h2>
-        <h2 className="mdc-typography--title mdc-typography--adjust-margin">The window closes at {moment(performance.windowClose).format(strFormat)}</h2>
+        <Typography category="display" number={1}>{performance.name} challenges are now open!</Typography>
+        <Typography category="title">The window closes at {moment(performance.windowClose).format(strFormat)}</Typography>
       </Container>
     );
   }
 
   return (
     <Container>
-      <h2 className="mdc-typography--title">
+      <Typography category="title">
         Challenge signups for {performance.name} open at&nbsp;
         {moment(performance.windowOpen).format(strFormat)} and close at&nbsp;
         {moment(performance.windowClose).format(strFormat)}
-      </h2>
+      </Typography>
     </Container>
   );
 }
 
-PerformanceWindow.propTypes = performancePropTypes;
+PerformanceWindow.propTypes = performancePropTypes.performance;
