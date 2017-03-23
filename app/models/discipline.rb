@@ -6,5 +6,5 @@ class Discipline < ApplicationRecord
   # validations
   validates :reason, presence: true
   validates :open_spot, presence: true
-  validates :allowed_to_challenge, presence: true
+  validates :allowed_to_challenge, inclusion: { in: [true, false] }
 end
