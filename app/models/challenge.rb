@@ -41,7 +41,6 @@ class Challenge < ApplicationRecord
     errors.add(:users, 'only three users are allowed in a tri challenge')
   end
 
-  # rubocop:disable Metrics/AbcSize
   def all_users_have_same_instrument_and_part
     return if users.nil? || !users.length.positive?
     instrument = users[0].instrument
@@ -50,14 +49,13 @@ class Challenge < ApplicationRecord
     return if users_filter.length == users.length
     errors.add(:users, 'must all have the same instrument and part')
   end
-  # rubocop:enable Metrics/AbcSize
 
   def no_users_are_admin
     return if users.all? { |user| user.member? || user.squad_leader? }
     errors.add(:users, 'must all be non admin or director')
   end
 
-  # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
+  # rubocop:disable Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
   def unique_users_in_challenge
     return if users.nil? || !users.length.positive?
     user_one = users[0]
@@ -65,7 +63,7 @@ class Challenge < ApplicationRecord
     return if user_one.buck_id != users[1]&.buck_id && user_one.buck_id != users[2]&.buck_id && tri_challenge_type?
     errors.add(:users, 'must be unique in a challenge')
   end
-  # rubocop:enable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
+  # rubocop:enable Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
 
   def no_duplicate_challenged_spots
     challenges = Challenge.where(performance: performance)

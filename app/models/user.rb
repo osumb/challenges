@@ -50,7 +50,6 @@ class User < ApplicationRecord
     find_by buck_id: payload['sub']
   end
 
-  # rubocop:disable Metrics/AbcSize
   def to_token_payload
     payload = {}
 
@@ -65,7 +64,6 @@ class User < ApplicationRecord
 
     payload
   end
-  # rubocop:enable Metrics/AbcSize
 
   def alternate?
     spot.file > 12
@@ -83,7 +81,6 @@ class User < ApplicationRecord
 
   private
 
-  # rubocop:disable Metrics/AbcSize
   def can_alternate_challenge_for_performance?(performance)
     return false if challenges.select { |c| c.performance.id == performance.id }.length.positive?
     disciplines.select { |d| d.performance&.id == performance.id }.length <= 0
@@ -94,7 +91,6 @@ class User < ApplicationRecord
     return false if disciplines.select { |d| d.performance.id == performance.id }.length <= 0
     disciplines.select { |d| d.performance.id == performance.id }.first&.allowed_to_challenge
   end
-  # rubocop:enable Metrics/AbcSize
 
   def performing_member_has_spot
     return if admin? || director?
@@ -108,7 +104,7 @@ class User < ApplicationRecord
     errors.add(:role, 'admin or director can\'t have a spot')
   end
 
-  # rubocop:disable Metrics/CyclomaticComplexity, Metrics/AbcSize
+  # rubocop:disable Metrics/CyclomaticComplexity
   def valid_instrument_part_for_user
     return if admin? || director?
     return if instrument.nil? || part.nil?
@@ -116,9 +112,9 @@ class User < ApplicationRecord
     return if Spot.valid_instrument_part_for_row(Spot.rows[spot.row], User.instruments[instrument], User.parts[part])
     errors.add(:spot, "row #{spot.row}, can't be a #{part} #{instrument}")
   end
-  # rubocop:enable Metrics/CyclomaticComplexity, Metrics/AbcSize
+  # rubocop:enable Metrics/CyclomaticComplexity
 
-  # rubocop:disable Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity, Metrics/AbcSize
+  # rubocop:disable Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
   def valid_instrument_part_for_admin
     return unless admin? || director?
     return if instrument_any? || any_part?
@@ -130,7 +126,7 @@ class User < ApplicationRecord
     return if instrument_sousaphone? && valid_sousaphone_part(User.parts[part])
     errors.add(:admin, "with instrument #{instrument} can't have part #{part}")
   end
-  # rubocop:enable Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity, Metrics/AbcSize
+  # rubocop:enable Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
 
   def downcase_buck_id
     buck_id.try(:downcase!)
