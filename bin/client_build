@@ -3,7 +3,7 @@
 # bin/client-build: Run build for client side code and move up to /public
 
 # Run the build
-npm run build
+yarn run build
 
 rm -rf public && mkdir public
 mv build/* ./public
