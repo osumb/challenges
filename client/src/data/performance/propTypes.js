@@ -1,11 +1,22 @@
 import { PropTypes } from 'react';
 
-const propTypes = {
-  date: PropTypes.string.isRequired,
-  id: PropTypes.number.isRequired,
-  name: PropTypes.string.isRequired,
-  windowClose: PropTypes.string.isRequired,
-  windowOpen: PropTypes.string.isRequired
+const challengeableUser = {
+  file: PropTypes.number.isRequired,
+  firstName: PropTypes.string.isRequired,
+  lastName: PropTypes.string.isRequired,
+  membersInChallenge: PropTypes.number.isRequired,
+  openSpot: PropTypes.bool.isRequired,
+  row: PropTypes.string.isRequired
+};
+const performance = {
+  date: PropTypes.string,
+  id: PropTypes.number,
+  name: PropTypes.string,
+  windowClose: PropTypes.string,
+  windowOpen: PropTypes.string
 };
 
-export default propTypes;
+export default {
+  challengeableUser,
+  performance
+};
