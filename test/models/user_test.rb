@@ -210,16 +210,16 @@ class UserTest < ActiveSupport::TestCase
     refute user.can_challenge_for_performance? performance
   end
 
-  test 'a regular member whoe has a discipline with flag allowed_to_challenge is allowed_to_challenge' do
-    user = build(:user, spot: build(:spot, row: :a, file: 13))
+  test 'a regular member who has a discipline with flag allowed_to_challenge is allowed_to_challenge' do
+    user = build(:user, spot: build(:spot, row: :a, file: 11))
     performance = build(:performance)
     discipline = build(:discipline, performance: performance, allowed_to_challenge: true)
     user.disciplines << discipline
-    refute user.can_challenge_for_performance? performance
+    assert user.can_challenge_for_performance? performance
   end
 
-  test 'a regular member whoe has a discipline with flag allowed_to_challenge, but has alread made a challenge, isn\'t allowed_to_challenge' do
-    user = build(:user, spot: build(:spot, row: :a, file: 13))
+  test 'a regular member who has a discipline with flag allowed_to_challenge, but has already made a challenge, isn\'t allowed_to_challenge' do
+    user = build(:user, spot: build(:spot, row: :a, file: 11))
     performance = build(:performance)
     discipline = build(:discipline, performance: performance, allowed_to_challenge: true)
     challenge = build(:challenge, performance: performance)

@@ -73,6 +73,7 @@ class User < ApplicationRecord
 
   def can_challenge_for_performance?(performance)
     return false if admin? || director?
+    return false if performance.nil? || !performance.window_open?
     if alternate?
       can_alternate_challenge_for_performance? performance
     else
@@ -90,8 +91,8 @@ class User < ApplicationRecord
 
   def can_member_challenge_for_performance?(performance)
     return false if challenges.select { |c| c.performance.id == performance.id }.length.positive?
-    return false if disciplines.select { |d| d.performance == performance.id }.length <= 0
-    disciplines.select { |d| d.performance == performance.id }[0].allowed_to_challenge
+    return false if disciplines.select { |d| d.performance.id == performance.id }.length <= 0
+    disciplines.select { |d| d.performance.id == performance.id }.first&.allowed_to_challenge
   end
   # rubocop:enable Metrics/AbcSize
 
