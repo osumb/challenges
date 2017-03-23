@@ -1,4 +1,5 @@
+build/*
 client/config/*
 client/scripts/*
 public/*
-node_modules/*
+node_modules/**/*
