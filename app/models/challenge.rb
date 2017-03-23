@@ -26,23 +26,24 @@ class Challenge < ApplicationRecord
   def valid_normal_challenge
     return if open_spot_challenge_type? || tri_challenge_type?
     return if users.length == 2
-    errors.add(:users, 'only 2 users are allowed in a normal challenge')
+    errors.add(:users, 'only two users are allowed in a normal challenge')
   end
 
   def valid_open_spot_challenge
     return if normal_challenge_type? || tri_challenge_type?
-    return if users.length == 2
-    errors.add(:users, 'only 2 users are allowed in an open spot challenge')
+    return if users.length <= 2
+    errors.add(:users, 'no more than two users are allowed in an open spot challenge')
   end
 
   def valid_tri_challenge
     return if normal_challenge_type? || open_spot_challenge_type?
     return if users.length == 3
-    errors.add(:users, 'only 3 users are allowed in a tri challenge')
+    errors.add(:users, 'only three users are allowed in a tri challenge')
   end
 
   # rubocop:disable Metrics/AbcSize
   def all_users_have_same_instrument_and_part
+    return if users.nil? || !users.length.positive?
     instrument = users[0].instrument
     part = users[0].part
     users_filter = users.select { |user| user.instrument == instrument && user.part == part }
@@ -56,14 +57,15 @@ class Challenge < ApplicationRecord
     errors.add(:users, 'must all be non admin or director')
   end
 
-  # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity
+  # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
   def unique_users_in_challenge
+    return if users.nil? || !users.length.positive?
     user_one = users[0]
     return if user_one.buck_id != users[1]&.buck_id && (normal_challenge_type? || open_spot_challenge_type?)
     return if user_one.buck_id != users[1]&.buck_id && user_one.buck_id != users[2]&.buck_id && tri_challenge_type?
     errors.add(:users, 'must be unique in a challenge')
   end
-  # rubocop:enable Metrics/AbcSize, Metrics/CyclomaticComplexity
+  # rubocop:enable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
 
   def no_duplicate_challenged_spots
     challenges = Challenge.where(performance: performance)
