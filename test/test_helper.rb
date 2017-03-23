@@ -19,7 +19,9 @@ class ActiveSupport::TestCase
 
   DatabaseCleaner.strategy = :truncation
   DatabaseCleaner.logger = Rails.logger
+  load Rails.root.join('db', 'seeds.rb')
 
   setup { DatabaseCleaner.start }
+
   teardown { DatabaseCleaner.clean }
 end
