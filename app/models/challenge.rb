@@ -21,6 +21,15 @@ class Challenge < ApplicationRecord
   validate :unique_users_in_challenge
   validate :no_duplicate_challenged_spots
 
+  # rubocop:disable Metrics/CyclomaticComplexity
+  def full?
+    return true if normal_challenge_type? && users.length == 2
+    return true if open_spot_challenge_type? && users.length == 2
+    return trye if tri_challenge_type? && users.length == 3
+    false
+  end
+  # rubpcop:enable Metrics/CyclomaticComplexity
+
   private
 
   def valid_normal_challenge
