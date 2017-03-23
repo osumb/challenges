@@ -5,7 +5,7 @@ ActiveRecord::Migration.maintain_test_schema!
 require 'simplecov'
 SimpleCov.start
 require 'coveralls'
-Coveralls.wear!
+Coveralls.wear! 'rails'
 
 require File.expand_path('../../config/environment', __FILE__)
 require 'rails/test_help'
@@ -19,7 +19,8 @@ class ActiveSupport::TestCase
 
   DatabaseCleaner.strategy = :truncation
   DatabaseCleaner.logger = Rails.logger
-  load Rails.root.join('db', 'seeds.rb')
+
+  load Rails.root.join('db', 'seeds.rb') unless ENV['TRAVIS']
 
   setup { DatabaseCleaner.start }
 
