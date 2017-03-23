@@ -37,6 +37,7 @@ const request = (url, { method, body }, errorMessage) =>
   })
   .then((response) => {
     if (!response.ok) throw response;
+    if (response.status === 204) return response;
 
     return response.json()
     .then(({ token, ...rest }) => {
@@ -44,7 +45,8 @@ const request = (url, { method, body }, errorMessage) =>
         refreshToken(token);
       }
       return rest;
-    });
+    })
+    .catch();
   })
   .catch((response) => {
     if (errorMessage) {
