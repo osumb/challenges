@@ -14,7 +14,7 @@ class UsersController < ApplicationController
   end
 
   def profile
-    @user = current_user
+    @user = User.includes(:spot, :challenges, :disciplines).find_by(buck_id: current_user.buck_id)
     @next_performance = Performance.next
   end
 
