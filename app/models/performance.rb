@@ -1,6 +1,4 @@
 class Performance < ApplicationRecord
-  scope :next, -> { where('now() < window_close').order(window_open: :asc).first }
-
   # associations
   has_many :challenges
   has_many :disciplines
@@ -12,6 +10,15 @@ class Performance < ApplicationRecord
   validates :window_close, presence: true, uniqueness: true
 
   validate :window_open_before_window_close
+
+  def self.next
+    where('now() < window_close').order(window_open: :asc).first
+  end
+
+  def window_open?
+    now = Time.zone.now
+    window_open < now && now < window_close
+  end
 
   private
 
