@@ -1,9 +1,11 @@
+require 'simplecov'
+SimpleCov.start
+
+require 'codecov'
+SimpleCov.formatter = SimpleCov::Formatter::Codecov
+
 ENV['RAILS_ENV'] ||= 'test'
 ActiveRecord::Migration.maintain_test_schema!
-
-# code coverage tools
-require 'coveralls'
-Coveralls.wear! 'rails'
 
 require File.expand_path('../../config/environment', __FILE__)
 require 'rails/test_help'
