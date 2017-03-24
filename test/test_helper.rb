@@ -2,8 +2,6 @@ ENV['RAILS_ENV'] ||= 'test'
 ActiveRecord::Migration.maintain_test_schema!
 
 # code coverage tools
-require 'simplecov'
-SimpleCov.start
 require 'coveralls'
 Coveralls.wear! 'rails'
 
@@ -19,8 +17,6 @@ class ActiveSupport::TestCase
 
   DatabaseCleaner.strategy = :truncation
   DatabaseCleaner.logger = Rails.logger
-
-  load Rails.root.join('db', 'seeds.rb') unless ENV['TRAVIS']
 
   setup { DatabaseCleaner.start }
 

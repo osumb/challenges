@@ -204,7 +204,6 @@ DEPENDENCIES
   rails (~> 5.0.1)
   rubocop
   rubyXL (~> 3.3)
-  simplecov
   spring
   spring-watcher-listen (~> 2.0.0)
 
