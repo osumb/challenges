@@ -1,6 +1,6 @@
 require 'rubyXL'
 
-def seed_challenges
+def seed_challenges(performance)
   challenges_worksheet = RubyXL::Parser.parse(Rails.root.join('lib', 'seed', 'challenges.xlsx'))[0]
   challenges = []
   i = 1
@@ -11,7 +11,7 @@ def seed_challenges
     file_in_challenge = row[1].value[1..-1]
     challenged_spot = Spot.where(row: row_in_challenge, file: file_in_challenge).first
     challenge = Challenge.new(challenge_type: :normal)
-    challenge.performance = past_performance
+    challenge.performance = performance
     challenge.spot = challenged_spot
     challenge.stage = :done
     challenger = User.where(buck_id: challenger_buck_id).first
@@ -29,4 +29,8 @@ def seed_challenges
     i += 1
   end
   challenges
+end
+
+def test_challenges
+
 end

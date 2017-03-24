@@ -1,10 +1,9 @@
 require 'rubyXL'
 
-def seed_disciplines
+def seed_disciplines(performance)
   worksheet = RubyXL::Parser.parse(Rails.root.join('lib', 'seed', 'disciplines.xlsx'))[0]
   i = 1
   disciplines = []
-  performance = Performance.next
   while !worksheet[i].nil?
     row = worksheet[i]
     buck_id = row[0].value
