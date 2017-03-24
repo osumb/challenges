@@ -16,4 +16,8 @@ FactoryGirl.define do
     role User.roles[:admin]
     spot nil
   end
+
+  factory :alternate, parent: :user do
+    association :spot, row: Spot.rows[:a], file: 13
+  end
 end
