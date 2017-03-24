@@ -58,4 +58,32 @@ class ChallengeTest < ActiveSupport::TestCase
     refute challenge.valid?
     assert challenge.errors.full_messages.include? 'Users must be unique in a challenge'
   end
+
+  test 'a normal challenge with two users is full' do
+    challenge = build(:normal_challenge)
+    user = build(:user)
+    challenge.users = [user, user]
+    assert challenge.full?
+  end
+
+  test 'an open spot challenge with one user is not full' do
+    challenge = build(:open_spot_challenge)
+    user = build(:user)
+    challenge.users = [user]
+    refute challenge.full?
+  end
+
+  test 'an open spot challenge with two users is full' do
+    challenge = build(:open_spot_challenge)
+    user = build(:user)
+    challenge.users = [user, user]
+    assert challenge.full?
+  end
+
+  test 'a tri challenge with three users is full' do
+    challenge = build(:tri_challenge)
+    user = build(:user)
+    challenge.users = [user, user, user]
+    assert challenge.full?
+  end
 end

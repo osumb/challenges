@@ -25,7 +25,7 @@ class Challenge < ApplicationRecord
   def full?
     return true if normal_challenge_type? && users.length == 2
     return true if open_spot_challenge_type? && users.length == 2
-    return trye if tri_challenge_type? && users.length == 3
+    return true if tri_challenge_type? && users.length == 3
     false
   end
   # rubpcop:enable Metrics/CyclomaticComplexity
