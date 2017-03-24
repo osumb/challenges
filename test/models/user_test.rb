@@ -1,5 +1,4 @@
 require 'test_helper'
-# rubocop:disable Metrics/ClassLength, Metrics/LineLength
 class UserTest < ActiveSupport::TestCase
   test 'user must have a first name' do
     user = build(:user, first_name: nil)

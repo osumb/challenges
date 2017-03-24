@@ -1,6 +1,5 @@
 require 'test_helper'
 
-# rubocop:disable Metrics/ClassLength
 class SpotTest < ActiveSupport::TestCase
   test 'spot must have row' do
     spot = build(:spot, row: nil)

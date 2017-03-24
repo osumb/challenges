@@ -23,9 +23,13 @@ Documentation:
 
 Metrics/ClassLength:
   Max: 120
+  Exclude:
+    - 'test/**/*'
 
 Metrics/LineLength:
   Max: 120
+  Exclude:
+    - 'test/**/*'
 
 Metrics/BlockLength:
   Exclude:
@@ -39,3 +43,7 @@ ClassAndModuleChildren:
 
 Metrics/AbcSize:
   Enabled: false
+
+Metrics/MethodLength:
+  Exclude:
+    - 'test/**/*'
