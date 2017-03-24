@@ -71,8 +71,9 @@
     "whatwg-fetch": "^1.0.0"
   },
   "devDependencies": {
-    "@btmills/eslint-config-btmills": "^1.0.0-beta.6",
+    "@btmills/eslint-config-btmills": "^2.0.0",
     "eslint": "3.8.1",
+    "eslint-plugin-import": "^2.2.0",
     "eslint-plugin-react": "^6.3.0"
   },
   "jest": {

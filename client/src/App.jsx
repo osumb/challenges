@@ -10,7 +10,7 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
 import './App.scss';
 import { auth } from './utils';
-import ChallengeEvaluations from './challenge/challenge-evaluations';
+import ChallengeEvaluations from './challenge/challenge-evaluations.jsx';
 import ChallengeSelect from './scenes/performance/challenge_select';
 import CompletedResults from './result/completed-results';
 import CreatePerformance from './performance/create-performance';
