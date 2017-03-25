@@ -1,5 +1,4 @@
 require 'test_helper'
-require_relative '../../lib/seed/users'
 
 def end_point
   '/api/performances/challengeable_users'
@@ -25,24 +24,15 @@ def shape?(c_user)
 end
 
 class ChallengeableUsersTest < ActionDispatch::IntegrationTest
-  def authenticated_header(user)
-    token = Knock::AuthToken.new(payload: user.to_token_payload).token
-
-    {
-      'Accept': 'application/json, text/html',
-      'Authorization': "Bearer #{token}"
-    }
-  end
-
   test 'it responds successfully' do
-    user = create(:alternate)
+    user = create(:alternate_user)
     get end_point, headers: authenticated_header(user)
 
     assert_response :success
   end
 
   test 'it returns an array' do
-    user = create(:alternate)
+    user = create(:alternate_user)
     get end_point, headers: authenticated_header(user)
 
     challengeable_users = JSON.parse(response.body)['challengeableUsers']
@@ -51,10 +41,8 @@ class ChallengeableUsersTest < ActionDispatch::IntegrationTest
 
   test 'it returns the correct shape of data' do
     create(:performance)
-    challenger_spot = create(:spot, row: Spot.rows[:a], file: 13)
-    challengee_spot = create(:spot, row: Spot.rows[:a], file: 2)
-    challenger = create(:alternate, instrument: User.instruments[:trumpet], part: User.parts[:solo], spot: challenger_spot)
-    create(:user, instrument: User.instruments[:trumpet], part: User.parts[:solo], spot: challengee_spot, buck_id: "#{challenger.buck_id}1", email: "#{challenger.email}a")
+    challenger = create(:alternate_user, :trumpet, :solo, :spot_a13)
+    create(:user, :trumpet, :solo, :spot_a2)
 
     get end_point, headers: authenticated_header(challenger)
 
@@ -64,10 +52,8 @@ class ChallengeableUsersTest < ActionDispatch::IntegrationTest
   end
 
   test 'it returns an empty array if there is no current performance' do
-    challenger_spot = create(:spot, row: Spot.rows[:a], file: 13)
-    challengee_spot = create(:spot, row: Spot.rows[:a], file: 2)
-    challenger = create(:alternate, instrument: User.instruments[:trumpet], part: User.parts[:solo], spot: challenger_spot)
-    create(:user, instrument: User.instruments[:trumpet], part: User.parts[:solo], spot: challengee_spot, buck_id: "#{challenger.buck_id}1", email: "#{challenger.email}a")
+    challenger = create(:alternate_user, :trumpet, :solo, :spot_a13)
+    create(:user, :trumpet, :solo, :spot_a2)
 
     get end_point, headers: authenticated_header(challenger)
 
@@ -77,10 +63,8 @@ class ChallengeableUsersTest < ActionDispatch::IntegrationTest
 
   test 'it returns an empty array if the requesting user is an admin' do
     create(:performance)
-    challengee_spot = create(:spot, row: Spot.rows[:a], file: 2)
-    challenger = create(:admin, instrument: User.instruments[:trumpet], part: User.parts[:solo])
-    create(:user, instrument: User.instruments[:trumpet], part: User.parts[:solo], spot: challengee_spot, buck_id: "#{challenger.buck_id}1", email: "#{challenger.email}a")
-
+    challenger = create(:admin_user, :trumpet, :solo)
+    create(:user, :trumpet, :solo, :spot_a2)
     get end_point, headers: authenticated_header(challenger)
 
     challengeable_users = JSON.parse(response.body)['challengeableUsers']
