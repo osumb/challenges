@@ -37,15 +37,15 @@ class ChallengeTest < ActiveSupport::TestCase
 
   test 'users in a challenge must have the same instrument and part' do
     challenge = build(:normal_challenge)
-    challenge.users << build(:user, instrument: :trumpet, part: :solo)
-    challenge.users << build(:user, instrument: :trumpet, part: :first)
+    challenge.users << build(:user, :trumpet, :solo)
+    challenge.users << build(:user, :trumpet, :first)
     refute challenge.valid?
     assert challenge.errors.full_messages.include? 'Users must all have the same instrument and part'
   end
 
   test 'users in a challenge aren\'t admins or directors' do
     challenge = build(:normal_challenge)
-    challenge.users << build(:admin)
+    challenge.users << build(:admin_user)
     challenge.users << build(:user)
     refute challenge.valid?
     assert challenge.errors.full_messages.include? 'Users must all be non admin or director'

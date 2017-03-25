@@ -48,14 +48,14 @@ class UserTest < ActiveSupport::TestCase
   end
 
   test 'admin can\'t have a spot' do
-    user = build(:admin, spot: build(:spot))
+    user = build(:admin_user, :spot_a1)
     refute user.valid?
     assert_equal 'Role admin or director can\'t have a spot', user.errors.full_messages.join
   end
 
   test 'admin with instrument any can have all parts' do
     User.parts.each do |key, _value|
-      user = build(:admin, instrument: User.instruments[:any], part: User.parts[key])
+      user = build(:admin_user, :any, part: User.parts[key])
       assert user.valid?
     end
   end
@@ -70,11 +70,11 @@ class UserTest < ActiveSupport::TestCase
       User.parts[:flugel]
     ]
     User.parts.select { |_key, value| trumpet_parts.include? value }.each do |key, _value|
-      user = build(:admin, instrument: User.instruments[:trumpet], part: User.parts[key])
+      user = build(:admin_user, :trumpet, part: User.parts[key])
       assert user.valid?
     end
     User.parts.reject { |_key, value| trumpet_parts.include? value }.each do |key, _value|
-      user = build(:admin, instrument: User.instruments[:trumpet], part: User.parts[key])
+      user = build(:admin_user, :trumpet, part: User.parts[key])
       refute user.valid?
       assert_equal "Admin with instrument trumpet can't have part #{key}", user.errors.full_messages.join
     end
@@ -87,11 +87,11 @@ class UserTest < ActiveSupport::TestCase
       User.parts[:second]
     ]
     User.parts.select { |_key, value| mellophone_parts.include? value }.each do |key, _value|
-      user = build(:admin, instrument: User.instruments[:mellophone], part: User.parts[key])
+      user = build(:admin_user, :mellophone, part: User.parts[key])
       assert user.valid?
     end
     User.parts.reject { |_key, value| mellophone_parts.include? value }.each do |key, _value|
-      user = build(:admin, instrument: User.instruments[:mellophone], part: User.parts[key])
+      user = build(:admin_user, :mellophone, part: User.parts[key])
       refute user.valid?
       assert_equal "Admin with instrument mellophone can't have part #{key}", user.errors.full_messages.join
     end
@@ -105,11 +105,11 @@ class UserTest < ActiveSupport::TestCase
       User.parts[:bass]
     ]
     User.parts.select { |_key, value| trombone_parts.include? value }.each do |key, _value|
-      user = build(:admin, instrument: User.instruments[:trombone], part: User.parts[key])
+      user = build(:admin_user, :trombone, part: User.parts[key])
       assert user.valid?
     end
     User.parts.reject { |_key, value| trombone_parts.include? value }.each do |key, _value|
-      user = build(:admin, instrument: User.instruments[:trombone], part: User.parts[key])
+      user = build(:admin_user, :trombone, part: User.parts[key])
       refute user.valid?
       assert_equal "Admin with instrument trombone can't have part #{key}", user.errors.full_messages.join
     end
@@ -121,11 +121,11 @@ class UserTest < ActiveSupport::TestCase
       User.parts[:first]
     ]
     User.parts.select { |_key, value| baritone_parts.include? value }.each do |key, _value|
-      user = build(:admin, instrument: User.instruments[:baritone], part: User.parts[key])
+      user = build(:admin_user, :baritone, part: User.parts[key])
       assert user.valid?
     end
     User.parts.reject { |_key, value| baritone_parts.include? value }.each do |key, _value|
-      user = build(:admin, instrument: User.instruments[:baritone], part: User.parts[key])
+      user = build(:admin_user, :baritone, part: User.parts[key])
       refute user.valid?
       assert_equal "Admin with instrument baritone can't have part #{key}", user.errors.full_messages.join
     end
@@ -140,11 +140,11 @@ class UserTest < ActiveSupport::TestCase
       User.parts[:bass]
     ]
     User.parts.select { |_key, value| percussion_parts.include? value }.each do |key, _value|
-      user = build(:admin, instrument: User.instruments[:percussion], part: User.parts[key])
+      user = build(:admin_user, :percussion, part: User.parts[key])
       assert user.valid?
     end
     User.parts.reject { |_key, value| percussion_parts.include? value }.each do |key, _value|
-      user = build(:admin, instrument: User.instruments[:percussion], part: User.parts[key])
+      user = build(:admin_user, :percussion, part: User.parts[key])
       refute user.valid?
       assert_equal "Admin with instrument percussion can't have part #{key}", user.errors.full_messages.join
     end
@@ -156,11 +156,11 @@ class UserTest < ActiveSupport::TestCase
       User.parts[:first]
     ]
     User.parts.select { |_key, value| sousaphone_parts.include? value }.each do |key, _value|
-      user = build(:admin, instrument: User.instruments[:sousaphone], part: User.parts[key])
+      user = build(:admin_user, :sousaphone, part: User.parts[key])
       assert user.valid?
     end
     User.parts.reject { |_key, value| sousaphone_parts.include? value }.each do |key, _value|
-      user = build(:admin, instrument: User.instruments[:sousaphone], part: User.parts[key])
+      user = build(:admin_user, :sousaphone, part: User.parts[key])
       refute user.valid?
       assert_equal "Admin with instrument sousaphone can't have part #{key}", user.errors.full_messages.join
     end
@@ -168,19 +168,19 @@ class UserTest < ActiveSupport::TestCase
 
   test 'two users can\'t have the same spot' do
     user_a = create(:user)
-    user_b = build(:user, spot: user_a.spot, email: user_a.email + '1', buck_id: user_a.buck_id + '1')
+    user_b = build(:user, spot: user_a.spot)
     refute user_b.valid?
     assert_equal 'Spot has already been taken', user_b.errors.full_messages.join
   end
 
   test 'an alternate with no disciplines can challenge for a performance' do
-    user = build(:user, spot: build(:spot, row: :a, file: 13))
+    user = build(:alternate_user)
     performance = build(:performance)
     assert user.can_challenge_for_performance? performance
   end
 
   test 'an alternate who has already made a challenge can\'t challenge again for a performance' do
-    user = build(:user, spot: build(:spot, row: :a, file: 13))
+    user = build(:alternate_user)
     performance = build(:performance)
     challenge = build(:challenge, performance: performance)
     user.challenges << challenge
@@ -188,7 +188,7 @@ class UserTest < ActiveSupport::TestCase
   end
 
   test 'an alternate with a discipline record for a performance can\'t challenge for that performance' do
-    user = build(:user, spot: build(:spot, row: :a, file: 13))
+    user = build(:alternate_user)
     performance = build(:performance)
     discipline = build(:discipline, performance: performance)
     user.disciplines << discipline
@@ -210,7 +210,7 @@ class UserTest < ActiveSupport::TestCase
   end
 
   test 'a regular member who has a discipline with flag allowed_to_challenge is allowed_to_challenge' do
-    user = build(:user, spot: build(:spot, row: :a, file: 11))
+    user = build(:user, :spot_a11)
     performance = build(:performance)
     discipline = build(:discipline, performance: performance, allowed_to_challenge: true)
     user.disciplines << discipline
@@ -218,7 +218,7 @@ class UserTest < ActiveSupport::TestCase
   end
 
   test 'a regular member who has a discipline with flag allowed_to_challenge, but has already made a challenge, isn\'t allowed_to_challenge' do
-    user = build(:user, spot: build(:spot, row: :a, file: 11))
+    user = build(:user, :spot_a11)
     performance = build(:performance)
     discipline = build(:discipline, performance: performance, allowed_to_challenge: true)
     challenge = build(:challenge, performance: performance)
@@ -228,7 +228,7 @@ class UserTest < ActiveSupport::TestCase
   end
 
   test 'an admin can\'t challenge for any performance' do
-    user = build(:admin)
+    user = build(:admin_user)
     performance = build(:performance)
     refute user.can_challenge_for_performance? performance
   end
