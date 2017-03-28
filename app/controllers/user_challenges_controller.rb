@@ -15,16 +15,34 @@ class UserChallengesController < ApplicationController
     uc = UserChallenge.includes(:challenge).find_by id: params[:id]
     challenge = uc.challenge
 
-    if challenge.user_challenges.length <= 1 && uc.destroy && challenge.destroy
+    if challenge.open_spot_challenge_type?
+      remove_user_from_open_spot_challenge uc
+    else
+      remove_user_from_non_open_spot_challenge uc
+    end
+  end
+
+  private
+
+  def remove_user_from_open_spot_challenge(user_challenge)
+    challenge = user_challenge.challenge
+    if challenge.users.length <= 1 && user_challenge.destroy && challenge.destroy
       head 204
-    elsif uc.destroy
+    elsif user_challenge.destroy
       head 204
     else
       render json: { resource: 'user_challenge', errors: [challenge: 'could not be destroyed'] }, status: 500
     end
   end
 
-  private
+  def remove_user_from_non_open_spot_challenge(user_challenge)
+    challenge = user_challenge.challenge
+    if challenge.destroy
+      head 204
+    else
+      render json: { resource: 'user_challenge', errors: [challenge: 'could not be destroyed'] }, status: 500
+    end
+  end
 
   def ensure_challenge_exists!
     return unless Challenge.find_by(id: params[:challenge_id]).nil?
@@ -44,9 +62,10 @@ class UserChallengesController < ApplicationController
 
   def ensure_correct_user_for_delete!
     user = current_user
-    user_challenge = UserChallenge.includes(:user).find_by id: params[:id]
     return if user.admin?
-    return if user_challenge.user.id == user.id
+    user_challenge = UserChallenge.includes(:user).find_by id: params[:id]
+    challenge = user_challenge.challenge
+    return if UserChallenge.can_user_remove_self_from_challenge? user, challenge, user_challenge
     render json: { resource: 'user_challenge', errors: [user: 'doesn\'t have access to that challenge'] }, status: 403
   end
 end

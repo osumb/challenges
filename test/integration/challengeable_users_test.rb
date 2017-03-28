@@ -1,29 +1,29 @@
 require 'test_helper'
 
-def end_point
-  '/api/performances/challengeable_users'
-end
-
-def challengeable_user_shape
-  {
-    'buckId': true,
-    'challengeId': true,
-    'challengeType': true,
-    'file': true,
-    'firstName': true,
-    'lastName': true,
-    'openSpot': true,
-    'row': true,
-    'membersInChallenge': true
-  }
-end
-
-def shape?(c_user)
-  return false unless c_user.keys.length == challengeable_user_shape.keys.length
-  c_user.all? { |key, _| challengeable_user_shape[key.to_sym] }
-end
-
 class ChallengeableUsersTest < ActionDispatch::IntegrationTest
+  def end_point
+    '/api/performances/challengeable_users/'
+  end
+
+  def challengeable_user_shape
+    {
+      'buckId': true,
+      'challengeId': true,
+      'challengeType': true,
+      'file': true,
+      'firstName': true,
+      'lastName': true,
+      'openSpot': true,
+      'row': true,
+      'membersInChallenge': true
+    }
+  end
+
+  def shape?(c_user)
+    return false unless c_user.keys.length == challengeable_user_shape.keys.length
+    c_user.all? { |key, _| challengeable_user_shape[key.to_sym] }
+  end
+
   test 'it responds successfully' do
     user = create(:alternate_user)
     get end_point, headers: authenticated_header(user)

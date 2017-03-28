@@ -9,6 +9,7 @@ class ChallengesController < ApplicationController
   before_action :ensure_enough_users_exist_for_tri_challenge!, only: [:create]
   before_action :ensure_correct_challenge_type!, only: [:create]
   before_action :ensure_correct_user_for_delete!, only: [:destroy]
+  before_action :ensure_challenge_can_be_destroyed!, only: [:destroy]
 
   def create
     spot = Spot.find_by row: Spot.rows[params[:row].downcase], file: params[:file]
@@ -180,5 +181,15 @@ class ChallengesController < ApplicationController
     return if user.admin?
     return if user.challenges.any? { |c| c.id == challenge.id }
     render json: { resource: 'challenge', errors: [user: 'doesn\'t have access to that challenge'] }, status: 403
+  end
+
+  def ensure_challenge_can_be_destroyed!
+    challenge = Challenge.find_by id: params[:id]
+    return unless challenge.open_spot_challenge_type?
+    return unless challenge.users.length <= 1
+    render json: {
+      resource: 'challenge',
+      errors: [challenge: 'has another challenger and can\'t be destroyed']
+    }, status: 403
   end
 end
