@@ -5,7 +5,8 @@ require_relative '../lib/seed/performances'
 require_relative '../lib/seed/spots'
 require_relative '../lib/seed/users'
 
-past_performance.save
+p = past_performance
+p.save
 current_performance.save
 puts "Added #{Performance.count} performances"
 
@@ -15,8 +16,8 @@ puts "Added #{Spot.count} spots"
 seed_users.each { |user| user.save }
 puts "Added #{User.count} users"
 
-seed_challenges(past_performance).each { |challenge| challenge.save }
+seed_challenges(p).each { |challenge| challenge.save }
 puts "Added #{Challenge.count} challenges"
 
-seed_disciplines(past_performance).each { |discipline| discipline.save }
+seed_disciplines(p).each { |discipline| discipline.save }
 puts "Added #{Discipline.count} disciplines"
