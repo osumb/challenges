@@ -27,7 +27,8 @@
           2,2
         ],
         "react/jsx-indent-props": "off",
-        "react/no-multi-comp": "off"
+        "react/no-multi-comp": "off",
+        "import/no-unresolved": "off"
     },
     "env": {
         "browser": true,

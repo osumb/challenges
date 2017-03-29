@@ -2,7 +2,7 @@ import React from 'react';
 
 export default function Typography({ category, children, number }) {
   return (
-    <div className={`mdc-typography--${category || 'caption'}${number || ''} mdc-typography--adjust-margin`}>
+    <div className={`mdc-typography--${category || 'caption'}${number || ''}`}>
       {children}
     </div>
   );

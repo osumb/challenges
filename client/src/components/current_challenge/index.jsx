@@ -2,7 +2,6 @@ import React from 'react';
 import styled from 'styled-components';
 
 import { propTypes as spotProps } from '../../data/spot';
-import { helpers as challengeHelpers } from '../../data/challenge';
 import { helpers as userChallengeHelpers } from '../../data/user_challenge';
 import Button from '../button';
 import Confirm from '../confirm';
@@ -43,19 +42,12 @@ export default class CurrentChallenge extends React.PureComponent {
   }
 
   handleDeleteConfirm() {
-    const { challengeType, id, userChallengeId } = this.props;
+    const { userChallengeId } = this.props;
 
-    if (challengeHelpers.isOpenSpotChallenge(challengeType)) {
-      userChallengeHelpers.del(userChallengeId)
-      .then(() => {
-        this.setState({ confirming: false, deleted: true });
-      });
-    } else {
-      challengeHelpers.del(id)
-      .then(() => {
-        this.setState({ confirming: false, deleted: true });
-      });
-    }
+    userChallengeHelpers.del(userChallengeId)
+    .then(() => {
+      this.setState({ confirming: false, deleted: true });
+    });
   }
 
   handleDeleteRequest() {
@@ -75,12 +67,12 @@ export default class CurrentChallenge extends React.PureComponent {
       );
     }
     return (
-      <Elevation>
+      <Elevation zLevel={2}>
         <Container>
           {deleted ?
-            <Typography category="title">Successfully deleted challenge!</Typography> :
+            <Typography category="headline">Successfully deleted challenge!</Typography> :
             <Container>
-              <Typography category="body" number={2}>
+              <Typography category="headline">
                 You're challenging spot {this.props.spot.row}{this.props.spot.file} for the {this.props.performanceName}&nbsp;&nbsp;
               </Typography>
               <Button primary onClick={this.handleDeleteRequest}>Delete Challenge</Button>

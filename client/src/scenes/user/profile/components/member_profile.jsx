@@ -16,7 +16,7 @@ const Container = styled.div`
   align-items: center;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: space-between;
 `;
 
 const MemberProfile = (props) => {
