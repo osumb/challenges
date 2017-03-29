@@ -83,26 +83,6 @@ class CreateChallengeTest < ActionDispatch::IntegrationTest
     assert_equal old_challenge_count + 1, Challenge.count
   end
 
-  test 'it successfully deletes a challenge' do
-    old_challenge_count = Challenge.count
-    performance = create(:performance)
-    challenger = create(:alternate_user, :trumpet, :solo, :spot_a13)
-    create(:user, :trumpet, :solo, :spot_a2)
-    body = {
-      challenge_type: 'normal',
-      file: 2,
-      row: 'a',
-      performance_id: performance.id
-    }
-    post challenge_end_point, params: body.to_json, headers: authenticated_header(challenger)
-
-    challenge = JSON.parse(response.body)['challenge']
-    id = challenge['id']
-    delete "#{challenge_end_point}#{id}", headers: authenticated_header(challenger)
-
-    assert_equal old_challenge_count, Challenge.count
-  end
-
   test 'it destroys the entire open spot challenge if the only challenger removes himself from it' do
     old_challenge_count = Challenge.count
     performance = create(:performance)

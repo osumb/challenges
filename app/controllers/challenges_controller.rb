@@ -8,8 +8,6 @@ class ChallengesController < ApplicationController
   before_action :ensure_spot_has_not_been_challenged!, only: [:create]
   before_action :ensure_enough_users_exist_for_tri_challenge!, only: [:create]
   before_action :ensure_correct_challenge_type!, only: [:create]
-  before_action :ensure_correct_user_for_delete!, only: [:destroy]
-  before_action :ensure_challenge_can_be_destroyed!, only: [:destroy]
 
   def create
     spot = Spot.find_by row: Spot.rows[params[:row].downcase], file: params[:file]
@@ -20,16 +18,6 @@ class ChallengesController < ApplicationController
       render :show, status: 201
     else
       render json: { resource: 'challenge', errors: @challenge.errors }, status: 409
-    end
-  end
-
-  def destroy
-    challenge = Challenge.find_by id: params[:id]
-
-    if challenge.destroy
-      head 204
-    else
-      render json: { resource: 'challenge', errors: [challenge: 'could not be destroyed'] }, status: 500
     end
   end
 
@@ -174,22 +162,4 @@ class ChallengesController < ApplicationController
     render json: { resource: 'challenge', errors: [challenge: err_message] }, status: 403
   end
   # rubocop:enable Metrics/CyclomaticComplexity
-
-  def ensure_correct_user_for_delete!
-    user = current_user
-    challenge = Challenge.find_by id: params[:id]
-    return if user.admin?
-    return if user.challenges.any? { |c| c.id == challenge.id }
-    render json: { resource: 'challenge', errors: [user: 'doesn\'t have access to that challenge'] }, status: 403
-  end
-
-  def ensure_challenge_can_be_destroyed!
-    challenge = Challenge.find_by id: params[:id]
-    return unless challenge.open_spot_challenge_type?
-    return unless challenge.users.length <= 1
-    render json: {
-      resource: 'challenge',
-      errors: [challenge: 'has another challenger and can\'t be destroyed']
-    }, status: 403
-  end
 end

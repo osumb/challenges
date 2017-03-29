@@ -14,9 +14,8 @@ const create = ({ challengeType, file, performanceId, row }) =>
     row
   });
 
-const del = id => api.del(`/challenges/${id}`);
 const isNormalChallenge = challengeType => challengeType === 'normal';
 const isOpenSpotChallenge = challengeType => challengeType === 'open_spot';
 const isTriChallenge = challengeType => challengeType === 'tri';
 
-export default { addUser, create, del, isNormalChallenge, isOpenSpotChallenge, isTriChallenge };
+export default { addUser, create, isNormalChallenge, isOpenSpotChallenge, isTriChallenge };
