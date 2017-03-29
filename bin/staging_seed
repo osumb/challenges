@@ -1,0 +1,6 @@
+#!/bin/sh
+
+# bin/staging_seed: Reset staging's database and re-seed data
+
+
+heroku pg:reset --remote staging --confirm osumbchallengesdev && heroku run bin/rake db:migrate db:seed  --remote staging
