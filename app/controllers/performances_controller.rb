@@ -1,5 +1,15 @@
 class PerformancesController < ApplicationController
   before_action :authenticate_user
+  before_action :ensure_admin!, except: [:challengeable_users]
+  def create
+    @performance = Performance.new create_params
+
+    if @performance.save
+      head 201
+    else
+      render json: { resource: 'performance', errors: @performance.errors }, status: 409
+    end
+  end
 
   # rubocop:disable Metrics/MethodLength
   def challengeable_users
@@ -23,6 +33,20 @@ class PerformancesController < ApplicationController
   # rubocop:enable Metrics/MethodLength
 
   private
+
+  def create_params
+    params.require(:performance).permit(
+      :date,
+      :name,
+      :window_close,
+      :window_open
+    )
+  end
+
+  def ensure_admin!
+    return if current_user.admin?
+    head 401
+  end
 
   def parse_challengeable_users(result)
     column_index_hash = get_column_index_hash(result.columns)
