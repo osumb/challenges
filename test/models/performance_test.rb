@@ -47,4 +47,14 @@ class PerformanceTest < ActiveSupport::TestCase
     refute performance.valid?
     assert_equal 'Window close must be later than window_open', performance.errors.full_messages.join
   end
+
+  test 'performance window returns true with the window is open' do
+    performance = build(:performance, window_open: Time.zone.now, window_close: Time.zone.now + 1.day)
+    assert performance.window_open?
+  end
+
+  test 'performance window returns false with the window is closed' do
+    performance = build(:performance, window_open: Time.zone.now - 1.day, window_close: Time.zone.now)
+    refute performance.window_open?
+  end
 end

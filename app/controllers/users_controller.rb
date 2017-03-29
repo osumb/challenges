@@ -1,7 +1,7 @@
 class UsersController < ApplicationController
   before_action :authenticate_user
-  before_action :ensure_admin!, except: [:show]
-  before_action :ensure_correct_user!, only: [:show]
+  before_action :ensure_admin!, except: [:profile]
+  before_action :ensure_correct_user!, only: [:profile]
 
   def index
     @users = User.performers.includes(:spot)
@@ -11,6 +11,11 @@ class UsersController < ApplicationController
     @user = User.includes(:spot, :challenges, :disciplines).find_by(buck_id: params[:id])
     return unless @user.nil?
     head 404
+  end
+
+  def profile
+    @user = User.includes(:spot, :challenges, :disciplines).find_by(buck_id: current_user.buck_id)
+    @next_performance = Performance.next
   end
 
   private

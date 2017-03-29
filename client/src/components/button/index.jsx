@@ -27,6 +27,9 @@ export default class Button extends React.PureComponent {
         ref={ref => {
           this.button = ref;
         }}
+        style={{
+          color: 'white'
+        }}
       >
         {children}
       </button>

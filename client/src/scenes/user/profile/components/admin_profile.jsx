@@ -3,9 +3,9 @@ import pick from 'lodash.pick';
 import styled from 'styled-components';
 
 import { propTypes as userPropTypes } from '../../../../data/user';
+import { propTypes as performancePropTypes } from '../../../../data/performance';
+import PerformanceWindow from '../../../../components/performance_window';
 import UserHeader from '../../../../components/user_header';
-
-const props = ['firstName', 'lastName', 'role'];
 
 const adminText = (
   <div>
@@ -31,14 +31,17 @@ const Container = styled.div`
   justify-content: center;
 `;
 
-const AdminProfile = (userProps) => (
+const AdminProfile = (props) => (
   <Container>
-    <UserHeader {...userProps} />
+    <UserHeader {...pick(props.user, UserHeader.props)} />
+    <PerformanceWindow {...props.nextPerformance} />
     {adminText}
   </Container>
 );
 
-AdminProfile.propTypes = Object.assign({}, pick(userPropTypes, props));
-AdminProfile.props = props;
+AdminProfile.propTypes = {
+  nextPerformance: React.PropTypes.shape(performancePropTypes.performance),
+  user: React.PropTypes.shape(userPropTypes).isRequired
+};
 
 export default AdminProfile;

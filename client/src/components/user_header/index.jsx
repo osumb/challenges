@@ -10,7 +10,7 @@ const Container = styled.div`
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
-  padding-top: 10px;
+  padding: 10px 0;
 `;
 
 const NameHeader = styled.h1`

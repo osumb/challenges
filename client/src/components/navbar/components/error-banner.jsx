@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 
 import { errorEmitter } from '../../../utils';
+import Typography from '../../typography';
+
 const Container = styled.div`
   align-items: center;
   display: flex;
@@ -50,6 +52,10 @@ export default class ErrorBanner extends Component {
     });
   }
 
+  componentWillUnMount() {
+    errorEmitter.removeListener('error');
+  }
+
   handleCloseRequest() {
     this.setState({ errorMessage: null });
   }
@@ -60,7 +66,7 @@ export default class ErrorBanner extends Component {
     return errorMessage && (
       <Container>
         <Message>
-          <Text>{errorMessage}</Text>
+          <Text><Typography category="caption">{errorMessage}</Typography></Text>
           <ButtonContainer>
             <ButtonPadding />
             <Button onClick={this.handleCloseRequest}>X</Button>

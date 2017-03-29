@@ -10,6 +10,7 @@ AllCops:
     - 'vendor/**/*'
     - 'client/**/*'
     - 'node_modules/**/*'
+    - 'lib/seed/**/*'
 
 Rails:
   Enabled: true
@@ -22,9 +23,13 @@ Documentation:
 
 Metrics/ClassLength:
   Max: 120
+  Exclude:
+    - 'test/**/*'
 
 Metrics/LineLength:
   Max: 120
+  Exclude:
+    - 'test/**/*'
 
 Metrics/BlockLength:
   Exclude:
@@ -35,3 +40,10 @@ Style/FrozenStringLiteralComment:
 
 ClassAndModuleChildren:
   Enabled: false
+
+Metrics/AbcSize:
+  Enabled: false
+
+Metrics/MethodLength:
+  Exclude:
+    - 'test/**/*'

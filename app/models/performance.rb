@@ -11,6 +11,15 @@ class Performance < ApplicationRecord
 
   validate :window_open_before_window_close
 
+  def self.next
+    where('now() < window_close').order(window_open: :asc).first
+  end
+
+  def window_open?
+    now = Time.zone.now
+    window_open < now && now < window_close
+  end
+
   private
 
   def window_open_before_window_close

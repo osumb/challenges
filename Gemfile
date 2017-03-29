@@ -40,7 +40,6 @@ group :development do
 end
 
 group :test do
-  gem 'coveralls', require: false
+  gem 'codecov', require: false
   gem 'database_cleaner', require: false
-  gem 'simplecov', require: false
 end
