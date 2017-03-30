@@ -1,6 +1,7 @@
 import 'whatwg-fetch';
 
 import auth from './auth';
+import changeCase from './change_case';
 import errorEmitter from './error-emitter';
 
 const { getToken, refreshToken } = auth;
@@ -44,7 +45,7 @@ const request = (url, { method, body }, errorMessage) =>
       if (token) {
         refreshToken(token);
       }
-      return rest;
+      return changeCase(rest);
     })
     .catch();
   })
