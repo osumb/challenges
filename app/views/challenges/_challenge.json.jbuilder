@@ -1,5 +1,5 @@
 json.id challenge.id
-json.challengeType challenge.challenge_type
+json.challenge_type challenge.challenge_type
 json.spot do
   json.partial! 'spots/spot', spot: challenge.spot
 end

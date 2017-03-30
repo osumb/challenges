@@ -24,7 +24,7 @@ class CreateChallengeTest < ActionDispatch::IntegrationTest
 
     challenge = JSON.parse(response.body)['challenge']
 
-    assert_equal 'normal', challenge['challengeType']
+    assert_equal 'normal', challenge['challenge_type']
     assert_equal 'A', challenge['spot']['row']
     assert_equal 2, challenge['spot']['file']
     assert_equal 2, challenge['users'].length
@@ -49,7 +49,7 @@ class CreateChallengeTest < ActionDispatch::IntegrationTest
 
     challenge = JSON.parse(response.body)['challenge']
 
-    assert_equal 'tri', challenge['challengeType']
+    assert_equal 'tri', challenge['challenge_type']
     assert_equal 'J', challenge['spot']['row']
     assert_equal 3, challenge['spot']['file']
     assert_equal 3, challenge['users'].length
@@ -75,7 +75,7 @@ class CreateChallengeTest < ActionDispatch::IntegrationTest
 
     challenge = JSON.parse(response.body)['challenge']
 
-    assert_equal 'open_spot', challenge['challengeType']
+    assert_equal 'open_spot', challenge['challenge_type']
     assert_equal 'E', challenge['spot']['row']
     assert_equal 2, challenge['spot']['file']
     assert_equal 1, challenge['users'].length

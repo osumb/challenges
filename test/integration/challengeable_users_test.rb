@@ -7,15 +7,15 @@ class ChallengeableUsersTest < ActionDispatch::IntegrationTest
 
   def challengeable_user_shape
     {
-      'buckId': true,
-      'challengeId': true,
-      'challengeType': true,
+      'buck_id': true,
+      'challenge_id': true,
+      'challenge_type': true,
       'file': true,
-      'firstName': true,
-      'lastName': true,
-      'openSpot': true,
+      'first_name': true,
+      'last_name': true,
+      'open_spot': true,
       'row': true,
-      'membersInChallenge': true
+      'members_in_challenge': true
     }
   end
 
@@ -35,7 +35,7 @@ class ChallengeableUsersTest < ActionDispatch::IntegrationTest
     user = create(:alternate_user)
     get end_point, headers: authenticated_header(user)
 
-    challengeable_users = JSON.parse(response.body)['challengeableUsers']
+    challengeable_users = JSON.parse(response.body)['challengeable_users']
     assert_equal Array, challengeable_users.class
   end
 
@@ -46,7 +46,7 @@ class ChallengeableUsersTest < ActionDispatch::IntegrationTest
 
     get end_point, headers: authenticated_header(challenger)
 
-    challengeable_users = JSON.parse(response.body)['challengeableUsers']
+    challengeable_users = JSON.parse(response.body)['challengeable_users']
     challengeable_user = challengeable_users.first
     assert shape? challengeable_user
   end
@@ -57,7 +57,7 @@ class ChallengeableUsersTest < ActionDispatch::IntegrationTest
 
     get end_point, headers: authenticated_header(challenger)
 
-    challengeable_users = JSON.parse(response.body)['challengeableUsers']
+    challengeable_users = JSON.parse(response.body)['challengeable_users']
     refute challengeable_users.length.positive?
   end
 
@@ -67,7 +67,7 @@ class ChallengeableUsersTest < ActionDispatch::IntegrationTest
     create(:user, :trumpet, :solo, :spot_a2)
     get end_point, headers: authenticated_header(challenger)
 
-    challengeable_users = JSON.parse(response.body)['challengeableUsers']
+    challengeable_users = JSON.parse(response.body)['challengeable_users']
     refute challengeable_users.length.positive?
   end
 end
