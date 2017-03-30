@@ -3,9 +3,8 @@ class PerformancesController < ApplicationController
   before_action :ensure_admin!, except: [:challengeable_users]
   def create
     @performance = Performance.new create_params
-
     if @performance.save
-      head 201
+      render :show, status: 201
     else
       render json: { resource: 'performance', errors: @performance.errors }, status: 409
     end
