@@ -5,6 +5,7 @@ export default class TextField extends React.PureComponent {
   static get propTypes() {
     return {
       onChange: React.PropTypes.func,
+      onKeyUp: React.PropTypes.func,
       hint: React.PropTypes.string,
       name: React.PropTypes.string,
       type: React.PropTypes.string
@@ -13,6 +14,7 @@ export default class TextField extends React.PureComponent {
 
   constructor(props) {
     super(props);
+    this.handleKeyUp = this.handleKeyUp.bind(this);
     this.handleTextChange = this.handleTextChange.bind(this);
   }
 
@@ -20,8 +22,14 @@ export default class TextField extends React.PureComponent {
     this.mdcTextfield = new MDCTextfield(this.textfield);
   }
 
+  handleKeyUp(e) {
+    if (typeof this.props.onKeyUp !== 'undefined') {
+      this.props.onKeyUp(e);
+    }
+  }
+
   handleTextChange(e) {
-    if (this.props.onChange) {
+    if (typeof this.props.onChange !== 'undefined') {
       this.props.onChange(e);
     }
   }
@@ -39,6 +47,7 @@ export default class TextField extends React.PureComponent {
           type={this.props.type || 'text'}
           name={this.props.name || 'text'}
           onChange={this.handleTextChange}
+          onKeyUp={this.handleKeyUp}
         />
         {this.props.hint && <span className="mdc-textfield__label">{this.props.hint}</span>}
       </label>
