@@ -152,12 +152,12 @@ class ChallengesController < ApplicationController
   def ensure_correct_challenge_type!
     ctype = Challenge.challenge_types[params[:challenge_type]]
     spot = Spot.find_by(row: Spot.rows[params[:row].downcase], file: params[:file])
-    challengee = User.includes(:spot, :disciplines).where(spot: spot).first
+    challengee = User.includes(:spot, :discipline_actions).where(spot: spot).first
     p = Performance.next
-    discipline = challengee.disciplines.select { |d| d.performance.id == p.id }.first
-    return if ctype == Challenge.challenge_types[:normal] || ctype == Challenge.challenge_types[:tri] && discipline.nil?
-    return if ctype == Challenge.challenge_types[:open_spot] && !discipline.nil?
-    open_str = discipline.nil? ? 'is open' : 'isn\'t open'
+    action = challengee.discipline_actions.select { |d| d.performance.id == p.id }.first
+    return if ctype == Challenge.challenge_types[:normal] || ctype == Challenge.challenge_types[:tri] && action.nil?
+    return if ctype == Challenge.challenge_types[:open_spot] && !action.nil?
+    open_str = action.nil? ? 'is open' : 'isn\'t open'
     err_message = "can't make a challenge of type #{params[:challenge_type]} that #{open_str}"
     render json: { resource: 'challenge', errors: [challenge: err_message] }, status: 403
   end

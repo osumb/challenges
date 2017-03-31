@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import { propTypes as disciplineProps } from '../../data/discipline';
+import { propTypes as disciplineActionProps } from '../../data/discipline_action';
 import Elevation from '../elevation';
 import Typography from '../../components/typography';
 
@@ -13,7 +13,7 @@ const Container = styled.div`
   margin: 10px;
 `;
 
-export default function CurrentDiscipline({ reason, allowedToChallenge, performance }) {
+export default function CurrentDisciplineAction({ reason, allowedToChallenge, performance }) {
   const performanceStr = `Your spot was opened for the ${performance.name}`;
   const reasonStr = `Reason: ${reason}`;
 
@@ -30,4 +30,4 @@ export default function CurrentDiscipline({ reason, allowedToChallenge, performa
   );
 }
 
-CurrentDiscipline.propTypes = disciplineProps;
+CurrentDisciplineAction.propTypes = disciplineActionProps;

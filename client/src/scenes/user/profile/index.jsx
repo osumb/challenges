@@ -21,7 +21,7 @@ export default class Profile extends React.Component {
   }
 
   render() {
-    const { canChallenge, currentChallenge, currentDiscipline, nextPerformance, user } = this.state;
+    const { canChallenge, currentChallenge, currentDisciplineAction, nextPerformance, user } = this.state;
 
     if (user === null) {
       return null;
@@ -32,7 +32,7 @@ export default class Profile extends React.Component {
       : <MemberProfile
           canChallenge={canChallenge}
           currentChallenge={currentChallenge}
-          currentDiscipline={currentDiscipline}
+          currentDisciplineAction={currentDisciplineAction}
           nextPerformance={nextPerformance}
           user={user}
         />;

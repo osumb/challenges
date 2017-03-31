@@ -1,6 +1,6 @@
 require 'rubyXL'
 require_relative '../lib/seed/challenges'
-require_relative '../lib/seed/disciplines'
+require_relative '../lib/seed/discipline_actions'
 require_relative '../lib/seed/performances'
 require_relative '../lib/seed/spots'
 require_relative '../lib/seed/users'
@@ -19,5 +19,5 @@ puts "Added #{User.count} users"
 seed_challenges(p).each { |challenge| challenge.save }
 puts "Added #{Challenge.count} challenges"
 
-seed_disciplines(p).each { |discipline| discipline.save }
-puts "Added #{Discipline.count} disciplines"
+seed_discipline_actions(p).each { |d| d.save }
+puts "Added #{DisciplineAction.count} discipline actions"

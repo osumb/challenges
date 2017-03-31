@@ -1,4 +1,4 @@
-class Discipline < ApplicationRecord
+class DisciplineAction < ApplicationRecord
   # associations
   belongs_to :user
   belongs_to :performance
