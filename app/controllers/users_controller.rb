@@ -8,13 +8,13 @@ class UsersController < ApplicationController
   end
 
   def show
-    @user = User.includes(:spot, :challenges, :disciplines).find_by(buck_id: params[:id])
+    @user = User.includes(:spot, :challenges, :discipline_actions).find_by(buck_id: params[:id])
     return unless @user.nil?
     head 404
   end
 
   def profile
-    @user = User.includes(:spot, :challenges, :disciplines).find_by(buck_id: current_user.buck_id)
+    @user = User.includes(:spot, :challenges, :discipline_actions).find_by(buck_id: current_user.buck_id)
     @next_performance = Performance.next
   end
 

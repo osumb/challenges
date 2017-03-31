@@ -70,7 +70,7 @@ class CreateChallengeTest < ActionDispatch::IntegrationTest
       row: 'e',
       performance_id: performance.id
     }
-    create(:discipline, user: challengee, open_spot: true, performance: performance)
+    create(:discipline_action, user: challengee, open_spot: true, performance: performance)
     post challenge_end_point, params: body.to_json, headers: authenticated_header(challenger)
 
     challenge = JSON.parse(response.body)['challenge']
@@ -94,7 +94,7 @@ class CreateChallengeTest < ActionDispatch::IntegrationTest
       row: 'e',
       performance_id: performance.id
     }
-    create(:discipline, user: challengee, open_spot: true, performance: performance)
+    create(:discipline_action, user: challengee, open_spot: true, performance: performance)
     post challenge_end_point, params: body.to_json, headers: authenticated_header(challenger)
 
     user_challenge_id = challenger.user_challenges.first.id
@@ -116,7 +116,7 @@ class CreateChallengeTest < ActionDispatch::IntegrationTest
       row: 'e',
       performance_id: performance.id
     }
-    create(:discipline, user: challengee, open_spot: true, performance: performance)
+    create(:discipline_action, user: challengee, open_spot: true, performance: performance)
     post challenge_end_point, params: body.to_json, headers: authenticated_header(challenger)
     post challenge_end_point, params: body.to_json, headers: authenticated_header(other_challenger)
 
@@ -407,7 +407,7 @@ class CreateChallengeTest < ActionDispatch::IntegrationTest
       row: 'e',
       performance_id: performance.id
     }
-    create(:discipline, user: challengee, open_spot: true, performance: performance)
+    create(:discipline_action, user: challengee, open_spot: true, performance: performance)
     post challenge_end_point, params: body.to_json, headers: authenticated_header(challenger)
     post challenge_end_point, params: other_body.to_json, headers: authenticated_header(other_challenger)
 

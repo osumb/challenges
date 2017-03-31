@@ -25,10 +25,10 @@ else
   end
 end
 
-if @user.disciplines.last.nil?
-  json.current_discipline nil
+if @user.discipline_actions.last.nil? || !@user.discipline_actions.last.performance.window_open?
+  json.current_discipline_action nil
 else
-  json.current_discipline do
-    json.partial! 'disciplines/discipline', discipline: @user.disciplines.last
+  json.current_discipline_action do
+    json.partial! 'discipline_actions/discipline_action', discipline_action: @user.discipline_actions.last
   end
 end

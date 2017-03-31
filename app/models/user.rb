@@ -11,7 +11,7 @@ class User < ApplicationRecord
   belongs_to :spot, optional: true
   has_many :user_challenges
   has_many :challenges, through: :user_challenges
-  has_many :disciplines
+  has_many :discipline_actions
 
   # validations
   validates :first_name, presence: true
@@ -83,13 +83,13 @@ class User < ApplicationRecord
 
   def can_alternate_challenge_for_performance?(performance)
     return false if challenges.select { |c| c.performance.id == performance.id }.length.positive?
-    disciplines.select { |d| d.performance&.id == performance.id }.length <= 0
+    discipline_actions.select { |d| d.performance&.id == performance.id }.length <= 0
   end
 
   def can_member_challenge_for_performance?(performance)
     return false if challenges.select { |c| c.performance.id == performance.id }.length.positive?
-    return false if disciplines.select { |d| d.performance.id == performance.id }.length <= 0
-    disciplines.select { |d| d.performance.id == performance.id }.first&.allowed_to_challenge
+    return false if discipline_actions.select { |d| d.performance.id == performance.id }.length <= 0
+    discipline_actions.select { |d| d.performance.id == performance.id }.first&.allowed_to_challenge
   end
 
   def performing_member_has_spot

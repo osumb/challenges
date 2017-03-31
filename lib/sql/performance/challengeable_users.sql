@@ -26,7 +26,7 @@ JOIN (
   FROM users
   LEFT OUTER JOIN (
     SELECT *
-    FROM disciplines
+    FROM discipline_actions
     WHERE performance_id = %{performance_id}
   ) disciplines_for_performance
   ON users.id = disciplines_for_performance.user_id

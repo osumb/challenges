@@ -173,7 +173,7 @@ class UserTest < ActiveSupport::TestCase
     assert_equal 'Spot has already been taken', user_b.errors.full_messages.join
   end
 
-  test 'an alternate with no disciplines can challenge for a performance' do
+  test 'an alternate with no discipline action can challenge for a performance' do
     user = build(:alternate_user)
     performance = build(:performance)
     assert user.can_challenge_for_performance? performance
@@ -187,15 +187,15 @@ class UserTest < ActiveSupport::TestCase
     refute user.can_challenge_for_performance? performance
   end
 
-  test 'an alternate with a discipline record for a performance can\'t challenge for that performance' do
+  test 'an alternate with a discipline action record for a performance can\'t challenge for that performance' do
     user = build(:alternate_user)
     performance = build(:performance)
-    discipline = build(:discipline, performance: performance)
-    user.disciplines << discipline
+    action = build(:discipline_action, performance: performance)
+    user.discipline_actions << action
     refute user.can_challenge_for_performance? performance
   end
 
-  test 'a regular member with no disciplines can\'t challenge for a performance' do
+  test 'a regular member with no discipline action can\'t challenge for a performance' do
     user = build(:user)
     performance = build(:performance)
     refute user.can_challenge_for_performance? performance
@@ -209,21 +209,21 @@ class UserTest < ActiveSupport::TestCase
     refute user.can_challenge_for_performance? performance
   end
 
-  test 'a regular member who has a discipline with flag allowed_to_challenge is allowed_to_challenge' do
+  test 'a regular member who has a discipline action with flag allowed_to_challenge is allowed_to_challenge' do
     user = build(:user, :spot_a11)
     performance = build(:performance)
-    discipline = build(:discipline, performance: performance, allowed_to_challenge: true)
-    user.disciplines << discipline
+    action = build(:discipline_action, performance: performance, allowed_to_challenge: true)
+    user.discipline_actions << action
     assert user.can_challenge_for_performance? performance
   end
 
-  test 'a regular member who has a discipline with flag allowed_to_challenge, but has already made a challenge, isn\'t allowed_to_challenge' do
+  test 'a regular member who has a discipline action with flag allowed_to_challenge, but has already made a challenge, isn\'t allowed_to_challenge' do
     user = build(:user, :spot_a11)
     performance = build(:performance)
-    discipline = build(:discipline, performance: performance, allowed_to_challenge: true)
+    action = build(:discipline_action, performance: performance, allowed_to_challenge: true)
     challenge = build(:challenge, performance: performance)
     user.challenges << challenge
-    user.disciplines << discipline
+    user.discipline_actions << action
     refute user.can_challenge_for_performance? performance
   end
 

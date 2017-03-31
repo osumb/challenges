@@ -1,9 +1,9 @@
 require 'rubyXL'
 
-def seed_disciplines(performance)
-  worksheet = RubyXL::Parser.parse(Rails.root.join('lib', 'seed', 'disciplines.xlsx'))[0]
+def seed_discipline_actions(performance)
+  worksheet = RubyXL::Parser.parse(Rails.root.join('lib', 'seed', 'discipline_actions.xlsx'))[0]
   i = 1
-  disciplines = []
+  discipline_actions = []
   while !worksheet[i].nil?
     row = worksheet[i]
     buck_id = row[0].value
@@ -11,15 +11,15 @@ def seed_disciplines(performance)
     open_spot = row[2].value
     allowed_to_challenge = row[3].value
     user = User.find_by buck_id: buck_id
-    d = Discipline.new(
+    d = DisciplineAction.new(
       reason: reason,
       user: user,
       performance: performance,
       open_spot: open_spot,
       allowed_to_challenge: allowed_to_challenge
     )
-    disciplines << d
+    discipline_actions << d
     i += 1
   end
-  disciplines
+  discipline_actions
 end
