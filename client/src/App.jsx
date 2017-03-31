@@ -13,7 +13,7 @@ import { auth } from './utils';
 import ChallengeEvaluations from './challenge/challenge-evaluations.jsx';
 import ChallengeSelect from './scenes/performance/challenge_select';
 import CompletedResults from './result/completed-results';
-import CreatePerformance from './performance/create-performance';
+import CreatePerformance from './scenes/performance/create';
 import Login from './navigation/login';
 import Navbar from './components/navbar';
 import NewPasswordChangeRequest from './password-change-request/new-password-change-request.jsx';

@@ -1,4 +1,4 @@
-json.challengeableUsers do
+json.challengeable_users do
   json.array! @users.each do |user|
     json.partial! 'performances/challengeable_user', user: user
   end

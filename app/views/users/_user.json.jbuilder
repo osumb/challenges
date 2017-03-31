@@ -1,7 +1,7 @@
 json.id user.id
-json.buckId user.buck_id
-json.firstName user.first_name
-json.lastName user.last_name
+json.buck_id user.buck_id
+json.first_name user.first_name
+json.last_name user.last_name
 json.email user.email
 json.role user.role.camelcase
 json.instrument user.instrument.titleize

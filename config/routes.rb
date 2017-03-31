@@ -9,7 +9,7 @@ Rails.application.routes.draw do
     resources :challenges, only: [:create]
     resources :user_challenges, only: [:create, :destroy]
 
-    resources :performances, only: [] do
+    resources :performances, only: [:create] do
       collection do
         get 'challengeable_users'
       end

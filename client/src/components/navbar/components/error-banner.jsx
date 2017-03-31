@@ -47,12 +47,11 @@ export default class ErrorBanner extends Component {
 
   componentDidMount() {
     errorEmitter.on('error', (errorMessage) => {
-      this.setState({ errorMessage: null });
       this.setState({ errorMessage });
     });
   }
 
-  componentWillUnMount() {
+  componentWillUnmount() {
     errorEmitter.removeListener('error');
   }
 
@@ -66,7 +65,7 @@ export default class ErrorBanner extends Component {
     return errorMessage && (
       <Container>
         <Message>
-          <Text><Typography category="caption">{errorMessage}</Typography></Text>
+          <Text><Typography category="title">{errorMessage}</Typography></Text>
           <ButtonContainer>
             <ButtonPadding />
             <Button onClick={this.handleCloseRequest}>X</Button>

@@ -1,8 +1,8 @@
 json.id discipline.id
 json.reason discipline.reason
-json.openSpot discipline.open_spot
-json.allowedToChallenge discipline.allowed_to_challenge
+json.open_spot discipline.open_spot
+json.allowed_to_challenge discipline.allowed_to_challenge
 json.performance do
   json.partial! 'performances/performance', performance: discipline.performance
 end
-json.userBuckId discipline.user.buck_id
+json.user_buck_id discipline.user.buck_id
