@@ -14,7 +14,7 @@ import ChallengeEvaluations from './challenge/challenge-evaluations.jsx';
 import ChallengeSelect from './scenes/performance/challenge_select';
 import CompletedResults from './result/completed-results';
 import CreatePerformance from './scenes/performance/create';
-import Login from './navigation/login';
+import Login from './scenes/login';
 import Navbar from './components/navbar';
 import NewPasswordChangeRequest from './password-change-request/new-password-change-request.jsx';
 import NotFound from './components/not_found';
