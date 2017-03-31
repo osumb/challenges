@@ -45,7 +45,6 @@ const request = (url, { method, body }, errorMessage) =>
       if (token) {
         refreshToken(token);
       }
-      console.log(rest);
       return changeCase(rest);
     })
     .catch();
