@@ -29,7 +29,7 @@ const headers = () => ({
   'Content-Type': 'application/json'
 });
 
-const request = (url, { method, body }, errorMessage) =>
+const request = (url, { method, body }, errorMessage, hideError) =>
   fetch(`${baseRoute}/api${url}`, {
     headers: headers(),
     method,
@@ -50,30 +50,34 @@ const request = (url, { method, body }, errorMessage) =>
     .catch();
   })
   .catch((response) => {
-    if (errorMessage) {
-      errorEmitter.dispatch(errorMessage);
-    } else {
-      const { status } = response;
+    if (!hideError) {
+      if (errorMessage) {
+        errorEmitter.dispatch(errorMessage);
+      } else {
+        const { status } = response;
 
-      try {
-        response.text()
-        .then((responseMessage) => {
-          if (responseMessage) {
-            errorEmitter.dispatch(responseMessage);
-          } else {
-            errorEmitter.dispatch(getMessageFromStatus(status));
-          }
-        });
-      } catch (e) {
-        errorEmitter.dispatch(getMessageFromStatus(status));
-        throw e;
+        try {
+          response.text()
+          .then((responseMessage) => {
+            if (responseMessage) {
+              errorEmitter.dispatch(responseMessage);
+            } else {
+              errorEmitter.dispatch(getMessageFromStatus(status));
+            }
+          });
+        } catch (e) {
+          errorEmitter.dispatch(getMessageFromStatus(status));
+          throw e;
+        }
       }
+    } else {
+      throw response;
     }
   });
 
-const del = (url, errorMessage) => request(url, { method: 'delete' }, errorMessage);
-const get = (url, errorMessage) => request(url, { method: 'get' }, errorMessage);
-const post = (url, body, errorMessage) => request(url, { method: 'post', body }, errorMessage);
-const put = (url, body, errorMessage) => request(url, { method: 'put', body }, errorMessage);
+const del = (url, errorMessage, hideError) => request(url, { method: 'delete' }, errorMessage, hideError);
+const get = (url, errorMessage, hideError) => request(url, { method: 'get' }, errorMessage, hideError);
+const post = (url, body, errorMessage, hideError) => request(url, { method: 'post', body }, errorMessage, hideError);
+const put = (url, body, errorMessage, hideError) => request(url, { method: 'put', body }, errorMessage, hideError);
 
 export default { del, get, post, put };

@@ -16,11 +16,11 @@ import CompletedResults from './result/completed-results';
 import CreatePerformance from './scenes/performance/create';
 import Login from './scenes/login';
 import Navbar from './components/navbar';
-import NewPasswordChangeRequest from './password-change-request/new-password-change-request.jsx';
 import NotFound from './components/not_found';
 import PendingResults from './result/pending-results';
 import Profile from './scenes/user/profile';
-import PasswordChangeRequest from './password-change-request/password-change-request';
+import PasswordResetRequest from './scenes/password_reset/request';
+import PasswordResetReset from './scenes/password_reset/reset';
 import Roster from './user/roster';
 import UserSearch from './user/user-search';
 
@@ -77,8 +77,8 @@ const App = () => (
             <PrivateRoute exact path="/roster" component={Roster} />
             <PrivateRoute exact path="/search" component={UserSearch} />
             <PublicRoute exact path="/login" component={Login} />
-            <PublicRoute exact path="/newPassword" component={NewPasswordChangeRequest} />
-            <PublicRoute exact path="/resetPassword/:id" component={PasswordChangeRequest} />
+            <PublicRoute exact path="/password_change_request/new" component={PasswordResetRequest} />
+            <PublicRoute exact path="/password_change_request/:id" component={PasswordResetReset} />
             <Route component={NotFound} />
           </Switch>
         </div>
