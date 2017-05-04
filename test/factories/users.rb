@@ -1,9 +1,13 @@
+require 'bcrypt'
+
+password_digest = BCrypt::Password.create 'password'
+
 FactoryGirl.define do
   factory :user do
     first_name 'Brutus'
     last_name 'Buckeye'
     sequence(:email) { |n| "smith.#{n}@osu.edu" }
-    password_digest '2349p8uasdflknadiuh'
+    password_digest password_digest
     sequence(:buck_id) { |n| "buckeye.#{n}" }
     instrument User.instruments[:trumpet]
     part User.parts[:solo]

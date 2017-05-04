@@ -5,6 +5,14 @@ class PasswordResetRequest < ApplicationRecord
   # validations
   validate :can_not_reuse
 
+  def expired?
+    expires < Time.current
+  end
+
+  def used?
+    used
+  end
+
   private
 
   def can_not_reuse

@@ -5,6 +5,7 @@ Rails.application.routes.draw do
 
     resources :users, only: [:index, :show], constraints: { id: /[0-z\.]+/ }
     get 'users/profile/:id', to: 'users#profile', constraints: { id: /[0-z\.]+/ }
+    post 'users/:id/reset_password', to: 'users#reset_password', constraints: { id: /[0-z\.]+/ }
 
     resources :challenges, only: [:create]
     resources :user_challenges, only: [:create, :destroy]
