@@ -8,7 +8,7 @@ Rails.application.routes.draw do
 
     resources :challenges, only: [:create]
     resources :user_challenges, only: [:create, :destroy]
-    resources :password_change_requests, only: [:create, :show]
+    resources :password_reset_requests, only: [:create, :show]
 
     resources :performances, only: [:create] do
       collection do

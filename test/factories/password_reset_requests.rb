@@ -1,5 +1,5 @@
 FactoryGirl.define do
-  factory :password_change_request do
+  factory :password_reset_request do
     used false
     expires Time.zone.now + 1.hour
     user { User.first || FactoryGirl.create(:user) }
@@ -16,8 +16,8 @@ FactoryGirl.define do
       expires Time.zone.now - 1.hour
     end
 
-    factory :used_password_change_request, traits: [:used]
-    factory :unused_password_change_request, traits: [:unused]
-    factory :expired_password_change_request, traits: [:expired]
+    factory :used_password_reset_request, traits: [:used]
+    factory :unused_password_reset_request, traits: [:unused]
+    factory :expired_password_reset_request, traits: [:expired]
   end
 end

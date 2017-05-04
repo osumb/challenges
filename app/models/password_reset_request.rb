@@ -1,4 +1,4 @@
-class PasswordChangeRequest < ApplicationRecord
+class PasswordResetRequest < ApplicationRecord
   # associations
   belongs_to :user
 
