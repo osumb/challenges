@@ -1,0 +1,22 @@
+class PasswordChangeRequestsController < ApplicationController
+  # rubocop:disable Metrics/MethodLength
+  def create
+    user = User.find_by buck_id: params[:buck_id]
+    unless !user.nil? && user.email == params[:email]&.downcase
+      head 403
+      return
+    end
+    @pcr = PasswordChangeRequest.new user: user
+    # We're reloading because pcr.expires is a default value created in the db. Unfortunately, it doesn't get returned
+    if @pcr.save && @pcr.reload
+      render :create, status: 201
+    else
+      render json: { resource: 'PasswordChangeRequest', errors: @pcr.errors }, status: 409
+    end
+  end
+  # rubocop:enable Metrics/MethodLength
+
+  def show
+    @pcr = PasswordChangeRequest.find_by params[:id]
+  end
+end

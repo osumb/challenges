@@ -26,6 +26,14 @@ class ActiveSupport::TestCase
     }
   end
 
+  def unauthenticated_header
+    {
+      'Accept': 'application/json, text/html',
+      'CONTENT_TYPE' => 'application/json',
+      'ACCEPT' => 'application/json'
+    }
+  end
+
   include FactoryGirl::Syntax::Methods
 
   DatabaseCleaner.strategy = :truncation
