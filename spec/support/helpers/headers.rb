@@ -7,3 +7,10 @@ def authenticated_header(user)
     'ACCEPT' => 'application/json'
   }
 end
+
+def unauthenticated_header
+  {
+    'CONTENT_TYPE' => 'application/json',
+    'ACCEPT' => 'application/json'
+  }
+end
