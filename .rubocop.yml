@@ -24,16 +24,16 @@ Documentation:
 Metrics/ClassLength:
   Max: 120
   Exclude:
-    - 'test/**/*'
+    - 'spec/**/*'
 
 Metrics/LineLength:
   Max: 120
   Exclude:
-    - 'test/**/*'
+    - 'spec/**/*'
 
 Metrics/BlockLength:
   Exclude:
-    - 'test/**/*'
+    - 'spec/**/*'
 
 Style/FrozenStringLiteralComment:
   Enabled: false
@@ -46,4 +46,4 @@ Metrics/AbcSize:
 
 Metrics/MethodLength:
   Exclude:
-    - 'test/**/*'
+    - 'spec/**/*'
