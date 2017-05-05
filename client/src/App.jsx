@@ -77,8 +77,8 @@ const App = () => (
             <PrivateRoute exact path="/roster" component={Roster} />
             <PrivateRoute exact path="/search" component={UserSearch} />
             <PublicRoute exact path="/login" component={Login} />
-            <PublicRoute exact path="/password_change_request/new" component={PasswordResetRequest} />
-            <PublicRoute exact path="/password_change_request/:id" component={PasswordResetReset} />
+            <PublicRoute exact path="/password_reset_requests/new" component={PasswordResetRequest} />
+            <PublicRoute exact path="/password_reset_requests/:id" component={PasswordResetReset} />
             <Route component={NotFound} />
           </Switch>
         </div>
