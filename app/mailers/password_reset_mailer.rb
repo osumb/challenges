@@ -1,7 +1,7 @@
 class PasswordResetMailer < ApplicationMailer
   def password_reset_email(user, prr_id)
     @user = user
-    email = Rails.env.development? ? ENV['MAINTAINER_EMAIL'] : @user.email
+    email = !Rails.env.production? ? ENV['MAINTAINER_EMAIL'] : @user.email
     @reset_link = url_for_env prr_id
     mail(to: email, subject: 'OSUMB Challenges Password Reset')
   end
