@@ -1,9 +1,13 @@
+require 'bcrypt'
+
+password_digest = BCrypt::Password.create 'password'
+
 FactoryGirl.define do
   factory :user do
     first_name 'Brutus'
     last_name 'Buckeye'
     sequence(:email) { |n| "smith.#{n}@osu.edu" }
-    password_digest '2349p8uasdflknadiuh'
+    password_digest password_digest
     sequence(:buck_id) { |n| "buckeye.#{n}" }
     instrument User.instruments[:trumpet]
     part User.parts[:solo]
@@ -22,27 +26,27 @@ FactoryGirl.define do
 
     User.instruments.each do |name, value|
       trait name.to_sym do
-	instrument value
+        instrument value
       end
     end
 
     User.parts.each do |name, value|
       trait name.to_sym do
-	part value
+        part value
       end
     end
 
     Spot.rows.each do |name, value|
       trait "#{name}_row".to_sym do
-	association :spot, row: value
+        association :spot, row: value
       end
     end
 
     Spot.rows.each do |name, value|
       (1..18).each do |file|
-	trait "spot_#{name}#{file}".to_sym do
-	  association :spot, row: value, file: file
-	end
+        trait "spot_#{name}#{file}".to_sym do
+          association :spot, row: value, file: file
+        end
       end
     end
 

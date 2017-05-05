@@ -8,10 +8,10 @@ describe 'Challengeable Users', type: :request do
   let(:performance_params) do
     {
       performance: {
-	name: 'Best name ever',
-	window_open: Time.zone.now,
-	window_close: Time.zone.now + 3.hours,
-	date: Time.zone.now + 1.week
+        name: 'Best name ever',
+        window_open: Time.zone.now,
+        window_close: Time.zone.now + 3.hours,
+        date: Time.zone.now + 1.week
       }
     }
   end
@@ -37,14 +37,13 @@ describe 'Challengeable Users', type: :request do
     specify { expect(response).to have_http_status(200) }
 
     context 'when there is a current performance' do
-
       it 'returns an array of challengeable users' do
-	expect(JSON.parse(response.body)['challengeable_users']).to be_instance_of(Array)
+        expect(JSON.parse(response.body)['challengeable_users']).to be_instance_of(Array)
       end
 
       it 'returns the correct shape of data' do
-	challengeable_user = JSON.parse(response.body)['challengeable_users'].first
-	expect(matches_shape?(challengeable_user_shape, challengeable_user))
+        challengeable_user = JSON.parse(response.body)['challengeable_users'].first
+        expect(matches_shape?(challengeable_user_shape, challengeable_user))
       end
     end
 
@@ -52,8 +51,8 @@ describe 'Challengeable Users', type: :request do
       let!(:performance) { nil }
 
       it 'returns an empty array' do
-	challengeable_users = JSON.parse(response.body)['challengeable_users']
-	expect(challengeable_users.length).to eq(0)
+        challengeable_users = JSON.parse(response.body)['challengeable_users']
+        expect(challengeable_users.length).to eq(0)
       end
     end
 
@@ -61,8 +60,8 @@ describe 'Challengeable Users', type: :request do
       let(:user) { create(:admin_user, :trumpet, :solo) }
 
       it 'returns an empty array' do
-	challengeable_users = JSON.parse(response.body)['challengeable_users']
-	expect(challengeable_users.length).to eq(0)
+        challengeable_users = JSON.parse(response.body)['challengeable_users']
+        expect(challengeable_users.length).to eq(0)
       end
     end
   end
