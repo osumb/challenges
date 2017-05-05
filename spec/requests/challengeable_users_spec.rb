@@ -43,7 +43,7 @@ describe 'Challengeable Users', type: :request do
 
       it 'returns the correct shape of data' do
         challengeable_user = JSON.parse(response.body)['challengeable_users'].first
-        expect(matches_shape?(challengeable_user_shape, challengeable_user))
+        expect(challengeable_user).to be_shape_of(challengeable_user_shape)
       end
     end
 
