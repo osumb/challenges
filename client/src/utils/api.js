@@ -3,6 +3,7 @@ import 'whatwg-fetch';
 import auth from './auth';
 import changeCase from './change_case';
 import errorEmitter from './error-emitter';
+import headersHelpers from './headers';
 
 const { getToken, refreshToken } = auth;
 const baseRoute = process.env.NODE_ENV === 'development'
@@ -10,6 +11,25 @@ const baseRoute = process.env.NODE_ENV === 'development'
   : '';
 
 const DEFAULT_ERROR_MESSAGE = 'Sorry! Something wen\'t wrong. We\'re aware of and working on the issue';
+
+const parseErrorMessage = (response) => {
+  if (headersHelpers.isJSONResponse(response)) {
+    return response.json()
+    .then((thing) => {
+      if (!thing.error) return getMessageFromStatus(response.status);
+      return thing.error;
+    })
+    .catch(() => DEFAULT_ERROR_MESSAGE);
+  } else {
+    return new Promise(resolve => resolve(getMessageFromStatus(response.status)));
+  }
+};
+const handleResponseJSON = ({ token, ...rest }) => {
+  if (token) {
+    refreshToken(token);
+  }
+  return changeCase(rest);
+};
 
 const getMessageFromStatus = (status) => {
   /* eslint-disable indent, lines-around-comment */
@@ -29,7 +49,7 @@ const headers = () => ({
   'Content-Type': 'application/json'
 });
 
-const request = (url, { method, body }, errorMessage) =>
+const request = (url, { method, body }, errorMessage, hideError) =>
   fetch(`${baseRoute}/api${url}`, {
     headers: headers(),
     method,
@@ -38,42 +58,23 @@ const request = (url, { method, body }, errorMessage) =>
   })
   .then((response) => {
     if (!response.ok) throw response;
-    if (response.status === 204) return response;
+    if (!headersHelpers.isJSONResponse(response)) return response.status;
 
-    return response.json()
-    .then(({ token, ...rest }) => {
-      if (token) {
-        refreshToken(token);
-      }
-      return changeCase(rest);
-    })
-    .catch();
+    return response.json().then(handleResponseJSON);
   })
   .catch((response) => {
+    if (hideError) throw response;
     if (errorMessage) {
       errorEmitter.dispatch(errorMessage);
     } else {
-      const { status } = response;
-
-      try {
-        response.text()
-        .then((responseMessage) => {
-          if (responseMessage) {
-            errorEmitter.dispatch(responseMessage);
-          } else {
-            errorEmitter.dispatch(getMessageFromStatus(status));
-          }
-        });
-      } catch (e) {
-        errorEmitter.dispatch(getMessageFromStatus(status));
-        throw e;
-      }
+      parseErrorMessage(response).then(message => errorEmitter.dispatch(message));
     }
+    throw response.status;
   });
 
-const del = (url, errorMessage) => request(url, { method: 'delete' }, errorMessage);
-const get = (url, errorMessage) => request(url, { method: 'get' }, errorMessage);
-const post = (url, body, errorMessage) => request(url, { method: 'post', body }, errorMessage);
-const put = (url, body, errorMessage) => request(url, { method: 'put', body }, errorMessage);
+const del = (url, errorMessage, hideError) => request(url, { method: 'delete' }, errorMessage, hideError);
+const get = (url, errorMessage, hideError) => request(url, { method: 'get' }, errorMessage, hideError);
+const post = (url, body, errorMessage, hideError) => request(url, { method: 'post', body }, errorMessage, hideError);
+const put = (url, body, errorMessage, hideError) => request(url, { method: 'put', body }, errorMessage, hideError);
 
 export default { del, get, post, put };

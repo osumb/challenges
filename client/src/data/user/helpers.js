@@ -13,6 +13,7 @@ const isDirector = ({ role }) => role === DIRECTOR;
 const isMember = ({ role }) => role === MEMBER;
 const isSquadLeader = ({ role }) => role === SQUAD_LEADER;
 const isTriChallengeUser = ({ spot }) => ['J'].includes(spot.row);
+const resetPassword = (password_reset_request_id, password, { id }) => api.post(`/users/${id}/reset_password`, { password_reset_request_id, password });
 
 export default {
   getAll,
@@ -22,5 +23,6 @@ export default {
   isDirector,
   isMember,
   isSquadLeader,
-  isTriChallengeUser
+  isTriChallengeUser,
+  resetPassword
 };

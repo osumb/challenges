@@ -12,6 +12,7 @@ class User < ApplicationRecord
   has_many :user_challenges
   has_many :challenges, through: :user_challenges
   has_many :discipline_actions
+  has_many :password_change_requests
 
   # validations
   validates :first_name, presence: true

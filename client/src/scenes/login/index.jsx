@@ -128,7 +128,7 @@ export default class Login extends React.PureComponent {
             <Button onClick={this.handleClick}>Submit</Button>
           </LoginInput>
         </LoginInputs>
-        <Link to="/newPassword">Need A New Password?</Link>
+        <Link to="/password_reset_requests/new">Need A New Password?</Link>
       </Container>
     );
   }
