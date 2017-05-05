@@ -1,5 +1,6 @@
 class PasswordResetMailer < ApplicationMailer
   def password_reset_email(user, prr_id)
+    return if Rails.env.test?
     @user = user
     email = !Rails.env.production? ? ENV['MAINTAINER_EMAIL'] : @user.email
     @reset_link = url_for_env prr_id

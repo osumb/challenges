@@ -21,7 +21,7 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
     }
     post "#{end_point}/#{@user.id}/reset_password", params: body.to_json, headers: unauthenticated_header
 
-    assert_equal 200, response.status
+    assert_equal 204, response.status
     @user.reload
     @prr.reload
     assert BCrypt::Password.new(@user.password_digest) == new_password
