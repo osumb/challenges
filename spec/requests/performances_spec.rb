@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe PerformancesController, type: :request do
+describe 'Performances', type: :request do
   let(:endpoint) { '/api/performances/' }
   let(:user) { create(:admin_user) }
   let(:performance_params) do
