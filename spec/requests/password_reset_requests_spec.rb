@@ -2,7 +2,7 @@ require 'rails_helper'
 
 describe 'Password Reset Requests', type: :request do
   let(:endpoint) { '/api/password_reset_requests/' }
-  let(:user) { create(:alternate_user, :trumpet, :solo, :spot_a13) }
+  let(:user) { create(:user) }
   let(:email) { user.email }
   let(:buck_id) { user.buck_id }
   let(:reset_params) do
@@ -12,7 +12,7 @@ describe 'Password Reset Requests', type: :request do
     }
   end
 
-  describe 'GET /api/password_reset_requests/' do
+  describe 'POST /api/password_reset_requests/' do
     it 'successfully creates a password change request' do
       expect {
         post endpoint, params: reset_params.to_json, headers: unauthenticated_header
