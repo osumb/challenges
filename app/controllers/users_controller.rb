@@ -26,7 +26,7 @@ class UsersController < ApplicationController
     user.password_digest = password_digest
     prr.used = true
     if user.save && prr.save
-      head 200
+      head 204
     else
       render json: { resource: 'user', errors: user.errors }, status: 409
     end

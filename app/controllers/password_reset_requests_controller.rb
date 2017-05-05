@@ -17,6 +17,6 @@ class PasswordResetRequestsController < ApplicationController
   # rubocop:enable Metrics/MethodLength
 
   def show
-    @prr = PasswordResetRequest.find_by id: params[:id]
+    @prr = PasswordResetRequest.find params[:id]
   end
 end
