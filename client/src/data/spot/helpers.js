@@ -36,7 +36,7 @@ const validInstrumentForRow = (row, instrument) => {
     return instrument === userHelpers.instruments.PERCUSSION;
   }
 };
-const validInstrumentForPart = (row, part) => {
+const validPartForRow = (row, part) => {
   if (row === rows.A || row === rows.X) {
     return part === userHelpers.parts.SOLO || part === userHelpers.parts.EFER;
   } else if (row === rows.B || row === rows.T) {
@@ -69,7 +69,7 @@ const validSpot = ({ row, file }) => {
 export default {
   rows,
   splitOnSpotString,
-  validInstrumentForPart,
+  validPartForRow,
   validInstrumentForRow,
   validSpot
 };

@@ -25,6 +25,15 @@ const parts = {
   SOLO: 'Solo',
   TENOR: 'Tenor'
 };
+const instrumentParts = {
+  [instruments.ANY]: [parts.ANY],
+  [instruments.BARITONE]: [parts.FIRST],
+  [instruments.MELLOPHONE]: [parts.FIRST, parts.SECOND],
+  [instruments.PERCUSSION]: [parts.BASS, parts.CYMBALS, parts.SNARE, parts.TENOR],
+  [instruments.SOUSAPHONE]: [parts.FIRST],
+  [instruments.TROMBONE]: [parts.FIRST, parts.SECOND, parts.BASS],
+  [instruments.TRUMPET]: [parts.EFER, parts.SOLO, parts.FIRST, parts.SECOND, parts.FLUGEL]
+};
 const roles = {
   ADMIN,
   DIRECTOR,
@@ -44,8 +53,13 @@ const resetPassword = (password_reset_request_id, password, { id }) => api.post(
 const editSpot = (id, row, file) => new Promise(resolve => {
   setTimeout(resolve, 1000);
 });
+const editPart = (id, part) => new Promise(resolve => {
+  setTimeout(resolve, 1000);
+});
+const partsForInstrument = instrument => instrumentParts[instrument];
 
 export default {
+  editPart,
   editSpot,
   getAll,
   getById,
@@ -57,6 +71,7 @@ export default {
   isSquadLeader,
   isTriChallengeUser,
   parts,
+  partsForInstrument,
   resetPassword,
   roles
 };

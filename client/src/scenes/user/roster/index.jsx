@@ -4,6 +4,7 @@ import styled from 'styled-components';
 
 import 'react-table/react-table.css';
 import { helpers, propTypes } from '../../../data/user';
+import EditInstrument from './components/edit_part';
 import EditSpot from './components/edit_spot';
 import RosterHeader from './components/roster_header';
 
@@ -18,16 +19,13 @@ const flattenSpotToString = oldUsers => (
     users: oldUsers.map(({ spot, ...a }) => ({ spot: `${spot.row}${spot.file}`, ...a }))
   }
 );
-const updateStateWithNewSpot = ({ id: updateId }, newSpot) => ({ users }) => ({
+const updateStateWithNewRow = newRow => ({ users }) => ({
   users: users.map(({ id, ...rest }) => {
-    if (id === updateId) {
-      return {
-        id,
-        ...rest,
-        spot: newSpot
-      };
+    if (id === newRow.id) {
+      return newRow;
+    } else {
+      return { id, ...rest };
     }
-    return { id, ...rest };
   })
 });
 
@@ -43,7 +41,8 @@ export default class Roster extends React.PureComponent {
     this.state = {
       users: []
     };
-    this.handleSpotChange = this.handleSpotChange.bind(this);
+    this.handleRowChange = this.handleRowChange.bind(this);
+    this.renderEditPart = this.renderEditPart.bind(this);
     this.renderEditSpot = this.renderEditSpot.bind(this);
   }
 
@@ -54,12 +53,16 @@ export default class Roster extends React.PureComponent {
     });
   }
 
-  handleSpotChange(row, spot) {
-    this.setState(updateStateWithNewSpot(row, spot));
+  handleRowChange(row) {
+    this.setState(updateStateWithNewRow(row));
+  }
+
+  renderEditPart(props) {
+    return <EditInstrument {...props} onChange={this.handleRowChange} />;
   }
 
   renderEditSpot(props) {
-    return <EditSpot {...props} onChange={this.handleSpotChange} />;
+    return <EditSpot {...props} onChange={this.handleRowChange} />;
   }
 
   render() {
@@ -94,6 +97,7 @@ export default class Roster extends React.PureComponent {
         columns: [{
           header: 'Part',
           accessor: 'part',
+          render: this.renderEditPart,
           filterMethod
         }]
       },

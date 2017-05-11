@@ -57,19 +57,19 @@ export default class EditSpot extends React.PureComponent {
 
     if (
       spotHelpers.validSpot(spot) &&
-      spotHelpers.validInstrumentForPart(row, part) &&
+      spotHelpers.validPartForRow(row, part) &&
       spotHelpers.validInstrumentForRow(row, instrument)
     ) {
       this.setState({ requesting: true });
       userHelpers.editSpot()
       .then(() => {
         this.setState({ editing: false, requesting: false });
-        this.props.onChange(this.props.row, newSpot);
+        this.props.onChange({ ...this.props.row, spot: newSpot });
       });
     } else {
       let errorMessage = 'Invalid Spot.';
 
-      if (!spotHelpers.validInstrumentForPart(row, part)) {
+      if (!spotHelpers.validPartForRow(row, part)) {
         errorMessage = `${errorMessage} row ${row} can't have part ${part}.`;
       }
       if (!spotHelpers.validInstrumentForRow(row, instrument)) {
