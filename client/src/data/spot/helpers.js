@@ -20,7 +20,11 @@ const rows = {
   T: 'T',
   X: 'X'
 };
-const splitOnSpotString = row => row.match(stringSplitRegex);
+const spotFromString = spot => {
+  const [row, file] = spot.match(stringSplitRegex);
+
+  return { row, file };
+};
 const validInstrumentForRow = (row, instrument) => {
   if (row === rows.A || row === rows.B || row === rows.C || row === rows.S || row === rows.T || row === rows.X) {
     return instrument === userHelpers.instruments.TRUMPET;
@@ -68,7 +72,7 @@ const validSpot = ({ row, file }) => {
 
 export default {
   rows,
-  splitOnSpotString,
+  spotFromString,
   validPartForRow,
   validInstrumentForRow,
   validSpot

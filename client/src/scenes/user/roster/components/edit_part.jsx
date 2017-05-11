@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 
 import { helpers as userHelpers } from '../../../../data/user';
+import EditButton from './edit_button';
 import Select from '../../../../components/select';
 
 const Container = styled.div`
@@ -10,20 +11,11 @@ const Container = styled.div`
   justify-content: space-between;
   flex-wrap: wrap;
 `;
-const EditButton = styled.div`
-  color: ${({ disabled }) => disabled ? 'gray' : 'black'};
-  margin-right: 10px;
-  text-decoration: underline;
-  &:hover {
-    cursor: ${({ disabled }) => disabled ? 'not-allowed' : 'pointer'};
-    cursor: ${({ disabled }) => disabled ? 'not-allowed' : 'hand'};
-  }
-`;
 
 export default class EditPart extends React.PureComponent {
   static get propTypes() {
     return {
-      onChange: React.PropTypes.func,
+      onChange: React.PropTypes.func.isRequired,
       row: React.PropTypes.object.isRequired, // row is an object representing our user and provided by react-table
       value: React.PropTypes.string.isRequired // this is our spot value
     };

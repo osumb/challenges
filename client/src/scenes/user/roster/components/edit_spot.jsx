@@ -4,21 +4,13 @@ import styled from 'styled-components';
 import { helpers as spotHelpers } from '../../../../data/spot';
 import { helpers as userHelpers } from '../../../../data/user';
 import { errorEmitter } from '../../../../utils';
+import EditButton from './edit_button';
 
 const Container = styled.div`
   display: flex;
   align-content: center;
   justify-content: space-between;
   flex-wrap: wrap;
-`;
-const EditButton = styled.div`
-  color: ${({ disabled }) => disabled ? 'gray' : 'black'};
-  margin-right: 10px;
-  text-decoration: underline;
-  &:hover {
-    cursor: ${({ disabled }) => disabled ? 'not-allowed' : 'pointer'};
-    cursor: ${({ disabled }) => disabled ? 'not-allowed' : 'hand'};
-  }
 `;
 const EditInput = styled.input`
   width: 50px;
@@ -52,8 +44,8 @@ export default class EditSpot extends React.PureComponent {
   handleEditConfirmClick() {
     const { instrument, part } = this.props.row;
     const { newSpot } = this.state;
-    const [row, file] = spotHelpers.splitOnSpotString(newSpot);
-    const spot = { row, file };
+    const spot = spotHelpers.spotFromString(newSpot);
+    const { row } = spot;
 
     if (
       spotHelpers.validSpot(spot) &&
