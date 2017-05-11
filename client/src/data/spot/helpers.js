@@ -67,7 +67,7 @@ const validSpot = ({ row, file }) => {
   const numFile = parseInt(file, 10);
   if (!rows[row]) return false;
   if (row === rows.I || row === rows.J) return 1 <= numFile && numFile <= 18;
-  return 1 <= numFile && numFile <= 14;
+  return 1 <= numFile && numFile <= 14 && Boolean(rows[row]);
 };
 
 export default {
