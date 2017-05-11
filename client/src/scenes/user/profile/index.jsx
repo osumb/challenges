@@ -1,40 +1,33 @@
 import React from 'react';
 
-import { helpers } from '../../../data/user';
+import { fetch } from '../../../utils';
+import { propTypes as challengeProps } from '../../../data/challenge';
+import { propTypes as disciplineActionProps } from '../../../data/discipline_action';
+import { propTypes as performanceProps } from '../../../data/performance';
+import { helpers, propTypes as userProps } from '../../../data/user';
 import AdminProfile from './components/admin_profile';
 import MemberProfile from './components/member_profile';
 
-export default class Profile extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      canChallenge: null,
-      nextPerformance: null,
-      user: null
-    };
-  }
+const fetchProfile = () => helpers.getProfile();
 
-  componentDidMount() {
-    helpers.getProfile().then((data) => {
-      this.setState(data);
-    });
-  }
+const Profile = ({ canChallenge, currentChallenge, currentDisciplineAction, nextPerformance, user }) =>
+  helpers.isAdmin(user) || helpers.isDirector(user)
+    ? <AdminProfile nextPerformance={nextPerformance} user={user} />
+    : <MemberProfile
+        canChallenge={canChallenge}
+        currentChallenge={currentChallenge}
+        currentDisciplineAction={currentDisciplineAction}
+        nextPerformance={nextPerformance}
+        user={user}
+      />
+;
 
-  render() {
-    const { canChallenge, currentChallenge, currentDisciplineAction, nextPerformance, user } = this.state;
+Profile.propTypes = {
+  canChallenge: React.PropTypes.bool.isRequired,
+  currentChallenge: React.PropTypes.shape(challengeProps),
+  currentDisciplineAction: React.PropTypes.shape(disciplineActionProps),
+  nextPerformance: React.PropTypes.shape(performanceProps.performance),
+  user: React.PropTypes.shape(userProps).isRequired
+};
 
-    if (user === null) {
-      return null;
-    }
-
-    return helpers.isAdmin(user) || helpers.isDirector(user)
-      ? <AdminProfile nextPerformance={nextPerformance} user={user} />
-      : <MemberProfile
-          canChallenge={canChallenge}
-          currentChallenge={currentChallenge}
-          currentDisciplineAction={currentDisciplineAction}
-          nextPerformance={nextPerformance}
-          user={user}
-        />;
-  }
-}
+export default fetch(fetchProfile, null, Profile);
