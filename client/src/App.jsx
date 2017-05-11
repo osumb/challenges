@@ -21,7 +21,7 @@ import PendingResults from './result/pending-results';
 import Profile from './scenes/user/profile';
 import PasswordResetRequest from './scenes/password_reset/request';
 import PasswordResetReset from './scenes/password_reset/reset';
-import Roster from './user/roster';
+import Roster from './scenes/user/roster';
 import UserSearch from './user/user-search';
 
 const handleLogout = (push) => {
