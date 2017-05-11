@@ -1,8 +1,10 @@
 import { PropTypes } from 'react';
 
+import helpers from './helpers';
+
 const propTypes = {
-  file: PropTypes.number.isRequired,
-  row: PropTypes.oneOf(['A', 'B', 'C', 'E', 'F', 'H', 'I', 'J', 'K', 'L', 'M', 'Q', 'R', 'S', 'T', 'X']).isRequired
+  file: PropTypes.number,
+  row: PropTypes.oneOf(Object.values(helpers.rows))
 };
 
 export default propTypes;
