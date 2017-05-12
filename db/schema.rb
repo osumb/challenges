@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170504045409) do
+ActiveRecord::Schema.define(version: 20170504003831) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -33,20 +33,18 @@ ActiveRecord::Schema.define(version: 20170504045409) do
     t.boolean  "open_spot",            default: false, null: false
     t.boolean  "allowed_to_challenge", default: false, null: false
     t.integer  "performance_id"
-    t.integer  "user_id"
     t.datetime "created_at",                           null: false
     t.datetime "updated_at",                           null: false
+    t.string   "user_buck_id"
     t.index ["performance_id"], name: "index_discipline_actions_on_performance_id", using: :btree
-    t.index ["user_id"], name: "index_discipline_actions_on_user_id", using: :btree
   end
 
   create_table "password_reset_requests", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
-    t.boolean  "used",       default: false
-    t.datetime "expires",    default: -> { "(now() + '01:00:00'::interval)" }, null: false
-    t.integer  "user_id"
-    t.datetime "created_at",                                                   null: false
-    t.datetime "updated_at",                                                   null: false
-    t.index ["user_id"], name: "index_password_reset_requests_on_user_id", using: :btree
+    t.boolean  "used",         default: false
+    t.datetime "expires",      default: -> { "(now() + '01:00:00'::interval)" }, null: false
+    t.datetime "created_at",                                                     null: false
+    t.datetime "updated_at",                                                     null: false
+    t.string   "user_buck_id"
   end
 
   create_table "performances", force: :cascade do |t|
@@ -66,21 +64,19 @@ ActiveRecord::Schema.define(version: 20170504045409) do
   end
 
   create_table "user_challenges", force: :cascade do |t|
-    t.integer "user_id"
     t.integer "challenge_id"
     t.integer "spot_id"
     t.string  "comments"
+    t.string  "user_buck_id"
     t.index ["challenge_id"], name: "index_user_challenges_on_challenge_id", using: :btree
     t.index ["spot_id"], name: "index_user_challenges_on_spot_id", using: :btree
-    t.index ["user_id"], name: "index_user_challenges_on_user_id", using: :btree
   end
 
-  create_table "users", force: :cascade do |t|
+  create_table "users", primary_key: "buck_id", id: :string, force: :cascade do |t|
     t.string   "first_name",                                null: false
     t.string   "last_name",                                 null: false
     t.string   "email",                                     null: false
     t.string   "password_digest",                           null: false
-    t.string   "buck_id",                                   null: false
     t.integer  "instrument",                                null: false
     t.integer  "part",                                      null: false
     t.integer  "role",                                      null: false
@@ -93,4 +89,7 @@ ActiveRecord::Schema.define(version: 20170504045409) do
     t.index ["spot_id"], name: "index_users_on_spot_id", using: :btree
   end
 
+  add_foreign_key "discipline_actions", "users", column: "user_buck_id", primary_key: "buck_id"
+  add_foreign_key "password_reset_requests", "users", column: "user_buck_id", primary_key: "buck_id"
+  add_foreign_key "user_challenges", "users", column: "user_buck_id", primary_key: "buck_id"
 end

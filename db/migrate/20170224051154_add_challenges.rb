@@ -10,10 +10,12 @@ class AddChallenges < ActiveRecord::Migration[5.0]
     end
 
     create_table :user_challenges do |t|
-      t.belongs_to :user, index: true
       t.belongs_to :challenge, index: true
       t.belongs_to :spot, index: true
       t.string :comments
     end
+
+    add_column :user_challenges, :user_buck_id, :string
+    add_foreign_key :user_challenges, :users, column: :user_buck_id, primary_key: 'buck_id'
   end
 end
