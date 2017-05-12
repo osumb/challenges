@@ -12,4 +12,4 @@ if [ -z "$TRAVIS" ]; then
   echo "==> Done creating test database"
 fi
 
-bin/rails test
+bin/rspec

@@ -40,7 +40,7 @@ class Challenge < ApplicationRecord
 
   def valid_open_spot_challenge
     return if normal_challenge_type? || tri_challenge_type?
-    return if users.length <= 2
+    return if !users.empty? && users.length <= 2
     errors.add(:users, 'no more than two users are allowed in an open spot challenge')
   end
 
