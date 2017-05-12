@@ -37,7 +37,6 @@ class User < ApplicationRecord
   validate :valid_instrument_part_for_user
   validate :valid_instrument_part_for_admin
 
-  # before_validation :downcase_buck_id
   before_save :downcase_email
 
   has_secure_password
@@ -128,10 +127,6 @@ class User < ApplicationRecord
     errors.add(:admin, "with instrument #{instrument} can't have part #{part}")
   end
   # rubocop:enable Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
-
-  def downcase_buck_id
-    buck_id.try(:downcase!)
-  end
 
   def downcase_email
     email.try(:downcase!)
