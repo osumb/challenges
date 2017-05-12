@@ -59,7 +59,6 @@ describe Challenge, type: :model do
     subject { build(:open_spot_challenge) }
 
     it 'is invalid with no users' do
-      skip('how is this supposed to work? currently fails')
       subject.valid?
       expect(subject.errors.full_messages)
         .to include('Users no more than two users are allowed in an open spot challenge')
