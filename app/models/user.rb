@@ -9,10 +9,10 @@ class User < ApplicationRecord
 
   # associations
   belongs_to :spot, optional: true
-  has_many :user_challenges
+  has_many :user_challenges, foreign_key: 'user_buck_id'
   has_many :challenges, through: :user_challenges
-  has_many :discipline_actions
-  has_many :password_change_requests
+  has_many :discipline_actions, foreign_key: 'user_buck_id'
+  has_many :password_change_requests, foreign_key: 'user_buck_id'
 
   # validations
   validates :first_name, presence: true
@@ -37,7 +37,7 @@ class User < ApplicationRecord
   validate :valid_instrument_part_for_user
   validate :valid_instrument_part_for_admin
 
-  before_validation :downcase_buck_id
+  # before_validation :downcase_buck_id
   before_save :downcase_email
 
   has_secure_password

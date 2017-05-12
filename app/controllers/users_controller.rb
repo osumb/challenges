@@ -9,7 +9,7 @@ class UsersController < ApplicationController
   end
 
   def show
-    @user = User.includes(:spot, :challenges, :discipline_actions).find_by(buck_id: params[:id])
+    @user = User.includes(:spot, :challenges, :discipline_actions).find_by(buck_id: params[:buck_id])
     return unless @user.nil?
     head 404
   end
@@ -41,16 +41,16 @@ class UsersController < ApplicationController
 
   def ensure_correct_user!
     return if current_user.admin? || current_user.director?
-    return if params[:id]&.downcase == current_user&.buck_id&.downcase
+    return if params[:buck_id]&.downcase == current_user&.buck_id&.downcase
     head 401
   end
 
   # rubocop:disable Metrics/CyclomaticComplexity
   def ensure_password_reset_request_is_valid!
-    prr = PasswordResetRequest.includes(:user).find_by(id: params[:password_reset_request_id])
+    prr = PasswordResetRequest.includes(:user).find(params[:password_reset_request_id])
     invalid_prr = prr.nil? || prr.used? || prr.expired?
     invalid_password = params[:password].nil? || params[:password].length <= 0
-    invalid_user_id = prr.user.id != User.find_by(id: params[:id])&.id
+    invalid_user_id = prr.user.id != User.find(params[:buck_id])&.id
     return unless invalid_prr || invalid_password || invalid_user_id
     head 403
   end

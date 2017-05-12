@@ -4,8 +4,8 @@ Rails.application.routes.draw do
     post 'user_token' => 'user_token#create'
 
     resources :users, only: [:index, :show], constraints: { id: /[0-z\.]+/ }
-    get 'users/profile/:id', to: 'users#profile', constraints: { id: /[0-z\.]+/ }
-    post 'users/:id/reset_password', to: 'users#reset_password', constraints: { id: /[0-z\.]+/ }
+    get 'users/profile/:buck_id', to: 'users#profile', constraints: { buck_id: /[0-z\.]+/ }
+    post 'users/:buck_id/reset_password', to: 'users#reset_password', constraints: { buck_id: /[0-z\.]+/ }
 
     resources :challenges, only: [:create]
     resources :user_challenges, only: [:create, :destroy]
