@@ -43,7 +43,7 @@ class User < ApplicationRecord
   has_secure_password
 
   def self.from_token_request(request)
-    buck_id = request.params[:auth] && request.params[:auth][:buck_id]
+    buck_id = request.params[:auth] && request.params[:auth][:buck_id]&.downcase
     find_by buck_id: buck_id
   end
 
