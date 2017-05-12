@@ -9,9 +9,7 @@ class UsersController < ApplicationController
   end
 
   def show
-    @user = User.includes(:spot, :challenges, :discipline_actions).find_by(buck_id: params[:buck_id])
-    return unless @user.nil?
-    head 404
+    @user = User.includes(:spot, :challenges, :discipline_actions).find(params[:buck_id])
   end
 
   def profile
