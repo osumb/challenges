@@ -1,6 +1,6 @@
 class CreateUsers < ActiveRecord::Migration[5.0]
-  def change
-    create_table :users do |t|
+  def up
+    create_table :users, id: false, primary_key: :buck_id do |t|
       t.string :first_name, null: false
       t.string :last_name, null: false
       t.string :email, null: false, unique: true
@@ -15,5 +15,10 @@ class CreateUsers < ActiveRecord::Migration[5.0]
       t.belongs_to :spot
       t.timestamps
     end
+    execute 'ALTER TABLE users ADD PRIMARY KEY (buck_id);'
+  end
+
+  def down
+    drop_table :users
   end
 end

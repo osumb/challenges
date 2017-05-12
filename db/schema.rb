@@ -75,12 +75,11 @@ ActiveRecord::Schema.define(version: 20170504045409) do
     t.index ["user_id"], name: "index_user_challenges_on_user_id", using: :btree
   end
 
-  create_table "users", force: :cascade do |t|
+  create_table "users", primary_key: "buck_id", id: :string, force: :cascade do |t|
     t.string   "first_name",                                null: false
     t.string   "last_name",                                 null: false
     t.string   "email",                                     null: false
     t.string   "password_digest",                           null: false
-    t.string   "buck_id",                                   null: false
     t.integer  "instrument",                                null: false
     t.integer  "part",                                      null: false
     t.integer  "role",                                      null: false
