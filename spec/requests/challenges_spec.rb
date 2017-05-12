@@ -27,17 +27,15 @@ describe 'Challengeable Users', type: :request do
 
         challenge = JSON.parse(response.body)['challenge']
 
-        expect(challenge).to include({
-          'challenge_type' => 'normal',
-          'spot' => {
-            'row' => challengee.spot.row.upcase,
-            'file' => challengee.spot.file,
-          },
-          'users' => contain_exactly(
-            include('id' => challenger.id),
-            include('id' => challengee.id)
-          )
-        })
+        expect(challenge).to include('challenge_type' => 'normal',
+                                     'spot' => {
+                                       'row' => challengee.spot.row.upcase,
+                                       'file' => challengee.spot.file
+                                     },
+                                     'users' => contain_exactly(
+                                       include('id' => challenger.id),
+                                       include('id' => challengee.id)
+                                     ))
       end
 
       it 'destroys the challenge when the user leaves' do
@@ -99,7 +97,6 @@ describe 'Challengeable Users', type: :request do
             post challenges_endpoint, params: params.to_json, headers: authenticated_header(challenger)
           }.not_to change { Challenge.count }
 
-
           expect(response).to have_http_status(403)
           expect(JSON.parse(response.body)['errors'].join).to include('can\'t challenge someone of a different instrument or part')
         end
@@ -112,7 +109,6 @@ describe 'Challengeable Users', type: :request do
           expect {
             post challenges_endpoint, params: params.to_json, headers: authenticated_header(challenger)
           }.not_to change { Challenge.count }
-
 
           expect(response).to have_http_status(403)
           expect(JSON.parse(response.body)['errors'].join).to include('can\'t challenge someone of a different instrument or part')
@@ -194,18 +190,16 @@ describe 'Challengeable Users', type: :request do
 
         challenge = JSON.parse(response.body)['challenge']
 
-        expect(challenge).to include({
-          'challenge_type' => 'tri',
-          'spot' => {
-            'row' => challengee.spot.row.upcase,
-            'file' => challengee.spot.file,
-          },
-          'users' => contain_exactly(
-            include('id' => challenger.id),
-            include('id' => challengee.id),
-            include('id' => other_user.id)
-          )
-        })
+        expect(challenge).to include('challenge_type' => 'tri',
+                                     'spot' => {
+                                       'row' => challengee.spot.row.upcase,
+                                       'file' => challengee.spot.file
+                                     },
+                                     'users' => contain_exactly(
+                                       include('id' => challenger.id),
+                                       include('id' => challengee.id),
+                                       include('id' => other_user.id)
+                                     ))
       end
 
       it 'destroys the challenge when a user leaves' do
@@ -268,16 +262,14 @@ describe 'Challengeable Users', type: :request do
 
         challenge = JSON.parse(response.body)['challenge']
 
-        expect(challenge).to include({
-          'challenge_type' => 'open_spot',
-          'spot' => {
-            'row' => challengee.spot.row.upcase,
-            'file' => challengee.spot.file,
-          },
-          'users' => contain_exactly(
-            include('id' => challenger.id)
-          )
-        })
+        expect(challenge).to include('challenge_type' => 'open_spot',
+                                     'spot' => {
+                                       'row' => challengee.spot.row.upcase,
+                                       'file' => challengee.spot.file
+                                     },
+                                     'users' => contain_exactly(
+                                       include('id' => challenger.id)
+                                     ))
       end
 
       it 'destroys the challenge if the only challenger leaves' do
@@ -295,7 +287,6 @@ describe 'Challengeable Users', type: :request do
       it 'does not destroy the challenge if there are remaining challengers after a user leaves' do
         post challenges_endpoint, params: params.to_json, headers: authenticated_header(challenger)
         post challenges_endpoint, params: params.to_json, headers: authenticated_header(other_challenger)
-
 
         user_challenge_id = challenger.user_challenges.first.id
         expect {

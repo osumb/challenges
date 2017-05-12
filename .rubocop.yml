@@ -47,3 +47,7 @@ Metrics/AbcSize:
 Metrics/MethodLength:
   Exclude:
     - 'spec/**/*'
+
+Style/BlockDelimiters:
+  Exclude:
+    - 'spec/**/*'
