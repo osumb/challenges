@@ -4,6 +4,7 @@ class Spot < ApplicationRecord
 
   # associations
   has_many :challenges
+  has_one :user
 
   # validations
   validates :row, presence: true
