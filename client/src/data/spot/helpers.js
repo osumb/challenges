@@ -20,6 +20,14 @@ const rows = {
   T: 'T',
   X: 'X'
 };
+const compareSpots = (a, b) => {
+  if (typeof a === 'string') return compareSpots(spotFromString(a), spotFromString(b));
+  if (a.row === b.row) {
+    return a.file - b.file;
+  } else {
+    return a.row > b.row ? 1 : -1;
+  }
+};
 const spotFromString = spot => {
   const [row, file] = spot.match(stringSplitRegex);
 
@@ -71,6 +79,7 @@ const validSpot = ({ row, file }) => {
 };
 
 export default {
+  compareSpots,
   rows,
   spotFromString,
   validPartForRow,

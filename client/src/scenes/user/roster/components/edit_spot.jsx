@@ -1,20 +1,8 @@
 import React from 'react';
-import styled from 'styled-components';
 
-import { helpers as spotHelpers } from '../../../../data/spot';
 import { helpers as userHelpers } from '../../../../data/user';
-import { errorEmitter } from '../../../../utils';
-import EditButton from './edit_button';
-
-const Container = styled.div`
-  display: flex;
-  align-content: center;
-  justify-content: space-between;
-  flex-wrap: wrap;
-`;
-const EditInput = styled.input`
-  width: 50px;
-`;
+import { helpers as spotHelpers } from '../../../../data/spot';
+import EditText from './edit_text';
 
 export default class EditSpot extends React.PureComponent {
   static get propTypes() {
@@ -27,80 +15,57 @@ export default class EditSpot extends React.PureComponent {
 
   constructor(props) {
     super(props);
-    this.state = {
-      editing: false,
-      newSpot: props.value,
-      requesting: false
-    };
-    this.handleEditConfirmClick = this.handleEditConfirmClick.bind(this);
-    this.handleEditToggleClick = this.handleEditToggleClick.bind(this);
-    this.handleSpotChange = this.handleSpotChange.bind(this);
+    this.handleUpdate = this.handleUpdate.bind(this);
+    this.errorMessage = this.errorMessage.bind(this);
+    this.update = this.update.bind(this);
+    this.validNewValue = this.validNewValue.bind(this);
   }
 
-  componentWillReceiveProps({ value }) {
-    this.setState({ editing: false, newSpot: value, request: false });
+  handleUpdate(spot) {
+    this.props.onChange({ ...this.props.row, spot });
   }
 
-  handleEditConfirmClick() {
+  errorMessage(newSpot) {
     const { instrument, part } = this.props.row;
-    const { newSpot } = this.state;
+    const spot = spotHelpers.spotFromString(newSpot);
+    const { row } = spot;
+    let message = 'Invalid Spot.';
+
+    if (!spotHelpers.validPartForRow(row, part)) {
+      message = `${message} row ${row} can't have part ${part}.`;
+    }
+    if (!spotHelpers.validInstrumentForRow(row, instrument)) {
+      message = `${message} row ${row} can't have instrument ${instrument}.`;
+    }
+    return message;
+  }
+
+  update(newSpot) {
+    return userHelpers.switchSpots(this.props.row.buckId, spotHelpers.spotFromString(newSpot));
+  }
+
+  validNewValue(newSpot) {
+    const { instrument, part } = this.props.row;
     const spot = spotHelpers.spotFromString(newSpot);
     const { row } = spot;
 
-    if (
+    return (
       spotHelpers.validSpot(spot) &&
       spotHelpers.validPartForRow(row, part) &&
       spotHelpers.validInstrumentForRow(row, instrument)
-    ) {
-      this.setState({ requesting: true });
-      userHelpers.editSpot()
-      .then(() => {
-        this.setState({ editing: false, requesting: false });
-        this.props.onChange({ ...this.props.row, spot: newSpot });
-      });
-    } else {
-      let errorMessage = 'Invalid Spot.';
-
-      if (!spotHelpers.validPartForRow(row, part)) {
-        errorMessage = `${errorMessage} row ${row} can't have part ${part}.`;
-      }
-      if (!spotHelpers.validInstrumentForRow(row, instrument)) {
-        errorMessage = `${errorMessage} row ${row} can't have instrument ${instrument}.`;
-      }
-
-      errorEmitter.dispatch(errorMessage);
-    }
-  }
-
-  handleEditToggleClick() {
-    this.setState(({ editing }) => ({ editing: !editing }));
-  }
-
-  handleSpotChange({ target }) {
-    this.setState({ [target.name]: target.value });
+    );
   }
 
   render() {
-    const { value } = this.props;
-    const { editing, requesting } = this.state;
-
-    if (editing) {
-      return (
-        <Container>
-          <EditInput onChange={this.handleSpotChange} value={this.state.newSpot} name="newSpot" disabled={requesting} />
-          <Container>
-            <EditButton onClick={this.handleEditToggleClick} disabled={requesting}>Cancel</EditButton>
-            <EditButton onClick={this.handleEditConfirmClick} disabled={requesting}>Confirm</EditButton>
-          </Container>
-        </Container>
-      );
-    }
-
     return (
-      <Container>
-        {value}
-        <EditButton onClick={this.handleEditToggleClick}>Edit</EditButton>
-      </Container>
+      <EditText
+        errorMessage={this.errorMessage}
+        onUpdate={this.handleUpdate}
+        row={this.props.row}
+        update={this.update}
+        validNewValue={this.validNewValue}
+        value={this.props.value}
+      />
     );
   }
 }

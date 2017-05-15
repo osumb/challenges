@@ -40,7 +40,7 @@ export default class EditPart extends React.PureComponent {
     const newPart = userHelpers.partsForInstrument(this.props.row.instrument)[partIndex];
 
     this.setState({ requesting: true });
-    userHelpers.editPart(this.props.row.id, newPart)
+    userHelpers.update({ ...this.props.row, part: newPart })
     .then(() => {
       this.setState({ editing: false, requesting: false });
       this.props.onChange({ ...this.props.row, part: newPart });

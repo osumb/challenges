@@ -50,17 +50,17 @@ const isMember = ({ role }) => role === MEMBER;
 const isSquadLeader = ({ role }) => role === SQUAD_LEADER;
 const isTriChallengeUser = ({ spot }) => ['J'].includes(spot.row);
 const resetPassword = (password_reset_request_id, password, { id }) => api.post(`/users/${id}/reset_password`, { password_reset_request_id, password });
-const editSpot = (id, row, file) => new Promise(resolve => {
-  setTimeout(resolve, 1000);
-});
-const editPart = (id, part) => new Promise(resolve => {
-  setTimeout(resolve, 1000);
-});
+const switchSpots = (user_buck_id, target_spot) => api.put('/users/switch_spots', { user_buck_id, target_spot });
+const update = ({ firstName: first_name, lastName: last_name, buckId, part }) =>
+  api.put(`/users/${buckId}`, {
+    first_name,
+    last_name,
+    part: part.toLowerCase()
+  });
 const partsForInstrument = instrument => instrumentParts[instrument];
 
 export default {
-  editPart,
-  editSpot,
+  switchSpots,
   getAll,
   getById,
   getProfile,
@@ -73,5 +73,6 @@ export default {
   parts,
   partsForInstrument,
   resetPassword,
-  roles
+  roles,
+  update
 };
