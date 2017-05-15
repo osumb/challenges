@@ -10,6 +10,11 @@ class Spot < ApplicationRecord
   validates :row, presence: true
   validates :file, presence: true
 
+  def <=>(other)
+    return file <=> other.file if row == other.row
+    row <=> other.row
+  end
+
   class << self
     # rubocop:disable Metrics/MethodLength, Metrics/CyclomaticComplexity, Style/IndentationConsistency
     def valid_instrument_part_for_row(row, instrument, part)

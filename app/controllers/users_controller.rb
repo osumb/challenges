@@ -6,9 +6,11 @@ class UsersController < ApplicationController
   before_action :ensure_new_part_exists!, only: [:update]
   before_action :ensure_target_spot_exists!, only: [:switch_spot]
 
+  # rubocop:disable Performance/CompareWithBlock
   def index
-    @users = User.performers.includes(:spot)
+    @users = User.performers.includes(:spot).sort { |a, b| a.spot <=> b.spot }
   end
+  # rubocop:enable Performance/CompareWithBlock
 
   def show
     @user = User.includes(:spot, :challenges, :discipline_actions).find(params[:buck_id])
@@ -35,7 +37,7 @@ class UsersController < ApplicationController
   # rubocop:disable Metrics/MethodLength
   def switch_spot
     user = User.find params[:user_buck_id]
-    target_spot = Spot.where(row: params[:target_spot][:row], file: params[:target_spot][:file]).first
+    target_spot = Spot.where(row: params[:target_spot][:row].downcase, file: params[:target_spot][:file]).first
     old_user_spot = user.spot
     target_user = target_spot.user
     user.spot = target_spot
@@ -43,7 +45,7 @@ class UsersController < ApplicationController
 
     User.transaction do
       if user.save(validate: false) && target_user.save(validate: false)
-        head 200
+        head 204
       else
         render json: { resource: 'user', errors: [user.errors, target_user.errors] }, status: 409
       end
@@ -103,9 +105,11 @@ class UsersController < ApplicationController
     head 409
   end
 
+  # rubocop:disable Metrics/LineLength
   def ensure_target_spot_exists!
     head 409 if params[:target_spot].nil?
-    return unless Spot.where(row: params[:target_spot][:row], file: params[:target_spot][:file]).empty?
+    return unless Spot.where(row: params[:target_spot][:row].downcase&.downcase, file: params[:target_spot][:file]).empty?
     head 409
   end
+  # rubocop:enable Metrics/LineLength
 end

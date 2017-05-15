@@ -119,7 +119,7 @@ describe 'User Requests', type: :request do
   describe 'PUT /api/users/switch_spot' do
     let(:requesting_user) { create(:admin_user) }
     let(:target_user) { create(:user, :trumpet, :solo, :spot_a4) }
-    let(:switch_endpoint) { '/api/users/switch_spot' }
+    let(:switch_endpoint) { '/api/users/switch_spots' }
     let(:switch_params) do
       {
         user_buck_id: user.buck_id,
@@ -135,7 +135,7 @@ describe 'User Requests', type: :request do
       user.reload
       target_user.reload
 
-      expect(response).to have_http_status(200)
+      expect(response).to have_http_status(204)
       expect(user.spot).to eq(target_spot)
       expect(target_user.spot).to eq(old_user_spot)
     end
