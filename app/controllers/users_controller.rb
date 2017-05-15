@@ -17,7 +17,6 @@ class UsersController < ApplicationController
   end
 
   def update
-    logger.info 'HEY'
     @user = User.find params[:id]
     part = User.parts[params[:part]]
     @user.part = part
