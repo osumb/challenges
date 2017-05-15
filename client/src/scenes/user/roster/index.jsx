@@ -3,7 +3,6 @@ import ReactTable from 'react-table';
 import styled from 'styled-components';
 
 import 'react-table/react-table.css';
-import { fetch } from '../../../utils';
 import { helpers as spotHelpers } from '../../../data/spot';
 import { helpers, propTypes } from '../../../data/user';
 import EditFirstName from './components/edit_first_name';
@@ -16,9 +15,6 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
 `;
-
-const fetchRoster = () => helpers.getAll();
-const propsFromData = ({ users }) => ({ users: flattenSpotToString(users) });
 
 const filterMethod = ({ id, value }, row) => row[id].toLowerCase().includes(value.toLowerCase());
 const flattenSpotToString = oldUsers =>
@@ -41,7 +37,7 @@ const updateStateWithNewRow = newRow => ({ users }) => {
   return { users: newUsers.sort((a, b) => spotHelpers.compareSpots(a.spot, b.spot)) };
 };
 
-class Roster extends React.PureComponent {
+export default class Roster extends React.PureComponent {
   static get propTypes() {
     return {
       users: React.PropTypes.arrayOf(React.PropTypes.shape({ ...propTypes, spot: React.PropTypes.string }))
@@ -51,13 +47,20 @@ class Roster extends React.PureComponent {
   constructor(props) {
     super(props);
     this.state = {
-      users: props.users
+      users: []
     };
     this.handleRowChange = this.handleRowChange.bind(this);
     this.renderEditFirstName = this.renderEditFirstName.bind(this);
     this.renderEditLastName = this.renderEditLastName.bind(this);
     this.renderEditPart = this.renderEditPart.bind(this);
     this.renderEditSpot = this.renderEditSpot.bind(this);
+  }
+
+  componentDidMount() {
+    helpers.getAll()
+    .then(({ users }) => {
+      this.setState({ users: flattenSpotToString(users) });
+    });
   }
 
   handleRowChange(row) {
@@ -143,5 +146,3 @@ class Roster extends React.PureComponent {
     );
   }
 }
-
-export default fetch(fetchRoster, propsFromData, Roster);
