@@ -33,6 +33,11 @@ class UsersController < ApplicationController
     @next_performance = Performance.next
   end
 
+  def search
+    q = params[:query].downcase
+    @users = User.performers.where('lower(first_name) LIKE ? OR lower(last_name) LIKE ?', "%#{q}%", "%#{q}%")
+  end
+
   # rubocop:disable Metrics/MethodLength
   def switch_spot
     user = User.find params[:user_buck_id]

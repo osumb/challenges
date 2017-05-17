@@ -4,6 +4,7 @@ Rails.application.routes.draw do
     post 'user_token' => 'user_token#create'
 
     put 'users/switch_spots', to: 'users#switch_spot'
+    get 'users/search', to: 'users#search'
     resources :users, only: [:index, :show, :update], constraints: { id: /[0-z\.]+/ }
     get 'users/profile/:buck_id', to: 'users#profile', constraints: { buck_id: /[0-z\.]+/ }
     post 'users/:buck_id/reset_password', to: 'users#reset_password', constraints: { buck_id: /[0-z\.]+/ }
