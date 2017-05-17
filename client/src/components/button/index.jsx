@@ -3,13 +3,14 @@ import classNames from 'classnames';
 import { MDCRipple } from '@material/ripple/dist/mdc.ripple.min.js';
 
 import './index.scss';
+
 export default class Button extends React.PureComponent {
   componentDidMount() {
     MDCRipple.attachTo(this.button);
   }
 
   render() {
-    const { children, className, onClick, ...rest } = this.props;
+    const { children, className, onClick, disabled, ...rest } = this.props;
     const classes = classNames({
       [className]: Boolean(className),
       'mdc-button': true,
@@ -23,6 +24,7 @@ export default class Button extends React.PureComponent {
     return (
       <button
         className={classes}
+        disabled={disabled}
         onClick={onClick}
         ref={ref => {
           this.button = ref;
@@ -40,5 +42,6 @@ export default class Button extends React.PureComponent {
 Button.propTypes = {
   children: React.PropTypes.node,
   className: React.PropTypes.string,
+  disabled: React.PropTypes.bool,
   onClick: React.PropTypes.func
 };
