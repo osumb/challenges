@@ -13,7 +13,8 @@ class UsersController < ApplicationController
   # rubocop:enable Performance/CompareWithBlock
 
   def show
-    @user = User.includes(:spot, :challenges, :discipline_actions).find(params[:buck_id])
+    @user = User.includes(:spot, :challenges, :discipline_actions).find(params[:id])
+    @performance = Performance.next
   end
 
   def update
@@ -78,11 +79,6 @@ class UsersController < ApplicationController
       :last_name,
       :part
     )
-  end
-
-  def ensure_admin!
-    return if current_user.admin? || current_user.director?
-    head 403
   end
 
   def ensure_correct_user!

@@ -1,6 +1,7 @@
 class PerformancesController < ApplicationController
   before_action :authenticate_user
   before_action :ensure_admin!, except: [:challengeable_users]
+
   def create
     @performance = Performance.new create_params
     if @performance.save
@@ -8,6 +9,10 @@ class PerformancesController < ApplicationController
     else
       render json: { resource: 'performance', errors: @performance.errors }, status: 409
     end
+  end
+
+  def next
+    @performance = Performance.next
   end
 
   # rubocop:disable Metrics/MethodLength
@@ -40,11 +45,6 @@ class PerformancesController < ApplicationController
       :window_close,
       :window_open
     )
-  end
-
-  def ensure_admin!
-    return if current_user.admin?
-    head 401
   end
 
   def parse_challengeable_users(result)
