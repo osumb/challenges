@@ -22,7 +22,7 @@ import Profile from './scenes/user/profile';
 import PasswordResetRequest from './scenes/password_reset/request';
 import PasswordResetReset from './scenes/password_reset/reset';
 import Roster from './scenes/user/roster';
-import UserSearch from './user/user-search';
+import Search from './scenes/user/search';
 
 const handleLogout = (push) => {
   auth.logout();
@@ -75,7 +75,7 @@ const App = () => (
             <PrivateRoute exact path="/results/completed" component={CompletedResults} />
             <PrivateRoute exact path="/results/pending" component={PendingResults} />
             <PrivateRoute exact path="/roster" component={Roster} />
-            <PrivateRoute exact path="/search" component={UserSearch} />
+            <PrivateRoute exact path="/search" component={Search} />
             <PublicRoute exact path="/login" component={Login} />
             <PublicRoute exact path="/password_reset_requests/new" component={PasswordResetRequest} />
             <PublicRoute exact path="/password_reset_requests/:id" component={PasswordResetReset} />

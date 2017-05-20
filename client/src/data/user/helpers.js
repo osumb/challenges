@@ -50,6 +50,7 @@ const isMember = ({ role }) => role === MEMBER;
 const isSquadLeader = ({ role }) => role === SQUAD_LEADER;
 const isTriChallengeUser = ({ spot }) => ['J'].includes(spot.row);
 const resetPassword = (password_reset_request_id, password, { id }) => api.post(`/users/${id}/reset_password`, { password_reset_request_id, password });
+const search = query => api.get(`/users/search?query=${query}`);
 const switchSpots = (user_buck_id, target_spot) => api.put('/users/switch_spots', { user_buck_id, target_spot });
 const update = ({ firstName: first_name, lastName: last_name, buckId, part }) =>
   api.put(`/users/${buckId}`, {
@@ -60,7 +61,6 @@ const update = ({ firstName: first_name, lastName: last_name, buckId, part }) =>
 const partsForInstrument = instrument => instrumentParts[instrument];
 
 export default {
-  switchSpots,
   getAll,
   getById,
   getProfile,
@@ -73,6 +73,8 @@ export default {
   parts,
   partsForInstrument,
   resetPassword,
+  search,
+  switchSpots,
   roles,
   update
 };

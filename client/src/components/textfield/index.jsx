@@ -4,11 +4,21 @@ import { MDCTextfield } from '@material/textfield/dist/mdc.textfield.min.js';
 export default class TextField extends React.PureComponent {
   static get propTypes() {
     return {
-      onChange: React.PropTypes.func,
-      onKeyUp: React.PropTypes.func,
+      autoFocus: React.PropTypes.bool,
+      labelStyle: React.PropTypes.object,
       hint: React.PropTypes.string,
       name: React.PropTypes.string,
-      type: React.PropTypes.string
+      onChange: React.PropTypes.func,
+      onKeyUp: React.PropTypes.func,
+      type: React.PropTypes.string,
+      value: React.PropTypes.string
+    };
+  }
+
+  static get defaultProps() {
+    return {
+      name: 'text',
+      type: 'text'
     };
   }
 
@@ -41,13 +51,16 @@ export default class TextField extends React.PureComponent {
         ref={textfield => {
           this.textfield = textfield;
         }}
+        style={this.props.labelStyle}
       >
         <input
           className="mdc-textfield__input"
-          type={this.props.type || 'text'}
-          name={this.props.name || 'text'}
+          autoFocus={this.props.autoFocus}
+          type={this.props.type}
+          name={this.props.name}
           onChange={this.handleTextChange}
           onKeyUp={this.handleKeyUp}
+          value={this.props.value}
         />
         {this.props.hint && <span className="mdc-textfield__label">{this.props.hint}</span>}
       </label>
