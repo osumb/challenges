@@ -6,6 +6,7 @@ const create = ({ date, name, windowClose: window_close, windowOpen: window_open
   api.post('/performances', { date, name, window_close, window_open });
 
 const getChallengeableUsers = () => api.get('/performances/challengeable_users');
+const getNext = () => api.get('/performances/next');
 
 const isValidPerformance = ({ date, name, windowClose, windowOpen }) => {
   if (!isValidPerformanceName(name)) return false;
@@ -38,6 +39,7 @@ const performanceKeys = ['date', 'name', 'windowClose', 'windowOpen'];
 export default {
   create,
   getChallengeableUsers,
+  getNext,
   isValidPerformance,
   isWindowOpen,
   performanceErrors,
