@@ -14,8 +14,16 @@ const create = ({ file, row }) =>
     }
   });
 
+const del = id => new Promise(resolve => setTimeout(resolve, id));
 const isNormalChallenge = challengeType => challengeType === 'normal';
 const isOpenSpotChallenge = challengeType => challengeType === 'open_spot';
 const isTriChallenge = challengeType => challengeType === 'tri';
 
-export default { addUser, create, isNormalChallenge, isOpenSpotChallenge, isTriChallenge };
+export default {
+  addUser,
+  create,
+  del,
+  isNormalChallenge,
+  isOpenSpotChallenge,
+  isTriChallenge
+};

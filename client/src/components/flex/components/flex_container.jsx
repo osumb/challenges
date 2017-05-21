@@ -1,10 +1,13 @@
 import styled from 'styled-components';
 
 export default styled.div`
-  width: ${({ width }) => width};
   display: flex;
-  flex-direction: ${({ flexDirection }) => flexDirection};
-  align-items: ${({ alignItems }) => alignItems};
-  justify-content: ${({ justifyContent }) => justifyContent};
-  flex-wrap: ${({ flexWrap }) => flexWrap};
+  ${({ margin }) => margin && `margin: ${margin};`};
+  ${({ padding }) => padding && `padding: ${padding};`};
+  ${({ height }) => height && `height: ${height};`};
+  ${({ width }) => width && `width: ${width};`};
+  ${({ flexDirection }) => flexDirection && `flex-direction: ${flexDirection};`};
+  ${({ alignItems }) => alignItems && `align-items: ${alignItems};`};
+  ${({ justifyContent }) => justifyContent && `justify-content: ${justifyContent};`};
+  ${({ flexWrap }) => flexWrap && `flex-wrap: ${flexWrap};`};
 `;
