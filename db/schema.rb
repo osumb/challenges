@@ -21,7 +21,7 @@ ActiveRecord::Schema.define(version: 20170504003831) do
     t.integer  "stage",          default: 0
     t.integer  "spot_id"
     t.integer  "performance_id"
-    t.integer  "winner_id"
+    t.string   "winner_buck_id"
     t.datetime "created_at",                 null: false
     t.datetime "updated_at",                 null: false
     t.index ["performance_id"], name: "index_challenges_on_performance_id", using: :btree
