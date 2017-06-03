@@ -8,7 +8,7 @@ class Challenge < ApplicationRecord
   has_many :users, through: :user_challenges
   belongs_to :spot
   belongs_to :performance
-  belongs_to :winner, class_name: 'User', foreign_key: 'winner_id', optional: true
+  belongs_to :winner, class_name: 'User', foreign_key: 'winner_buck_id', optional: true
 
   # validations
   validates :performance, presence: true

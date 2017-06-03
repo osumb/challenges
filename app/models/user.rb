@@ -1,5 +1,7 @@
 # rubocop:disable Metrics/ClassLength
 class User < ApplicationRecord
+  self.primary_key = 'buck_id'
+
   scope :performers, -> { where(role: [:member, :squad_leader]) }
 
   # enums

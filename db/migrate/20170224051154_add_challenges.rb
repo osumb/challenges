@@ -5,7 +5,7 @@ class AddChallenges < ActiveRecord::Migration[5.0]
       t.column :stage, :integer, default: 0
       t.belongs_to :spot
       t.belongs_to :performance
-      t.column :winner_id, :integer, foreign_key: true
+      t.column :winner_buck_id, :string, foreign_key: true
       t.timestamps
     end
 
