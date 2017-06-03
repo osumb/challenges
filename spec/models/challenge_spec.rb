@@ -12,32 +12,27 @@ describe Challenge, type: :model do
       subject { build(:normal_challenge) }
 
       it 'is invalid without 2 users' do
+        subject.users = [subject.users.first] # remove a user
         subject.valid?
         expect(subject.errors.full_messages)
           .to include('Users only two users are allowed in a normal challenge')
       end
 
       it 'is valid with 2 users' do
-        subject.users << build(:user)
-        subject.users << build(:user)
-
         subject.valid?
         expect(subject.errors.full_messages)
           .not_to include('Users only two users are allowed in a normal challenge')
       end
 
       it 'requires users in a challenge to have the same instrument and part' do
-        subject.users << build(:user, :trumpet, :solo)
-        subject.users << build(:user, :trumpet, :first)
-
+        subject.users = [build(:user, :trumpet, :solo), build(:user, :trumpet, :first)]
         subject.valid?
         expect(subject.errors.full_messages)
           .to include('Users must all have the same instrument and part')
       end
 
       it 'requires users in a challenge to not be admins or directors' do
-        subject.users << build(:admin_user)
-        subject.users << build(:user)
+        subject.users = [build(:admin_user), build(:user)]
 
         subject.valid?
         expect(subject.errors.full_messages)
@@ -59,14 +54,15 @@ describe Challenge, type: :model do
     subject { build(:open_spot_challenge) }
 
     it 'is invalid with no users' do
+      subject.users = []
+
       subject.valid?
       expect(subject.errors.full_messages)
         .to include('Users no more than two users are allowed in an open spot challenge')
     end
 
     it 'is valid with 2 users' do
-      subject.users << build(:user)
-      subject.users << build(:user)
+      subject.users = [build(:user), build(:user)]
 
       subject.valid?
       expect(subject.errors.full_messages)
@@ -78,15 +74,14 @@ describe Challenge, type: :model do
     subject { build(:tri_challenge) }
 
     it 'is invalid without 3 users' do
+      subject.users = []
       subject.valid?
       expect(subject.errors.full_messages)
         .to include('Users only three users are allowed in a tri challenge')
     end
 
     it 'is valid with 3 users' do
-      subject.users << build(:user)
-      subject.users << build(:user)
-      subject.users << build(:user)
+      subject.users = [build(:user), build(:user), build(:user)]
 
       subject.valid?
       expect(subject.errors.full_messages)
@@ -98,31 +93,26 @@ describe Challenge, type: :model do
     context 'when the challenge is normal' do
       subject { build(:normal_challenge) }
 
-      let(:user) { build(:user) }
-
       it 'is full with two users' do
-        subject.users = [user, user]
-
         expect(subject.full?).to be(true)
       end
 
       it 'is not full with less than two users' do
+        subject.users = []
         expect(subject.full?).to be(false)
       end
     end
 
     context 'when the challenge is open spot' do
       subject { build(:open_spot_challenge) }
-
-      let(:user) { build(:user) }
-
       it 'is full with two users' do
-        subject.users = [user, user]
+        subject.users = [build(:user), build(:user)]
 
         expect(subject.full?).to be(true)
       end
 
       it 'is not full with less than two users' do
+        subject.users = [build(:user)]
         expect(subject.full?).to be(false)
       end
     end
@@ -139,6 +129,7 @@ describe Challenge, type: :model do
       end
 
       it 'is not full with less than three users' do
+        subject.users = []
         expect(subject.full?).to be(false)
       end
     end
