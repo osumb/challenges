@@ -16,8 +16,8 @@ const parseErrorMessage = (response) => {
   if (headersHelpers.isJSONResponse(response)) {
     return response.json()
     .then((thing) => {
-      if (!thing.error) return getMessageFromStatus(response.status);
-      return thing.error;
+      if ((thing.errors || []).length <= 0) return getMessageFromStatus(response.status);
+      return thing.errors.map(error => Object.values(error)).join('. ');
     })
     .catch(() => DEFAULT_ERROR_MESSAGE);
   } else {
