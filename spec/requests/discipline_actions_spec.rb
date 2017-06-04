@@ -16,6 +16,7 @@ describe 'DisciplineActions', type: :request do
       }
     }
   end
+  let(:discipline_action) { create(:discipline_action) }
 
   describe 'POST /api/discipline_actions/' do
     context 'when the user is an admin' do
@@ -45,7 +46,7 @@ describe 'DisciplineActions', type: :request do
             post endpoint, params: discipline_action_params.to_json, headers: authenticated_header(admin)
           }.not_to change { Performance.count }
 
-          expect(response).to have_http_status(409)
+          expect(response).to have_http_status(403)
         end
 
         it 'is invalid without a reason' do
@@ -69,6 +70,32 @@ describe 'DisciplineActions', type: :request do
         }.not_to change { DisciplineAction.count }
 
         expect(response).to have_http_status(403)
+      end
+    end
+  end
+
+  describe 'DEL /api/discipline_actions/id' do
+    context 'when the user is an admin' do
+      it 'successfully destroys a discipline action' do
+        id = discipline_action.id
+        expect {
+          delete "#{endpoint}/#{id}", headers: authenticated_header(admin)
+        }.to change { DisciplineAction.count }.by(-1)
+
+        expect(response).to have_http_status(204)
+      end
+
+      context 'but the performance is expired' do
+        let(:discipline_action) { create(:discipline_action, performance: create(:stale_performance)) }
+
+        it 'does\'t destroy the discipline action' do
+          id = discipline_action.id
+          expect {
+            delete "#{endpoint}/#{id}", headers: authenticated_header(admin)
+          }.to change { DisciplineAction.count }.by(0)
+
+          expect(response).to have_http_status(403)
+        end
       end
     end
   end

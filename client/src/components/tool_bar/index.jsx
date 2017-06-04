@@ -1,6 +1,7 @@
 import React from 'react';
 
 import './index.scss';
+
 export default function ToolBar({ iconElementLeft, iconElementRight, title }) {
   return (
     <div className="mdc-toolbar mdc-toolbar--fixed challenges-toolbar">

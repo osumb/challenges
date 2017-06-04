@@ -11,6 +11,7 @@ export default function Elevation({ children, zLevel }) {
 Elevation.propTypes = {
   children: React.PropTypes.oneOfType([
     React.PropTypes.element,
+    React.PropTypes.node,
     React.PropTypes.arrayOf(React.PropTypes.oneOfType([React.PropTypes.element, React.PropTypes.arrayOf(React.PropTypes.element)]))
   ]).isRequired,
   zLevel: React.PropTypes.number.isRequired
