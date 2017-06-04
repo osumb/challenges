@@ -16,7 +16,6 @@ describe 'DisciplineActions', type: :request do
       }
     }
   end
-  let(:discipline_action) { create(:discipline_action) }
 
   describe 'POST /api/discipline_actions/' do
     context 'when the user is an admin' do
@@ -75,6 +74,8 @@ describe 'DisciplineActions', type: :request do
   end
 
   describe 'DEL /api/discipline_actions/id' do
+    let(:discipline_action) { create(:discipline_action) }
+
     context 'when the user is an admin' do
       it 'successfully destroys a discipline action' do
         id = discipline_action.id
@@ -95,6 +96,26 @@ describe 'DisciplineActions', type: :request do
           }.to change { DisciplineAction.count }.by(0)
 
           expect(response).to have_http_status(403)
+        end
+      end
+
+      context 'but the associated spot has already been challenged' do
+        let!(:challenge) {
+          spot = discipline_action.user.spot
+          create(:open_spot_challenge, spot: spot, performance: discipline_action.performance)
+        }
+
+        it 'returns a 403 with appropriate error message' do
+          user = discipline_action.user
+          expect {
+            delete "#{endpoint}/#{discipline_action.id}", headers: authenticated_header(admin)
+          }.not_to change { DisciplineAction.count }
+
+          expect(response).to have_http_status(403)
+          expect(JSON.parse(response.body)['errors'].join)
+            .to include(
+              "#{user.first_name} #{user.last_name}'s spot has already been challenged. Please remove that challenge before deleting this discipline action."
+            )
         end
       end
     end

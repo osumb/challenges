@@ -2,6 +2,7 @@ class DisciplineActionsController < ApplicationController
   before_action :authenticate_user
   before_action :ensure_admin!
   before_action :ensure_performance_is_not_expired!
+  before_action :ensure_spot_hasnt_been_challenged!, except: [:create]
 
   def create
     @da = DisciplineAction.new create_params
@@ -34,4 +35,20 @@ class DisciplineActionsController < ApplicationController
     return if !p.nil? && p&.window_open?
     render json: { resource: 'discipline_action', errors: [{ performance: 'can\'t be expired' }] }, status: 403
   end
+
+  # rubocop:disable Metrics/LineLength, Metrics/MethodLength
+  def ensure_spot_hasnt_been_challenged!
+    da = DisciplineAction.find params[:id]
+    user = da.user
+    user_spot = user.spot
+    performance = da.performance
+    challenges = Challenge.where performance: performance
+    return if challenges.empty?
+    return if challenges.select { |c| c.spot.id == user_spot.id }.length.negative?
+    render json: {
+      resource: 'discipline_action',
+      errors: [{ discipline_action: "#{user.first_name} #{user.last_name}'s spot has already been challenged. Please remove that challenge before deleting this discipline action." }]
+    }, status: 403
+  end
+  # rubocop:enable Metrics/LineLength, Metrics/MethodLength
 end
