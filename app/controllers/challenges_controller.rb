@@ -22,10 +22,6 @@ class ChallengesController < ApplicationController
 
   private
 
-  def challenger
-    current_user.admin? ? User.find(params[:challenger_buck_id]) : current_user
-  end
-
   def ensure_not_challenging_alternate!
     return if params[:spot][:file] < 13
     render json: { resource: 'challenge', errors: [challenge: 'can\'t challenge alternate'] }, status: 403
