@@ -81,6 +81,9 @@ describe Challenge, type: :model do
 
       it 'is valid with 3 users' do
         subject.users = [build(:user), build(:user), build(:user)]
+        subject.valid?
+        expect(subject.errors.full_messages)
+          .not_to include('Users only three users are allowed in a tri challenge')
       end
 
       it 'can\'t involve all rows' do

@@ -3,7 +3,6 @@ require 'rails_helper'
 # The purpose of this test file is to test the controller action for creating (and ONLY creating) challenges
 describe 'Challenge Creation', type: :request do
   let(:challenges_endpoint) { '/api/challenges/' }
-  let(:user_challenges_endpoint) { '/api/user_challenges/' }
   let!(:performance) { create(:performance) }
   let!(:challenger) { create(:alternate_user, :trumpet, :solo, :spot_a13) }
   let!(:other_challenger) { create(:alternate_user, :trumpet, :solo, :spot_a14) }
