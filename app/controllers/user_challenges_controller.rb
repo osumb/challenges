@@ -6,9 +6,14 @@ class UserChallengesController < ApplicationController
   before_action :ensure_correct_user_for_delete!, only: [:destroy]
 
   def create
-    user = current_user
     challenge = Challenge.find_by id: params[:challenge_id]
-    add_user_to_challenge user, challenge
+    @user_challenge = UserChallenge.new(user: challenger, challenge: challenge, spot: challenger.spot)
+
+    if @user_challenge.save
+      render 'user_challenges/show', status: 201
+    else
+      render json: { resource: 'user_challenge', errors: @user_challenge.errors }, status: 409
+    end
   end
 
   def destroy

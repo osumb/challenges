@@ -14,6 +14,17 @@ FactoryGirl.define do
     users { [FactoryGirl.create(:user, :spot_a13, :trumpet, :solo)] }
   end
 
+  factory :full_open_spot_challenge, parent: :challenge do
+    challenge_type :open_spot
+    spot { Spot.create(row: :a, file: 1) }
+    users {
+      [
+        FactoryGirl.create(:user, :spot_a13, :trumpet, :solo),
+        FactoryGirl.create(:user, :spot_a14, :trumpet, :solo)
+      ]
+    }
+  end
+
   factory :normal_challenge, parent: :challenge do
     challenge_type :normal
     spot { Spot.create(row: :a, file: 1) }
