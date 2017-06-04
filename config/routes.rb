@@ -10,6 +10,7 @@ Rails.application.routes.draw do
     post 'users/:buck_id/reset_password', to: 'users#reset_password', constraints: { buck_id: /[0-z\.]+/ }
 
     resources :challenges, only: [:create]
+    resources :discipline_actions, only: [:create, :destroy]
     resources :user_challenges, only: [:create, :destroy]
     resources :password_reset_requests, only: [:create, :show]
 
@@ -18,6 +19,7 @@ Rails.application.routes.draw do
         get 'challengeable_users'
       end
     end
+    get 'performances/next', to: 'performances#next'
   end
 
   get '*path', to: 'index#index'

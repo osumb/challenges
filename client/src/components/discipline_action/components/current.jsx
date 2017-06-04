@@ -1,9 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import { propTypes as disciplineActionProps } from '../../data/discipline_action';
-import Elevation from '../elevation';
-import Typography from '../../components/typography';
+import { propTypes as disciplineActionProps } from '../../../data/discipline_action';
+import Elevation from '../../elevation';
+import Typography from '../../typography';
 
 const Container = styled.div`
   display: flex;
