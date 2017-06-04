@@ -20,6 +20,7 @@ class Challenge < ApplicationRecord
   validate :no_users_are_admin
   validate :unique_users_in_challenge
   validate :no_duplicate_challenged_spots
+  validate :correct_row_for_challenge_type
 
   # rubocop:disable Metrics/CyclomaticComplexity
   def full?
@@ -29,6 +30,11 @@ class Challenge < ApplicationRecord
     false
   end
   # rubpcop:enable Metrics/CyclomaticComplexity
+
+  # rows that are allowed to have a tri challenge associated with it
+  def self.tri_challenge_rows
+    [:j]
+  end
 
   private
 
@@ -78,5 +84,16 @@ class Challenge < ApplicationRecord
     challenges = Challenge.where(performance: performance)
     return unless challenges.select { |challenge| challenge.spot.id == spot&.id }.length > 1
     errors.add(:challenge, 'must have unique spots for performance')
+  end
+
+  def correct_row_for_challenge_type
+    if tri_challenge_type?
+      return if Challenge.tri_challenge_rows.include? spot.row.to_sym
+      rows = Challenge.tri_challenge_rows.map(&:to_s).join(',')
+      errors.add(:challenge, "tri challenges can only involve the following rows: [#{rows}]")
+    else
+      return unless Challenge.tri_challenge_rows.include? spot.row
+      errors.add(:challenge, "only tri challenges can involve the row: #{spot.row}")
+    end
   end
 end
