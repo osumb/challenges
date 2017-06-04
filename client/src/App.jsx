@@ -21,6 +21,7 @@ import PendingResults from './result/pending-results';
 import Profile from './scenes/user/profile';
 import PasswordResetRequest from './scenes/password_reset/request';
 import PasswordResetReset from './scenes/password_reset/reset';
+import ProfileAdmin from './scenes/user/profile_admin';
 import Roster from './scenes/user/roster';
 import Search from './scenes/user/search';
 
@@ -76,6 +77,7 @@ const App = () => (
             <PrivateRoute exact path="/results/pending" component={PendingResults} />
             <PrivateRoute exact path="/roster" component={Roster} />
             <PrivateRoute exact path="/search" component={Search} />
+            <PrivateRoute exact path="/users/:buckId" component={ProfileAdmin} />
             <PublicRoute exact path="/login" component={Login} />
             <PublicRoute exact path="/password_reset_requests/new" component={PasswordResetRequest} />
             <PublicRoute exact path="/password_reset_requests/:id" component={PasswordResetReset} />

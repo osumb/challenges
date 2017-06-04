@@ -104,7 +104,7 @@ export const mainRoutes = {
     displayName: 'Users',
     links: [
       {
-        path: '/users/:nameNumber',
+        path: '/users/:buckId',
         roles: [ADMIN],
         show: false
       },
