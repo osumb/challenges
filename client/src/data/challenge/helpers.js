@@ -6,12 +6,12 @@ const addUser = (buckId, challengeId) =>
     challenge_id: challengeId
   });
 
-const create = ({ challengeType, file, performanceId, row }) =>
+const create = ({ file, row }) =>
   api.post('/challenges', {
-    challenge_type: challengeType,
-    file,
-    performance_id: performanceId,
-    row
+    spot: {
+      row,
+      file
+    }
   });
 
 const isNormalChallenge = challengeType => challengeType === 'normal';
