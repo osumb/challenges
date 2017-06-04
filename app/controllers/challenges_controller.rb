@@ -5,7 +5,6 @@ class ChallengesController < ApplicationController
   before_action :ensure_user_has_not_already_made_challenge!, only: [:create]
   before_action :ensure_user_is_challenging_correct_instrument_and_part!, only: [:create]
   before_action :ensure_spot_has_not_been_challenged!, only: [:create]
-  before_action :ensure_enough_users_exist_for_tri_challenge!, only: [:create]
 
   def create
     @challenge = Challenge::Bylder.perform(
@@ -61,21 +60,4 @@ class ChallengesController < ApplicationController
     return if challenge.open_spot_challenge_type?
     render json: { resource: 'challenge', errors: [spot: 'spot has already been challenged'] }, status: 403
   end
-
-  # rubocop:disable Metrics/MethodLength
-  def ensure_enough_users_exist_for_tri_challenge!
-    c_type = Challenge.challenge_types[params[:challenge_type]]
-    return if c_type == Challenge.challenge_types[:normal] || c_type == Challenge.challenge_types[:open_spot]
-    user = current_user
-    other_members = User.includes(:spot).where(
-      'instrument = ? and part = ? and buck_id != ?',
-      User.instruments[user.instrument],
-      User.parts[user.part],
-      user.buck_id
-    )
-    other_alternate = other_members.select { |member| member.spot.file > 12 }.first
-    return unless other_alternate.nil?
-    render json: { resource: 'challenge', errors: [user: 'not enough users for tri challenge'] }, status: 403
-  end
-  # rubocop:enable Metrics/MethodLength
 end
