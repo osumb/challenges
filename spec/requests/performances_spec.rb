@@ -89,7 +89,7 @@ describe 'Performances', type: :request do
           post endpoint, params: performance_params.to_json, headers: authenticated_header(user)
         }.not_to change { Performance.count }
 
-        expect(response).to have_http_status(401)
+        expect(response).to have_http_status(403)
       end
     end
   end

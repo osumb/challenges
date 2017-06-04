@@ -7,7 +7,7 @@ import { propTypes as disciplineActionProps } from '../../../../data/discipline_
 import { propTypes as performanceProps } from '../../../../data/performance';
 import { propTypes as userProps } from '../../../../data/user';
 import CurrentChallenge from '../../../../components/current_challenge';
-import CurrentDisciplineAction from '../../../../components/current_discipline_action';
+import { CurrentDisciplineAction } from '../../../../components/discipline_action';
 import PerformanceWindow from '../../../../components/performance_window';
 import Typography from '../../../../components/typography';
 import UserHeader from '../../../../components/user_header';
