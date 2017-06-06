@@ -2,7 +2,8 @@ require 'rails_helper'
 
 describe 'Performances', type: :request do
   let(:endpoint) { '/api/performances/' }
-  let(:user) { create(:admin_user) }
+  let(:admin) { create(:admin_user) }
+  let(:user) { create(:user) }
   let(:performance_params) do
     {
       performance: {
@@ -16,11 +17,9 @@ describe 'Performances', type: :request do
 
   describe 'POST /api/performances/' do
     context 'when the user is an admin' do
-      let(:user) { create(:admin_user) }
-
       it 'successfully creates a performance' do
         expect {
-          post endpoint, params: performance_params.to_json, headers: authenticated_header(user)
+          post endpoint, params: performance_params.to_json, headers: authenticated_header(admin)
         }.to change { Performance.count }.by(1)
 
         expect(response).to have_http_status(201)
@@ -31,7 +30,7 @@ describe 'Performances', type: :request do
           performance_params[:performance].except!(:name)
 
           expect {
-            post endpoint, params: performance_params.to_json, headers: authenticated_header(user)
+            post endpoint, params: performance_params.to_json, headers: authenticated_header(admin)
           }.not_to change { Performance.count }
 
           expect(response).to have_http_status(409)
@@ -41,7 +40,7 @@ describe 'Performances', type: :request do
           performance_params[:performance].except!(:date)
 
           expect {
-            post endpoint, params: performance_params.to_json, headers: authenticated_header(user)
+            post endpoint, params: performance_params.to_json, headers: authenticated_header(admin)
           }.not_to change { Performance.count }
 
           expect(response).to have_http_status(409)
@@ -51,7 +50,7 @@ describe 'Performances', type: :request do
           performance_params[:performance].except!(:window_close)
 
           expect {
-            post endpoint, params: performance_params.to_json, headers: authenticated_header(user)
+            post endpoint, params: performance_params.to_json, headers: authenticated_header(admin)
           }.not_to change { Performance.count }
 
           expect(response).to have_http_status(409)
@@ -61,7 +60,7 @@ describe 'Performances', type: :request do
           performance_params[:performance].except!(:window_open)
 
           expect {
-            post endpoint, params: performance_params.to_json, headers: authenticated_header(user)
+            post endpoint, params: performance_params.to_json, headers: authenticated_header(admin)
           }.not_to change { Performance.count }
 
           expect(response).to have_http_status(409)
@@ -73,7 +72,7 @@ describe 'Performances', type: :request do
           params[:performance][:window_close] = performance_params[:performance][:window_open]
 
           expect {
-            post endpoint, params: params.to_json, headers: authenticated_header(user)
+            post endpoint, params: params.to_json, headers: authenticated_header(admin)
           }.not_to change { Performance.count }
 
           expect(response).to have_http_status(409)
@@ -82,8 +81,6 @@ describe 'Performances', type: :request do
     end
 
     context 'when the user is an not admin' do
-      let(:user) { create(:user) }
-
       it 'does not create a performance' do
         expect {
           post endpoint, params: performance_params.to_json, headers: authenticated_header(user)
@@ -95,8 +92,6 @@ describe 'Performances', type: :request do
   end
 
   describe 'GET /api/performances' do
-    let(:admin) { create(:admin_user) }
-    let(:user) { create(:user) }
     let!(:performance) { create(:performance) }
     let(:performance_shape) do
       {
@@ -122,6 +117,88 @@ describe 'Performances', type: :request do
     context 'when a non admin makes a request' do
       it 'returns a 403' do
         get endpoint, headers: authenticated_header(user)
+
+        expect(response).to have_http_status(403)
+      end
+    end
+  end
+
+  describe 'PUT /api/performances' do
+    let!(:performance) { create(:performance) }
+    let!(:params) do
+      {
+        performance: {
+          name: "#{performance.name}-this is different now :D",
+          date: Time.zone.now + 7.days,
+          window_open: Time.zone.now,
+          window_close: Time.zone.now + 3.hours
+        }
+      }
+    end
+
+    context 'requesting user is an admin' do
+      it 'updates the performance' do
+        put "#{endpoint}#{performance.id}", params: params.to_json, headers: authenticated_header(admin)
+
+        performance.reload
+
+        expect(response).to have_http_status(200)
+        params[:performance].each do |key, value|
+          # to_s because Ruby's time precision is better than database, so the == check fails
+          expect(value.to_s).to eq(performance[key].to_s)
+        end
+      end
+
+      context 'but the name is blank' do
+        it 'returns a 409' do
+          params[:performance][:name] = nil
+          put "#{endpoint}#{performance.id}", params: params.to_json, headers: authenticated_header(admin)
+
+          expect(response).to have_http_status(409)
+        end
+      end
+
+      context 'but the date is blank' do
+        it 'returns a 409' do
+          params[:performance][:date] = nil
+          put "#{endpoint}#{performance.id}", params: params.to_json, headers: authenticated_header(admin)
+
+          expect(response).to have_http_status(409)
+        end
+      end
+
+      context 'but the window_open is blank' do
+        it 'returns a 409' do
+          params[:performance][:window_open] = nil
+          put "#{endpoint}#{performance.id}", params: params.to_json, headers: authenticated_header(admin)
+
+          expect(response).to have_http_status(409)
+        end
+      end
+
+      context 'but the window_close is blank' do
+        it 'returns a 409' do
+          params[:performance][:window_close] = nil
+          put "#{endpoint}#{performance.id}", params: params.to_json, headers: authenticated_header(admin)
+
+          expect(response).to have_http_status(409)
+        end
+      end
+
+      context 'but the window_open > window_close is blank' do
+        it 'returns a 409' do
+          params[:performance][:window_open] = Time.zone.now + 10.days
+          params[:performance][:window_close] = Time.zone.now
+          put "#{endpoint}#{performance.id}", params: params.to_json, headers: authenticated_header(admin)
+
+          expect(response).to have_http_status(409)
+        end
+      end
+    end
+
+    context 'requesting user is not an admin' do
+      it 'returns a 403' do
+        put "#{endpoint}#{performance.id}", params: params.to_json, headers: authenticated_header(user)
 
         expect(response).to have_http_status(403)
       end
