@@ -20,6 +20,10 @@ class Performance < ApplicationRecord
     window_open < now && now < window_close
   end
 
+  def stale?
+    window_close < Time.zone.now
+  end
+
   private
 
   def window_open_before_window_close

@@ -194,6 +194,15 @@ describe 'Performances', type: :request do
           expect(response).to have_http_status(409)
         end
       end
+
+      context 'but the performance window has alredy closed' do
+        let!(:performance) { create(:stale_performance) }
+        it 'returns a 403' do
+          put "#{endpoint}#{performance.id}", params: params.to_json, headers: authenticated_header(admin)
+
+          expect(response).to have_http_status(403)
+        end
+      end
     end
 
     context 'requesting user is not an admin' do

@@ -1,6 +1,7 @@
 class PerformancesController < ApplicationController
   before_action :authenticate_user
   before_action :ensure_admin!, except: [:challengeable_users]
+  before_action :ensure_performance_not_stale!, only: [:update]
 
   def create
     @performance = Performance.new create_params
@@ -63,6 +64,14 @@ class PerformancesController < ApplicationController
 
   def update_params
     create_params
+  end
+
+  def ensure_performance_not_stale!
+    p = Performance.find params[:id]
+    return unless p.stale?
+    render json: {
+      resource: 'performance', errors: [performance: 'can\'t be updated because the window is closed']
+    }, status: 403
   end
 
   def parse_challengeable_users(result)
