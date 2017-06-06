@@ -93,4 +93,38 @@ describe 'Performances', type: :request do
       end
     end
   end
+
+  describe 'GET /api/performances' do
+    let(:admin) { create(:admin_user) }
+    let(:user) { create(:user) }
+    let!(:performance) { create(:performance) }
+    let(:performance_shape) do
+      {
+        id: true,
+        date: true,
+        name: true,
+        window_close: true,
+        window_open: true
+      }
+    end
+
+    context 'when an admin makes a request' do
+      it 'returns an array of performances' do
+        get endpoint, headers: authenticated_header(admin)
+
+        body = JSON.parse(response.body)
+
+        expect(body['performances']).to be_instance_of(Array)
+        expect(body['performances'].first).to be_shape_of(performance_shape)
+      end
+    end
+
+    context 'when a non admin makes a request' do
+      it 'returns a 403' do
+        get endpoint, headers: authenticated_header(user)
+
+        expect(response).to have_http_status(403)
+      end
+    end
+  end
 end

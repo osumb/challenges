@@ -15,6 +15,10 @@ class PerformancesController < ApplicationController
     @performance = Performance.next
   end
 
+  def index
+    @performances = Performance.all.order window_open: :asc
+  end
+
   # rubocop:disable Metrics/MethodLength
   def challengeable_users
     user = current_user
