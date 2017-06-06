@@ -15,6 +15,20 @@ class PerformancesController < ApplicationController
     @performance = Performance.next
   end
 
+  def index
+    @performances = Performance.all.order window_open: :asc
+  end
+
+  def update
+    @performance = Performance.find params[:id]
+    @performance.update update_params
+    if @performance.save
+      render :show, status: 200
+    else
+      render json: { resource: 'performance', errors: @performance.errors }, status: 409
+    end
+  end
+
   # rubocop:disable Metrics/MethodLength
   def challengeable_users
     user = current_user
@@ -45,6 +59,10 @@ class PerformancesController < ApplicationController
       :window_close,
       :window_open
     )
+  end
+
+  def update_params
+    create_params
   end
 
   def parse_challengeable_users(result)
