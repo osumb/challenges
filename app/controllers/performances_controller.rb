@@ -22,7 +22,7 @@ class PerformancesController < ApplicationController
 
   def update
     @performance = Performance.find params[:id]
-    @performance.update update_params
+    @performance.update_attributes update_params
     if @performance.save
       render :show, status: 200
     else
@@ -70,7 +70,7 @@ class PerformancesController < ApplicationController
     p = Performance.find params[:id]
     return unless p.stale?
     render json: {
-      resource: 'performance', errors: [performance: 'can\'t be updated because the window is closed']
+      resource: 'performance', errors: [performance: 'Performance can\'t be updated because the window is closed']
     }, status: 403
   end
 
