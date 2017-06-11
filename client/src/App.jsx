@@ -21,6 +21,7 @@ import PendingResults from './result/pending-results';
 import Profile from './scenes/user/profile';
 import PasswordResetRequest from './scenes/password_reset/request';
 import PasswordResetReset from './scenes/password_reset/reset';
+import PerformanceIndex from './scenes/performance/index';
 import ProfileAdmin from './scenes/user/profile_admin';
 import Roster from './scenes/user/roster';
 import Search from './scenes/user/search';
@@ -72,6 +73,7 @@ const App = () => (
             <PrivateRoute exact path="/" component={Profile} />
             <PrivateRoute exact path="/challenges/evaluate" component={ChallengeEvaluations} />
             <PrivateRoute exact path="/challenges/new" component={ChallengeSelect} />
+            <PrivateRoute exact path="/performances" component={PerformanceIndex} />
             <PrivateRoute exact path="/performances/new" component={CreatePerformance} />
             <PrivateRoute exact path="/results/completed" component={CompletedResults} />
             <PrivateRoute exact path="/results/pending" component={PendingResults} />

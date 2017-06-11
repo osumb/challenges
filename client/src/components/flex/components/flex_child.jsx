@@ -9,4 +9,6 @@ export default styled.div`
   ${({ maxHeight }) => maxHeight && `max-height: ${maxHeight};`};
   ${({ margin }) => margin && `margin: ${margin};`};
   ${({ padding }) => padding && `padding: ${padding};`};
+  ${({ height }) => height && `height: ${height};`};
+  ${({ width }) => width && `width: ${width};`};
 `;

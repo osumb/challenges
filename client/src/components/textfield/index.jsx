@@ -10,6 +10,7 @@ export default class TextField extends React.PureComponent {
       name: React.PropTypes.string,
       onChange: React.PropTypes.func,
       onKeyUp: React.PropTypes.func,
+      placeholder: React.PropTypes.string,
       type: React.PropTypes.string,
       value: React.PropTypes.string
     };
@@ -60,6 +61,7 @@ export default class TextField extends React.PureComponent {
           name={this.props.name}
           onChange={this.handleTextChange}
           onKeyUp={this.handleKeyUp}
+          placeholder={this.props.placeholder || ''}
           value={this.props.value}
         />
         {this.props.hint && <span className="mdc-textfield__label">{this.props.hint}</span>}
