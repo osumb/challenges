@@ -7,7 +7,6 @@ import FlatButton from 'material-ui/FlatButton';
 import './user-comparison.scss';
 
 export default class UserComparison extends Component {
-
   static get propTypes() {
     return {
       id: PropTypes.number.isRequired,
@@ -63,7 +62,15 @@ export default class UserComparison extends Component {
   }
 
   render() {
-    const { firstComments, firstName, firstNameNumber, secondComments, secondName, secondNameNumber, spotId } = this.props;
+    const {
+      firstComments,
+      firstName,
+      firstNameNumber,
+      secondComments,
+      secondName,
+      secondNameNumber,
+      spotId
+    } = this.props;
     const { confirming, winnerId } = this.state;
     const title = secondName
       ? `${firstName} and ${secondName} for ${spotId}`
@@ -82,8 +89,12 @@ export default class UserComparison extends Component {
       'UserComparison-text--loser': winnerId !== secondNameNumber
     });
     const dialogActions = [
-      <FlatButton key="cancel" onTouchTap={this.handleConfirmClose}>Cancel</FlatButton>,
-      <FlatButton key="submit" onTouchTap={this.handleSubmit}>Submit</FlatButton>
+      <FlatButton key="cancel" onTouchTap={this.handleConfirmClose}>
+        Cancel
+      </FlatButton>,
+      <FlatButton key="submit" onTouchTap={this.handleSubmit}>
+        Submit
+      </FlatButton>
     ];
 
     return (
@@ -96,24 +107,40 @@ export default class UserComparison extends Component {
           {winner}. Are you sure you want to submit&#63;
         </Dialog>
         <Card>
-          <CardTitle
-            title={title}
-            subtitle={<strong>{winner}</strong>}
-          />
+          <CardTitle title={title} subtitle={<strong>{winner}</strong>} />
           <div className="UserComparison-textContainer">
-            <div data-nameNumber={firstNameNumber} className={firstCommentsClassName} onTouchTap={this.handleWinnerIdChange}>
+            <div
+              data-nameNumber={firstNameNumber}
+              className={firstCommentsClassName}
+              onTouchTap={this.handleWinnerIdChange}
+            >
               <CardText data-nameNumber={firstNameNumber}>
-                <strong data-nameNumber={firstNameNumber}>Comments for {firstName}:</strong> {firstComments}
+                <strong data-nameNumber={firstNameNumber}>
+                  Comments for {firstName}:
+                </strong>{' '}
+                {firstComments}
               </CardText>
             </div>
-            <div data-nameNumber={firstNameNumber} className={secondCommentsClassName} onTouchTap={this.handleWinnerIdChange}>
+            <div
+              data-nameNumber={firstNameNumber}
+              className={secondCommentsClassName}
+              onTouchTap={this.handleWinnerIdChange}
+            >
               <CardText data-nameNumber={secondNameNumber}>
-                <strong data-nameNumber={secondNameNumber}>Comments for {secondName}:</strong> {secondComments}
+                <strong data-nameNumber={secondNameNumber}>
+                  Comments for {secondName}:
+                </strong>{' '}
+                {secondComments}
               </CardText>
             </div>
           </div>
           <CardActions>
-            <FlatButton className="UserComparison-button" onTouchTap={this.handleConfirmOpen}>Submit</FlatButton>
+            <FlatButton
+              className="UserComparison-button"
+              onTouchTap={this.handleConfirmOpen}
+            >
+              Submit
+            </FlatButton>
           </CardActions>
         </Card>
       </div>

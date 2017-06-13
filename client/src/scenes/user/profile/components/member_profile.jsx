@@ -19,14 +19,22 @@ const Container = styled.div`
   justify-content: space-between;
 `;
 
-const MemberProfile = (props) => {
+const MemberProfile = props => {
   return (
     <Container>
       <UserHeader {...pick(props.user, UserHeader.props)} />
       <PerformanceWindow {...props.nextPerformance} />
-      {props.canChallenge && <Typography category="title">You still need to make a challenge!</Typography>}
-      {props.currentChallenge && <CurrentChallenge {...props.currentChallenge} performanceName={props.nextPerformance.name} />}
-      {props.currentDisciplineAction && <CurrentDisciplineAction {...props.currentDisciplineAction} />}
+      {props.canChallenge &&
+        <Typography category="title">
+          You still need to make a challenge!
+        </Typography>}
+      {props.currentChallenge &&
+        <CurrentChallenge
+          {...props.currentChallenge}
+          performanceName={props.nextPerformance.name}
+        />}
+      {props.currentDisciplineAction &&
+        <CurrentDisciplineAction {...props.currentDisciplineAction} />}
     </Container>
   );
 };

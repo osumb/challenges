@@ -16,10 +16,10 @@ const Container = styled.div`
   flex-direction: column;
 `;
 
-const filterMethod = ({ id, value }, row) => row[id].toLowerCase().includes(value.toLowerCase());
+const filterMethod = ({ id, value }, row) =>
+  row[id].toLowerCase().includes(value.toLowerCase());
 const flattenSpotToString = oldUsers =>
-  oldUsers.map(({ spot, ...a }) => ({ spot: `${spot.row}${spot.file}`, ...a }))
-;
+  oldUsers.map(({ spot, ...a }) => ({ spot: `${spot.row}${spot.file}`, ...a }));
 const updateStateWithNewRow = newRow => ({ users }) => {
   const newSpot = newRow.spot;
   let oldSpot, oldSpotUserIndex; // index at which the user who currently holds `newSpot` resides
@@ -34,13 +34,17 @@ const updateStateWithNewRow = newRow => ({ users }) => {
   });
   newUsers[oldSpotUserIndex].spot = oldSpot;
 
-  return { users: newUsers.sort((a, b) => spotHelpers.compareSpots(a.spot, b.spot)) };
+  return {
+    users: newUsers.sort((a, b) => spotHelpers.compareSpots(a.spot, b.spot))
+  };
 };
 
 export default class Roster extends React.PureComponent {
   static get propTypes() {
     return {
-      users: React.PropTypes.arrayOf(React.PropTypes.shape({ ...propTypes, spot: React.PropTypes.string }))
+      users: React.PropTypes.arrayOf(
+        React.PropTypes.shape({ ...propTypes, spot: React.PropTypes.string })
+      )
     };
   }
 
@@ -57,8 +61,7 @@ export default class Roster extends React.PureComponent {
   }
 
   componentDidMount() {
-    helpers.getAll()
-    .then(({ users }) => {
+    helpers.getAll().then(({ users }) => {
       this.setState({ users: flattenSpotToString(users) });
     });
   }
@@ -105,29 +108,35 @@ export default class Roster extends React.PureComponent {
       },
       {
         header: 'Spot',
-        columns: [{
-          header: 'Spot',
-          accessor: 'spot',
-          render: this.renderEditSpot,
-          filterMethod
-        }]
+        columns: [
+          {
+            header: 'Spot',
+            accessor: 'spot',
+            render: this.renderEditSpot,
+            filterMethod
+          }
+        ]
       },
       {
         header: 'Part',
-        columns: [{
-          header: 'Part',
-          accessor: 'part',
-          render: this.renderEditPart,
-          filterMethod
-        }]
+        columns: [
+          {
+            header: 'Part',
+            accessor: 'part',
+            render: this.renderEditPart,
+            filterMethod
+          }
+        ]
       },
       {
         header: 'Instrument',
-        columns: [{
-          header: 'Instrument',
-          accessor: 'instrument',
-          filterMethod
-        }]
+        columns: [
+          {
+            header: 'Instrument',
+            accessor: 'instrument',
+            filterMethod
+          }
+        ]
       }
     ];
 

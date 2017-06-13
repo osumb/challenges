@@ -25,8 +25,7 @@ export default class CurrentChallengeAdmin extends React.Component {
   }
 
   handleDeleteClick() {
-    userChallengeHelpers.del(this.props.currentUserChallengeId)
-    .then(() => {
+    userChallengeHelpers.del(this.props.currentUserChallengeId).then(() => {
       this.setState({
         deleted: true
       });
@@ -39,7 +38,9 @@ export default class CurrentChallengeAdmin extends React.Component {
   render() {
     const { deleted } = this.state;
     const { performance, spot, targetUserBuckId, users } = this.props;
-    const targetUser = users.filter(({ buckId }) => buckId === targetUserBuckId)[0];
+    const targetUser = users.filter(
+      ({ buckId }) => buckId === targetUserBuckId
+    )[0];
 
     if (deleted) {
       return (
@@ -50,7 +51,8 @@ export default class CurrentChallengeAdmin extends React.Component {
     return (
       <FlexContainer flexWrap="wrap">
         <Typography category="title">
-          {targetUser.firstName} is challenging spot {spot.row}{spot.file} for the {performance.name}
+          {targetUser.firstName} is challenging spot {spot.row}{spot.file} for
+          the {performance.name}
         </Typography>
         <Button primary onClick={this.handleDeleteClick}>Delete</Button>
       </FlexContainer>

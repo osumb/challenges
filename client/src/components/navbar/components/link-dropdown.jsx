@@ -6,14 +6,15 @@ import { ListItem } from 'material-ui/List';
 import Popover from 'material-ui/Popover/Popover';
 
 export default class LinkDropdown extends Component {
-
   static get propTypes() {
     return {
       displayName: PropTypes.string.isRequired,
-      links: PropTypes.arrayOf(PropTypes.shape({
-        name: PropTypes.string.isRequired,
-        path: PropTypes.string.isRequired
-      }))
+      links: PropTypes.arrayOf(
+        PropTypes.shape({
+          name: PropTypes.string.isRequired,
+          path: PropTypes.string.isRequired
+        })
+      )
     };
   }
 
@@ -111,5 +112,4 @@ export default class LinkDropdown extends Component {
       </div>
     );
   }
-
 }

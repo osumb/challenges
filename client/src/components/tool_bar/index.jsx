@@ -8,14 +8,12 @@ export default function ToolBar({ iconElementLeft, iconElementRight, title }) {
       {iconElementLeft &&
         <section className="mdc-toolbar__section mdc-toolbar__section--align-start">
           {iconElementLeft}
-        </section>
-      }
+        </section>}
       <h2 className="mdc-toolbar__title">{title}</h2>
       {iconElementRight &&
         <section className="mdc-toolbar__section mdc-toolbar__section--align-end">
           {iconElementRight}
-        </section>
-      }
+        </section>}
     </div>
   );
 }

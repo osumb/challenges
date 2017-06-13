@@ -18,11 +18,12 @@ const changeCase = obj => {
   }, {});
 };
 
-const changeCaseArray = arr => arr.map(obj => {
-  if (typeof obj === 'object') {
-    return changeCase(obj);
-  }
-  return obj;
-});
+const changeCaseArray = arr =>
+  arr.map(obj => {
+    if (typeof obj === 'object') {
+      return changeCase(obj);
+    }
+    return obj;
+  });
 
 export default changeCase;

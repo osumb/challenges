@@ -9,7 +9,11 @@ import styled from 'styled-components';
 import Button from '../../button';
 import ToolBar from '../../tool_bar';
 import Drawer from '../../drawer';
-import { ListDropdown, ListDropdownItem, ListDropdownSeparator } from '../../list_dropdown';
+import {
+  ListDropdown,
+  ListDropdownItem,
+  ListDropdownSeparator
+} from '../../list_dropdown';
 
 import { helpers, propTypes as userPropTypes } from '../../../data/user';
 import { isEmptyObject, routes, screenSizes } from '../../../utils';
@@ -38,7 +42,6 @@ const SearchInput = styled.input`
 `;
 
 export default class MobileNav extends Component {
-
   static get propTypes() {
     return {
       onLogout: PropTypes.func.isRequired,
@@ -112,23 +115,21 @@ export default class MobileNav extends Component {
     return (
       <SearchHeader>
         {searching &&
-          <Media query={{ minWidth: portraitIPhone6Plus.width + 1, maxWidth: portraitIPad.width }} render={() => (
-            <form onSubmit={this.handleSearchSubmit}>
-              <HeaderInput
-                onChange={this.handleSearchChange}
-                placeholder="User Search"
-              />
-            </form>
-            )}
-          />
-        }
-        <Button
-          onClick={this.handleSearchToggle}
-        >
-          <img
-            src={SearchIcon}
-            style={{ color: 'white' }}
-          />
+          <Media
+            query={{
+              minWidth: portraitIPhone6Plus.width + 1,
+              maxWidth: portraitIPad.width
+            }}
+            render={() =>
+              <form onSubmit={this.handleSearchSubmit}>
+                <HeaderInput
+                  onChange={this.handleSearchChange}
+                  placeholder="User Search"
+                />
+              </form>}
+          />}
+        <Button onClick={this.handleSearchToggle}>
+          <img src={SearchIcon} style={{ color: 'white' }} />
         </Button>
       </SearchHeader>
     );
@@ -138,25 +139,34 @@ export default class MobileNav extends Component {
     const { user } = this.props;
     const { open } = this.state;
     const visibleMainRoutes = getVisibleMainRoutesForUser(user);
-    const linkDropDowns = visibleMainRoutes.map((key) => {
-      const dropdownChildren = mainRoutes[key].links.filter(link => canUserSeeLink(link, user)).map(route => (
-        <span key={route.path} data-route={route.path}>&nbsp;&nbsp;&nbsp;&nbsp;{route.name}</span>
-      ));
+    const linkDropDowns = visibleMainRoutes.map(key => {
+      const dropdownChildren = mainRoutes[key].links
+        .filter(link => canUserSeeLink(link, user))
+        .map(route =>
+          <span key={route.path} data-route={route.path}>
+            &nbsp;&nbsp;&nbsp;&nbsp;{route.name}
+          </span>
+        );
 
-      return <ListDropdown key={key} header={key}>{dropdownChildren}</ListDropdown>;
+      return (
+        <ListDropdown key={key} header={key}>{dropdownChildren}</ListDropdown>
+      );
     });
 
     return (
       <Container>
         <ToolBar
           className="MobileNav"
-          iconElementLeft={!isEmptyObject(user) ?
-            <Button onClick={this.handleOpen}>
-              <img src={ListIcon} />
-            </Button>
-            : <span />
+          iconElementLeft={
+            !isEmptyObject(user)
+              ? <Button onClick={this.handleOpen}>
+                  <img src={ListIcon} />
+                </Button>
+              : <span />
           }
-          iconElementRight={helpers.isAdmin(user) ? this.renderSearchHeader() : null}
+          iconElementRight={
+            helpers.isAdmin(user) ? this.renderSearchHeader() : null
+          }
           title="OSUMB Challenges&nbsp;"
         />
         {!isEmptyObject(user) &&
@@ -166,23 +176,29 @@ export default class MobileNav extends Component {
             onCloseRequest={this.handleDrawerCloseRequest}
             open={open}
           >
-            <ListDropdownItem><span data-route="/">Home</span></ListDropdownItem>
+            <ListDropdownItem>
+              <span data-route="/">Home</span>
+            </ListDropdownItem>
             <ListDropdownSeparator key="separator" />
             {linkDropDowns}
-            <ListDropdownItem><span data-route="/logout">Logout</span></ListDropdownItem>
-          </Drawer>
-        }
+            <ListDropdownItem>
+              <span data-route="/logout">Logout</span>
+            </ListDropdownItem>
+          </Drawer>}
         {this.state.searching &&
-          <Media query={{ maxWidth: portraitIPhone6Plus.width }} render={() => (
-            <form id="MobileNav-searchForm" onSubmit={this.handleSearchSubmit}>
-              <SearchInput
-                onChange={this.handleSearchChange}
-                placeholder="User Search"
-              />
-            </form>
-            )}
-          />
-        }
+          <Media
+            query={{ maxWidth: portraitIPhone6Plus.width }}
+            render={() =>
+              <form
+                id="MobileNav-searchForm"
+                onSubmit={this.handleSearchSubmit}
+              >
+                <SearchInput
+                  onChange={this.handleSearchChange}
+                  placeholder="User Search"
+                />
+              </form>}
+          />}
       </Container>
     );
   }

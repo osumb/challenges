@@ -2,7 +2,7 @@ import React from 'react';
 
 import './index.scss';
 
-const Checkbox = ({ disabled, label, getRef }) => (
+const Checkbox = ({ disabled, label, getRef }) =>
   <div className="mdc-form-field">
     <div className="mdc-checkbox mdc-theme--challenges">
       <input
@@ -12,10 +12,7 @@ const Checkbox = ({ disabled, label, getRef }) => (
         ref={getRef}
       />
       <div className="mdc-checkbox__background">
-        <svg
-          className="mdc-checkbox__checkmark"
-          viewBox="0 0 24 24"
-        >
+        <svg className="mdc-checkbox__checkmark" viewBox="0 0 24 24">
           <path
             className="mdc-checkbox__checkmark__path"
             fill="none"
@@ -26,8 +23,7 @@ const Checkbox = ({ disabled, label, getRef }) => (
       </div>
     </div>
     {label && <label>{label}</label>}
-  </div>
-);
+  </div>;
 
 Checkbox.propTypes = {
   disabled: React.PropTypes.bool,

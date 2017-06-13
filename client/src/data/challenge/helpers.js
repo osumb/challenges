@@ -18,4 +18,10 @@ const isNormalChallenge = challengeType => challengeType === 'normal';
 const isOpenSpotChallenge = challengeType => challengeType === 'open_spot';
 const isTriChallenge = challengeType => challengeType === 'tri';
 
-export default { addUser, create, isNormalChallenge, isOpenSpotChallenge, isTriChallenge };
+export default {
+  addUser,
+  create,
+  isNormalChallenge,
+  isOpenSpotChallenge,
+  isTriChallenge
+};

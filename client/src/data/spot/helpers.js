@@ -21,7 +21,8 @@ const rows = {
   X: 'X'
 };
 const compareSpots = (a, b) => {
-  if (typeof a === 'string') return compareSpots(spotFromString(a), spotFromString(b));
+  if (typeof a === 'string')
+    return compareSpots(spotFromString(a), spotFromString(b));
   if (a.row === b.row) {
     return a.file - b.file;
   } else {
@@ -34,7 +35,14 @@ const spotFromString = spot => {
   return { row, file };
 };
 const validInstrumentForRow = (row, instrument) => {
-  if (row === rows.A || row === rows.B || row === rows.C || row === rows.S || row === rows.T || row === rows.X) {
+  if (
+    row === rows.A ||
+    row === rows.B ||
+    row === rows.C ||
+    row === rows.S ||
+    row === rows.T ||
+    row === rows.X
+  ) {
     return instrument === userHelpers.instruments.TRUMPET;
   } else if (row === rows.E || row === rows.R) {
     return instrument === userHelpers.instruments.MELLOPHONE;
@@ -44,7 +52,8 @@ const validInstrumentForRow = (row, instrument) => {
     return instrument === userHelpers.instruments.BARITONE;
   } else if (row === row.K || row === rows.L) {
     return instrument === userHelpers.instruments.SOUSAPHONE;
-  } else { // JI row
+  } else {
+    // JI row
     return instrument === userHelpers.instruments.PERCUSSION;
   }
 };
@@ -52,11 +61,19 @@ const validPartForRow = (row, part) => {
   if (row === rows.A || row === rows.X) {
     return part === userHelpers.parts.SOLO || part === userHelpers.parts.EFER;
   } else if (row === rows.B || row === rows.T) {
-    return part === userHelpers.parts.FIRST || part === userHelpers.parts.SECOND;
+    return (
+      part === userHelpers.parts.FIRST || part === userHelpers.parts.SECOND
+    );
   } else if (row === rows.E || row === rows.R) {
-    return part === userHelpers.parts.FIRST || part === userHelpers.parts.SECOND;
+    return (
+      part === userHelpers.parts.FIRST || part === userHelpers.parts.SECOND
+    );
   } else if (row === rows.F || row === rows.Q) {
-    return part === userHelpers.parts.FIRST || part === userHelpers.parts.SECOND || part === userHelpers.parts.BASS;
+    return (
+      part === userHelpers.parts.FIRST ||
+      part === userHelpers.parts.SECOND ||
+      part === userHelpers.parts.BASS
+    );
   } else if (row === rows.H || row === rows.M) {
     return part === userHelpers.parts.FIRST;
   } else if (row === rows.K || row === rows.L) {
@@ -64,11 +81,18 @@ const validPartForRow = (row, part) => {
   } else if (row === rows.I) {
     return part === userHelpers.parts.SNARE;
   } else if (row === rows.J) {
-    return part === userHelpers.parts.CYMBALS || part === userHelpers.parts.BASS || part === userHelpers.parts.BASS;
+    return (
+      part === userHelpers.parts.CYMBALS ||
+      part === userHelpers.parts.BASS ||
+      part === userHelpers.parts.BASS
+    );
   } else if (row === rows.C) {
     return part === userHelpers.parts.FLUGEL;
-  } else { // s row
-    return part === userHelpers.parts.SECOND || part === userHelpers.parts.FLUGEL;
+  } else {
+    // s row
+    return (
+      part === userHelpers.parts.SECOND || part === userHelpers.parts.FLUGEL
+    );
   }
 };
 const validSpot = ({ row, file }) => {

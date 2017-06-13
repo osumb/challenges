@@ -25,7 +25,7 @@ export default class EditLastName extends React.PureComponent {
   }
 
   errorMessage() {
-    return 'Last Name Can\'t Be Blank';
+    return "Last Name Can't Be Blank";
   }
 
   update(newLastName) {

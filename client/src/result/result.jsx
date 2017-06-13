@@ -9,7 +9,7 @@ const Result = ({
   performanceName,
   spotId,
   winner
-}) => (
+}) =>
   <Card>
     <CardTitle title={performanceName} subtitle={performanceDate} />
     <Divider />
@@ -19,8 +19,7 @@ const Result = ({
       avatar={winner ? '/images/trophy.png' : '/images/crying-cat-face.png'}
     />
     <CardText>{comments}</CardText>
-  </Card>
-);
+  </Card>;
 
 Result.propTypes = {
   comments: PropTypes.string.isRequired,

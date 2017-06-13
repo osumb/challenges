@@ -11,7 +11,6 @@ import Fetch from '../shared-components/fetch';
 const getEndPoint = '/results/completed';
 
 class CompletedResults extends Component {
-
   static get propTypes() {
     return {
       performanceResultsMap: PropTypes.object
@@ -21,7 +20,9 @@ class CompletedResults extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      performanceResultsMap: Object.keys(props.performanceResultsMap).reduce((acc, curr) => {
+      performanceResultsMap: Object.keys(
+        props.performanceResultsMap
+      ).reduce((acc, curr) => {
         const map = props.performanceResultsMap[curr];
 
         acc[curr] = {
@@ -55,44 +56,51 @@ class CompletedResults extends Component {
     const { performanceResultsMap, requestingResult } = this.state;
 
     if (requestingResult) {
-      api.put('/results/completed', {
-        id: requestingResult.id,
-        firstComments: requestingResult.firstComments,
-        secondComments: requestingResult.secondComments
-      })
-      .then(() => {
-        this.setState({
-          performanceResultsMap: {
-            ...performanceResultsMap,
-            [requestingResult.performanceId]: {
-              ...performanceResultsMap[requestingResult.performanceId],
-              results: {
-                ...performanceResultsMap[requestingResult.performanceId].results,
-                [requestingResult.id]: {
-                  ...requestingResult
+      api
+        .put('/results/completed', {
+          id: requestingResult.id,
+          firstComments: requestingResult.firstComments,
+          secondComments: requestingResult.secondComments
+        })
+        .then(() => {
+          this.setState({
+            performanceResultsMap: {
+              ...performanceResultsMap,
+              [requestingResult.performanceId]: {
+                ...performanceResultsMap[requestingResult.performanceId],
+                results: {
+                  ...performanceResultsMap[requestingResult.performanceId]
+                    .results,
+                  [requestingResult.id]: {
+                    ...requestingResult
+                  }
                 }
               }
-            }
-          },
-          requestingResult: null,
-          success: true
+            },
+            requestingResult: null,
+            success: true
+          });
         });
-      });
     }
   }
 
   render() {
     const { performanceResultsMap, requestingResult, success } = this.state;
-    const performanceIds = Object.keys(performanceResultsMap).sort((a, b) => b - a);
+    const performanceIds = Object.keys(performanceResultsMap).sort(
+      (a, b) => b - a
+    );
 
     if (performanceIds.length < 1) {
       return <h2>There are no completed results</h2>;
     }
 
-    const performances = performanceIds.map((id) => {
+    const performances = performanceIds.map(id => {
       const performanceResults = performanceResultsMap[id];
-      const sortedResultIds = Object.keys(performanceResults.results).sort((rIdA, rIdB) => {
-        const resultA = performanceResults.results[rIdA], resultB = performanceResults.results[rIdB];
+      const sortedResultIds = Object.keys(
+        performanceResults.results
+      ).sort((rIdA, rIdB) => {
+        const resultA = performanceResults.results[rIdA],
+          resultB = performanceResults.results[rIdB];
 
         return compareSpots(resultA.spotId, resultB.spotId);
       });
@@ -101,20 +109,24 @@ class CompletedResults extends Component {
         <div key={id}>
           <h1>{performanceResults.performanceName}</h1>
           <div className="CompletedResults-results">
-            {sortedResultIds.map((rId) => (
+            {sortedResultIds.map(rId =>
               <CompletedResult
                 key={rId}
                 {...performanceResults.results[rId]}
                 onEditRequest={this.handleEditRequest}
               />
-            ))}
+            )}
           </div>
         </div>
       );
     });
     const dialogActions = [
-      <FlatButton key="cancel" onTouchTap={this.handleConfirmClose}>No</FlatButton>,
-      <FlatButton key="submit" onTouchTap={this.handleSubmit}>Submit</FlatButton>
+      <FlatButton key="cancel" onTouchTap={this.handleConfirmClose}>
+        No
+      </FlatButton>,
+      <FlatButton key="submit" onTouchTap={this.handleSubmit}>
+        Submit
+      </FlatButton>
     ];
 
     return (
@@ -123,7 +135,9 @@ class CompletedResults extends Component {
         <Dialog
           actions={dialogActions}
           onRequestClose={this.handleConfirmClose}
-          open={requestingResult !== null && typeof requestingResult !== 'undefined'}
+          open={
+            requestingResult !== null && typeof requestingResult !== 'undefined'
+          }
         >
           Are you sure you want to update this result&#63;
         </Dialog>
@@ -139,10 +153,7 @@ class CompletedResults extends Component {
 
 export default function CompletedResultsWrapper(props) {
   return (
-    <Fetch
-      {...props}
-      endPoint={getEndPoint}
-    >
+    <Fetch {...props} endPoint={getEndPoint}>
       <CompletedResults />
     </Fetch>
   );

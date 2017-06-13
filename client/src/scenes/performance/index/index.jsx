@@ -14,24 +14,29 @@ const formatString = 'MM/DD/YYYY hh:mm A';
 class PerformanceIndex extends React.PureComponent {
   static get propTypes() {
     return {
-      performances: React.PropTypes.arrayOf(React.PropTypes.shape(propTypes.performance)).isRequired
+      performances: React.PropTypes.arrayOf(
+        React.PropTypes.shape(propTypes.performance)
+      ).isRequired
     };
   }
 
   constructor(props) {
     super(props);
     this.state = {
-      performancesById: props.performances.reduce((acc, { id, date, windowClose, windowOpen, ...rest }) => {
-        acc[id] = {
-          ...rest,
-          id,
-          date: moment(new Date(date)).format(formatString),
-          windowClose: moment(new Date(windowClose)).format(formatString),
-          windowOpen: moment(new Date(windowOpen)).format(formatString)
-        };
+      performancesById: props.performances.reduce(
+        (acc, { id, date, windowClose, windowOpen, ...rest }) => {
+          acc[id] = {
+            ...rest,
+            id,
+            date: moment(new Date(date)).format(formatString),
+            windowClose: moment(new Date(windowClose)).format(formatString),
+            windowOpen: moment(new Date(windowOpen)).format(formatString)
+          };
 
-        return acc;
-      }, {}),
+          return acc;
+        },
+        {}
+      ),
       updated: false
     };
     this.handlePerformanceUpdate = this.handlePerformanceUpdate.bind(this);
@@ -39,8 +44,7 @@ class PerformanceIndex extends React.PureComponent {
 
   handlePerformanceUpdate({ id, ...rest }) {
     this.setState({ updated: false });
-    helpers.update({ id, ...rest })
-    .then(() => {
+    helpers.update({ id, ...rest }).then(() => {
       this.setState(({ performancesById }) => ({
         performancesById: {
           ...performancesById,
@@ -58,11 +62,22 @@ class PerformanceIndex extends React.PureComponent {
     const { performancesById, updated } = this.state;
 
     return (
-      <FlexContainer flexDirection="column" alignItems="center" margin="20px 100px">
-        <Typography category="display" number={2}>Update Performances</Typography>
+      <FlexContainer
+        flexDirection="column"
+        alignItems="center"
+        margin="20px 100px"
+      >
+        <Typography category="display" number={2}>
+          Update Performances
+        </Typography>
         <FlexChild flex={1} padding="20px 0 0 0" width="100%">
-          <FlexContainer flexWrap="wrap" justifyContent="space-between" alignItems="center" flex={1}>
-            {Object.keys(performancesById).sort().map(id => (
+          <FlexContainer
+            flexWrap="wrap"
+            justifyContent="space-between"
+            alignItems="center"
+            flex={1}
+          >
+            {Object.keys(performancesById).sort().map(id =>
               <Elevation key={id}>
                 <Performance
                   buttonText="Update"
@@ -70,7 +85,7 @@ class PerformanceIndex extends React.PureComponent {
                   performance={performancesById[id]}
                 />
               </Elevation>
-            ))}
+            )}
           </FlexContainer>
         </FlexChild>
         <Snackbar show={updated} message="Updated Performance" />

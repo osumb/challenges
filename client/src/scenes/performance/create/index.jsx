@@ -16,8 +16,7 @@ export default class CreatePerformance extends React.PureComponent {
   }
 
   handleCreate(performance) {
-    performanceHelpers.create(performance)
-    .then(() => {
+    performanceHelpers.create(performance).then(() => {
       this.setState({ created: true });
     });
   }
@@ -25,7 +24,9 @@ export default class CreatePerformance extends React.PureComponent {
   render() {
     return (
       <FlexContainer flexDirection="column" alignItems="center">
-        <Typography category="display" number={2}>Create Performance</Typography>
+        <Typography category="display" number={2}>
+          Create Performance
+        </Typography>
         <Performance onAction={this.handleCreate} buttonText="Create" />
         <Snackbar show={this.state.created} message="Created Performance" />
       </FlexContainer>

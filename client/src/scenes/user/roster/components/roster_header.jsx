@@ -8,7 +8,10 @@ import Typography from '../../../../components/typography';
 const userToCsv = ({ firstName, instrument, lastName, part, spot }) =>
   `${firstName} ${lastName},${spot},${part},${instrument}`;
 
-const usersToCsv = users => ['data:text/csv;charset=utf-8,', 'Name,Spot,Part,Instrument'].concat(users.map(userToCsv)).join('\n');
+const usersToCsv = users =>
+  ['data:text/csv;charset=utf-8,', 'Name,Spot,Part,Instrument']
+    .concat(users.map(userToCsv))
+    .join('\n');
 
 const Container = styled.div`
   display: flex;
@@ -43,5 +46,7 @@ export default function RosterHeader({ users }) {
 }
 
 RosterHeader.propTypes = {
-  users: React.PropTypes.arrayOf(React.PropTypes.shape({ ...propTypes, spot: React.PropTypes.string }))
+  users: React.PropTypes.arrayOf(
+    React.PropTypes.shape({ ...propTypes, spot: React.PropTypes.string })
+  )
 };

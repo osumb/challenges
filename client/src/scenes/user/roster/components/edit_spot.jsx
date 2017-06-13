@@ -41,7 +41,10 @@ export default class EditSpot extends React.PureComponent {
   }
 
   update(newSpot) {
-    return userHelpers.switchSpots(this.props.row.buckId, spotHelpers.spotFromString(newSpot));
+    return userHelpers.switchSpots(
+      this.props.row.buckId,
+      spotHelpers.spotFromString(newSpot)
+    );
   }
 
   validNewValue(newSpot) {

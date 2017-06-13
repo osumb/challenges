@@ -2,7 +2,10 @@ import React from 'react';
 import styled from 'styled-components';
 
 import { helpers as disciplineActionHelpers } from '../../../data/discipline_action';
-import { helpers as performanceHelpers, propTypes as performanceProps } from '../../../data/performance';
+import {
+  helpers as performanceHelpers,
+  propTypes as performanceProps
+} from '../../../data/performance';
 import { propTypes as userProps } from '../../../data/user';
 import { FlexContainer } from '../../../components/flex';
 import Button from '../../../components/button';
@@ -37,8 +40,7 @@ export default class CreateDisciplineAction extends React.PureComponent {
   }
 
   componentDidMount() {
-    performanceHelpers.getNext()
-    .then(({ performance }) => {
+    performanceHelpers.getNext().then(({ performance }) => {
       this.setState({
         loading: false,
         performance
@@ -51,19 +53,20 @@ export default class CreateDisciplineAction extends React.PureComponent {
     const { allowedToChallenge, openSpot } = this;
     const { user } = this.props;
 
-    disciplineActionHelpers.create(
-      allowedToChallenge.checked,
-      openSpot.checked,
-      performance.id,
-      reason,
-      user.buckId
-    )
-    .then(disciplineAction => {
-      this.setState({ success: true });
-      if (this.props.onCreate) {
-        this.props.onCreate(disciplineAction);
-      }
-    });
+    disciplineActionHelpers
+      .create(
+        allowedToChallenge.checked,
+        openSpot.checked,
+        performance.id,
+        reason,
+        user.buckId
+      )
+      .then(disciplineAction => {
+        this.setState({ success: true });
+        if (this.props.onCreate) {
+          this.props.onCreate(disciplineAction);
+        }
+      });
   }
 
   handleReasonChange({ target }) {
@@ -75,15 +78,14 @@ export default class CreateDisciplineAction extends React.PureComponent {
     const { user } = this.props;
 
     if (loading) {
-      return (
-        <Typography category="title">Loading...</Typography>
-      );
+      return <Typography category="title">Loading...</Typography>;
     }
 
     if (performance === null) {
       return (
         <Typography category="title">
-          Currently unable to make a discipline action because there is no upcoming performance
+          Currently unable to make a discipline action because there is no
+          upcoming performance
         </Typography>
       );
     }
@@ -102,8 +104,12 @@ export default class CreateDisciplineAction extends React.PureComponent {
       <FlexContainer flexDirection="column" alignItems="flex-start">
         <Typography category="title">Create Discipline Action</Typography>
         <Info flexDirection="column">
-          <Typography category="body" number={2}>Member: {user.firstName} {user.lastName}</Typography>
-          <Typography category="body" number={2}>Performance: {performance.name}</Typography>
+          <Typography category="body" number={2}>
+            Member: {user.firstName} {user.lastName}
+          </Typography>
+          <Typography category="body" number={2}>
+            Performance: {performance.name}
+          </Typography>
         </Info>
         <TextField
           hint="Reason for this action"
@@ -119,7 +125,8 @@ export default class CreateDisciplineAction extends React.PureComponent {
           getRef={ref => {
             this.openSpot = ref;
           }}
-          label={`Check if the spot ${user.spot.row}${user.spot.file} opens as a result of the action`}
+          label={`Check if the spot ${user.spot.row}${user.spot
+            .file} opens as a result of the action`}
         />
         <Checkbox
           getRef={ref => {

@@ -6,8 +6,14 @@ import { propTypes as performanceProps } from '../../../data/performance';
 import { helpers, propTypes as userProps } from '../../../data/user';
 import { propTypes as userChallengeProps } from '../../../data/user_challenge';
 import { fetch } from '../../../utils';
-import { CreateDisciplineAction, PastDisciplineAction } from '../../../components/discipline_action';
-import { CurrentChallengeAdmin, DoneChallenge } from '../../../components/challenge';
+import {
+  CreateDisciplineAction,
+  PastDisciplineAction
+} from '../../../components/discipline_action';
+import {
+  CurrentChallengeAdmin,
+  DoneChallenge
+} from '../../../components/challenge';
 import Elevation from '../../../components/elevation';
 import { FlexChild, FlexContainer } from '../../../components/flex';
 import { ListDropdownSeparator } from '../../../components/list_dropdown';
@@ -18,8 +24,12 @@ class Profile extends React.PureComponent {
     return {
       currentChallenge: React.PropTypes.shape(challengeProps),
       currentUserChallenge: React.PropTypes.shape(userChallengeProps),
-      disciplineActions: React.PropTypes.arrayOf(React.PropTypes.shape(dAProps)),
-      pastChallenges: React.PropTypes.arrayOf(React.PropTypes.shape(challengeProps)),
+      disciplineActions: React.PropTypes.arrayOf(
+        React.PropTypes.shape(dAProps)
+      ),
+      pastChallenges: React.PropTypes.arrayOf(
+        React.PropTypes.shape(challengeProps)
+      ),
       performance: React.PropTypes.shape(performanceProps.performance),
       user: React.PropTypes.shape(userProps)
     };
@@ -32,7 +42,9 @@ class Profile extends React.PureComponent {
       currentUserChallenge: props.currentUserChallenge,
       disciplineActions: [...props.disciplineActions]
     };
-    this.handleCurrentChallengeDelete = this.handleCurrentChallengeDelete.bind(this);
+    this.handleCurrentChallengeDelete = this.handleCurrentChallengeDelete.bind(
+      this
+    );
     this.handleDACreate = this.handleDACreate.bind(this);
     this.handleDADelete = this.handleDADelete.bind(this);
   }
@@ -57,38 +69,53 @@ class Profile extends React.PureComponent {
   }
 
   render() {
-    const { currentChallenge, currentUserChallenge, disciplineActions } = this.state;
+    const {
+      currentChallenge,
+      currentUserChallenge,
+      disciplineActions
+    } = this.state;
     const { pastChallenges, performance, user } = this.props;
     const showCreateDisciplineAction =
-      Boolean(performance) &&
-      disciplineActions.length <= 0 ||
-      (
-        disciplineActions.length >= 1 &&
-        disciplineActions[disciplineActions.length - 1].performance.id !== performance.id
-      )
-    ;
+      (Boolean(performance) && disciplineActions.length <= 0) ||
+      (disciplineActions.length >= 1 &&
+        disciplineActions[disciplineActions.length - 1].performance.id !==
+          performance.id);
 
     return (
-      <FlexContainer flexDirection="column" alignItems="center" justifyContent="center">
+      <FlexContainer
+        flexDirection="column"
+        alignItems="center"
+        justifyContent="center"
+      >
         <UserHeader {...user} />
-        <FlexContainer flexWrap="wrap" justifyContent="space-between" width="95%">
+        <FlexContainer
+          flexWrap="wrap"
+          justifyContent="space-between"
+          width="95%"
+        >
           {(showCreateDisciplineAction || disciplineActions.length > 0) &&
             <FlexChild flex="1" minWidth="350px" margin="0 10px">
               <Elevation>
                 {showCreateDisciplineAction &&
                   <FlexChild padding="10px">
-                    <CreateDisciplineAction user={user} onCreate={this.handleDACreate} />
-                  </FlexChild>
-                }
-                {disciplineActions.map(da => (
+                    <CreateDisciplineAction
+                      user={user}
+                      onCreate={this.handleDACreate}
+                    />
+                  </FlexChild>}
+                {disciplineActions.map(da =>
                   <div key={da.id}>
-                    <PastDisciplineAction {...da} currentPerformance={performance} user={user} onDelete={this.handleDADelete} />
+                    <PastDisciplineAction
+                      {...da}
+                      currentPerformance={performance}
+                      user={user}
+                      onDelete={this.handleDADelete}
+                    />
                     <ListDropdownSeparator />
                   </div>
-                ))}
+                )}
               </Elevation>
-            </FlexChild>
-          }
+            </FlexChild>}
           {(Boolean(currentChallenge) || pastChallenges.length > 0) &&
             <FlexChild flex="1" minWidth="350px" margin="0 10px">
               <Elevation>
@@ -101,23 +128,22 @@ class Profile extends React.PureComponent {
                       targetUserBuckId={user.buckId}
                     />
                     <ListDropdownSeparator />
-                  </FlexChild>
-                }
-                {pastChallenges.map(c => (
+                  </FlexChild>}
+                {pastChallenges.map(c =>
                   <FlexContainer key={c.id} padding="10px">
                     <DoneChallenge {...c} targetUserBuckId={user.buckId} />
                     <ListDropdownSeparator />
                   </FlexContainer>
-                ))}
+                )}
               </Elevation>
-            </FlexChild>
-          }
+            </FlexChild>}
         </FlexContainer>
       </FlexContainer>
     );
   }
 }
 
-const ProfileAdmin = ({ match }) => fetch(() => helpers.getByBuckId(match.params.buckId), null, Profile)();
+const ProfileAdmin = ({ match }) =>
+  fetch(() => helpers.getByBuckId(match.params.buckId), null, Profile)();
 
 export default ProfileAdmin;

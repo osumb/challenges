@@ -17,14 +17,14 @@
             "always"
         ],
         "no-console": [
-          0
+            0
         ],
-        "curly": [
-          "error",
-          "multi-line"
+        "lines-around-comment": [
+            "off"
         ],
         "react/jsx-indent": [
-          2,2
+            2,
+            2
         ],
         "react/jsx-indent-props": "off",
         "react/no-multi-comp": "off",
@@ -36,8 +36,11 @@
         "node": true
     },
     "globals": {
-      "it": true
+        "it": true
     },
-    "extends": "@btmills/eslint-config-btmills/es6",
-    "extends": "@btmills/eslint-config-btmills/react"
+    "extends": [
+        "@btmills/eslint-config-btmills/es6",
+        "@btmills/eslint-config-btmills/react",
+        "prettier"
+    ]
 }

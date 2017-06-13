@@ -37,11 +37,12 @@ export default class EditPart extends React.PureComponent {
 
   handleConfirmClick() {
     const partIndex = this.partsSelect.getSelectedIndex();
-    const newPart = userHelpers.partsForInstrument(this.props.row.instrument)[partIndex];
+    const newPart = userHelpers.partsForInstrument(this.props.row.instrument)[
+      partIndex
+    ];
 
     this.setState({ requesting: true });
-    userHelpers.update({ ...this.props.row, part: newPart })
-    .then(() => {
+    userHelpers.update({ ...this.props.row, part: newPart }).then(() => {
       this.setState({ editing: false, requesting: false });
       this.props.onChange({ ...this.props.row, part: newPart });
     });
@@ -63,13 +64,20 @@ export default class EditPart extends React.PureComponent {
               this.partsSelect = ref;
             }}
           >
-            {userHelpers.partsForInstrument(this.props.row.instrument).map(p => (
-              <option className="mcd-list-item" key={p}>{p}</option>
-            ))}
+            {userHelpers
+              .partsForInstrument(this.props.row.instrument)
+              .map(p => <option className="mcd-list-item" key={p}>{p}</option>)}
           </Select>
           <Container>
-            <EditButton disabled={requesting} onClick={this.handleEditToggleClick}>Cancel</EditButton>
-            <EditButton disabled={requesting} onClick={this.handleConfirmClick}>Confirm</EditButton>
+            <EditButton
+              disabled={requesting}
+              onClick={this.handleEditToggleClick}
+            >
+              Cancel
+            </EditButton>
+            <EditButton disabled={requesting} onClick={this.handleConfirmClick}>
+              Confirm
+            </EditButton>
           </Container>
         </Container>
       );
@@ -78,7 +86,9 @@ export default class EditPart extends React.PureComponent {
     return (
       <Container>
         {part}
-        <EditButton disabled={requesting} onClick={this.handleEditToggleClick}>Edit</EditButton>
+        <EditButton disabled={requesting} onClick={this.handleEditToggleClick}>
+          Edit
+        </EditButton>
       </Container>
     );
   }

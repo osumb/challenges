@@ -26,7 +26,6 @@ const LoginInput = styled.div`
 `;
 
 export default class Login extends React.PureComponent {
-
   static get propTypes() {
     return {
       location: React.PropTypes.shape({
@@ -52,22 +51,24 @@ export default class Login extends React.PureComponent {
     const { buckId, password } = this.state;
 
     this.setState({ failed: false });
-    auth.authenticate(buckId, password)
-    .then(() => {
-      this.setState({
-        redirectToRefferrer: true
+    auth
+      .authenticate(buckId, password)
+      .then(() => {
+        this.setState({
+          redirectToRefferrer: true
+        });
+      })
+      .catch(() => {
+        this.setState({
+          failed: true
+        });
       });
-    })
-    .catch(() => {
-      this.setState({
-        failed: true
-      });
-    });
   }
 
   handleClick() {
     const { buckId, password } = this.state;
-    const invalidBuckId = buckId.length <= 0, invalidPassword = password.length <= 0;
+    const invalidBuckId = buckId.length <= 0,
+      invalidPassword = password.length <= 0;
     const errs = [];
 
     if (invalidBuckId) errs.push('name.# must not be blank');
@@ -104,8 +105,7 @@ export default class Login extends React.PureComponent {
         {this.state.failed &&
           <Typography category="display" number={1}>
             Sorry, the username or password is incorrect
-          </Typography>
-        }
+          </Typography>}
         <LoginInputs className="Login-inputs">
           <LoginInput className="Login-input">
             <TextField

@@ -37,6 +37,13 @@ class Fetcher extends React.PureComponent {
 
 export default function FetchWrapper(fetch, propsFromData, component) {
   return function Fetch(props) {
-    return <Fetcher fetch={fetch} propsFromData={propsFromData} Component={component} {...props} />;
+    return (
+      <Fetcher
+        fetch={fetch}
+        propsFromData={propsFromData}
+        Component={component}
+        {...props}
+      />
+    );
   };
 }

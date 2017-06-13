@@ -5,7 +5,12 @@ export default class Select extends React.PureComponent {
     return {
       children: React.PropTypes.oneOfType([
         React.PropTypes.element,
-        React.PropTypes.arrayOf(React.PropTypes.oneOfType([React.PropTypes.element, React.PropTypes.arrayOf(React.PropTypes.element)]))
+        React.PropTypes.arrayOf(
+          React.PropTypes.oneOfType([
+            React.PropTypes.element,
+            React.PropTypes.arrayOf(React.PropTypes.element)
+          ])
+        )
       ]),
       defaultText: React.PropTypes.string
     };

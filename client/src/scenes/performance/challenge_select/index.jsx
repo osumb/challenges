@@ -2,7 +2,10 @@ import React from 'react';
 import styled from 'styled-components';
 
 import { auth, compareSpots, fetch } from '../../../utils';
-import { helpers as performanceHelpers, propTypes as performanceProps } from '../../../data/performance';
+import {
+  helpers as performanceHelpers,
+  propTypes as performanceProps
+} from '../../../data/performance';
 import { helpers as challengeHelpers } from '../../../data/challenge';
 import { helpers as userHelpers } from '../../../data/user';
 import Button from '../../../components/button';
@@ -12,7 +15,8 @@ import TriChallengeableUser from './components/tri_challengeable_user';
 import Typography from '../../../components/typography';
 import Select from '../../../components/select';
 
-const fetchChallengeableUsers = () => performanceHelpers.getChallengeableUsers();
+const fetchChallengeableUsers = () =>
+  performanceHelpers.getChallengeableUsers();
 const propsFromData = ({ challengeableUsers, performance }) => ({
   challengeableUsers: [...challengeableUsers].sort(compareSpots),
   performance
@@ -41,7 +45,9 @@ const ErrorText = styled.div`
 class ChallengeSelect extends React.PureComponent {
   static get propTypes() {
     return {
-      challengeableUsers: React.PropTypes.arrayOf(React.PropTypes.shape(performanceProps.challengeableUser)),
+      challengeableUsers: React.PropTypes.arrayOf(
+        React.PropTypes.shape(performanceProps.challengeableUser)
+      ),
       performance: React.PropTypes.shape(performanceProps.performance)
     };
   }
@@ -57,11 +63,19 @@ class ChallengeSelect extends React.PureComponent {
   }
 
   handleSelectClick() {
-    const challengeableUser = this.props.challengeableUsers[this.select.getSelectedIndex()];
+    const challengeableUser = this.props.challengeableUsers[
+      this.select.getSelectedIndex()
+    ];
 
-    if (challengeableUser === null || typeof challengeableUser === 'undefined') {
+    if (
+      challengeableUser === null ||
+      typeof challengeableUser === 'undefined'
+    ) {
       this.setState({ errorMessage: 'Please select someone to challenge' });
-    } else if (challengeableUser.challengeId === null || typeof challengeableUser.challengeId === 'undefined') {
+    } else if (
+      challengeableUser.challengeId === null ||
+      typeof challengeableUser.challengeId === 'undefined'
+    ) {
       this.createChallenge(challengeableUser);
     } else {
       this.editCurrentChallenge(challengeableUser);
@@ -77,34 +91,38 @@ class ChallengeSelect extends React.PureComponent {
       challengeType = 'tri';
     }
 
-    challengeHelpers.create({
-      challengeType,
-      file,
-      performanceId: this.props.performance.id,
-      row
-    })
-    .then(({ challenge }) => {
-      const challengeSpot = `${challenge.spot.row}${challenge.spot.file}`;
-      const s = `Successfully challenged ${challengeSpot} for the ${this.props.performance.name}!`;
+    challengeHelpers
+      .create({
+        challengeType,
+        file,
+        performanceId: this.props.performance.id,
+        row
+      })
+      .then(({ challenge }) => {
+        const challengeSpot = `${challenge.spot.row}${challenge.spot.file}`;
+        const s = `Successfully challenged ${challengeSpot} for the ${this.props
+          .performance.name}!`;
 
-      this.setState({
-        errorMessage: null,
-        successMessage: s
+        this.setState({
+          errorMessage: null,
+          successMessage: s
+        });
       });
-    });
   }
 
   editCurrentChallenge(challengeableUser) {
-    challengeHelpers.addUser(auth.getUser().buckId, challengeableUser.challengeId)
-    .then(({ challengeSpot }) => {
-      const spot = `${challengeSpot.row}${challengeSpot.file}`;
-      const s = `Successfully challenged ${spot} for the ${this.props.performance.name}!`;
+    challengeHelpers
+      .addUser(auth.getUser().buckId, challengeableUser.challengeId)
+      .then(({ challengeSpot }) => {
+        const spot = `${challengeSpot.row}${challengeSpot.file}`;
+        const s = `Successfully challenged ${spot} for the ${this.props
+          .performance.name}!`;
 
-      this.setState({
-        errorMessage: null,
-        successMessage: s
+        this.setState({
+          errorMessage: null,
+          successMessage: s
+        });
       });
-    });
   }
 
   render() {
@@ -115,7 +133,9 @@ class ChallengeSelect extends React.PureComponent {
     if (successMessage !== null && typeof successMessage !== 'undefined') {
       return (
         <Container>
-          <Typography category="display" number={1}>{successMessage}</Typography>
+          <Typography category="display" number={1}>
+            {successMessage}
+          </Typography>
         </Container>
       );
     }
@@ -137,8 +157,7 @@ class ChallengeSelect extends React.PureComponent {
             <Typography category="display" number={2}>
               **{errorMessage}**
             </Typography>
-          </ErrorText>
-        }
+          </ErrorText>}
         <Typography category="display" number={1}>
           Who do you want to challenge for the {performance.name}?
         </Typography>
@@ -149,18 +168,35 @@ class ChallengeSelect extends React.PureComponent {
               this.select = select;
             }}
           >
-            {challengeableUsers.map((challengeableUser) => {
+            {challengeableUsers.map(challengeableUser => {
               if (userHelpers.isTriChallengeUser(user)) {
-                return <TriChallengeableUser key={challengeableUser.buckId} {...challengeableUser} />;
+                return (
+                  <TriChallengeableUser
+                    key={challengeableUser.buckId}
+                    {...challengeableUser}
+                  />
+                );
               } else if (challengeableUser.openSpot) {
-                return <OpenSpotChallengeableUser key={challengeableUser.buckId} {...challengeableUser} />;
+                return (
+                  <OpenSpotChallengeableUser
+                    key={challengeableUser.buckId}
+                    {...challengeableUser}
+                  />
+                );
               } else {
-                return <NormalChallengeableUser key={challengeableUser.buckId} {...challengeableUser} />;
+                return (
+                  <NormalChallengeableUser
+                    key={challengeableUser.buckId}
+                    {...challengeableUser}
+                  />
+                );
               }
             })}
           </Select>
           <ButtonWrapper>
-            <Button primary onClick={this.handleSelectClick}>Make Challenge</Button>
+            <Button primary onClick={this.handleSelectClick}>
+              Make Challenge
+            </Button>
           </ButtonWrapper>
         </SelectButtonWrapper>
       </Container>

@@ -23,8 +23,7 @@ export default class PastDisciplineAction extends React.PureComponent {
   }
 
   handleDeleteClick() {
-    helpers.del(this.props.id)
-    .then(() => {
+    helpers.del(this.props.id).then(() => {
       this.setState({
         deleted: true,
         requesting: false
@@ -37,14 +36,17 @@ export default class PastDisciplineAction extends React.PureComponent {
 
   render() {
     const { currentPerformance, performance, reason, user } = this.props;
-    const showDelete = Boolean(currentPerformance) && currentPerformance.id === performance.id;
+    const showDelete =
+      Boolean(currentPerformance) && currentPerformance.id === performance.id;
 
     return (
       <div>
         <Typography category="title">
-          For the {performance.name}, {user.firstName} was disciplined for {reason}
+          For the {performance.name}, {user.firstName} was disciplined for{' '}
+          {reason}
         </Typography>
-        {showDelete && <Button onClick={this.handleDeleteClick} primary>Delete</Button>}
+        {showDelete &&
+          <Button onClick={this.handleDeleteClick} primary>Delete</Button>}
       </div>
     );
   }

@@ -3,7 +3,10 @@ import Datetime from 'react-datetime';
 
 import './index.scss';
 import '../../../../node_modules/react-datetime/css/react-datetime.css';
-import { helpers as performanceHelpers, propTypes as performanceProps } from '../../data/performance';
+import {
+  helpers as performanceHelpers,
+  propTypes as performanceProps
+} from '../../data/performance';
 import { errorEmitter } from '../../utils';
 import { FlexContainer } from '../flex';
 import Button from '../button';
@@ -36,7 +39,9 @@ export default class Performance extends React.PureComponent {
     if (performanceHelpers.isValidPerformance(performance)) {
       this.props.onAction(performance);
     } else {
-      const errorMessage = performanceHelpers.performanceErrors(performance).join('; ');
+      const errorMessage = performanceHelpers
+        .performanceErrors(performance)
+        .join('; ');
       errorEmitter.dispatch(errorMessage);
     }
   }
@@ -62,12 +67,30 @@ export default class Performance extends React.PureComponent {
     const { buttonText } = this.props;
 
     return (
-      <FlexContainer flexDirection="column" alignItems="center" justifyContent="center" padding="20px">
+      <FlexContainer
+        flexDirection="column"
+        alignItems="center"
+        justifyContent="center"
+        padding="20px"
+      >
         <FlexContainer flexDirection="column" alignItems="flex-start">
-          <FlexContainer flexDirection="column" alignItems="flex-start" margin="5px 0">
-            <TextField onChange={this.handleNameChange} placeholder="Performance Name" name="name" value={name || ''} />
+          <FlexContainer
+            flexDirection="column"
+            alignItems="flex-start"
+            margin="5px 0"
+          >
+            <TextField
+              onChange={this.handleNameChange}
+              placeholder="Performance Name"
+              name="name"
+              value={name || ''}
+            />
           </FlexContainer>
-          <FlexContainer flexDirection="column" alignItems="flex-start" margin="5px 0">
+          <FlexContainer
+            flexDirection="column"
+            alignItems="flex-start"
+            margin="5px 0"
+          >
             <Typography category="title">Date of performance</Typography>
             <Datetime
               className="Challenges-Datetime"
@@ -75,7 +98,11 @@ export default class Performance extends React.PureComponent {
               value={date && new Date(date)}
             />
           </FlexContainer>
-          <FlexContainer flexDirection="column" alignItems="flex-start" margin="5px 0">
+          <FlexContainer
+            flexDirection="column"
+            alignItems="flex-start"
+            margin="5px 0"
+          >
             <Typography category="title">Challenge Window Open</Typography>
             <Datetime
               className="Challenges-Datetime"
@@ -83,7 +110,11 @@ export default class Performance extends React.PureComponent {
               value={windowOpen && new Date(windowOpen)}
             />
           </FlexContainer>
-          <FlexContainer flexDirection="column" alignItems="flex-start" margin="5px 0">
+          <FlexContainer
+            flexDirection="column"
+            alignItems="flex-start"
+            margin="5px 0"
+          >
             <Typography category="title">Challenge Window Close</Typography>
             <Datetime
               className="Challenges-Datetime"
