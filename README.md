@@ -72,6 +72,22 @@ bin/test
 
 Right now, we only have Rails tests. Once a set of tests are run, you'll be able to see our *Rails* code coverage in `coverage/index.html`. This directory is in the `.gitignore`, please don't commit this.
 
+### Code Formatting
+
+#### Ruby
+
+Checkout .rubocop.yml to see the ruby specific code formatting rules
+
+#### JS
+
+JavaScript is formatted with a combination of [Prettier](https://github.com/prettier) and [Eslint](https://github.com/eslint)
+
+
+Linting for both languages are part of tests therefore they're a part of CI. Poorly formatted code will break the build
+Before committing js code, run the script `./bin/js_format`. This will run prettier on all files to make sure everything
+looks pretty :sparkles:
+
+
 ## Heroku
 The app lives on Heroku. [@atareshawty](https://github.com/atareshawty) has the logins. Ask him if you want the ability to deploy or have access to
 the Heroku git remotes.
