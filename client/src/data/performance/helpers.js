@@ -2,9 +2,19 @@ import moment from 'moment';
 
 import { api } from '../../utils';
 
-const create = ({ date, name, windowClose: window_close, windowOpen: window_open }) =>
-  api.post('/performances', { date, name, window_close, window_open });
-const update = ({ date, id, name, windowClose: window_close, windowOpen: window_open }) =>
+const create = ({
+  date,
+  name,
+  windowClose: window_close,
+  windowOpen: window_open
+}) => api.post('/performances', { date, name, window_close, window_open });
+const update = ({
+  date,
+  id,
+  name,
+  windowClose: window_close,
+  windowOpen: window_open
+}) =>
   api.put(`/performances/${id}`, {
     performance: {
       date: moment(date).utc(),
@@ -15,7 +25,8 @@ const update = ({ date, id, name, windowClose: window_close, windowOpen: window_
   });
 
 const getAll = () => api.get('/performances');
-const getChallengeableUsers = () => api.get('/performances/challengeable_users');
+const getChallengeableUsers = () =>
+  api.get('/performances/challengeable_users');
 const getNext = () => api.get('/performances/next');
 
 const isValidPerformance = ({ date, name, windowClose, windowOpen }) => {
@@ -28,12 +39,14 @@ const isValidPerformance = ({ date, name, windowClose, windowOpen }) => {
 
 const isWindowOpen = ({ windowClose, windowOpen }) => {
   const now = new Date().getTime();
-  const close = new Date(windowClose).getTime(), open = new Date(windowOpen).getTime();
+  const close = new Date(windowClose).getTime(),
+    open = new Date(windowOpen).getTime();
 
   return open <= now && now <= close;
 };
 
-const isValidPerformanceName = name => typeof name !== 'undefined' && name !== null && name !== '';
+const isValidPerformanceName = name =>
+  typeof name !== 'undefined' && name !== null && name !== '';
 const isValidDate = date => new Date(date).toString() !== 'Invalid Date';
 const performanceErrors = ({ date, name, windowClose, windowOpen }) => {
   const errs = [];

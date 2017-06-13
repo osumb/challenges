@@ -6,8 +6,10 @@ export default styled.div`
   ${({ padding }) => padding && `padding: ${padding};`};
   ${({ height }) => height && `height: ${height};`};
   ${({ width }) => width && `width: ${width};`};
-  ${({ flexDirection }) => flexDirection && `flex-direction: ${flexDirection};`};
+  ${({ flexDirection }) =>
+    flexDirection && `flex-direction: ${flexDirection};`};
   ${({ alignItems }) => alignItems && `align-items: ${alignItems};`};
-  ${({ justifyContent }) => justifyContent && `justify-content: ${justifyContent};`};
+  ${({ justifyContent }) =>
+    justifyContent && `justify-content: ${justifyContent};`};
   ${({ flexWrap }) => flexWrap && `flex-wrap: ${flexWrap};`};
 `;

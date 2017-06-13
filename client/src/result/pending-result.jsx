@@ -14,7 +14,6 @@ import './pending-result.scss';
 import { api } from '../utils';
 
 export default class PendingResult extends Component {
-
   static get propTypes() {
     return {
       firstComments: PropTypes.string.isRequired,
@@ -59,7 +58,11 @@ export default class PendingResult extends Component {
   }
 
   handleCancel() {
-    const { originalFirstComments, originalSecondComments, originalWinnerId } = this.state;
+    const {
+      originalFirstComments,
+      originalSecondComments,
+      originalWinnerId
+    } = this.state;
 
     this.setState({
       editing: false,
@@ -88,22 +91,23 @@ export default class PendingResult extends Component {
   handleSubmit() {
     const { firstComments, secondComments, winnerId } = this.state;
 
-    api.put('/results/pending', {
-      id: this.props.id,
-      firstComments,
-      secondComments,
-      winnerId
-    })
-    .then(() => {
-      this.setState({
-        confirming: false,
-        editing: false,
-        originalFirstComments: firstComments,
-        originalSecondComments: secondComments,
-        originalWinnerId: winnerId,
-        success: true
+    api
+      .put('/results/pending', {
+        id: this.props.id,
+        firstComments,
+        secondComments,
+        winnerId
+      })
+      .then(() => {
+        this.setState({
+          confirming: false,
+          editing: false,
+          originalFirstComments: firstComments,
+          originalSecondComments: secondComments,
+          originalWinnerId: winnerId,
+          success: true
+        });
       });
-    });
   }
 
   handleWinnerIdChange(event, value) {
@@ -112,7 +116,14 @@ export default class PendingResult extends Component {
     });
   }
 
-  renderRadioButtons(firstName, firstNameNumber, id, secondName, secondNameNumber, winnerId) {
+  renderRadioButtons(
+    firstName,
+    firstNameNumber,
+    id,
+    secondName,
+    secondNameNumber,
+    winnerId
+  ) {
     if (secondName && secondNameNumber) {
       return (
         <RadioButtonGroup
@@ -120,14 +131,8 @@ export default class PendingResult extends Component {
           onChange={this.handleWinnerIdChange}
           valueSelected={winnerId}
         >
-          <RadioButton
-            label={firstName}
-            value={firstNameNumber}
-          />
-          <RadioButton
-            label={secondName}
-            value={secondNameNumber}
-          />
+          <RadioButton label={firstName} value={firstNameNumber} />
+          <RadioButton label={secondName} value={secondNameNumber} />
         </RadioButtonGroup>
       );
     } else {
@@ -137,23 +142,37 @@ export default class PendingResult extends Component {
           onChange={this.handleWinnerIdChange}
           valueSelected={winnerId}
         >
-          <RadioButton
-            label={firstName}
-            value={firstNameNumber}
-          />
+          <RadioButton label={firstName} value={firstNameNumber} />
         </RadioButtonGroup>
       );
     }
-
   }
 
   render() {
-    const { confirming, editing, firstComments, secondComments, success, winnerId } = this.state;
-    const { firstName, firstNameNumber, id, secondName, secondNameNumber, spotId } = this.props;
+    const {
+      confirming,
+      editing,
+      firstComments,
+      secondComments,
+      success,
+      winnerId
+    } = this.state;
+    const {
+      firstName,
+      firstNameNumber,
+      id,
+      secondName,
+      secondNameNumber,
+      spotId
+    } = this.props;
     const currentWinner = winnerId === firstNameNumber ? firstName : secondName;
     const dialogActions = [
-      <FlatButton key="cancel" onTouchTap={this.handleConfirmClose}>No</FlatButton>,
-      <FlatButton key="submit" onTouchTap={this.handleSubmit}>Submit</FlatButton>
+      <FlatButton key="cancel" onTouchTap={this.handleConfirmClose}>
+        No
+      </FlatButton>,
+      <FlatButton key="submit" onTouchTap={this.handleSubmit}>
+        Submit
+      </FlatButton>
     ];
     const title = editing
       ? <strong><LockOpen /> {currentWinner} ({spotId})</strong>
@@ -161,10 +180,7 @@ export default class PendingResult extends Component {
 
     return (
       <div className="PendingResult">
-        <Dialog
-          actions={dialogActions}
-          open={confirming}
-        >
+        <Dialog actions={dialogActions} open={confirming}>
           Are you sure you want to update this result&#63;
         </Dialog>
         <Snackbar
@@ -180,45 +196,74 @@ export default class PendingResult extends Component {
             }}
             title={title}
           />
-          {editing ?
-            <div className="PendingResult-textHeaders">
-              {this.renderRadioButtons(firstName, firstNameNumber, id, secondName, secondNameNumber, winnerId)}
-            </div> :
-            <div className="PendingResult-textHeaders">
-              <p>{firstName}</p>
-              {secondNameNumber && <p>{secondName}</p>}
-            </div>
-          }
+          {editing
+            ? <div className="PendingResult-textHeaders">
+                {this.renderRadioButtons(
+                  firstName,
+                  firstNameNumber,
+                  id,
+                  secondName,
+                  secondNameNumber,
+                  winnerId
+                )}
+              </div>
+            : <div className="PendingResult-textHeaders">
+                <p>{firstName}</p>
+                {secondNameNumber && <p>{secondName}</p>}
+              </div>}
           <Divider />
           <div className="PendingResult-text">
-            {editing ?
-              <TextField
-                multiLine
-                name="firstComments"
-                onChange={this.handleCommentsChange}
-                rows={4}
-                rowsMax={4}
-                value={firstComments}
-              /> :
-              <CardText>{firstComments}</CardText>
-            }
-            {secondNameNumber && (editing ?
-              <TextField
-                multiLine
-                name="secondComments"
-                onChange={this.handleCommentsChange}
-                rows={4}
-                rowsMax={4}
-                value={secondComments}
-              /> :
-              <CardText>{secondComments}</CardText>
-            )}
+            {editing
+              ? <TextField
+                  multiLine
+                  name="firstComments"
+                  onChange={this.handleCommentsChange}
+                  rows={4}
+                  rowsMax={4}
+                  value={firstComments}
+                />
+              : <CardText>{firstComments}</CardText>}
+            {secondNameNumber &&
+              (editing
+                ? <TextField
+                    multiLine
+                    name="secondComments"
+                    onChange={this.handleCommentsChange}
+                    rows={4}
+                    rowsMax={4}
+                    value={secondComments}
+                  />
+                : <CardText>{secondComments}</CardText>)}
           </div>
           <CardActions>
-            {editing && <FlatButton className="PendingResult-button" onTouchTap={this.handleCancel}>Cancel</FlatButton>}
-            {editing && <FlatButton className="PendingResult-button" onTouchTap={this.handleConfirm}>Update</FlatButton>}
-            {!editing && <FlatButton className="PendingResult-button" onTouchTap={this.handleApproveClick}>Approve</FlatButton>}
-            {!editing && <FlatButton className="PendingResult-button" onTouchTap={this.handleEditClick}>Edit</FlatButton>}
+            {editing &&
+              <FlatButton
+                className="PendingResult-button"
+                onTouchTap={this.handleCancel}
+              >
+                Cancel
+              </FlatButton>}
+            {editing &&
+              <FlatButton
+                className="PendingResult-button"
+                onTouchTap={this.handleConfirm}
+              >
+                Update
+              </FlatButton>}
+            {!editing &&
+              <FlatButton
+                className="PendingResult-button"
+                onTouchTap={this.handleApproveClick}
+              >
+                Approve
+              </FlatButton>}
+            {!editing &&
+              <FlatButton
+                className="PendingResult-button"
+                onTouchTap={this.handleEditClick}
+              >
+                Edit
+              </FlatButton>}
           </CardActions>
         </Card>
       </div>

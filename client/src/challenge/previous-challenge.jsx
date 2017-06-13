@@ -3,7 +3,10 @@ import { ListItem } from 'material-ui/List';
 import Star from 'material-ui/svg-icons/action/stars';
 
 const PreviousChallenge = ({ userName, spotId, performanceName }) =>
-  <ListItem leftIcon={<Star />} primaryText={`${userName} challenged ${spotId} for the ${performanceName}`} />;
+  <ListItem
+    leftIcon={<Star />}
+    primaryText={`${userName} challenged ${spotId} for the ${performanceName}`}
+  />;
 
 PreviousChallenge.propTypes = {
   performanceName: PropTypes.string.isRequired,

@@ -10,7 +10,13 @@ import MemberProfile from './components/member_profile';
 
 const fetchProfile = () => helpers.getProfile();
 
-const Profile = ({ canChallenge, currentChallenge, currentDisciplineAction, nextPerformance, user }) =>
+const Profile = ({
+  canChallenge,
+  currentChallenge,
+  currentDisciplineAction,
+  nextPerformance,
+  user
+}) =>
   helpers.isAdmin(user) || helpers.isDirector(user)
     ? <AdminProfile nextPerformance={nextPerformance} user={user} />
     : <MemberProfile
@@ -19,8 +25,7 @@ const Profile = ({ canChallenge, currentChallenge, currentDisciplineAction, next
         currentDisciplineAction={currentDisciplineAction}
         nextPerformance={nextPerformance}
         user={user}
-      />
-;
+      />;
 
 Profile.propTypes = {
   canChallenge: React.PropTypes.bool.isRequired,

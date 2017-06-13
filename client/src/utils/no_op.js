@@ -1,3 +1,5 @@
-const a = () => { /* Do nothing */ };
+const a = () => {
+  /* Do nothing */
+};
 
 export default a;

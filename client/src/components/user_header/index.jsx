@@ -39,19 +39,24 @@ const SpotText = styled.h3`
   align-self: center;
 `;
 
-const UserHeader = (userProps) => (
+const UserHeader = userProps =>
   <Container>
     {helpers.isAdmin(userProps) || helpers.isDirector(userProps)
       ? <AdminTag>Admin</AdminTag>
-      : <SpotCircle><SpotText>{`${userProps.spot.row}${userProps.spot.file}`}</SpotText></SpotCircle>
-    }
+      : <SpotCircle>
+          <SpotText>{`${userProps.spot.row}${userProps.spot.file}`}</SpotText>
+        </SpotCircle>}
     <NameHeader>
       {`${userProps.firstName} ${userProps.lastName}`}
     </NameHeader>
-  </Container>
-);
+  </Container>;
 
-UserHeader.propTypes = pick(userPropTypes, ['firstName', 'lastName', 'role', 'spot']);
+UserHeader.propTypes = pick(userPropTypes, [
+  'firstName',
+  'lastName',
+  'role',
+  'spot'
+]);
 UserHeader.props = props;
 
 export default UserHeader;

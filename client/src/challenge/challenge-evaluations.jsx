@@ -11,18 +11,19 @@ const endPoint = '/results/evaluate';
 const postEndPoint = '/results/evaluate';
 
 class ChallengeEvaluations extends Component {
-
   static get propTypes() {
     return {
-      results: PropTypes.arrayOf(PropTypes.shape({
-        firstName: PropTypes.string.isRequired,
-        firstNameNumber: PropTypes.string.isRequired,
-        id: PropTypes.number.isRequired,
-        performanceDate: PropTypes.string.isRequired,
-        secondName: PropTypes.string,
-        secondNameNumber: PropTypes.string,
-        spotId: PropTypes.string.isRequired
-      }))
+      results: PropTypes.arrayOf(
+        PropTypes.shape({
+          firstName: PropTypes.string.isRequired,
+          firstNameNumber: PropTypes.string.isRequired,
+          id: PropTypes.number.isRequired,
+          performanceDate: PropTypes.string.isRequired,
+          secondName: PropTypes.string,
+          secondNameNumber: PropTypes.string,
+          spotId: PropTypes.string.isRequired
+        })
+      )
     };
   }
 
@@ -59,8 +60,7 @@ class ChallengeEvaluations extends Component {
   handleSubmit({ id, ...rest }) {
     const { results } = this.state;
 
-    api.put(postEndPoint, { id, ...rest })
-    .then(() => {
+    api.put(postEndPoint, { id, ...rest }).then(() => {
       this.setState({
         results: results.filter(({ id: rId }) => rId !== id)
       });
@@ -69,7 +69,7 @@ class ChallengeEvaluations extends Component {
 
   render() {
     const { evaluating, results } = this.state;
-    const userComparisons = results.map((result) => ({
+    const userComparisons = results.map(result => ({
       ...result,
       onSubmit: this.handleSubmit
     }));
@@ -85,24 +85,26 @@ class ChallengeEvaluations extends Component {
     return (
       <div className="ChallengeEvaluations">
         <div className="ChallengeEvaluations-header">
-          <h2>{evaluating ? 'Type your comments for each person involved' : 'Turn in your evaluations'}</h2>
-          <FlatButton id="ChallengeEvaluations-headerButton" onTouchTap={this.handleEvaluationToggle}>
+          <h2>
+            {evaluating
+              ? 'Type your comments for each person involved'
+              : 'Turn in your evaluations'}
+          </h2>
+          <FlatButton
+            id="ChallengeEvaluations-headerButton"
+            onTouchTap={this.handleEvaluationToggle}
+          >
             {evaluating ? 'Turn in Evaluations' : 'Back'}
           </FlatButton>
         </div>
         <div className="ChallengeEvaluations-items">
-          {evaluating ?
-            results.map(({ id, ...rest }) =>
-              <UserComments
-                ref={id}
-                key={id}
-                {...rest}
-              />
-            ) :
-            userComparisons.map(({ id, ...rest }) =>
-              <UserComparison key={id} id={id} {...rest} />
-            )
-          }
+          {evaluating
+            ? results.map(({ id, ...rest }) =>
+                <UserComments ref={id} key={id} {...rest} />
+              )
+            : userComparisons.map(({ id, ...rest }) =>
+                <UserComparison key={id} id={id} {...rest} />
+              )}
         </div>
       </div>
     );

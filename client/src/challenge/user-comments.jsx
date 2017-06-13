@@ -5,7 +5,6 @@ import TextField from 'material-ui/TextField';
 import './user-comments.scss';
 
 class UserComments extends Component {
-
   static get propTypes() {
     return {
       firstComments: PropTypes.string.isRequired,
@@ -49,7 +48,9 @@ class UserComments extends Component {
     return (
       <div className="UserComments">
         <Paper>
-          <h4 className="UserComments-header">{firstName} {secondName && `vs ${secondName}`} ({spotId})</h4>
+          <h4 className="UserComments-header">
+            {firstName} {secondName && `vs ${secondName}`} ({spotId})
+          </h4>
           <div className="UserComments-comments">
             <div className="UserComments-comment">
               <TextField
@@ -73,8 +74,7 @@ class UserComments extends Component {
                   rowsMax={4}
                   value={secondComments}
                 />
-              </div>
-            }
+              </div>}
           </div>
         </Paper>
       </div>

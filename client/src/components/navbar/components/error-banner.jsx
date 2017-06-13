@@ -36,7 +36,6 @@ const Button = styled.button`
 `;
 
 export default class ErrorBanner extends Component {
-
   constructor(props) {
     super(props);
     this.state = {
@@ -46,7 +45,7 @@ export default class ErrorBanner extends Component {
   }
 
   componentDidMount() {
-    errorEmitter.on('error', (errorMessage) => {
+    errorEmitter.on('error', errorMessage => {
       this.setState({ errorMessage });
     });
   }
@@ -62,7 +61,8 @@ export default class ErrorBanner extends Component {
   render() {
     const { errorMessage } = this.state;
 
-    return errorMessage && (
+    return (
+      errorMessage &&
       <Container>
         <Message>
           <Text><Typography category="title">{errorMessage}</Typography></Text>

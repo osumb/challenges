@@ -44,8 +44,7 @@ export default class CurrentChallenge extends React.PureComponent {
   handleDeleteConfirm() {
     const { userChallengeId } = this.props;
 
-    userChallengeHelpers.del(userChallengeId)
-    .then(() => {
+    userChallengeHelpers.del(userChallengeId).then(() => {
       this.setState({ confirming: false, deleted: true });
     });
   }
@@ -69,15 +68,19 @@ export default class CurrentChallenge extends React.PureComponent {
     return (
       <Elevation zLevel={2}>
         <Container>
-          {deleted ?
-            <Typography category="headline">Successfully deleted challenge!</Typography> :
-            <Container>
-              <Typography category="headline">
-                You're challenging spot {this.props.spot.row}{this.props.spot.file} for the {this.props.performanceName}&nbsp;&nbsp;
+          {deleted
+            ? <Typography category="headline">
+                Successfully deleted challenge!
               </Typography>
-              <Button primary onClick={this.handleDeleteRequest}>Delete Challenge</Button>
-            </Container>
-          }
+            : <Container>
+                <Typography category="headline">
+                  You're challenging spot {this.props.spot.row}
+                  {this.props.spot.file} for the {this.props.performanceName}&nbsp;&nbsp;
+                </Typography>
+                <Button primary onClick={this.handleDeleteRequest}>
+                  Delete Challenge
+                </Button>
+              </Container>}
         </Container>
       </Elevation>
     );

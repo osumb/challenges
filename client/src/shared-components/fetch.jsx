@@ -5,7 +5,6 @@ import './fetch.scss';
 import { api, errorEmitter } from '../utils';
 
 export default class Fetch extends Component {
-
   static get propTypes() {
     return {
       children: PropTypes.element.isRequired,
@@ -37,12 +36,13 @@ export default class Fetch extends Component {
         ? `${endPoint}?${paramId}=${params[paramId]}`
         : endPoint;
 
-      api.get(url, errorMessage)
-      .then(data => {
+      api.get(url, errorMessage).then(data => {
         this.setState({ data, error: false });
       });
     } catch (e) {
-      errorEmitter.dispatch(errorMessage || 'Sorry, there was a problem sending your request');
+      errorEmitter.dispatch(
+        errorMessage || 'Sorry, there was a problem sending your request'
+      );
       console.error(e);
     }
   }

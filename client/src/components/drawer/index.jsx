@@ -6,7 +6,12 @@ export default class Drawer extends React.PureComponent {
     return {
       children: React.PropTypes.oneOfType([
         React.PropTypes.element,
-        React.PropTypes.arrayOf(React.PropTypes.oneOfType([React.PropTypes.element, React.PropTypes.arrayOf(React.PropTypes.element)]))
+        React.PropTypes.arrayOf(
+          React.PropTypes.oneOfType([
+            React.PropTypes.element,
+            React.PropTypes.arrayOf(React.PropTypes.element)
+          ])
+        )
       ]),
       header: React.PropTypes.string,
       onClick: React.PropTypes.func,
@@ -86,7 +91,11 @@ export default class Drawer extends React.PureComponent {
           </header>
           <nav className="mdc-temporary-drawer__content mdc-list-group">
             <div className="mdc-list">
-              {React.Children.map(this.props.children, child => React.Children.map(child, c => React.cloneElement(c, { className: 'mdc-list-item' })))}
+              {React.Children.map(this.props.children, child =>
+                React.Children.map(child, c =>
+                  React.cloneElement(c, { className: 'mdc-list-item' })
+                )
+              )}
             </div>
           </nav>
         </nav>

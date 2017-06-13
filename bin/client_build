@@ -1,6 +1,6 @@
 #!/bin/sh
 
-# bin/client-build: Run build for client side code and move up to /public
+# bin/client_build: Run build for client side code and move up to /public
 
 # Run the build
 yarn run build

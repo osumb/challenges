@@ -72,10 +72,25 @@ export default class EditText extends React.PureComponent {
     if (editing) {
       return (
         <Container>
-          <EditInput onChange={this.handleTextChange} value={this.state.newValue} name="newValue" disabled={requesting} />
+          <EditInput
+            onChange={this.handleTextChange}
+            value={this.state.newValue}
+            name="newValue"
+            disabled={requesting}
+          />
           <Container>
-            <EditButton onClick={this.handleEditToggleClick} disabled={requesting}>Cancel</EditButton>
-            <EditButton onClick={this.handleEditConfirmClick} disabled={requesting}>Confirm</EditButton>
+            <EditButton
+              onClick={this.handleEditToggleClick}
+              disabled={requesting}
+            >
+              Cancel
+            </EditButton>
+            <EditButton
+              onClick={this.handleEditConfirmClick}
+              disabled={requesting}
+            >
+              Confirm
+            </EditButton>
           </Container>
         </Container>
       );

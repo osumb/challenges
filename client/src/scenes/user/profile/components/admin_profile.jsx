@@ -11,7 +11,10 @@ const adminText = (
   <div>
     <div>
       <h2>Challenges</h2>
-      <h4>There, you can create challenges for on behalf of members and see/edit all current challenges</h4>
+      <h4>
+        There, you can create challenges for on behalf of members and see/edit
+        all current challenges
+      </h4>
     </div>
     <div>
       <h2>Performances</h2>
@@ -19,7 +22,9 @@ const adminText = (
     </div>
     <div>
       <h2>Users</h2>
-      <h4>There, you can see the current roster or search for users to open spots</h4>
+      <h4>
+        There, you can see the current roster or search for users to open spots
+      </h4>
     </div>
   </div>
 );
@@ -31,13 +36,12 @@ const Container = styled.div`
   justify-content: center;
 `;
 
-const AdminProfile = (props) => (
+const AdminProfile = props =>
   <Container>
     <UserHeader {...pick(props.user, UserHeader.props)} />
     <PerformanceWindow {...props.nextPerformance} />
     {adminText}
-  </Container>
-);
+  </Container>;
 
 AdminProfile.propTypes = {
   nextPerformance: React.PropTypes.shape(performancePropTypes.performance),

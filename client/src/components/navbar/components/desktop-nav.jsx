@@ -44,20 +44,18 @@ export default class DesktopNav extends Component {
           <MenuItem>
             <Link to="/">Home</Link>
           </MenuItem>
-          {visibleRoutes.map((key) =>
+          {visibleRoutes.map(key =>
             <LinkDropdown
               displayName={mainRoutes[key].displayName}
               key={key}
-              links={mainRoutes[key].links.filter((link) => canUserSeeLink(link, user))}
+              links={mainRoutes[key].links.filter(link =>
+                canUserSeeLink(link, user)
+              )}
             />
           )}
         </LeftContainer>
         {!isEmptyObject(user) &&
-          <MenuItem
-            onTouchTap={onLogout}
-            primaryText="Logout"
-          />
-        }
+          <MenuItem onTouchTap={onLogout} primaryText="Logout" />}
       </Container>
     );
   }

@@ -7,5 +7,8 @@ export default function ListDropdownItem({ children }) {
 }
 
 ListDropdownItem.propTypes = {
-  children: React.PropTypes.oneOfType([React.PropTypes.element, React.PropTypes.string]).isRequired
+  children: React.PropTypes.oneOfType([
+    React.PropTypes.element,
+    React.PropTypes.string
+  ]).isRequired
 };

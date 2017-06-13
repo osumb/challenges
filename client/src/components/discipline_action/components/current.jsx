@@ -13,7 +13,11 @@ const Container = styled.div`
   margin: 10px;
 `;
 
-export default function CurrentDisciplineAction({ reason, allowedToChallenge, performance }) {
+export default function CurrentDisciplineAction({
+  reason,
+  allowedToChallenge,
+  performance
+}) {
   const performanceStr = `Your spot was opened for the ${performance.name}`;
   const reasonStr = `Reason: ${reason}`;
 
@@ -23,8 +27,9 @@ export default function CurrentDisciplineAction({ reason, allowedToChallenge, pe
         <Typography category="headline">{performanceStr}</Typography>
         <Typography category="headline">{reasonStr}</Typography>
         {allowedToChallenge &&
-          <Typography category="title">You are allowed to make a challenge</Typography>
-        }
+          <Typography category="title">
+            You are allowed to make a challenge
+          </Typography>}
       </Container>
     </Elevation>
   );

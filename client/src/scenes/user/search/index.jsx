@@ -60,7 +60,9 @@ class Search extends React.PureComponent {
   }
 
   componentDidMount() {
-    const initialQuery = getSearchQueryFromQueryString(this.props.location.search);
+    const initialQuery = getSearchQueryFromQueryString(
+      this.props.location.search
+    );
 
     if (initialQuery) {
       this.handleApiSearch(initialQuery);
@@ -69,8 +71,7 @@ class Search extends React.PureComponent {
 
   handleApiSearch(query) {
     this.setState({ requesting: true });
-    helpers.search(query)
-    .then(({ users }) => {
+    helpers.search(query).then(({ users }) => {
       this.setState({ requesting: false, searchResults: users });
     });
   }
@@ -108,10 +109,14 @@ class Search extends React.PureComponent {
             }}
             value={query || ''}
           />
-          <Button disabled={requesting} primary onClick={this.handleSearch}><SearchIconImg src={SearchIcon} /></Button>
+          <Button disabled={requesting} primary onClick={this.handleSearch}>
+            <SearchIconImg src={SearchIcon} />
+          </Button>
         </SearchField>
         <Results>
-          <SearchResultList query={getSearchQueryFromQueryString(this.props.location.search)}>
+          <SearchResultList
+            query={getSearchQueryFromQueryString(this.props.location.search)}
+          >
             {searchResults.map(({ buckId, ...rest }) =>
               <SearchResultListItem key={buckId} buckId={buckId} {...rest} />
             )}

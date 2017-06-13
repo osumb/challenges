@@ -3,7 +3,10 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { fetch } from '../../../utils';
-import { helpers as prrHelpers, propTypes } from '../../../data/password_reset_request';
+import {
+  helpers as prrHelpers,
+  propTypes
+} from '../../../data/password_reset_request';
 import { helpers as userHelpers } from '../../../data/user';
 import Button from '../../../components/button';
 import TextField from '../../../components/textfield';
@@ -48,8 +51,7 @@ class PasswordResetReset extends React.PureComponent {
 
     this.setState({ inputErrorMessage: '', success: false });
     if (Boolean(password) && password === passwordConf) {
-      userHelpers.resetPassword(id, password, user)
-      .then(() => {
+      userHelpers.resetPassword(id, password, user).then(() => {
         this.setState({ success: true });
       });
     } else {
@@ -58,7 +60,7 @@ class PasswordResetReset extends React.PureComponent {
       if (!password) {
         inputErrorMessage = 'Please enter a password';
       } else {
-        inputErrorMessage = 'Passwords don\'t match';
+        inputErrorMessage = "Passwords don't match";
       }
 
       this.setState({ inputErrorMessage });
@@ -76,7 +78,9 @@ class PasswordResetReset extends React.PureComponent {
     if (success) {
       return (
         <Container>
-          <Typography category="title">Success! Your password has been reset</Typography>
+          <Typography category="title">
+            Success! Your password has been reset
+          </Typography>
           <Link to="/login">Login</Link>
         </Container>
       );
@@ -85,7 +89,9 @@ class PasswordResetReset extends React.PureComponent {
     if (used) {
       return (
         <Container>
-          <Typography category="title">Sorry! This reset code has already been used</Typography>
+          <Typography category="title">
+            Sorry! This reset code has already been used
+          </Typography>
           <Link to="/password_reset_requests/new">Request A New One</Link>
         </Container>
       );
@@ -93,14 +99,23 @@ class PasswordResetReset extends React.PureComponent {
 
     if (prrHelpers.expired(expires)) {
       return (
-        <Container><Typography category="title">Sorry! This reset code has already expired</Typography></Container>
+        <Container>
+          <Typography category="title">
+            Sorry! This reset code has already expired
+          </Typography>
+        </Container>
       );
     }
 
     return (
       <Container>
-        <Typography category="display" number={1}>Reset Your Password</Typography>
-        {inputErrorMessage && <Typography category="subheading" number={2}>**{inputErrorMessage}**</Typography>}
+        <Typography category="display" number={1}>
+          Reset Your Password
+        </Typography>
+        {inputErrorMessage &&
+          <Typography category="subheading" number={2}>
+            **{inputErrorMessage}**
+          </Typography>}
         <TextFieldContainer>
           <TextField
             name="password"

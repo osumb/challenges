@@ -10,7 +10,12 @@ export default class ListDropdown extends React.PureComponent {
     return {
       children: React.PropTypes.oneOfType([
         React.PropTypes.element,
-        React.PropTypes.arrayOf(React.PropTypes.oneOfType([React.PropTypes.element, React.PropTypes.arrayOf(React.PropTypes.element)]))
+        React.PropTypes.arrayOf(
+          React.PropTypes.oneOfType([
+            React.PropTypes.element,
+            React.PropTypes.arrayOf(React.PropTypes.element)
+          ])
+        )
       ]),
       header: React.PropTypes.string
     };
@@ -45,16 +50,16 @@ export default class ListDropdown extends React.PureComponent {
             this.header = header;
           }}
         >
-          {(this.props.header || '').charAt(0).toUpperCase() + (this.props.header || '').slice(1)}
+          {(this.props.header || '').charAt(0).toUpperCase() +
+            (this.props.header || '').slice(1)}
           {this.state.open ? <img src={ArrowUp} /> : <img src={ArrowDown} />}
         </li>
         <ListDropdownSeparator />
         {this.state.open &&
-          React.Children.map(this.props.children, c => <ListDropdownItem>{c}</ListDropdownItem>)
-        }
-        {this.state.open &&
-          <ListDropdownSeparator />
-        }
+          React.Children.map(this.props.children, c =>
+            <ListDropdownItem>{c}</ListDropdownItem>
+          )}
+        {this.state.open && <ListDropdownSeparator />}
       </ul>
     );
   }
