@@ -1,3 +1,4 @@
+/** eslint-ignore quotes */
 import 'whatwg-fetch';
 
 import auth from './auth';
@@ -10,19 +11,20 @@ const baseRoute = process.env.NODE_ENV === 'development'
   ? `http://localhost:${process.env.SERVER_PORT}`
   : '';
 
-const DEFAULT_ERROR_MESSAGE =
-  "Sorry! Something wen't wrong. We're aware of and working on the issue";
+const defaultErrorMessage = () =>
+  'Sorry! Something wen\'t wrong. We\'re aware of and working on the issue';
 
 const parseErrorMessage = response => {
   if (headersHelpers.isJSONResponse(response)) {
     return response
       .json()
       .then(thing => {
-        if ((thing.errors || []).length <= 0)
+        if ((thing.errors || []).length <= 0) {
           return getMessageFromStatus(response.status);
+        }
         return thing.errors.map(error => Object.values(error)).join('. ');
       })
-      .catch(() => DEFAULT_ERROR_MESSAGE);
+      .catch(() => defaultErrorMessage());
   } else {
     return new Promise(resolve =>
       resolve(getMessageFromStatus(response.status))
@@ -40,11 +42,11 @@ const getMessageFromStatus = status => {
   /* eslint-disable indent, lines-around-comment */
   switch (status) {
     case 404:
-      return "Sorry, that resource doesn't exist";
+      return 'Sorry, that resource doesn\'t exist';
     case 403:
       return 'That resource is forbidden';
     default:
-      return DEFAULT_ERROR_MESSAGE;
+      return defaultErrorMessage();
   }
 };
 
