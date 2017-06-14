@@ -213,4 +213,54 @@ describe 'Performances', type: :request do
       end
     end
   end
+
+  describe 'DELETE /api/performances' do
+    let!(:performance) { create(:performance) }
+
+    context 'and nothing is associated with the performance' do
+      it 'sucessfully deletes the challenge' do
+        expect {
+          delete "#{endpoint}#{performance.id}", headers: authenticated_header(admin)
+        }.to change { Performance.count }.by(-1)
+
+        expect(response).to have_http_status(204)
+      end
+    end
+
+    context 'but the performance window has already closed' do
+      let!(:performance) { create(:stale_performance) }
+
+      it 'returns a 403' do
+        expect {
+          delete "#{endpoint}#{performance.id}", headers: authenticated_header(admin)
+        }.to_not change { Performance.count }
+
+        expect(response).to have_http_status(403)
+      end
+    end
+
+    context 'but the performance has challenges already associated with it' do
+      let!(:challenge) { create(:normal_challenge, performance: performance) }
+
+      it 'returns a 403' do
+        expect {
+          delete "#{endpoint}#{performance.id}", headers: authenticated_header(admin)
+        }.to_not change { Performance.count }
+
+        expect(response).to have_http_status(403)
+      end
+    end
+
+    context 'but the performance has a discipline action already associated with it' do
+      let!(:dA) { create(:discipline_action, performance: performance) }
+
+      it 'returns a 403' do
+        expect {
+          delete "#{endpoint}#{performance.id}", headers: authenticated_header(admin)
+        }.to_not change { Performance.count }
+
+        expect(response).to have_http_status(403)
+      end
+    end
+  end
 end

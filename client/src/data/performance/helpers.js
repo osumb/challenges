@@ -24,6 +24,7 @@ const update = ({
     }
   });
 
+const del = id => api.del(`/performances/${id}`);
 const getAll = () => api.get('/performances');
 const getChallengeableUsers = () =>
   api.get('/performances/challengeable_users');
@@ -63,6 +64,7 @@ const performanceKeys = ['date', 'name', 'windowClose', 'windowOpen'];
 
 export default {
   create,
+  del,
   getAll,
   getChallengeableUsers,
   getNext,

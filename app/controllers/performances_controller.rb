@@ -1,7 +1,8 @@
 class PerformancesController < ApplicationController
   before_action :authenticate_user
   before_action :ensure_admin!, except: [:challengeable_users]
-  before_action :ensure_performance_not_stale!, only: [:update]
+  before_action :ensure_performance_not_stale!, only: [:update, :destroy]
+  before_action :ensure_performance_is_unused!, only: [:destroy]
 
   def create
     @performance = Performance.new create_params
@@ -25,6 +26,15 @@ class PerformancesController < ApplicationController
     @performance.update_attributes update_params
     if @performance.save
       render :show, status: 200
+    else
+      render json: { resource: 'performance', errors: @performance.errors }, status: 409
+    end
+  end
+
+  def destroy
+    @performance = Performance.find params[:id]
+    if @performance.destroy
+      head 204
     else
       render json: { resource: 'performance', errors: @performance.errors }, status: 409
     end
@@ -108,6 +118,20 @@ class PerformancesController < ApplicationController
       open_spot: columns.index('open_spot'),
       row: columns.index('row')
     }
+  end
+
+  def ensure_performance_is_unused!
+    performance = Performance.includes(:challenges, :discipline_actions).find params[:id]
+    return if performance.challenges.empty? && performance.discipline_actions.empty?
+    render json: {
+      resource: 'performance',
+      errors: [
+        {
+          performance: "There are already challenges or
+          discipline actions made for the #{performance.name} so it can't be deleted"
+        }
+      ]
+    }, status: 403
   end
   # rubocop:enable Metrics/MethodLength
 end

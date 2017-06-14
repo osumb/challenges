@@ -17,7 +17,9 @@ export default class Performance extends React.PureComponent {
   static get propTypes() {
     return {
       buttonText: React.PropTypes.string.isRequired,
+      canDelete: React.PropTypes.bool,
       onAction: React.PropTypes.func.isRequired,
+      onDelete: React.PropTypes.func,
       performance: React.PropTypes.shape(performanceProps.performance)
     };
   }
@@ -27,14 +29,15 @@ export default class Performance extends React.PureComponent {
     this.state = {
       ...props.performance
     };
-    this.handleClick = this.handleClick.bind(this);
+    this.handleActionClick = this.handleActionClick.bind(this);
     this.handleDateChange = this.handleDateChange.bind(this);
+    this.handleDeleteClick = this.handleDeleteClick.bind(this);
     this.handleNameChange = this.handleNameChange.bind(this);
     this.handleWindowCloseChange = this.handleWindowCloseChange.bind(this);
     this.handleWindowOpenChange = this.handleWindowOpenChange.bind(this);
   }
 
-  handleClick() {
+  handleActionClick() {
     const performance = this.state;
     if (performanceHelpers.isValidPerformance(performance)) {
       this.props.onAction(performance);
@@ -48,6 +51,12 @@ export default class Performance extends React.PureComponent {
 
   handleDateChange(date) {
     this.setState({ date });
+  }
+
+  handleDeleteClick() {
+    if (this.props.onDelete) {
+      this.props.onDelete(this.props.performance);
+    }
   }
 
   handleNameChange({ target }) {
@@ -122,7 +131,11 @@ export default class Performance extends React.PureComponent {
               value={windowClose && new Date(windowClose)}
             />
           </FlexContainer>
-          <Button onClick={this.handleClick}>{buttonText}</Button>
+          <FlexContainer justifyContent="space-between" width="100%">
+            <Button onClick={this.handleActionClick}>{buttonText}</Button>
+            {this.props.canDelete &&
+              <Button onClick={this.handleDeleteClick}>Delete</Button>}
+          </FlexContainer>
         </FlexContainer>
       </FlexContainer>
     );
