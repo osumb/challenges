@@ -14,7 +14,7 @@ Rails.application.routes.draw do
     resources :user_challenges, only: [:create, :destroy]
     resources :password_reset_requests, only: [:create, :show]
 
-    resources :performances, only: [:create, :index, :update] do
+    resources :performances, only: [:create, :index, :update, :destroy] do
       collection do
         get 'challengeable_users'
       end
