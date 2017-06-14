@@ -4,7 +4,6 @@ import moment from 'moment';
 import { helpers, propTypes } from '../../../data/performance';
 import { fetch } from '../../../utils';
 import { FlexContainer, FlexChild } from '../../../components/flex';
-import Elevation from '../../../components/elevation';
 import Performance from '../../../components/performance';
 import Snackbar from '../../../components/snackbar';
 import Typography from '../../../components/typography';
@@ -78,6 +77,9 @@ class PerformanceIndex extends React.PureComponent {
 
   render() {
     const { deleted, performancesById, updated } = this.state;
+    const sortedKeys = Object.keys(performancesById).sort(
+      (a, b) => parseInt(a, 10) - parseInt(b, 10)
+    );
     let snackbarMessage = 'Updated Performance';
 
     if (deleted) {
@@ -85,31 +87,21 @@ class PerformanceIndex extends React.PureComponent {
     }
 
     return (
-      <FlexContainer
-        flexDirection="column"
-        alignItems="center"
-        margin="20px 100px"
-      >
+      <FlexContainer flexDirection="column" alignItems="center" margin="20px 0">
         <Typography category="display" number={2}>
           Update Performances
         </Typography>
         <FlexChild flex={1} padding="20px 0 0 0" width="100%">
-          <FlexContainer
-            flexWrap="wrap"
-            justifyContent="space-between"
-            alignItems="center"
-            flex={1}
-          >
-            {Object.keys(performancesById).sort().map(id =>
-              <Elevation key={id}>
-                <Performance
-                  buttonText="Update"
-                  canDelete
-                  onAction={this.handlePerformanceUpdate}
-                  onDelete={this.handlePerformanceDelete}
-                  performance={performancesById[id]}
-                />
-              </Elevation>
+          <FlexContainer justifyContent="center" flexWrap="wrap">
+            {sortedKeys.map(id =>
+              <Performance
+                key={id}
+                buttonText="Update"
+                canDelete
+                onAction={this.handlePerformanceUpdate}
+                onDelete={this.handlePerformanceDelete}
+                performance={performancesById[id]}
+              />
             )}
           </FlexContainer>
         </FlexChild>
