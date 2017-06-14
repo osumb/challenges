@@ -23,6 +23,7 @@ class PerformanceIndex extends React.PureComponent {
   constructor(props) {
     super(props);
     this.state = {
+      deleted: false,
       performancesById: props.performances.reduce(
         (acc, { id, date, windowClose, windowOpen, ...rest }) => {
           acc[id] = {
@@ -39,7 +40,24 @@ class PerformanceIndex extends React.PureComponent {
       ),
       updated: false
     };
+    this.handlePerformanceDelete = this.handlePerformanceDelete.bind(this);
     this.handlePerformanceUpdate = this.handlePerformanceUpdate.bind(this);
+  }
+
+  handlePerformanceDelete({ id }) {
+    this.setState({ deleted: false });
+    helpers.del(id).then(() => {
+      this.setState(({ performancesById }) => {
+        const newPerformances = { ...performancesById };
+
+        delete newPerformances[id];
+
+        return {
+          deleted: true,
+          performancesById: { ...newPerformances }
+        };
+      });
+    });
   }
 
   handlePerformanceUpdate({ id, ...rest }) {
@@ -59,7 +77,12 @@ class PerformanceIndex extends React.PureComponent {
   }
 
   render() {
-    const { performancesById, updated } = this.state;
+    const { deleted, performancesById, updated } = this.state;
+    let snackbarMessage = 'Updated Performance';
+
+    if (deleted) {
+      snackbarMessage = 'Deleted Performance';
+    }
 
     return (
       <FlexContainer
@@ -81,14 +104,16 @@ class PerformanceIndex extends React.PureComponent {
               <Elevation key={id}>
                 <Performance
                   buttonText="Update"
+                  canDelete
                   onAction={this.handlePerformanceUpdate}
+                  onDelete={this.handlePerformanceDelete}
                   performance={performancesById[id]}
                 />
               </Elevation>
             )}
           </FlexContainer>
         </FlexChild>
-        <Snackbar show={updated} message="Updated Performance" />
+        <Snackbar show={updated || deleted} message={snackbarMessage} />
       </FlexContainer>
     );
   }
