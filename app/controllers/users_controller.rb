@@ -41,7 +41,8 @@ class UsersController < ApplicationController
 
   def can_challenge
     p = Performance.next
-    @users = User.performers.select { |u| u.can_challenge_for_performance? p }
+    @users = User.includes(:challenges, :discipline_actions)
+      .performers.select { |u| u.can_challenge_for_performance? p }
   end
 
   # rubocop:disable Metrics/MethodLength
