@@ -1,5 +1,5 @@
 import React from 'react';
 
 export default function ListDropdownSeparator() {
-  return <li role="separator" className="mdc-list-divider" />;
+  return <hr role="separator" className="mdc-list-divider" />;
 }
