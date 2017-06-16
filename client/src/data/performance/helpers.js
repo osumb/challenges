@@ -26,8 +26,10 @@ const update = ({
 
 const del = id => api.del(`/performances/${id}`);
 const getAll = () => api.get('/performances');
-const getChallengeableUsers = () =>
-  api.get('/performances/challengeable_users');
+const getChallengeableUsers = userBuckId =>
+  userBuckId
+    ? api.get(`/performances/challengeable_users?user_buck_id=${userBuckId}`)
+    : api.get('/performances/challengeable_users');
 const getNext = () => api.get('/performances/next');
 
 const isValidPerformance = ({ date, name, windowClose, windowOpen }) => {

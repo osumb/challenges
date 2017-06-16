@@ -42,7 +42,7 @@ class PerformancesController < ApplicationController
 
   # rubocop:disable Metrics/MethodLength
   def challengeable_users
-    user = current_user
+    user = current_user.admin? ? User.find(params[:user_buck_id]) : current_user
     next_performance = Performance.next
     if user.can_challenge_for_performance? next_performance
       query_string = Rails.root.join('lib', 'sql', 'performance', 'challengeable_users.sql').read

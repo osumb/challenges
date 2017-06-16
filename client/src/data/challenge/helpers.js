@@ -1,18 +1,32 @@
-import { api } from '../../utils';
+/* eslint-disable indent */
+import { auth, api } from '../../utils';
+import { helpers as userHelpers } from '../user';
 
 const addUser = (buckId, challengeId) =>
-  api.post('/user_challenges', {
-    buck_id: buckId,
-    challenge_id: challengeId
-  });
+  userHelpers.isAdmin(auth.getUser())
+    ? api.post('/user_challenges', {
+        challenger_buck_id: buckId,
+        challenge_id: challengeId
+      })
+    : api.post('/user_challenges', {
+        challenge_id: challengeId
+      });
 
-const create = ({ file, row }) =>
-  api.post('/challenges', {
-    spot: {
-      row,
-      file
-    }
-  });
+const create = ({ file, row }, challenger_buck_id) =>
+  userHelpers.isAdmin(auth.getUser())
+    ? api.post('/challenges', {
+        challenger_buck_id,
+        spot: {
+          row,
+          file
+        }
+      })
+    : api.post('/challenges', {
+        spot: {
+          row,
+          file
+        }
+      });
 
 const isNormalChallenge = challengeType => challengeType === 'normal';
 const isOpenSpotChallenge = challengeType => challengeType === 'open_spot';

@@ -3,6 +3,7 @@ Rails.application.routes.draw do
   scope :api do
     post 'user_token' => 'user_token#create'
 
+    get 'users/can_challenge', to: 'users#can_challenge'
     put 'users/switch_spots', to: 'users#switch_spot'
     get 'users/search', to: 'users#search'
     resources :users, only: [:index, :show, :update], constraints: { id: /[0-z\.]+/ }

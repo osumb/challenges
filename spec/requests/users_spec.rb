@@ -177,4 +177,32 @@ describe 'User Requests', type: :request do
       end
     end
   end
+
+  describe 'GET /api/users/can_challenge' do
+    let!(:admin) { create(:admin_user) }
+    let!(:endpoint) { '/api/users/can_challenge' }
+    let!(:performance) { create(:performance) }
+    let!(:alternate_no_da) { create(:alternate_user) }
+    let!(:alternate_da) { create(:alternate_user) }
+    let!(:member_no_da) { create(:user) }
+    let!(:member_da) { create(:user) }
+    let!(:da_for_alternate) {
+      create(:discipline_action, user: alternate_da, performance: performance, allowed_to_challenge: false)
+    }
+    let!(:da_for_member) {
+      create(:discipline_action, user: member_da, performance: performance, allowed_to_challenge: true)
+    }
+
+    it 'returns alternate(s) with with no discipline actions for the current performance' do
+      get endpoint, headers: authenticated_header(admin)
+
+      users = JSON.parse(response.body)['users']
+
+      expect(response).to have_http_status(200)
+      expect(users.any? { |u| u['buck_id'] == alternate_no_da.buck_id }).to be(true)
+      expect(users.any? { |u| u['buck_id'] == member_da.buck_id }).to be(true)
+      expect(users.none? { |u| u['buck_id'] == alternate_da.buck_id }).to be(true)
+      expect(users.none? { |u| u['buck_id'] == member_no_da.buck_id }).to be(true)
+    end
+  end
 end

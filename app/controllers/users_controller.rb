@@ -39,6 +39,12 @@ class UsersController < ApplicationController
     @users = User.performers.where('lower(first_name) LIKE ? OR lower(last_name) LIKE ?', "%#{q}%", "%#{q}%")
   end
 
+  def can_challenge
+    p = Performance.next
+    @users = User.includes(:challenges, :discipline_actions)
+                 .performers.select { |u| u.can_challenge_for_performance? p }
+  end
+
   # rubocop:disable Metrics/MethodLength
   def switch_spot
     user = User.find params[:user_buck_id]

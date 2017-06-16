@@ -55,6 +55,7 @@ const roles = {
 const getAll = () => api.get('/users');
 const getByBuckId = buckId =>
   api.get(`/users/${buckId || auth.getUser().buckId}`);
+const getCanChallenge = () => api.get('/users/can_challenge');
 const getProfile = () => api.get(`/users/profile/${auth.getUser().buckId}`);
 const isAdmin = ({ role }) => role === ADMIN;
 const isDirector = ({ role }) => role === DIRECTOR;
@@ -80,6 +81,7 @@ const partsForInstrument = instrument => instrumentParts[instrument];
 export default {
   getAll,
   getByBuckId,
+  getCanChallenge,
   getProfile,
   instruments,
   isAdmin,
