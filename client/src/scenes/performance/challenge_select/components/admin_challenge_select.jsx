@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import { helpers as spotHelpers } from '../../../../data/spot';
 import { helpers as userHelpers } from '../../../../data/user';
@@ -50,7 +51,7 @@ export default function AdminChallengeSelect({ users }) {
 }
 
 AdminChallengeSelect.propTypes = {
-  users: React.PropTypes.arrayOf(
-    React.PropTypes.shape(propTypes.challengeableUser)
+  users: PropTypes.arrayOf(
+    PropTypes.shape(propTypes.challengeableUser)
   )
 };

@@ -1,5 +1,6 @@
 import React from 'react';
 import Datetime from 'react-datetime';
+import PropTypes from 'prop-types';
 
 import './index.scss';
 import '../../../../node_modules/react-datetime/css/react-datetime.css';
@@ -16,11 +17,11 @@ import Typography from '../typography';
 export default class Performance extends React.PureComponent {
   static get propTypes() {
     return {
-      buttonText: React.PropTypes.string.isRequired,
-      canDelete: React.PropTypes.bool,
-      onAction: React.PropTypes.func.isRequired,
-      onDelete: React.PropTypes.func,
-      performance: React.PropTypes.shape(performanceProps.performance)
+      buttonText: PropTypes.string.isRequired,
+      canDelete: PropTypes.bool,
+      onAction: PropTypes.func.isRequired,
+      onDelete: PropTypes.func,
+      performance: PropTypes.shape(performanceProps.performance)
     };
   }
 

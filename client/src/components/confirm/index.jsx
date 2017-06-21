@@ -1,6 +1,7 @@
 import React from 'react';
 import Modal from 'react-modal';
 import styled from 'styled-components';
+import PropTypes from 'prop-types';
 
 import Button from '../button';
 import Typography from '../typography';
@@ -21,9 +22,9 @@ const ButtonSpacer = styled.div`
 export default class Confirm extends React.PureComponent {
   static get propTypes() {
     return {
-      message: React.PropTypes.string.isRequired,
-      onCancel: React.PropTypes.func.isRequired,
-      onConfirm: React.PropTypes.func.isRequired
+      message: PropTypes.string.isRequired,
+      onCancel: PropTypes.func.isRequired,
+      onConfirm: PropTypes.func.isRequired
     };
   }
 

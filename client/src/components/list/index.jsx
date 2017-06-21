@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import Typography from '../typography';
 
@@ -17,7 +18,7 @@ const ListItem = ({ children }) =>
 const ListSeparator = () =>
   <hr role="separator" className="mdc-list-divider" />;
 
-List.propTypes = { children: React.PropTypes.any };
-ListItem.propTypes = { children: React.PropTypes.any };
+List.propTypes = { children: PropTypes.any };
+ListItem.propTypes = { children: PropTypes.any };
 
 export { List, ListItem, ListSeparator };

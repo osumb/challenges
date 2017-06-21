@@ -1,6 +1,7 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
 import { Card, CardHeader, CardTitle, CardText } from 'material-ui/Card';
 import Divider from 'material-ui/Divider';
+import PropTypes from 'prop-types';
 
 const Result = ({
   comments,

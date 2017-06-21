@@ -1,5 +1,6 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
 import CircularProgress from 'material-ui/CircularProgress';
+import PropTypes from 'prop-types';
 
 import './fetch.scss';
 import { api, errorEmitter } from '../utils';

@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import PropTypes from 'prop-types';
 
 import { errorEmitter } from '../../../../utils';
 import EditButton from './edit_button';
@@ -17,12 +18,12 @@ const EditInput = styled.input`
 export default class EditText extends React.PureComponent {
   static get propTypes() {
     return {
-      errorMessage: React.PropTypes.func.isRequired,
-      onUpdate: React.PropTypes.func.isRequired,
-      row: React.PropTypes.object.isRequired, // row is an object representing our user and provided by react-table
-      update: React.PropTypes.func.isRequired,
-      validNewValue: React.PropTypes.func.isRequired,
-      value: React.PropTypes.string.isRequired // this is our spot value
+      errorMessage: PropTypes.func.isRequired,
+      onUpdate: PropTypes.func.isRequired,
+      row: PropTypes.object.isRequired, // row is an object representing our user and provided by react-table
+      update: PropTypes.func.isRequired,
+      validNewValue: PropTypes.func.isRequired,
+      value: PropTypes.string.isRequired // this is our spot value
     };
   }
 

@@ -1,5 +1,6 @@
 import React from 'react';
 import moment from 'moment';
+import PropTypes from 'prop-types';
 
 import { helpers, propTypes } from '../../../data/performance';
 import { fetch } from '../../../utils';
@@ -13,8 +14,8 @@ const formatString = 'MM/DD/YYYY hh:mm A';
 class PerformanceIndex extends React.PureComponent {
   static get propTypes() {
     return {
-      performances: React.PropTypes.arrayOf(
-        React.PropTypes.shape(propTypes.performance)
+      performances: PropTypes.arrayOf(
+        PropTypes.shape(propTypes.performance)
       ).isRequired
     };
   }

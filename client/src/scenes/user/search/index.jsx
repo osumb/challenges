@@ -1,6 +1,7 @@
 import React from 'react';
 import keycode from 'keycode';
 import styled from 'styled-components';
+import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 
 import { helpers } from '../../../data/user';
@@ -37,11 +38,11 @@ const getSearchQueryFromQueryString = queryString => queryString.split('=')[1];
 class Search extends React.PureComponent {
   static get propTypes() {
     return {
-      history: React.PropTypes.shape({
-        push: React.PropTypes.func.isRequired
+      history: PropTypes.shape({
+        push: PropTypes.func.isRequired
       }).isRequired,
-      location: React.PropTypes.shape({
-        search: React.PropTypes.string
+      location: PropTypes.shape({
+        search: PropTypes.string
       }).isRequired
     };
   }

@@ -1,8 +1,9 @@
-import React, { Component, PropTypes } from 'react';
+import React, { PureComponent } from 'react';
 import { grey300 } from 'material-ui/styles/colors';
 import { Link } from 'react-router-dom';
 import { MenuItem } from 'material-ui/Menu';
 import pick from 'lodash.pick';
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 import { isEmptyObject, routes } from '../../../utils';
@@ -22,7 +23,7 @@ const LeftContainer = styled.div`
   flex-wrap: nowrap;
 `;
 
-export default class DesktopNav extends Component {
+export default class DesktopNav extends PureComponent {
   static get propTypes() {
     return {
       onLogout: PropTypes.func.isRequired,

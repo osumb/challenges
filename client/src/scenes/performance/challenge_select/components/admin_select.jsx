@@ -128,7 +128,7 @@ export default class AdminSelect extends React.PureComponent {
 
     return (
       <FlexContainer margin="0 20px" justifyContent="center">
-        <FlexChild flex={1} padding="0 10px">
+        <FlexChild flex={1} padding="0 10px" textAlign="center">
           {usersWhoCanChallenge === null
             ? <Typography category="headline">
                 Loading users who are elligible to challenge...
@@ -139,7 +139,7 @@ export default class AdminSelect extends React.PureComponent {
                 users={usersWhoCanChallenge}
               />}
         </FlexChild>
-        {usersWhoCanChallenge !== null &&
+        {(usersWhoCanChallenge !== null && usersWhoCanChallenge.length > 0) &&
           <FlexChild flex={1} padding="0 10px">
             {this.renderChallengeableUsers(this.state)}
           </FlexChild>}

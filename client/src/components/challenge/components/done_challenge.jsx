@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import { propTypes } from '../../../data/challenge';
 import Typography from '../../../components/typography';
@@ -27,7 +28,7 @@ const DoneChallenge = ({
 
 DoneChallenge.propTypes = {
   ...propTypes,
-  targetUserBuckId: React.PropTypes.string.isRequired
+  targetUserBuckId: PropTypes.string.isRequired
 };
 
 export default DoneChallenge;

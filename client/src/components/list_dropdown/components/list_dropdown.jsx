@@ -1,6 +1,7 @@
 import React from 'react';
 import ArrowDown from '../../../../public/images/ic_keyboard_arrow_down_black_24px.svg';
 import ArrowUp from '../../../../public/images/ic_keyboard_arrow_up_black_24px.svg';
+import PropTypes from 'prop-types';
 
 import ListDropdownItem from './list_dropdown_item';
 import ListDropdownSeparator from './list_dropdown_separator';
@@ -8,16 +9,16 @@ import ListDropdownSeparator from './list_dropdown_separator';
 export default class ListDropdown extends React.PureComponent {
   static get propTypes() {
     return {
-      children: React.PropTypes.oneOfType([
-        React.PropTypes.element,
-        React.PropTypes.arrayOf(
-          React.PropTypes.oneOfType([
-            React.PropTypes.element,
-            React.PropTypes.arrayOf(React.PropTypes.element)
+      children: PropTypes.oneOfType([
+        PropTypes.element,
+        PropTypes.arrayOf(
+          PropTypes.oneOfType([
+            PropTypes.element,
+            PropTypes.arrayOf(PropTypes.element)
           ])
         )
       ]),
-      header: React.PropTypes.string
+      header: PropTypes.string
     };
   }
 

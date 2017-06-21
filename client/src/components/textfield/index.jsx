@@ -1,18 +1,19 @@
 import React from 'react';
 import { MDCTextfield } from '@material/textfield/dist/mdc.textfield.min.js';
+import PropTypes from 'prop-types';
 
 export default class TextField extends React.PureComponent {
   static get propTypes() {
     return {
-      autoFocus: React.PropTypes.bool,
-      labelStyle: React.PropTypes.object,
-      hint: React.PropTypes.string,
-      name: React.PropTypes.string,
-      onChange: React.PropTypes.func,
-      onKeyUp: React.PropTypes.func,
-      placeholder: React.PropTypes.string,
-      type: React.PropTypes.string,
-      value: React.PropTypes.string
+      autoFocus: PropTypes.bool,
+      labelStyle: PropTypes.object,
+      hint: PropTypes.string,
+      name: PropTypes.string,
+      onChange: PropTypes.func,
+      onKeyUp: PropTypes.func,
+      placeholder: PropTypes.string,
+      type: PropTypes.string,
+      value: PropTypes.string
     };
   }
 

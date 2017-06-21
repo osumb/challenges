@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import PropTypes from 'prop-types';
 
 import {
   ListDropdownItem,
@@ -32,8 +33,8 @@ const SearchResultList = ({ children, query }) =>
   </Container>;
 
 SearchResultList.propTypes = {
-  children: React.PropTypes.node,
-  query: React.PropTypes.string
+  children: PropTypes.node,
+  query: PropTypes.string
 };
 
 export default SearchResultList;

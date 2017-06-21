@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import { helpers, propTypes } from '../../../data/discipline_action';
 import Button from '../../button';
@@ -8,8 +9,8 @@ export default class PastDisciplineAction extends React.PureComponent {
   static get propTypes() {
     return {
       ...propTypes,
-      currentPerformance: React.PropTypes.any,
-      onDelete: React.PropTypes.func
+      currentPerformance: PropTypes.any,
+      onDelete: PropTypes.func
     };
   }
 

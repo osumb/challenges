@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import { propTypes } from '../../../data/challenge';
 import { helpers as userChallengeHelpers } from '../../../data/user_challenge';
@@ -10,9 +11,9 @@ export default class CurrentChallengeAdmin extends React.Component {
   static get propTypes() {
     return {
       ...propTypes,
-      currentUserChallengeId: React.PropTypes.number.isRequired,
-      onDelete: React.PropTypes.func,
-      targetUserBuckId: React.PropTypes.string.isRequired
+      currentUserChallengeId: PropTypes.number.isRequired,
+      onDelete: PropTypes.func,
+      targetUserBuckId: PropTypes.string.isRequired
     };
   }
 

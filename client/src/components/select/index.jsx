@@ -1,18 +1,19 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 export default class Select extends React.PureComponent {
   static get propTypes() {
     return {
-      children: React.PropTypes.oneOfType([
-        React.PropTypes.element,
-        React.PropTypes.arrayOf(
-          React.PropTypes.oneOfType([
-            React.PropTypes.element,
-            React.PropTypes.arrayOf(React.PropTypes.element)
+      children: PropTypes.oneOfType([
+        PropTypes.element,
+        PropTypes.arrayOf(
+          PropTypes.oneOfType([
+            PropTypes.element,
+            PropTypes.arrayOf(PropTypes.element)
           ])
         )
       ]),
-      defaultText: React.PropTypes.string
+      defaultText: PropTypes.string
     };
   }
 

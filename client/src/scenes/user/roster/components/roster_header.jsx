@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import PropTypes from 'prop-types';
 
 import { propTypes } from '../../../../data/user';
 import DownloadIcon from '../../../../../public/images/ic_file_download_black_24px.svg';
@@ -46,7 +47,7 @@ export default function RosterHeader({ users }) {
 }
 
 RosterHeader.propTypes = {
-  users: React.PropTypes.arrayOf(
-    React.PropTypes.shape({ ...propTypes, spot: React.PropTypes.string })
+  users: PropTypes.arrayOf(
+    PropTypes.shape({ ...propTypes, spot: PropTypes.string })
   )
 };

@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import PropTypes from 'prop-types';
 
 import { auth } from '../../../../utils';
 import { propTypes as performanceProps } from '../../../../data/performance';
@@ -27,12 +28,12 @@ const ErrorText = styled.div`
 export default class ChallengeSelect extends React.PureComponent {
   static get propTypes() {
     return {
-      challengeableUsers: React.PropTypes.arrayOf(
-        React.PropTypes.shape(performanceProps.challengeableUser)
+      challengeableUsers: PropTypes.arrayOf(
+        PropTypes.shape(performanceProps.challengeableUser)
       ),
-      onChallenge: React.PropTypes.func,
-      performance: React.PropTypes.shape(performanceProps.performance),
-      user: React.PropTypes.shape(userProps)
+      onChallenge: PropTypes.func,
+      performance: PropTypes.shape(performanceProps.performance),
+      user: PropTypes.shape(userProps)
     };
   }
 

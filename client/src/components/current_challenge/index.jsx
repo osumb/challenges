@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 import { propTypes as spotProps } from '../../data/spot';
@@ -18,11 +19,11 @@ const Container = styled.div`
 export default class CurrentChallenge extends React.PureComponent {
   static get propTypes() {
     return {
-      challengeType: React.PropTypes.string.isRequired,
-      id: React.PropTypes.number.isRequired,
-      performanceName: React.PropTypes.string.isRequired,
-      spot: React.PropTypes.shape(spotProps).isRequired,
-      userChallengeId: React.PropTypes.number
+      challengeType: PropTypes.string.isRequired,
+      id: PropTypes.number.isRequired,
+      performanceName: PropTypes.string.isRequired,
+      spot: PropTypes.shape(spotProps).isRequired,
+      userChallengeId: PropTypes.number
     };
   }
 
