@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import PropTypes from 'prop-types';
 
 import { helpers as userHelpers } from '../../../../data/user';
 import EditButton from './edit_button';
@@ -15,9 +16,9 @@ const Container = styled.div`
 export default class EditPart extends React.PureComponent {
   static get propTypes() {
     return {
-      onChange: React.PropTypes.func.isRequired,
-      row: React.PropTypes.object.isRequired, // row is an object representing our user and provided by react-table
-      value: React.PropTypes.string.isRequired // this is our spot value
+      onChange: PropTypes.func.isRequired,
+      row: PropTypes.object.isRequired, // row is an object representing our user and provided by react-table
+      value: PropTypes.string.isRequired // this is our spot value
     };
   }
 

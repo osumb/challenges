@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import PropTypes from 'prop-types';
 
 import { helpers as disciplineActionHelpers } from '../../../data/discipline_action';
 import {
@@ -20,9 +21,9 @@ const Info = styled.div`
 export default class CreateDisciplineAction extends React.PureComponent {
   static get propTypes() {
     return {
-      onCreate: React.PropTypes.func,
-      performance: React.PropTypes.shape(performanceProps.performance),
-      user: React.PropTypes.shape(userProps).isRequired
+      onCreate: PropTypes.func,
+      performance: PropTypes.shape(performanceProps.performance),
+      user: PropTypes.shape(userProps).isRequired
     };
   }
 

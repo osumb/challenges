@@ -2,6 +2,7 @@ import React from 'react';
 import keycode from 'keycode';
 import { Link, Redirect } from 'react-router-dom';
 import styled from 'styled-components';
+import PropTypes from 'prop-types';
 
 import './index.scss';
 import { auth, errorEmitter } from '../../utils';
@@ -28,8 +29,8 @@ const LoginInput = styled.div`
 export default class Login extends React.PureComponent {
   static get propTypes() {
     return {
-      location: React.PropTypes.shape({
-        state: React.PropTypes.object
+      location: PropTypes.shape({
+        state: PropTypes.object
       }).isRequired
     };
   }

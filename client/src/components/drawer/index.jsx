@@ -1,22 +1,23 @@
 import React from 'react';
 import { MDCTemporaryDrawer } from '@material/drawer/dist/mdc.drawer.min.js';
+import PropTypes from 'prop-types';
 
 export default class Drawer extends React.PureComponent {
   static get propTypes() {
     return {
-      children: React.PropTypes.oneOfType([
-        React.PropTypes.element,
-        React.PropTypes.arrayOf(
-          React.PropTypes.oneOfType([
-            React.PropTypes.element,
-            React.PropTypes.arrayOf(React.PropTypes.element)
+      children: PropTypes.oneOfType([
+        PropTypes.element,
+        PropTypes.arrayOf(
+          PropTypes.oneOfType([
+            PropTypes.element,
+            PropTypes.arrayOf(PropTypes.element)
           ])
         )
       ]),
-      header: React.PropTypes.string,
-      onClick: React.PropTypes.func,
-      onCloseRequest: React.PropTypes.func,
-      open: React.PropTypes.bool.isRequired
+      header: PropTypes.string,
+      onClick: PropTypes.func,
+      onCloseRequest: PropTypes.func,
+      open: PropTypes.bool.isRequired
     };
   }
 

@@ -1,11 +1,12 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 class Fetcher extends React.PureComponent {
   static get propTypes() {
     return {
-      fetch: React.PropTypes.func.isRequired,
-      propsFromData: React.PropTypes.func,
-      Component: React.PropTypes.func.isRequired
+      fetch: PropTypes.func.isRequired,
+      propsFromData: PropTypes.func,
+      Component: PropTypes.func.isRequired
     };
   }
 

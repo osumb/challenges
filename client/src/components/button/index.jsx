@@ -1,6 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 import { MDCRipple } from '@material/ripple/dist/mdc.ripple.min.js';
+import PropTypes from 'prop-types';
 
 import './index.scss';
 
@@ -40,8 +41,8 @@ export default class Button extends React.PureComponent {
 }
 
 Button.propTypes = {
-  children: React.PropTypes.node,
-  className: React.PropTypes.string,
-  disabled: React.PropTypes.bool,
-  onClick: React.PropTypes.func
+  children: PropTypes.node,
+  className: PropTypes.string,
+  disabled: PropTypes.bool,
+  onClick: PropTypes.func
 };

@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import './index.scss';
 
@@ -19,7 +20,7 @@ export default function ToolBar({ iconElementLeft, iconElementRight, title }) {
 }
 
 ToolBar.propTypes = {
-  iconElementLeft: React.PropTypes.node,
-  iconElementRight: React.PropTypes.node,
-  title: React.PropTypes.string
+  iconElementLeft: PropTypes.node,
+  iconElementRight: PropTypes.node,
+  title: PropTypes.string
 };

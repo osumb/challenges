@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import { propTypes as challengeProps } from '../../../data/challenge';
 import { propTypes as dAProps } from '../../../data/discipline_action';
@@ -22,16 +23,16 @@ import UserHeader from '../../../components/user_header';
 class Profile extends React.PureComponent {
   static get propTypes() {
     return {
-      currentChallenge: React.PropTypes.shape(challengeProps),
-      currentUserChallenge: React.PropTypes.shape(userChallengeProps),
-      disciplineActions: React.PropTypes.arrayOf(
-        React.PropTypes.shape(dAProps)
+      currentChallenge: PropTypes.shape(challengeProps),
+      currentUserChallenge: PropTypes.shape(userChallengeProps),
+      disciplineActions: PropTypes.arrayOf(
+        PropTypes.shape(dAProps)
       ),
-      pastChallenges: React.PropTypes.arrayOf(
-        React.PropTypes.shape(challengeProps)
+      pastChallenges: PropTypes.arrayOf(
+        PropTypes.shape(challengeProps)
       ),
-      performance: React.PropTypes.shape(performanceProps.performance),
-      user: React.PropTypes.shape(userProps)
+      performance: PropTypes.shape(performanceProps.performance),
+      user: PropTypes.shape(userProps)
     };
   }
 

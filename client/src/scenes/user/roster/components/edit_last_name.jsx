@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import { helpers as userHelpers } from '../../../../data/user';
 import EditText from './edit_text';
@@ -6,9 +7,9 @@ import EditText from './edit_text';
 export default class EditLastName extends React.PureComponent {
   static get propTypes() {
     return {
-      onChange: React.PropTypes.func.isRequired,
-      row: React.PropTypes.object.isRequired, // row is an object representing our user and provided by react-table
-      value: React.PropTypes.string.isRequired // this is our spot value
+      onChange: PropTypes.func.isRequired,
+      row: PropTypes.object.isRequired, // row is an object representing our user and provided by react-table
+      value: PropTypes.string.isRequired // this is our spot value
     };
   }
 

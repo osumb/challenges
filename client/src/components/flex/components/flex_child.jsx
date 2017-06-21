@@ -11,4 +11,5 @@ export default styled.div`
   ${({ padding }) => padding && `padding: ${padding};`};
   ${({ height }) => height && `height: ${height};`};
   ${({ width }) => width && `width: ${width};`};
+  ${({ textAlign }) => textAlign && `text-align: ${textAlign};`};
 `;

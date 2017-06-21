@@ -1,7 +1,8 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
 import Media from 'react-media';
 import pick from 'lodash.pick';
 import styled from 'styled-components';
+import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 
 import { auth, screenSizes } from '../../utils';

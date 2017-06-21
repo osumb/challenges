@@ -1,6 +1,7 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component,} from 'react';
 import { Card, CardTitle, CardText } from 'material-ui/Card';
 import classnames from 'classnames';
+import PropTypes from 'prop-types';
 
 import './completed-result-admin-view.scss';
 

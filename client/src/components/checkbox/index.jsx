@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import './index.scss';
 
@@ -26,9 +27,9 @@ const Checkbox = ({ disabled, label, getRef }) =>
   </div>;
 
 Checkbox.propTypes = {
-  disabled: React.PropTypes.bool,
-  getRef: React.PropTypes.func,
-  label: React.PropTypes.string
+  disabled: PropTypes.bool,
+  getRef: PropTypes.func,
+  label: PropTypes.string
 };
 
 export default Checkbox;

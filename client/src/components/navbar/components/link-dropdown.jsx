@@ -1,11 +1,12 @@
-import React, { Component, PropTypes } from 'react';
+import React, { PureComponent } from 'react';
 import Divider from 'material-ui/Divider';
 import keycode from 'keycode';
 import { Link } from 'react-router-dom';
 import { ListItem } from 'material-ui/List';
 import Popover from 'material-ui/Popover/Popover';
+import PropTypes from 'prop-types';
 
-export default class LinkDropdown extends Component {
+export default class LinkDropdown extends PureComponent {
   static get propTypes() {
     return {
       displayName: PropTypes.string.isRequired,

@@ -1,4 +1,4 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
 import { Card, CardActions, CardHeader, CardText } from 'material-ui/Card';
 import Dialog from 'material-ui/Dialog';
 import Divider from 'material-ui/Divider';
@@ -6,6 +6,7 @@ import FlatButton from 'material-ui/FlatButton';
 import { grey500 } from 'material-ui/styles/colors';
 import LockOpen from 'material-ui/svg-icons/action/lock-open';
 import LockOutline from 'material-ui/svg-icons/action/lock-outline';
+import PropTypes from 'prop-types';
 import { RadioButton, RadioButtonGroup } from 'material-ui/RadioButton';
 import Snackbar from 'material-ui/Snackbar';
 import TextField from 'material-ui/TextField';

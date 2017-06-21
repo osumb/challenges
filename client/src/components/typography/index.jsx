@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 export default function Typography({ category, children, number }) {
   return (
@@ -9,10 +10,10 @@ export default function Typography({ category, children, number }) {
 }
 
 Typography.propTypes = {
-  category: React.PropTypes.string,
-  children: React.PropTypes.oneOfType([
-    React.PropTypes.arrayOf(React.PropTypes.node),
-    React.PropTypes.node
+  category: PropTypes.string,
+  children: PropTypes.oneOfType([
+    PropTypes.arrayOf(PropTypes.node),
+    PropTypes.node
   ]),
-  number: React.PropTypes.number
+  number: PropTypes.number
 };

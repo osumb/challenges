@@ -1,6 +1,7 @@
 import React from 'react';
 import pick from 'lodash.pick';
 import styled from 'styled-components';
+import PropTypes from 'prop-types';
 
 import { propTypes as userPropTypes } from '../../../../data/user';
 import { propTypes as performancePropTypes } from '../../../../data/performance';
@@ -44,8 +45,8 @@ const AdminProfile = props =>
   </Container>;
 
 AdminProfile.propTypes = {
-  nextPerformance: React.PropTypes.shape(performancePropTypes.performance),
-  user: React.PropTypes.shape(userPropTypes).isRequired
+  nextPerformance: PropTypes.shape(performancePropTypes.performance),
+  user: PropTypes.shape(userPropTypes).isRequired
 };
 
 export default AdminProfile;

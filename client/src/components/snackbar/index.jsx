@@ -1,13 +1,14 @@
 import React from 'react';
 import { MDCSnackbar } from '@material/snackbar/dist/mdc.snackbar.min.js';
+import PropTypes from 'prop-types';
 
 import { noOp } from '../../utils';
 
 export default class Snackbar extends React.PureComponent {
   static get propTypes() {
     return {
-      message: React.PropTypes.string.isRequired,
-      show: React.PropTypes.bool.isRequired
+      message: PropTypes.string.isRequired,
+      show: PropTypes.bool.isRequired
     };
   }
 

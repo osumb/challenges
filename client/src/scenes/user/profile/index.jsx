@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import { fetch } from '../../../utils';
 import { propTypes as challengeProps } from '../../../data/challenge';
@@ -28,11 +29,11 @@ const Profile = ({
       />;
 
 Profile.propTypes = {
-  canChallenge: React.PropTypes.bool.isRequired,
-  currentChallenge: React.PropTypes.shape(challengeProps),
-  currentDisciplineAction: React.PropTypes.shape(disciplineActionProps),
-  nextPerformance: React.PropTypes.shape(performanceProps.performance),
-  user: React.PropTypes.shape(userProps).isRequired
+  canChallenge: PropTypes.bool.isRequired,
+  currentChallenge: PropTypes.shape(challengeProps),
+  currentDisciplineAction: PropTypes.shape(disciplineActionProps),
+  nextPerformance: PropTypes.shape(performanceProps.performance),
+  user: PropTypes.shape(userProps).isRequired
 };
 
 export default fetch(fetchProfile, null, Profile);

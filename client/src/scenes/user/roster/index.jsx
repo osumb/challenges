@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactTable from 'react-table';
 import styled from 'styled-components';
+import PropTypes from 'prop-types';
 
 import 'react-table/react-table.css';
 import { helpers as spotHelpers } from '../../../data/spot';
@@ -42,8 +43,8 @@ const updateStateWithNewRow = newRow => ({ users }) => {
 export default class Roster extends React.PureComponent {
   static get propTypes() {
     return {
-      users: React.PropTypes.arrayOf(
-        React.PropTypes.shape({ ...propTypes, spot: React.PropTypes.string })
+      users: PropTypes.arrayOf(
+        PropTypes.shape({ ...propTypes, spot: PropTypes.string })
       )
     };
   }

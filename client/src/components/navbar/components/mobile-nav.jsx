@@ -1,10 +1,11 @@
 /* eslint-disable react/jsx-no-bind */
-import React, { Component, PropTypes } from 'react';
+import React, { PureComponent } from 'react';
 import ListIcon from '../../../../public/images/ic_list_white_36px.svg';
 import Media from 'react-media';
 import pick from 'lodash.pick';
 import SearchIcon from '../../../../public/images/ic_search_white_36px.svg';
 import styled from 'styled-components';
+import PropTypes from 'prop-types';
 
 import Button from '../../button';
 import ToolBar from '../../tool_bar';
@@ -41,7 +42,7 @@ const SearchInput = styled.input`
   width: 98%;
 `;
 
-export default class MobileNav extends Component {
+export default class MobileNav extends PureComponent {
   static get propTypes() {
     return {
       onLogout: PropTypes.func.isRequired,

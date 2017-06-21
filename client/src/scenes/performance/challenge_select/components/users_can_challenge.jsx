@@ -1,6 +1,7 @@
 /* eslint-disable react/jsx-no-bind */
 import React from 'react';
 import styled from 'styled-components';
+import PropTypes from 'prop-types';
 
 import { List, ListItem } from '../../../../components/list';
 import Textfield from '../../../../components/textfield';
@@ -33,9 +34,9 @@ const UserContainer = styled.div`
 export default class UsersCanChallenge extends React.PureComponent {
   static get propTypes() {
     return {
-      onSelect: React.PropTypes.func.isRequired,
-      selectedUserBuckId: React.PropTypes.string,
-      users: React.PropTypes.arrayOf(React.PropTypes.object).isRequired
+      onSelect: PropTypes.func.isRequired,
+      selectedUserBuckId: PropTypes.string,
+      users: PropTypes.arrayOf(PropTypes.object).isRequired
     };
   }
 

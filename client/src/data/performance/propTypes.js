@@ -1,4 +1,4 @@
-import { PropTypes } from 'react';
+import PropTypes from 'prop-types';
 
 const challengeableUser = {
   file: PropTypes.number.isRequired,

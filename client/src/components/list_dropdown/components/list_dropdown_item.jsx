@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 export default function ListDropdownItem({ children }) {
   return typeof children === 'string'
@@ -7,8 +8,8 @@ export default function ListDropdownItem({ children }) {
 }
 
 ListDropdownItem.propTypes = {
-  children: React.PropTypes.oneOfType([
-    React.PropTypes.element,
-    React.PropTypes.string
+  children: PropTypes.oneOfType([
+    PropTypes.element,
+    PropTypes.string
   ]).isRequired
 };
