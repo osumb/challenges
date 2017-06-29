@@ -2,6 +2,6 @@
 
 # bin/server: Start our dev server with Rails api and HMR
 CLIENT_PORT=3000
-SERVER_PORT=3001
+REACT_APP_SERVER_PORT=3001
 
 heroku local -f Procfile.dev -p $CLIENT_PORT

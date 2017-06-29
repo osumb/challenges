@@ -4,7 +4,7 @@ import { Link, Redirect } from 'react-router-dom';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 
-import './index.scss';
+import './index.css';
 import { auth, errorEmitter } from '../../utils';
 import Button from '../../components/button';
 import TextField from '../../components/textfield';
@@ -59,7 +59,8 @@ export default class Login extends React.PureComponent {
           redirectToRefferrer: true
         });
       })
-      .catch(() => {
+      .catch(err => {
+        console.error(err);
         this.setState({
           failed: true
         });

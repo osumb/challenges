@@ -1,6 +1,6 @@
 import React from 'react';
-import ArrowDown from '../../../../public/images/ic_keyboard_arrow_down_black_24px.svg';
-import ArrowUp from '../../../../public/images/ic_keyboard_arrow_up_black_24px.svg';
+import ArrowDown from '../../../assets/images/ic_keyboard_arrow_down_black_24px.svg';
+import ArrowUp from '../../../assets/images/ic_keyboard_arrow_up_black_24px.svg';
 import PropTypes from 'prop-types';
 
 import ListDropdownItem from './list_dropdown_item';
@@ -53,7 +53,9 @@ export default class ListDropdown extends React.PureComponent {
         >
           {(this.props.header || '').charAt(0).toUpperCase() +
             (this.props.header || '').slice(1)}
-          {this.state.open ? <img src={ArrowUp} /> : <img src={ArrowDown} />}
+          {this.state.open
+            ? <img src={ArrowUp} alt="Arrow Up" />
+            : <img src={ArrowDown} alt="Arrow Down" />}
         </li>
         <ListDropdownSeparator />
         {this.state.open &&

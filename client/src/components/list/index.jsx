@@ -15,8 +15,7 @@ const ListItem = ({ children }) =>
     {children}
   </li>;
 
-const ListSeparator = () =>
-  <hr role="separator" className="mdc-list-divider" />;
+const ListSeparator = () => <hr className="mdc-list-divider" />;
 
 List.propTypes = { children: PropTypes.any };
 ListItem.propTypes = { children: PropTypes.any };

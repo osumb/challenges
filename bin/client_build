@@ -3,8 +3,8 @@
 # bin/client_build: Run build for client side code and move up to /public
 
 # Run the build
-yarn run build
+(cd client && yarn run build)
 
 rm -rf public && mkdir public
-mv build/* ./public
-rm -rf build
+mv client/build/* ./public
+rm -rf client/build

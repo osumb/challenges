@@ -1,4 +1,4 @@
-import React, { Component,} from 'react';
+import React, { Component } from 'react';
 import { Card, CardTitle, CardText } from 'material-ui/Card';
 import classnames from 'classnames';
 import PropTypes from 'prop-types';

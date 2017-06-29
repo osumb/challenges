@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import { MDCRipple } from '@material/ripple/dist/mdc.ripple.min.js';
 import PropTypes from 'prop-types';
 
-import './index.scss';
+import { primaryGray, secondaryGray } from '../../styles';
 
 export default class Button extends React.PureComponent {
   componentDidMount() {
@@ -31,7 +31,8 @@ export default class Button extends React.PureComponent {
           this.button = ref;
         }}
         style={{
-          color: 'white'
+          color: 'white',
+          backgroundColor: rest.primary ? primaryGray : secondaryGray
         }}
       >
         {children}

@@ -25,12 +25,8 @@ class Profile extends React.PureComponent {
     return {
       currentChallenge: PropTypes.shape(challengeProps),
       currentUserChallenge: PropTypes.shape(userChallengeProps),
-      disciplineActions: PropTypes.arrayOf(
-        PropTypes.shape(dAProps)
-      ),
-      pastChallenges: PropTypes.arrayOf(
-        PropTypes.shape(challengeProps)
-      ),
+      disciplineActions: PropTypes.arrayOf(PropTypes.shape(dAProps)),
+      pastChallenges: PropTypes.arrayOf(PropTypes.shape(challengeProps)),
       performance: PropTypes.shape(performanceProps.performance),
       user: PropTypes.shape(userProps)
     };
