@@ -30,7 +30,7 @@ before_install:
 
 install:
   - bundle install
-  - yarn install
+  - (cd client && yarn install)
 
 script:
   - bin/test
