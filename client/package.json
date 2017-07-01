@@ -2,6 +2,7 @@
   "name": "osumbchallenges-client",
   "version": "1.0.0",
   "description": "Manage the challenge process for the Ohio State University Marching Band",
+  "license": "MIT",
   "private": false,
   "dependencies": {
     "change-case": "^3.0.1",
@@ -27,12 +28,17 @@
     "validator": "^7.1.0"
   },
   "devDependencies": {
+    "@btmills/eslint-config-btmills": "^2.0.0",
+    "eslint": "3.8.1",
+    "eslint-config-prettier": "^2.1.1",
+    "eslint-plugin-import": "^2.2.0",
+    "eslint-plugin-react": "^6.3.0",
     "prettier": "^1.4.4"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test --env=jsdom",
+    "test": "eslint . —ext js,jsx",
     "eject": "react-scripts eject"
   },
   "proxy": "http://localhost:3001"
