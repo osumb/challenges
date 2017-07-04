@@ -33,7 +33,7 @@ install:
   - (cd client && yarn install)
 
 script:
-  - bin/test
+  - bin/ci_test
 
 env:
   global:

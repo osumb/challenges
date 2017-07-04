@@ -18,6 +18,8 @@ gem 'rubyXL', '~> 3.3'
 # JWT auth library for user authentication
 gem 'knock', '~> 2.1', '>= 2.1.1'
 
+gem 'tzinfo-data', '~> 1.2017', '>= 1.2017.2'
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platform: :mri

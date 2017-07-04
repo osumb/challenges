@@ -38,10 +38,7 @@ const Navbar = ({ onLogout, history }) => {
             ? <HeaderDiv>
                 <ToolBar
                   iconElementRight={
-                    <Image
-                      src={ScriptOhioWhite}
-                      alt="ScriptOhioWhite.png"
-                    />
+                    <Image src={ScriptOhioWhite} alt="ScriptOhioWhite.png" />
                   }
                   title="&nbsp;OSUMB Challenge Manager"
                 />

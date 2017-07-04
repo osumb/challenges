@@ -1,6 +1,0 @@
-#!/bin/sh
-
-# bin/client_build: Install client side dependencies
-
-# Run the build
-(cd client && yarn install)

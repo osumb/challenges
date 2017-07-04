@@ -33,6 +33,13 @@
     "styled-components": "^1.4.4",
     "validator": "^7.1.0"
   },
+  "devDependencies": {
+    "@btmills/eslint-config-btmills": "^2.0.0",
+    "eslint": "^4.1.1",
+    "eslint-config-prettier": "^2.1.1",
+    "eslint-plugin-import": "^2.2.0",
+    "eslint-plugin-react": "^6.3.0"
+  },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
