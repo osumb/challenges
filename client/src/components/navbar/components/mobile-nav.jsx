@@ -1,9 +1,9 @@
 /* eslint-disable react/jsx-no-bind */
 import React, { PureComponent } from 'react';
-import ListIcon from '../../../../public/images/ic_list_white_36px.svg';
+import ListIcon from '../../../assets/images/ic_list_white_36px.svg';
 import Media from 'react-media';
 import pick from 'lodash.pick';
-import SearchIcon from '../../../../public/images/ic_search_white_36px.svg';
+import SearchIcon from '../../../assets/images/ic_search_white_36px.svg';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 
@@ -130,7 +130,7 @@ export default class MobileNav extends PureComponent {
               </form>}
           />}
         <Button onClick={this.handleSearchToggle}>
-          <img src={SearchIcon} style={{ color: 'white' }} />
+          <img src={SearchIcon} style={{ color: 'white' }} alt="Search Icon" />
         </Button>
       </SearchHeader>
     );
@@ -161,7 +161,7 @@ export default class MobileNav extends PureComponent {
           iconElementLeft={
             !isEmptyObject(user)
               ? <Button onClick={this.handleOpen}>
-                  <img src={ListIcon} />
+                  <img src={ListIcon} alt="List Icon" />
                 </Button>
               : <span />
           }

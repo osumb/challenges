@@ -17,7 +17,7 @@ class Fetcher extends React.PureComponent {
 
   componentDidMount() {
     this.props.fetch(this.props).then(data => {
-      this.setState({ data });
+      this.setState(() => ({ data }));
     });
   }
 

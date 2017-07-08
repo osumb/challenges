@@ -1,12 +1,11 @@
 import React, { PureComponent } from 'react';
-import { grey300 } from 'material-ui/styles/colors';
 import { Link } from 'react-router-dom';
-import { MenuItem } from 'material-ui/Menu';
 import pick from 'lodash.pick';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 import { isEmptyObject, routes } from '../../../utils';
+import { lightGray } from '../../../styles';
 import { propTypes as userPropTypes } from '../../../data/user';
 import LinkDropdown from './link-dropdown';
 
@@ -15,12 +14,19 @@ const props = ['role'];
 const Container = styled.div`
   display: flex;
   flex-wrap: nowrap;
-  background-color: ${grey300}
+  background-color: ${lightGray}
+  min-height: 48px;
 `;
 const LeftContainer = styled.div`
   display: flex;
   flex: 1;
   flex-wrap: nowrap;
+`;
+const LinkWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 16px;
 `;
 
 export default class DesktopNav extends PureComponent {
@@ -42,9 +48,9 @@ export default class DesktopNav extends PureComponent {
     return (
       <Container>
         <LeftContainer>
-          <MenuItem>
+          <LinkWrapper>
             <Link to="/">Home</Link>
-          </MenuItem>
+          </LinkWrapper>
           {visibleRoutes.map(key =>
             <LinkDropdown
               displayName={mainRoutes[key].displayName}
@@ -56,7 +62,7 @@ export default class DesktopNav extends PureComponent {
           )}
         </LeftContainer>
         {!isEmptyObject(user) &&
-          <MenuItem onTouchTap={onLogout} primaryText="Logout" />}
+          <LinkWrapper><div onClick={onLogout}>Logout</div></LinkWrapper>}
       </Container>
     );
   }

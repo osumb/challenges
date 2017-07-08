@@ -1,0 +1,7 @@
+#!/bin/sh
+
+# bin/server: Start heroku from our Procfile.dev
+CLIENT_PORT=3000
+REACT_APP_SERVER_PORT=3001
+
+heroku local -f Procfile.dev -p $CLIENT_PORT

@@ -51,7 +51,5 @@ export default function AdminChallengeSelect({ users }) {
 }
 
 AdminChallengeSelect.propTypes = {
-  users: PropTypes.arrayOf(
-    PropTypes.shape(propTypes.challengeableUser)
-  )
+  users: PropTypes.arrayOf(PropTypes.shape(propTypes.challengeableUser))
 };

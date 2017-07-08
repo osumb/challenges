@@ -1,6 +1,4 @@
 /* eslint-disable quotes */
-import 'whatwg-fetch';
-
 import auth from './auth';
 import changeCase from './change_case';
 import errorEmitter from './error-emitter';
@@ -8,7 +6,7 @@ import headersHelpers from './headers';
 
 const { getToken, refreshToken } = auth;
 const baseRoute = process.env.NODE_ENV === 'development'
-  ? `http://localhost:${process.env.SERVER_PORT}`
+  ? `http://localhost:${process.env.REACT_APP_SERVER_PORT}`
   : '';
 
 const defaultErrorMessage = () =>

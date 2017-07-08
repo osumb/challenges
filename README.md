@@ -6,14 +6,13 @@ Manage the challenge process for the Ohio State University Marching Band
 
 ## Installation and setup
 
-This app has 4 dependencies you need to install yourself.
+This app has 2 dependencies you need to install yourself.
 
-- [Ruby](https://www.ruby-lang.org/en/) 2.4.0
-- [Node JS](https://nodejs.org/en/) latest (above 6.0 *should* work)
-- [PostgreSQL](https://www.postgresql.org/) 9.6.2
-- [Heroku Cli](https://devcenter.heroku.com/articles/heroku-cli)
+- [Docker](https://docs.docker.com/engine/installation/)
+- [Docker Compose](https://docs.docker.com/compose/install/)
 
-If you're running a Mac, there is a [Brewfile](./Brewfile) for your convenience.
+We're using docker to make the dev environment platform agnostic i.e, we want this to easily be able to run on anything.
+If you'd rather not keep everything in containers, download the code, setup your environment variables and head [here](https://github.com/osumb/challenges/tree/master#without-docker)
 
 ### Get the Code
 Inside your terminal, run the following commands to get the code.
@@ -28,8 +27,6 @@ Rails will yell at you if you don't have a `.env` file available, so add one! Yo
 variables in `.env.example`
 
 ### Setup
-Install some more dependencies and set up the database
-
 ```bash
 bin/setup
 ```
@@ -42,14 +39,37 @@ You should be good to go with dependencies and everything. To start app locally,
 bin/server
 ```
 
-This command will run two processes: the Rails API server and a [Webpack dev server](https://webpack.github.io/)
+This command will spin up two docker containers.
+
+- Postgres 9.6.2 -- our database
+- Web -- a webpack dev server serving our client side js bundles and the rails api server
 
 The rails server will run at [localhost:3001](http://localhost:3001)
 
 The webpack dev server (where you want to go to use the app) will run at [localhost:3000](http://localhost:3000)
 
+The webpack server gives us all cool kinds of things thanks to [Create React App](https://github.com/facebookincubator/create-react-app). We get hot reloading, and if you look at `client/src/index.jsx`, you'll see that we have hot *module* reloading :tada:. In development only, the webpack server proxies all requests made from `localhost:3000` to the Rails server at `:3001`. The means, we had to turn on CORS in dev only (see `config/initializers/cors.rb`).
 
-The webpack server gives us all cool kinds of things thanks to [Create React App](https://github.com/facebookincubator/create-react-app). We get hot reloading, and if you look at `client/src/App.js`, you'll see that we have hot *module* reloading :tada:. In development only, the webpack server proxies all requests made from `localhost:3000` to the Rails server at `:3001`. The means, we had to turn on CORS in dev only (see `config/initializers/cors.rb`).
+
+### Without Docker
+
+It's not recommended, but you can set up your environment without docker.
+
+Here's what you need:
+
+- [Ruby](https://www.ruby-lang.org/en/) 2.4.0
+- [Node JS](https://nodejs.org/en/) latest (above 6.0 *should* work)
+- [PostgreSQL](https://www.postgresql.org/) 9.6.2
+- [Heroku Cli](https://devcenter.heroku.com/articles/heroku-cli)
+- [Yarn](https://yarnpkg.com/en/) *this is an optional alternative to running npm
+
+Install those and run `bin/non_docker_setup`
+
+
+To run the application server: `bin/heroku_local`. This will spin up the same setup as what's happening in the `web` container
+
+** NOTE: ** most of scripts in `bin` can be run outside of the containers. Just omit the `docker-compose run web` part. If your setup is successful, the scripts will work
+
 
 ## Application Stack
 
@@ -61,14 +81,13 @@ All of the client side view/functionality is run as a [React App](https://facebo
 
 ## Client Production Build
 Every once in a while, it's good to check whether the production bundle works as expected. To do this, run
-`bin/client-build`. The 'React app' will be built and put into `./public`. Then just start the rails server on any port you wish. It will serve the production client assets.
+`docker-compose run web client_build`. The 'React app will be built and put into `./public`. Then just start the rails server on any port you wish. It will serve the production client assets.
 
 ### Tests
 Tests are cool. You should run them sometimes
 
-```bash
-bin/test
-```
+With containers: `bin/local_test`
+Without containers: `bin/ci_test`
 
 Right now, we only have Rails tests. Once a set of tests are run, you'll be able to see our *Rails* code coverage in `coverage/index.html`. This directory is in the `.gitignore`, please don't commit this.
 
@@ -84,8 +103,7 @@ JavaScript is formatted with a combination of [Prettier](https://github.com/pret
 
 
 Linting for both languages are part of tests therefore they're a part of CI. Poorly formatted code will break the build
-Before committing js code, run the script `./bin/js_format`. This will run prettier on all files to make sure everything
-looks pretty :sparkles:
+Before committing js code, run the script `docker-compose run web bin/js_format`. This will run prettier on all files to make sure everything looks pretty :sparkles:
 
 
 ## Heroku

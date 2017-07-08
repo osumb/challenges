@@ -4,7 +4,7 @@ import * as routes from './routes';
 
 const LOCAL_STORE_STRING = 'userJWT';
 const url = process.env.NODE_ENV === 'development'
-  ? `http://localhost:${process.env.SERVER_PORT}`
+  ? `http://localhost:${process.env.REACT_APP_SERVER_PORT}`
   : '';
 
 const authenticate = (buck_id, password) =>

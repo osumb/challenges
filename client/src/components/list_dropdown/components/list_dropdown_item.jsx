@@ -8,8 +8,6 @@ export default function ListDropdownItem({ children }) {
 }
 
 ListDropdownItem.propTypes = {
-  children: PropTypes.oneOfType([
-    PropTypes.element,
-    PropTypes.string
-  ]).isRequired
+  children: PropTypes.oneOfType([PropTypes.element, PropTypes.string])
+    .isRequired
 };

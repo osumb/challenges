@@ -6,7 +6,7 @@ import { withRouter } from 'react-router-dom';
 
 import { helpers } from '../../../data/user';
 import Button from '../../../components/button';
-import SearchIcon from '../../../../public/images/ic_search_white_24px.svg';
+import SearchIcon from '../../../assets/images/ic_search_white_24px.svg';
 import SearchResultList from './components/search_result_list';
 import SearchResultListItem from './components/search_result_list_item';
 import TextField from '../../../components/textfield';

@@ -1,10 +1,28 @@
 import React, { PureComponent } from 'react';
-import Divider from 'material-ui/Divider';
 import keycode from 'keycode';
 import { Link } from 'react-router-dom';
-import { ListItem } from 'material-ui/List';
-import Popover from 'material-ui/Popover/Popover';
 import PropTypes from 'prop-types';
+import styled from 'styled-components';
+
+const Container = styled.div`
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+  &:hover {
+    cursor: pointer;
+  }
+`;
+const DropdownContainer = styled.div`
+  position: absolute;
+  margin-top: 15px;
+  background-color: white;
+  box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 6px, rgba(0, 0, 0, 0.12) 0px 1px 4px;
+  z-index: 1;
+`;
+const LinkWrapper = styled.div`
+  padding: 15px;
+  border-bottom: 1px solid rgba(0,0,0,.12);
+`;
 
 export default class LinkDropdown extends PureComponent {
   static get propTypes() {
@@ -22,7 +40,6 @@ export default class LinkDropdown extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {
-      anchorEl: null,
       open: false
     };
     this.handleClose = this.handleClose.bind(this);
@@ -33,10 +50,6 @@ export default class LinkDropdown extends PureComponent {
   }
 
   componentDidMount() {
-    /* eslint-disable react/no-did-mount-set-state, lines-around-comment */
-    this.setState({
-      anchorEl: this.refs.dropdown
-    });
     window.addEventListener('click', this.handleOutsideClick);
     window.addEventListener('keyup', this.handleKeyClick);
     window.addEventListener('touchend', this.handleOutsideClick);
@@ -69,7 +82,7 @@ export default class LinkDropdown extends PureComponent {
   }
 
   handleOutsideClick({ target }) {
-    const area = this.refs.dropdown;
+    const area = this.dropdown;
 
     if (!area.contains(target)) {
       this.setState({
@@ -88,29 +101,39 @@ export default class LinkDropdown extends PureComponent {
 
   render() {
     const { displayName, links } = this.props;
-    const { anchorEl } = this.state;
 
     return (
-      <div ref="dropdown">
-        <ListItem onTouchTap={this.handleToggle} primaryText={displayName} />
-        <span>
-          <Popover
-            anchorEl={anchorEl}
-            onCloseRequest={this.handleClose}
-            open={this.state.open}
-            useLayerForClickAway={false}
-          >
-            {links.map(({ name, path }) =>
-              <span key={path}>
-                <Divider />
-                <ListItem>
-                  <Link to={path}>{name}</Link>
-                </ListItem>
-              </span>
-            )}
-          </Popover>
-        </span>
-      </div>
+      <Container
+        onClick={this.handleToggle}
+        innerRef={ref => {
+          this.dropdown = ref;
+        }}
+      >
+        {displayName}
+        <Dropdown open={this.state.open}>
+          {links.map(({ name, path }) =>
+            <span key={path}>
+              <LinkWrapper>
+                <Link to={path}>{name}</Link>
+              </LinkWrapper>
+            </span>
+          )}
+        </Dropdown>
+      </Container>
     );
+  }
+}
+
+class Dropdown extends React.Component {
+  static get propTypes() {
+    return {
+      children: PropTypes.any,
+      open: PropTypes.bool
+    };
+  }
+
+  render() {
+    if (!this.props.open) return null;
+    return <DropdownContainer>{this.props.children}</DropdownContainer>;
   }
 }

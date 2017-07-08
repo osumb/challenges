@@ -3,7 +3,7 @@ import Datetime from 'react-datetime';
 import PropTypes from 'prop-types';
 
 import './index.scss';
-import '../../../../node_modules/react-datetime/css/react-datetime.css';
+import 'react-datetime/css/react-datetime.css';
 import {
   helpers as performanceHelpers,
   propTypes as performanceProps

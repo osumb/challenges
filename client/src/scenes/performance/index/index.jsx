@@ -14,9 +14,8 @@ const formatString = 'MM/DD/YYYY hh:mm A';
 class PerformanceIndex extends React.PureComponent {
   static get propTypes() {
     return {
-      performances: PropTypes.arrayOf(
-        PropTypes.shape(propTypes.performance)
-      ).isRequired
+      performances: PropTypes.arrayOf(PropTypes.shape(propTypes.performance))
+        .isRequired
     };
   }
 

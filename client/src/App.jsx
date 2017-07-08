@@ -6,18 +6,17 @@ import {
   Route,
   Switch
 } from 'react-router-dom';
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
-import './App.scss';
+import './App.css';
 import { auth } from './utils';
-import ChallengeEvaluations from './challenge/challenge-evaluations.jsx';
+// import ChallengeEvaluations from './challenge/challenge-evaluations.jsx';
 import ChallengeSelect from './scenes/performance/challenge_select';
-import CompletedResults from './result/completed-results';
+// import CompletedResults from './result/completed-results';
 import CreatePerformance from './scenes/performance/create';
 import Login from './scenes/login';
 import Navbar from './components/navbar';
 import NotFound from './components/not_found';
-import PendingResults from './result/pending-results';
+// import PendingResults from './result/pending-results';
 import Profile from './scenes/user/profile';
 import PasswordResetRequest from './scenes/password_reset/request';
 import PasswordResetReset from './scenes/password_reset/reset';
@@ -60,66 +59,60 @@ const PrivateRoute = ({ component, ...rest }) =>
   />;
 
 const App = () =>
-  <MuiThemeProvider>
-    <Router>
-      <div id="App">
-        <Navbar onLogout={handleLogout} />
-        <div id="App-container">
-          <Switch>
-            <PrivateRoute exact path="/" component={Profile} />
-            <PrivateRoute
+  <Router>
+    <div id="App">
+      <Navbar onLogout={handleLogout} />
+      <div id="App-container">
+        <Switch>
+          <PrivateRoute exact path="/" component={Profile} />
+          {/*<PrivateRoute
               exact
               path="/challenges/evaluate"
               component={ChallengeEvaluations}
-            />
-            <PrivateRoute
-              exact
-              path="/challenges/new"
-              component={ChallengeSelect}
-            />
-            <PrivateRoute
-              exact
-              path="/performances"
-              component={PerformanceIndex}
-            />
-            <PrivateRoute
-              exact
-              path="/performances/new"
-              component={CreatePerformance}
-            />
-            <PrivateRoute
-              exact
-              path="/results/completed"
-              component={CompletedResults}
-            />
-            <PrivateRoute
-              exact
-              path="/results/pending"
-              component={PendingResults}
-            />
-            <PrivateRoute exact path="/roster" component={Roster} />
-            <PrivateRoute exact path="/search" component={Search} />
-            <PrivateRoute
-              exact
-              path="/users/:buckId"
-              component={ProfileAdmin}
-            />
-            <PublicRoute exact path="/login" component={Login} />
-            <PublicRoute
-              exact
-              path="/password_reset_requests/new"
-              component={PasswordResetRequest}
-            />
-            <PublicRoute
-              exact
-              path="/password_reset_requests/:id"
-              component={PasswordResetReset}
-            />
-            <Route component={NotFound} />
-          </Switch>
-        </div>
+            />*/}
+          <PrivateRoute
+            exact
+            path="/challenges/new"
+            component={ChallengeSelect}
+          />
+          <PrivateRoute
+            exact
+            path="/performances"
+            component={PerformanceIndex}
+          />
+          <PrivateRoute
+            exact
+            path="/performances/new"
+            component={CreatePerformance}
+          />
+          {/*<PrivateRoute
+            exact
+            path="/results/completed"
+            component={CompletedResults}
+          />*/}
+          {/*<PrivateRoute
+            exact
+            path="/results/pending"
+            component={PendingResults}
+          />*/}
+          <PrivateRoute exact path="/roster" component={Roster} />
+          <PrivateRoute exact path="/search" component={Search} />
+          <PrivateRoute exact path="/users/:buckId" component={ProfileAdmin} />
+          <PublicRoute exact path="/login" component={Login} />
+          <PublicRoute
+            exact
+            path="/password_reset_requests/new"
+            component={PasswordResetRequest}
+          />
+          <PublicRoute
+            exact
+            path="/password_reset_requests/:id"
+            component={PasswordResetReset}
+          />
+          <Route component={NotFound} />
+        </Switch>
       </div>
-    </Router>
-  </MuiThemeProvider>;
+    </div>
+  </Router>;
 
 export default App;

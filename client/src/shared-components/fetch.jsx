@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import CircularProgress from 'material-ui/CircularProgress';
 import PropTypes from 'prop-types';
 
 import './fetch.scss';
@@ -52,7 +51,7 @@ export default class Fetch extends Component {
     const { data, error } = this.state;
 
     if (!data) {
-      return <div className="Fetch"><CircularProgress /></div>;
+      return <div className="Fetch">Loading...</div>;
     }
 
     return !error && React.cloneElement(this.props.children, { ...data });

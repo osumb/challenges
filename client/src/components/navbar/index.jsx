@@ -9,6 +9,7 @@ import { auth, screenSizes } from '../../utils';
 import DesktopNav from './components/desktop-nav';
 import ErrorBanner from './components/error-banner';
 import MobileNav from './components/mobile-nav';
+import ScriptOhioWhite from '../../assets/images/script-ohio-white.png';
 import ToolBar from '../tool_bar';
 
 const { portraitIPad } = screenSizes;
@@ -37,7 +38,7 @@ const Navbar = ({ onLogout, history }) => {
             ? <HeaderDiv>
                 <ToolBar
                   iconElementRight={
-                    <Image src="/images/script-ohio-white.png" />
+                    <Image src={ScriptOhioWhite} alt="ScriptOhioWhite.png" />
                   }
                   title="&nbsp;OSUMB Challenge Manager"
                 />

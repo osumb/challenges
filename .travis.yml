@@ -19,6 +19,7 @@ services:
 
 before_script:
   - psql -c 'create database challenges_test' -U postgres
+  - cp config/database.travis.yml config/database.yml
   - bundle exec rake db:schema:load
 
 before_install:
@@ -30,10 +31,10 @@ before_install:
 
 install:
   - bundle install
-  - yarn install
+  - (cd client && yarn install)
 
 script:
-  - bin/test
+  - bin/ci_test
 
 env:
   global:

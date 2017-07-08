@@ -1,11 +1,20 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import styled from 'styled-components';
 
-import './index.scss';
+import { secondaryGray, primaryRed } from '../../styles';
+
+const Container = styled.div`
+  background-color: ${secondaryGray} !important;
+  border-bottom: 6px solid ${primaryRed} !important;
+  padding: 40px 0 !important;
+  position: relative !important;
+  z-index: 0 !important;
+`;
 
 export default function ToolBar({ iconElementLeft, iconElementRight, title }) {
   return (
-    <div className="mdc-toolbar mdc-toolbar--fixed challenges-toolbar">
+    <Container className="mdc-toolbar mdc-toolbar--fixed challenges-toolbar">
       {iconElementLeft &&
         <section className="mdc-toolbar__section mdc-toolbar__section--align-start">
           {iconElementLeft}
@@ -15,7 +24,7 @@ export default function ToolBar({ iconElementLeft, iconElementRight, title }) {
         <section className="mdc-toolbar__section mdc-toolbar__section--align-end">
           {iconElementRight}
         </section>}
-    </div>
+    </Container>
   );
 }
 

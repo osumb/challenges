@@ -4,7 +4,7 @@ set -e
 # bin/test: Test script for CI
 
 bundle exec rubocop
-npm test
+(cd client && yarn test)
 
 if [ -z "$TRAVIS" ]; then
   echo "==> Creating test database..."

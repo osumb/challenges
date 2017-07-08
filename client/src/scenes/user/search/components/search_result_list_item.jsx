@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { propTypes } from '../../../../data/user';
-import PermIdentity from '../../../../../public/images/ic_perm_identity_black_36px.svg';
+import PermIdentity from '../../../../assets/images/ic_perm_identity_black_36px.svg';
 
 const ListItem = styled.div`
   display: flex;
