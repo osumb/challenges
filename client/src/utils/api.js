@@ -17,21 +17,28 @@ const parseErrorMessage = response => {
     return response
       .json()
       .then(thing => {
+        if (thing.message === 'Expired Token') {
+          auth.logout();
+          return 'Sorry, your session has expired. Please log back in';
+        };
         if ((thing.errors || []).length <= 0) {
           return getMessageFromStatus(response.status);
         }
         return thing.errors.map(error => Object.values(error)).join('. ');
       })
-      .catch(() => defaultErrorMessage());
+      .catch(err => {
+        console.error(err);
+        return defaultErrorMessage();
+      });
   } else {
     return new Promise(resolve =>
       resolve(getMessageFromStatus(response.status))
     );
   }
 };
-const handleResponseJSON = ({ token, ...rest }) => {
-  if (token) {
-    refreshToken(token);
+const handleResponseJSON = ({ jwt, ...rest }) => {
+  if (jwt) {
+    refreshToken(jwt);
   }
   return changeCase(rest);
 };
@@ -68,7 +75,9 @@ const request = (url, { method, body }, errorMessage, hideError) =>
       return response.json().then(handleResponseJSON);
     })
     .catch(response => {
-      if (hideError) throw response;
+      if (hideError) {
+        throw response;
+      };
       if (errorMessage) {
         errorEmitter.dispatch(errorMessage);
       } else {

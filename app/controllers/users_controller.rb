@@ -62,13 +62,13 @@ class UsersController < ApplicationController
       end
     end
   end
-  # rubocop:enable Metrics/MethodLength
 
   def reset_password
     prr = PasswordResetRequest.includes(:user).find_by id: params[:password_reset_request_id]
     user = prr.user
     password_digest = BCrypt::Password.create params[:password]
     user.password_digest = password_digest
+    user.revoke_token_date = Time.now.utc
     prr.used = true
     if user.save && prr.save
       head 204
@@ -76,6 +76,7 @@ class UsersController < ApplicationController
       render json: { resource: 'user', errors: user.errors }, status: 409
     end
   end
+  # rubocop:enable Metrics/MethodLength
 
   private
 
