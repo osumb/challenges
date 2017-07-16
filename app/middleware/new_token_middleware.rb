@@ -15,6 +15,7 @@ class NewTokenMiddleware
         decoded_token = JWT.decode auth, Rails.application.secrets.secret_key_base, true, algorithm: 'HS256'
         buck_id = decoded_token.first['buckId']
         user = User.find buck_id
+        user.reload
         if user.revoke_token_date&.to_i > decoded_token.first['issuedAt']
           status = 404
           body = { message: 'Expired Token' }
