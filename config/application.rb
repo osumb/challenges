@@ -31,5 +31,7 @@ module Challenges
     config.generators do |g|
       g.test_framework  :rspec
     end
+
+    config.middleware.use "NewTokenMiddleware"
   end
 end

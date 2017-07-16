@@ -17,6 +17,8 @@ gem 'bcrypt', '~> 3.1.7'
 gem 'rubyXL', '~> 3.3'
 # JWT auth library for user authentication
 gem 'knock', '~> 2.1', '>= 2.1.1'
+# JWT encode/decode lib
+gem 'jwt', '~>1.5.6'
 
 gem 'tzinfo-data', '~> 1.2017', '>= 1.2017.2'
 

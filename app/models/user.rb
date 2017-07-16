@@ -52,6 +52,7 @@ class User < ApplicationRecord
     find_by buck_id: payload['sub']
   end
 
+  # rubocop:disable Metrics/MethodLength
   def to_token_payload
     payload = {}
 
@@ -63,9 +64,11 @@ class User < ApplicationRecord
     payload[:instrument] = instrument&.capitalize
     payload[:part] = part&.capitalize
     payload[:role] = role.camelize
-
+    payload[:revokeTokenDate] = revoke_token_date
+    payload[:issuedAt] = Time.now.utc.to_i
     payload
   end
+  # rubocop:enable Metrics/MethodLength
 
   def alternate?
     spot.file > 12

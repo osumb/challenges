@@ -39,8 +39,8 @@ const isAuthenticated = () => {
   if (!user) {
     return false;
   } else if (
-    new Date(user.revokeTokenDate).getTime() > user.iat ||
-    user.expires < new Date().getTime()
+    (user.revokeTokenDate && (new Date(user.revokeTokenDate).getTime() / 1000) > user.issuedAt) ||
+    user.exp < (Date.now() / 1000) // because ruby does seconds and js does milliseconds
   ) {
     logout();
     return false;

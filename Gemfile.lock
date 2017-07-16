@@ -217,6 +217,7 @@ DEPENDENCIES
   dotenv-rails
   factory_girl_rails (~> 4.8)
   jbuilder (~> 2.5)
+  jwt (~> 1.5.6)
   knock (~> 2.1, >= 2.1.1)
   listen (~> 3.0.5)
   pg (~> 0.18)
