@@ -20,7 +20,7 @@ const parseErrorMessage = response => {
         if (thing.message === 'Expired Token') {
           auth.logout();
           return 'Sorry, your session has expired. Please log back in';
-        };
+        }
         if ((thing.errors || []).length <= 0) {
           return getMessageFromStatus(response.status);
         }
@@ -77,7 +77,7 @@ const request = (url, { method, body }, errorMessage, hideError) =>
     .catch(response => {
       if (hideError) {
         throw response;
-      };
+      }
       if (errorMessage) {
         errorEmitter.dispatch(errorMessage);
       } else {

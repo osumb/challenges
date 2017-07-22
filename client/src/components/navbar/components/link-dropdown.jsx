@@ -8,16 +8,21 @@ const Container = styled.div`
   display: flex;
   align-items: center;
   padding: 0 16px;
+  position: relative;
   &:hover {
     cursor: pointer;
+    text-decoration: underline;
   }
 `;
 const DropdownContainer = styled.div`
   position: absolute;
-  margin-top: 15px;
   background-color: white;
   box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 6px, rgba(0, 0, 0, 0.12) 0px 1px 4px;
   z-index: 1;
+  max-height: ${({ show }) => (show ? '175px' : 0)};
+  transition: all 0.25s ease-in-out;
+  overflow-y: hidden;
+  top: 100%;
 `;
 const LinkWrapper = styled.div`
   padding: 15px;
@@ -114,7 +119,7 @@ export default class LinkDropdown extends PureComponent {
           {links.map(({ name, path }) =>
             <span key={path}>
               <LinkWrapper>
-                <Link to={path}>{name}</Link>
+                <Link to={path} style={{ color: 'black' }}>{name}</Link>
               </LinkWrapper>
             </span>
           )}
@@ -133,7 +138,10 @@ class Dropdown extends React.Component {
   }
 
   render() {
-    if (!this.props.open) return null;
-    return <DropdownContainer>{this.props.children}</DropdownContainer>;
+    return (
+      <DropdownContainer show={this.props.open}>
+        {this.props.children}
+      </DropdownContainer>
+    );
   }
 }

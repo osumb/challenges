@@ -9,13 +9,18 @@ html, body {
 #root {
   height: 100%;
   width: 100%;
+  overflow-x: hidden;
 }
 
 a {
-  color: black;
+  color: #1a0dab;
   text-decoration: none;
 }
 
 a:visited {
-  color: black;
+  color: #1a0dab;
+}
+
+a:hover {
+  text-decoration: underline;
 }

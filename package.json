@@ -8,5 +8,8 @@
   },
   "engines": {
     "node": "7.7.1"
+  },
+  "dependencies": {
+    "react-media": "^1.6.1"
   }
 }

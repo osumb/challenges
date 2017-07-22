@@ -32,7 +32,7 @@ const Navbar = ({ onLogout, history }) => {
 
   return (
     <div>
-      <Media query={{ minWidth: portraitIPad.width + 1 }}>
+      <Media query={{ minWidth: portraitIPad.width - 1 }}>
         {matches =>
           matches
             ? <HeaderDiv>

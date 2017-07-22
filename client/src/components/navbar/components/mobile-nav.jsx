@@ -7,6 +7,7 @@ import SearchIcon from '../../../assets/images/ic_search_white_36px.svg';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 
+import { lightGray } from '../../../styles';
 import Button from '../../button';
 import ToolBar from '../../tool_bar';
 import Drawer from '../../drawer';
@@ -20,7 +21,7 @@ import { helpers, propTypes as userPropTypes } from '../../../data/user';
 import { isEmptyObject, routes, screenSizes } from '../../../utils';
 
 const { canUserSeeLink, getVisibleMainRoutesForUser, mainRoutes } = routes;
-const { portraitIPad, portraitIPhone6Plus } = screenSizes;
+const { portraitIPad } = screenSizes;
 const userProps = ['role'];
 const Container = styled.div`
   display: flex;
@@ -30,16 +31,25 @@ const Container = styled.div`
 const HeaderInput = styled.input`
   border-radius: 4px;
   font-size: 14px;
-  margin-right: 4px;
+  margin-right: 2px;
+  border: 1px solid ${lightGray};
+  padding: 4px;
+  transition: all 0.10s ease-in-out;
+  opacity: ${({ visible }) => (visible ? 1 : 0)};
+
+  &:focus {
+    box-shadow: 0 0 5px rgba(81, 203, 238, 1);
+    border: 1px solid rgba(81, 203, 238, 1);
+  }
+
+  &:active {
+    box-shadow: 0 0 5px rgba(81, 203, 238, 1);
+    border: 1px solid rgba(81, 203, 238, 1);
+  }
 `;
 const SearchHeader = styled.span`
   display: flex;
-`;
-const SearchInput = styled.input`
-  font-size: 14px;
-  margin-top: 5px;
-  position: absolute;
-  width: 98%;
+  align-items: center;
 `;
 
 export default class MobileNav extends PureComponent {
@@ -114,29 +124,35 @@ export default class MobileNav extends PureComponent {
     const { searching } = this.state;
 
     return (
-      <SearchHeader>
-        {searching &&
-          <Media
-            query={{
-              minWidth: portraitIPhone6Plus.width + 1,
-              maxWidth: portraitIPad.width
-            }}
-            render={() =>
-              <form onSubmit={this.handleSearchSubmit}>
-                <HeaderInput
-                  onChange={this.handleSearchChange}
-                  placeholder="User Search"
-                />
-              </form>}
-          />}
-        <Button onClick={this.handleSearchToggle}>
-          <img src={SearchIcon} style={{ color: 'white' }} alt="Search Icon" />
-        </Button>
-      </SearchHeader>
+      <Media
+        query={{
+          minWidth: portraitIPad.width - 1,
+          maxWidth: portraitIPad.width
+        }}
+        render={() =>
+          <SearchHeader>
+            <form onSubmit={this.handleSearchSubmit}>
+              <HeaderInput
+                visible={searching}
+                onChange={this.handleSearchChange}
+                placeholder="User Search"
+              />
+            </form>
+            <Button onClick={this.handleSearchToggle}>
+              <img
+                src={SearchIcon}
+                style={{ color: 'white' }}
+                alt="Search Icon"
+              />
+            </Button>
+          </SearchHeader>}
+      />
     );
   }
 
   render() {
+    const separatorMargin = '0',
+      separatorPadding = '0';
     const { user } = this.props;
     const { open } = this.state;
     const visibleMainRoutes = getVisibleMainRoutesForUser(user);
@@ -150,7 +166,14 @@ export default class MobileNav extends PureComponent {
         );
 
       return (
-        <ListDropdown key={key} header={key}>{dropdownChildren}</ListDropdown>
+        <ListDropdown
+          key={key}
+          header={key}
+          separatorMargin={separatorMargin}
+          separatorPadding={separatorPadding}
+        >
+          {dropdownChildren}
+        </ListDropdown>
       );
     });
 
@@ -163,12 +186,13 @@ export default class MobileNav extends PureComponent {
               ? <Button onClick={this.handleOpen}>
                   <img src={ListIcon} alt="List Icon" />
                 </Button>
-              : <span />
+              : null
           }
           iconElementRight={
             helpers.isAdmin(user) ? this.renderSearchHeader() : null
           }
-          title="OSUMB Challenges&nbsp;"
+          altTitle="&nbsp;Challenges&nbsp;"
+          title="&nbsp;OSUMB Challenges&nbsp;"
         />
         {!isEmptyObject(user) &&
           <Drawer
@@ -177,29 +201,17 @@ export default class MobileNav extends PureComponent {
             onCloseRequest={this.handleDrawerCloseRequest}
             open={open}
           >
-            <ListDropdownItem>
-              <span data-route="/">Home</span>
-            </ListDropdownItem>
-            <ListDropdownSeparator key="separator" />
+            <span data-route="/">Home</span>
+            <ListDropdownSeparator
+              key="separator"
+              margin={separatorMargin}
+              padding={separatorPadding}
+            />
             {linkDropDowns}
             <ListDropdownItem>
               <span data-route="/logout">Logout</span>
             </ListDropdownItem>
           </Drawer>}
-        {this.state.searching &&
-          <Media
-            query={{ maxWidth: portraitIPhone6Plus.width }}
-            render={() =>
-              <form
-                id="MobileNav-searchForm"
-                onSubmit={this.handleSearchSubmit}
-              >
-                <SearchInput
-                  onChange={this.handleSearchChange}
-                  placeholder="User Search"
-                />
-              </form>}
-          />}
       </Container>
     );
   }

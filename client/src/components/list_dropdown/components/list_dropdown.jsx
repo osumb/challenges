@@ -2,9 +2,17 @@ import React from 'react';
 import ArrowDown from '../../../assets/images/ic_keyboard_arrow_down_black_24px.svg';
 import ArrowUp from '../../../assets/images/ic_keyboard_arrow_up_black_24px.svg';
 import PropTypes from 'prop-types';
+import styled from 'styled-components';
 
-import ListDropdownItem from './list_dropdown_item';
+import ListDropdownItem, { ITEM_HEIGHT } from './list_dropdown_item';
 import ListDropdownSeparator from './list_dropdown_separator';
+
+const AnimationContainer = styled.div`
+  transition: height 0.25s ease-in-out;
+  height: ${({ itemCount, show }) =>
+    show ? `${ITEM_HEIGHT * itemCount}px` : 0};
+  overflow: hidden;
+`;
 
 export default class ListDropdown extends React.PureComponent {
   static get propTypes() {
@@ -18,7 +26,9 @@ export default class ListDropdown extends React.PureComponent {
           ])
         )
       ]),
-      header: PropTypes.string
+      header: PropTypes.string,
+      separatorMargin: PropTypes.string,
+      separatorPadding: PropTypes.string
     };
   }
 
@@ -43,6 +53,12 @@ export default class ListDropdown extends React.PureComponent {
   }
 
   render() {
+    const { separatorMargin: margin, separatorPadding: padding } = this.props;
+    const { open } = this.state;
+    const children = React.Children.map(this.props.children, c =>
+      <ListDropdownItem>{c}</ListDropdownItem>
+    );
+
     return (
       <ul className="mdc-list">
         <li
@@ -53,16 +69,15 @@ export default class ListDropdown extends React.PureComponent {
         >
           {(this.props.header || '').charAt(0).toUpperCase() +
             (this.props.header || '').slice(1)}
-          {this.state.open
+          {open
             ? <img src={ArrowUp} alt="Arrow Up" />
             : <img src={ArrowDown} alt="Arrow Down" />}
         </li>
-        <ListDropdownSeparator />
-        {this.state.open &&
-          React.Children.map(this.props.children, c =>
-            <ListDropdownItem>{c}</ListDropdownItem>
-          )}
-        {this.state.open && <ListDropdownSeparator />}
+        <ListDropdownSeparator margin={margin} padding={padding} />
+        <AnimationContainer show={open} itemCount={children.length}>
+          {children}
+        </AnimationContainer>
+        {open && <ListDropdownSeparator margin={margin} padding={padding} />}
       </ul>
     );
   }

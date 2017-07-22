@@ -1,8 +1,11 @@
 import React from 'react';
+import Media from 'react-media';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
+import { screenSizes } from '../../utils';
 import { secondaryGray, primaryRed } from '../../styles';
+import Typography from '../typography';
 
 const Container = styled.div`
   background-color: ${secondaryGray} !important;
@@ -12,14 +15,28 @@ const Container = styled.div`
   z-index: 0 !important;
 `;
 
-export default function ToolBar({ iconElementLeft, iconElementRight, title }) {
+export default function ToolBar({
+  altTitle = 'Challenges',
+  iconElementLeft,
+  iconElementRight,
+  title
+}) {
   return (
     <Container className="mdc-toolbar mdc-toolbar--fixed challenges-toolbar">
       {iconElementLeft &&
         <section className="mdc-toolbar__section mdc-toolbar__section--align-start">
           {iconElementLeft}
         </section>}
-      <h2 className="mdc-toolbar__title">{title}</h2>
+      <Media query={{ maxWidth: screenSizes.portraitIPhone6Plus.width }}>
+        {matches =>
+          <Typography
+            className="mdc-toolbar__title"
+            category="display"
+            number={1}
+          >
+            {matches ? altTitle : title}
+          </Typography>}
+      </Media>
       {iconElementRight &&
         <section className="mdc-toolbar__section mdc-toolbar__section--align-end">
           {iconElementRight}
@@ -29,6 +46,7 @@ export default function ToolBar({ iconElementLeft, iconElementRight, title }) {
 }
 
 ToolBar.propTypes = {
+  altTitle: PropTypes.string,
   iconElementLeft: PropTypes.node,
   iconElementRight: PropTypes.node,
   title: PropTypes.string

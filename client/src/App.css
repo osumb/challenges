@@ -8,5 +8,5 @@
 #App-container {
   height: 100%;
   margin-top: 15px;
-  width: 100%;
+  padding: 0 10px;
 }
