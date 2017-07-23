@@ -102,7 +102,7 @@ export default class Login extends React.PureComponent {
   }
 
   render() {
-    const { from = '' } = this.props.location.state;
+    const { from } = this.props.location.state || '/';
     const { requesting } = this.state;
 
     if (this.state.redirectToRefferrer) {
