@@ -28,6 +28,7 @@ describe UserChallenge::Evaluator, type: :model do
 
       before do
         allow(failing_user_challenge).to receive(:update!).and_raise(StandardError)
+        allow(failing_user_challenge).to receive(:errors).and_return(['uh oh'])
         allow(UserChallenge).to receive(:where).and_return([failing_user_challenge, user_challenge_2])
       end
 
@@ -50,6 +51,54 @@ describe UserChallenge::Evaluator, type: :model do
 
       it 'returns a success' do
         expect(evaluator.save_comments.success?).to be(true)
+      end
+    end
+  end
+
+  describe '#save_places' do
+    let(:place_1) { 1 }
+    let(:place_2) { 2 }
+    let(:user_challenges) do
+      [
+        {
+          id: user_challenge_1.id,
+          place: place_1
+        },
+        {
+          id: user_challenge_2.id,
+          place: place_2
+        }
+      ]
+    end
+
+    context 'when one update fails' do
+      let(:failing_user_challenge) { instance_double(UserChallenge, id: user_challenge_1.id) }
+
+      before do
+        allow(failing_user_challenge).to receive(:update!).and_raise(StandardError)
+        allow(failing_user_challenge).to receive(:errors).and_return(['uh oh'])
+        allow(UserChallenge).to receive(:where).and_return([failing_user_challenge, user_challenge_2])
+      end
+
+      it 'does not update the other user challenges' do
+        expect { evaluator.save_places }.not_to change { user_challenge_2.reload.place }
+      end
+
+      it 'returns a failure' do
+        expect(evaluator.save_places.failure?).to be(true)
+      end
+    end
+
+    context 'when the updates are successful' do
+      it 'saves the corrent comments for the user challenges' do
+        evaluator.save_places
+
+        expect(user_challenge_1.reload.place).to eq(place_1)
+        expect(user_challenge_2.reload.place).to eq(place_2)
+      end
+
+      it 'returns a success' do
+        expect(evaluator.save_places.success?).to be(true)
       end
     end
   end
