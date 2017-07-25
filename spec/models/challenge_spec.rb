@@ -5,7 +5,6 @@ describe Challenge, type: :model do
   it { is_expected.to have_many(:users).through(:user_challenges) }
   it { is_expected.to belong_to(:spot) }
   it { is_expected.to belong_to(:performance) }
-  it { is_expected.to belong_to(:winner) }
 
   describe 'validations' do
     context 'normal challenge' do
