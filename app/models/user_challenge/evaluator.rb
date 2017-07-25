@@ -36,7 +36,7 @@ class UserChallenge
       end
 
       Result.success
-    rescue StandardError => err
+    rescue StandardError
       Result.failure(errors: user_challenges.map(&:errors))
     end
   end
