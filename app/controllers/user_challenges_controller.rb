@@ -4,7 +4,7 @@ class UserChallengesController < ApplicationController
   before_action :ensure_user_exists!, only: [:create]
   before_action :ensure_challenge_not_full!, only: [:create]
   before_action :ensure_correct_user_for_delete!, only: [:destroy]
-  before_action :ensure_user_can_evaluate, only: [:evaluate_comments, :evaluate_places]
+  before_action :ensure_user_can_evaluate!, only: [:evaluate_comments, :evaluate_places]
 
   def create
     challenge = Challenge.find_by id: params[:challenge_id]
@@ -97,7 +97,7 @@ class UserChallengesController < ApplicationController
     render json: { resource: 'user_challenge', errors: [user: 'doesn\'t have access to that challenge'] }, status: 403
   end
 
-  def ensure_user_can_evaluate
+  def ensure_user_can_evaluate!
     challenge = UserChallenge.find(params[:user_challenges].first.try(:[], :id)).challenge
     return if challenge.can_be_evaluated_by?(user: current_user)
     render json: {
