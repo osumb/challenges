@@ -2,10 +2,8 @@ require 'rails_helper'
 
 describe 'User Challenges Evaluation', type: :request do
   subject(:request) { post endpoint, params: params.to_json, headers: authenticated_header(admin) }
-  let(:admin) { create(:admin) }
+  let(:admin) { create(:admin_user) }
   let(:challenge) { create(:normal_challenge) }
-  let(:user_challenge_1) { challenge.user_challenges.first }
-  let(:user_challenge_2) { challenge.user_challenges.last }
   let(:params) { { user_challenges: user_challenge_params } }
 
   describe 'POST /api/user_challenges/comments' do
@@ -15,43 +13,54 @@ describe 'User Challenges Evaluation', type: :request do
     let(:user_challenge_params) do
       [
         {
-          id: user_challenge_1.id,
+          id: challenge.user_challenges.first.id,
           comments: comments_1
         },
         {
-          id: user_challenge_2.id,
+          id: challenge.user_challenges.last.id,
           comments: comments_2
         }
       ]
     end
 
+    before do
+      allow(UserChallenge).to receive(:find).and_return(challenge.user_challenges.first)
+      allow(challenge.user_challenges.first).to receive(:challenge).and_return(challenge)
+    end
+
     context 'when the user can evaluate' do
       before do
-        allow(challenge).to receive(:can_be_evaluated_by).and_return(true)
+        allow(challenge).to receive(:can_be_evaluated_by?).and_return(true)
       end
 
-      specify { expect { request }.to have_http_status(:no_content) }
+      it 'has the correct status' do
+        request
+        expect(response).to have_http_status(:no_content)
+      end
 
       it 'updates the user challenges' do
         request
 
-        expect(user_challenge_1.reload.comments).to eq(comments_1)
-        expect(user_challenge_2.reload.comments).to eq(comments_2)
+        expect(challenge.reload.user_challenges.first.comments).to eq(comments_1)
+        expect(challenge.reload.user_challenges.last.comments).to eq(comments_2)
       end
     end
 
     context 'when the user cannot evaluate' do
       before do
-        allow(challenge).to receive(:can_be_evaluated_by).and_return(false)
+        allow(challenge).to receive(:can_be_evaluated_by?).and_return(false)
       end
 
-      specify { expect { request }.to have_http_status(:unauthorized) }
+      it 'has the correct status' do
+        request
+        expect(response).to have_http_status(:unauthorized)
+      end
 
       it 'does not update the user challenges' do
         request
 
-        expect(user_challenge_1.reload.comments).to be_nil
-        expect(user_challenge_2.reload.comments).to be_nil
+        expect(challenge.reload.user_challenges.first.comments).to be_nil
+        expect(challenge.reload.user_challenges.last.comments).to be_nil
       end
     end
   end
@@ -63,43 +72,54 @@ describe 'User Challenges Evaluation', type: :request do
     let(:user_challenge_params) do
       [
         {
-          id: user_challenge_1.id,
+          id: challenge.user_challenges.first.id,
           place: place_1
         },
         {
-          id: user_challenge_2.id,
+          id: challenge.user_challenges.last.id,
           place: place_2
         }
       ]
     end
 
+    before do
+      allow(UserChallenge).to receive(:find).and_return(challenge.user_challenges.first)
+      allow(challenge.user_challenges.first).to receive(:challenge).and_return(challenge)
+    end
+
     context 'when the user can evaluate' do
       before do
-        allow(challenge).to receive(:can_be_evaluated_by).and_return(true)
+        allow(challenge).to receive(:can_be_evaluated_by?).and_return(true)
       end
 
-      specify { expect { request }.to have_http_status(:no_content) }
+      it 'has the correct status' do
+        request
+        expect(response).to have_http_status(:no_content)
+      end
 
       it 'updates the user challenges' do
         request
 
-        expect(UserChallenge.places[user_challenge_1.reload.place]).to eq(place_1)
-        expect(UserChallenge.places[user_challenge_2.reload.place]).to eq(place_2)
+        expect(UserChallenge.places[challenge.reload.user_challenges.first.place]).to eq(place_1)
+        expect(UserChallenge.places[challenge.reload.user_challenges.last.place]).to eq(place_2)
       end
     end
 
     context 'when the user cannot evaluate' do
       before do
-        allow(challenge).to receive(:can_be_evaluated_by).and_return(false)
+        allow(challenge).to receive(:can_be_evaluated_by?).and_return(false)
       end
 
-      specify { expect { request }.to have_http_status(:no_content) }
+      it 'has the correct status' do
+        request
+        expect(response).to have_http_status(:unauthorized)
+      end
 
       it 'updates the user challenges' do
         request
 
-        expect(user_challenge_1.reload.place).to be_nil
-        expect(user_challenge_2.reload.place).to be_nil
+        expect(challenge.reload.user_challenges.first.place).to be_nil
+        expect(challenge.reload.user_challenges.last.place).to be_nil
       end
     end
   end

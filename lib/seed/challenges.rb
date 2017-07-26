@@ -22,10 +22,10 @@ def seed_challenges(performance)
     challenge.users = [challenger, challengee]
     challenge.user_challenges[0].spot = challenger.spot
     challenge.user_challenges[0].comments = challenger_comments
-    challenge.user_challenges[0].place = winner_id == challenger.buck_id ? 1 : 2
+    challenge.user_challenges[0].place = winner_id == challenger.buck_id ? :first : :second
     challenge.user_challenges[1].spot = challengee.spot
     challenge.user_challenges[1].comments = challengee_comments
-    challenge.user_challenges[1].place = winner_id == challengee.buck_id ? 1 : 2
+    challenge.user_challenges[1].place = winner_id == challengee.buck_id ? :first : :second
     challenges << challenge
     i += 1
   end
