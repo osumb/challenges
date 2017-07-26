@@ -4,6 +4,34 @@ describe Result, type: :model do
   let(:a_result) { 'a result' }
   let(:errors) { ['error'] }
 
+  describe '#success?' do
+    context 'when the result was successful' do
+      subject(:result) { described_class.success }
+
+      specify { expect(result.success?).to be(true) }
+    end
+
+    context 'when the result was not successful' do
+      subject(:result) { described_class.failure }
+
+      specify { expect(result.success?).to be(false) }
+    end
+  end
+
+  describe '#failure?' do
+    context 'when the result was successful' do
+      subject(:result) { described_class.success }
+
+      specify { expect(result.failure?).to be(false) }
+    end
+
+    context 'when the result was not successful' do
+      subject(:result) { described_class.failure }
+
+      specify { expect(result.failure?).to be(true) }
+    end
+  end
+
   describe '.success' do
     context 'when given a result' do
       subject(:result) { described_class.success(result: a_result) }
