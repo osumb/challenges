@@ -7,11 +7,11 @@ class UserChallenge
 
       @user_challenge_ids = permitted_params['user_challenges'].pluck(:id)
       @ids_to_comments = permitted_params['user_challenges'].each_with_object({}) do |val, acc|
-        acc[val['id']] = val['comments']
+        acc[val[:id]] = val[:comments]
         acc
       end
       @ids_to_places = permitted_params['user_challenges'].each_with_object({}) do |val, acc|
-        acc[val['id']] = val['place']
+        acc[val[:id]] = val[:place]
         acc
       end
     end

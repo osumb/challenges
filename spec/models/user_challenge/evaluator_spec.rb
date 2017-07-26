@@ -93,8 +93,8 @@ describe UserChallenge::Evaluator, type: :model do
       it 'saves the corrent comments for the user challenges' do
         evaluator.save_places
 
-        expect(user_challenge_1.reload.place).to eq(place_1)
-        expect(user_challenge_2.reload.place).to eq(place_2)
+        expect(UserChallenge.places[user_challenge_1.reload.place]).to eq(place_1)
+        expect(UserChallenge.places[user_challenge_2.reload.place]).to eq(place_2)
       end
 
       it 'returns a success' do
