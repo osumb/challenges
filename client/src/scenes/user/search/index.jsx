@@ -19,7 +19,7 @@ const Container = styled.div`
   justify-content: center;
   width: 80%;
   margin: 0 auto;
-  opacity: ${({ requesting }) => requesting ? 0.5 : 1};
+  opacity: ${({ requesting }) => (requesting ? 0.5 : 1)};
 `;
 const Results = styled.div`
   display: flex;
@@ -37,7 +37,8 @@ const SearchIconImg = styled.img`
   margin: auto;
 `;
 
-const getSearchQueryFromQueryString = queryString => (queryString.split('=')[1] || '').split(/%20/).join(' ');
+const getSearchQueryFromQueryString = queryString =>
+  (queryString.split('=')[1] || '').split(/%20/).join(' ');
 
 class Search extends React.PureComponent {
   static get propTypes() {
