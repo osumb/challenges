@@ -36,7 +36,8 @@ class UsersController < ApplicationController
 
   def search
     q = params[:query].downcase
-    @users = User.performers.where('lower(first_name) LIKE ? OR lower(last_name) LIKE ?', "%#{q}%", "%#{q}%")
+    names = q.split ' '
+    @users = User.performers.where('lower(first_name) LIKE ? OR lower(last_name) LIKE ?', "%#{names.first}%", "%#{names.last}%")
   end
 
   def can_challenge

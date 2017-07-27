@@ -6,6 +6,7 @@ import { withRouter } from 'react-router-dom';
 
 import { helpers } from '../../../data/user';
 import Button from '../../../components/button';
+import CircularProgress from '../../../components/circular_progress';
 import SearchIcon from '../../../assets/images/ic_search_white_24px.svg';
 import SearchResultList from './components/search_result_list';
 import SearchResultListItem from './components/search_result_list_item';
@@ -16,6 +17,9 @@ const Container = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  width: 80%;
+  margin: 0 auto;
+  opacity: ${({ requesting }) => requesting ? 0.5 : 1};
 `;
 const Results = styled.div`
   display: flex;
@@ -33,7 +37,7 @@ const SearchIconImg = styled.img`
   margin: auto;
 `;
 
-const getSearchQueryFromQueryString = queryString => queryString.split('=')[1];
+const getSearchQueryFromQueryString = queryString => (queryString.split('=')[1] || '').split(/%20/).join(' ');
 
 class Search extends React.PureComponent {
   static get propTypes() {
@@ -98,7 +102,7 @@ class Search extends React.PureComponent {
     const { query, requesting, searchResults } = this.state;
 
     return (
-      <Container>
+      <Container requesting={requesting}>
         <SearchField>
           <TextField
             autoFocus
@@ -106,8 +110,9 @@ class Search extends React.PureComponent {
             onChange={this.handleInputQueryChange}
             onKeyUp={this.handleEnterKeyup}
             labelStyle={{
-              width: '80%'
+              width: '100%'
             }}
+            placeholder="Search for a user"
             value={query || ''}
           />
           <Button disabled={requesting} primary onClick={this.handleSearch}>
@@ -117,12 +122,14 @@ class Search extends React.PureComponent {
         <Results>
           <SearchResultList
             query={getSearchQueryFromQueryString(this.props.location.search)}
+            requesting={requesting}
           >
             {searchResults.map(({ buckId, ...rest }) =>
               <SearchResultListItem key={buckId} buckId={buckId} {...rest} />
             )}
           </SearchResultList>
         </Results>
+        {requesting && <CircularProgress />}
       </Container>
     );
   }
