@@ -62,12 +62,12 @@ class UserChallengesController < ApplicationController
   private
 
   def ensure_challenge_exists!
-    return unless Challenge.find_by(id: params[:challenge_id]).nil?
+    return if Challenge.exists? id: params[:challenge_id]
     render json: { resource: 'user_challenge', errors: [challenge: 'challenge doesn\'t exist'] }, status: 403
   end
 
   def ensure_user_exists!
-    return unless User.find_by buck_id: params[:buck_id].nil?
+    return if User.exists? buck_id: params[:challenger_buck_id]
     render json: { resource: 'user_challenge', errors: [user: 'user doesn\'t exist'] }, status: 403
   end
 
