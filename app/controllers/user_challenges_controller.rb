@@ -18,13 +18,16 @@ class UserChallengesController < ApplicationController
   end
 
   def destroy
-    uc = UserChallenge.includes(:challenge).find_by id: params[:id]
-    challenge = uc.challenge
+    destroyer = UserChallenge::Destroyer.new(id: params[:id])
+    result = destroyer.destroy
 
-    if challenge.open_spot_challenge_type?
-      remove_user_from_open_spot_challenge uc
+    if result.success?
+      head :no_content
     else
-      remove_user_from_non_open_spot_challenge uc
+      render json: {
+        resource: 'user_challenge',
+        errors: [user_challenge: result.errors.first]
+      }, status: :unprocessable_entity
     end
   end
 
@@ -57,26 +60,6 @@ class UserChallengesController < ApplicationController
   end
 
   private
-
-  def remove_user_from_open_spot_challenge(user_challenge)
-    challenge = user_challenge.challenge
-    if challenge.users.length <= 1 && user_challenge.destroy && challenge.destroy
-      head 204
-    elsif user_challenge.destroy
-      head 204
-    else
-      render json: { resource: 'user_challenge', errors: [challenge: 'could not be destroyed'] }, status: 500
-    end
-  end
-
-  def remove_user_from_non_open_spot_challenge(user_challenge)
-    challenge = user_challenge.challenge
-    if challenge.destroy
-      head 204
-    else
-      render json: { resource: 'user_challenge', errors: [challenge: 'could not be destroyed'] }, status: 500
-    end
-  end
 
   def ensure_challenge_exists!
     return unless Challenge.find_by(id: params[:challenge_id]).nil?
