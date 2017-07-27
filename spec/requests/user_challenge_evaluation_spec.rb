@@ -63,6 +63,29 @@ describe 'User Challenges Evaluation', type: :request do
         expect(challenge.reload.user_challenges.last.comments).to be_nil
       end
     end
+
+    context 'when the comments cannot be saved' do
+      let(:bad_result) { instance_double(Result, errors: []) }
+      let(:evaluator) { instance_double(UserChallenge::Evaluator) }
+
+      before do
+        allow(UserChallenge::Evaluator).to receive(:new).and_return(evaluator)
+        allow(evaluator).to receive(:save_comments).and_return(bad_result)
+        allow(bad_result).to receive(:success?).and_return(false)
+      end
+
+      it 'has the correct status' do
+        request
+        expect(response).to have_http_status(:unprocessable_entity)
+      end
+
+      it 'does not update the user challenges' do
+        request
+
+        expect(challenge.reload.user_challenges.first.comments).to be_nil
+        expect(challenge.reload.user_challenges.last.comments).to be_nil
+      end
+    end
   end
 
   describe 'POST /api/user_challenges/places' do
@@ -115,7 +138,30 @@ describe 'User Challenges Evaluation', type: :request do
         expect(response).to have_http_status(:unauthorized)
       end
 
-      it 'updates the user challenges' do
+      it 'does not update the user challenges' do
+        request
+
+        expect(challenge.reload.user_challenges.first.place).to be_nil
+        expect(challenge.reload.user_challenges.last.place).to be_nil
+      end
+    end
+
+    context 'when the places cannot be saved' do
+      let(:bad_result) { instance_double(Result, errors: []) }
+      let(:evaluator) { instance_double(UserChallenge::Evaluator) }
+
+      before do
+        allow(UserChallenge::Evaluator).to receive(:new).and_return(evaluator)
+        allow(evaluator).to receive(:save_places).and_return(bad_result)
+        allow(bad_result).to receive(:success?).and_return(false)
+      end
+
+      it 'has the correct status' do
+        request
+        expect(response).to have_http_status(:unprocessable_entity)
+      end
+
+      it 'does not update the user challenges' do
         request
 
         expect(challenge.reload.user_challenges.first.place).to be_nil

@@ -35,7 +35,10 @@ class UserChallengesController < ApplicationController
     if result.success?
       head :no_content
     else
-      render json: { resource: 'user_challenge', errors: [user_challenge: result.errors.first] }, status: 500
+      render json: {
+        resource: 'user_challenge',
+        errors: [user_challenge: result.errors.first]
+      }, status: :unprocessable_entity
     end
   end
 
@@ -46,7 +49,10 @@ class UserChallengesController < ApplicationController
     if result.success?
       head :no_content
     else
-      render json: { resource: 'user_challenge', errors: [user_challenge: result.errors.first] }, status: 500
+      render json: {
+        resource: 'user_challenge',
+        errors: [user_challenge: result.errors.first]
+      }, status: :unprocessable_entity
     end
   end
 
