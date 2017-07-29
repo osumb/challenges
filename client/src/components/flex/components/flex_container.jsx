@@ -12,4 +12,7 @@ export default styled.div`
   ${({ justifyContent }) =>
     justifyContent && `justify-content: ${justifyContent};`};
   ${({ flexWrap }) => flexWrap && `flex-wrap: ${flexWrap};`};
+  ${({ opacity }) => opacity >= 0 && `opacity: ${opacity };`};
+  ${({ border }) => border && `border: ${border};`};
+  ${({ borderRadius }) => borderRadius && `border-radius: ${borderRadius};`};
 `;
