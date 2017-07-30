@@ -6,6 +6,7 @@ set -e
 bundle exec rubocop
 (cd client && yarn test)
 
+bin/rails db:environment:set RAILS_ENV=development
 if [ -z "$TRAVIS" ]; then
   echo "==> Creating test database..."
   bundle exec rake db:test:load

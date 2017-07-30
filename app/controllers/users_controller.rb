@@ -34,11 +34,13 @@ class UsersController < ApplicationController
     @next_performance = Performance.next
   end
 
+  # rubocop:disable Metrics/LineLength
   def search
     q = params[:query].downcase
     names = q.split ' '
     @users = User.performers.where('lower(first_name) LIKE ? OR lower(last_name) LIKE ?', "%#{names.first}%", "%#{names.last}%")
   end
+  # rubocop:enable Metrics/LineLength
 
   def can_challenge
     p = Performance.next
