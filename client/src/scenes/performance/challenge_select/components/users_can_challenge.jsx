@@ -16,15 +16,12 @@ const userFilter = (filter, { firstName, lastName }) => {
   );
 };
 
-const Container = styled.div`
-  margin: -30px 0 0 10px;
-`;
 const ListContainer = styled.div`
-  height: 400px;
+  height: 520px;
   overflow: scroll;
 `;
 const UserContainer = styled.div`
-  width: 200px;
+  width: 100%;
   &:hover {
     background-color: #f3f3f3;
     cursor: pointer;
@@ -59,12 +56,16 @@ export default class UsersCanChallenge extends React.PureComponent {
 
     if (users.length > 0) {
       return (
-        <Container>
+        <div>
           <Textfield
             placeholder="Filter users"
             value={filter}
             onChange={this.handleFilterChange}
             name="filter"
+            labelStyle={{
+              margin: 0,
+              width: '100%'
+            }}
           />
           <ListContainer>
             <List>
@@ -77,14 +78,14 @@ export default class UsersCanChallenge extends React.PureComponent {
                   <ListItem>
                     <Typography category="subheading" number={2}>
                       <b>{user.firstName} {user.lastName}</b>
-                      ({user.spot.row}{user.spot.file})
+                      &nbsp;({user.spot.row}{user.spot.file})
                     </Typography>
                   </ListItem>
                 </UserContainer>
               )}
             </List>
           </ListContainer>
-        </Container>
+        </div>
       );
     }
     return (

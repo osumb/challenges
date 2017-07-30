@@ -1,14 +1,16 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import Media from 'react-media';
 import styled from 'styled-components';
 
-import { fetch } from '../../../utils';
+import { fetch, screenSizes } from '../../../utils';
 import {
   helpers as prrHelpers,
   propTypes
 } from '../../../data/password_reset_request';
 import { helpers as userHelpers } from '../../../data/user';
 import Button from '../../../components/button';
+import CircularProgress from '../../../components/circular_progress';
 import TextField from '../../../components/textfield';
 import Typography from '../../../components/typography';
 
@@ -19,14 +21,16 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
+  opacity: ${({ requesting }) => (requesting ? 0.5 : 1)};
 `;
 const TextFieldContainer = styled.div`
   display: flex;
-  flex-direction: column;
-  align-items: flex-start;
+  align-items: baseline;
+  justify-content: flex-start;
+  flex-direction: ${({ direction }) => direction};
 `;
 const TextFieldSpacer = styled.div`
-  margin: 20px 0;
+  margin: 20px;
 `;
 
 class PasswordResetReset extends React.PureComponent {
@@ -39,6 +43,7 @@ class PasswordResetReset extends React.PureComponent {
     this.state = {
       password: '',
       passwordConf: '',
+      requesting: false,
       success: false
     };
     this.handleClick = this.handleClick.bind(this);
@@ -51,9 +56,15 @@ class PasswordResetReset extends React.PureComponent {
 
     this.setState({ inputErrorMessage: '', success: false });
     if (Boolean(password) && password === passwordConf) {
-      userHelpers.resetPassword(id, password, user).then(() => {
-        this.setState({ success: true });
-      });
+      this.setState({ requesting: false });
+      userHelpers
+        .resetPassword(id, password, user)
+        .then(() => {
+          this.setState({ requesting: false, success: true });
+        })
+        .catch(() => {
+          this.setState({ requesting: false, success: false });
+        });
     } else {
       let inputErrorMessage = '';
 
@@ -73,7 +84,7 @@ class PasswordResetReset extends React.PureComponent {
 
   render() {
     const { expires, used } = this.props;
-    const { inputErrorMessage, success } = this.state;
+    const { inputErrorMessage, requesting, success } = this.state;
 
     if (success) {
       return (
@@ -108,7 +119,7 @@ class PasswordResetReset extends React.PureComponent {
     }
 
     return (
-      <Container>
+      <Container requesting={requesting}>
         <Typography category="display" number={1}>
           Reset Your Password
         </Typography>
@@ -116,23 +127,29 @@ class PasswordResetReset extends React.PureComponent {
           <Typography category="subheading" number={2}>
             **{inputErrorMessage}**
           </Typography>}
-        <TextFieldContainer>
-          <TextField
-            name="password"
-            type="password"
-            hint="password"
-            onChange={this.handleTextChange}
-          />
-          <TextFieldSpacer />
-          <TextField
-            name="passwordConf"
-            type="password"
-            hint="passwordConfirmation"
-            onChange={this.handleTextChange}
-          />
-          <TextFieldSpacer />
-          <Button primary onClick={this.handleClick}>Reset Password</Button>
-        </TextFieldContainer>
+        <Media query={{ minWidth: screenSizes.landscapeIPhone5.width }}>
+          {matches =>
+            <TextFieldContainer direction={matches ? 'row' : 'column'}>
+              <TextField
+                name="password"
+                type="password"
+                hint="password"
+                onChange={this.handleTextChange}
+              />
+              <TextFieldSpacer />
+              <TextField
+                name="passwordConf"
+                type="password"
+                hint="passwordConfirmation"
+                onChange={this.handleTextChange}
+              />
+              <TextFieldSpacer />
+              <Button primary onClick={this.handleClick} disabled={requesting}>
+                Reset Password
+              </Button>
+            </TextFieldContainer>}
+        </Media>
+        {requesting && <CircularProgress />}
       </Container>
     );
   }

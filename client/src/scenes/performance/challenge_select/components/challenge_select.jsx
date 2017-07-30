@@ -11,6 +11,7 @@ import {
 } from '../../../../data/user';
 import { FlexContainer } from '../../../../components/flex';
 import Button from '../../../../components/button';
+import CircularProgress from '../../../../components/circular_progress';
 import NormalChallengeableUser from './normal_challengeable_user';
 import OpenSpotChallengeableUser from './open_spot_challengeable_user';
 import TriChallengeableUser from './tri_challengeable_user';
@@ -18,8 +19,7 @@ import Typography from '../../../../components/typography';
 import Select from '../../../../components/select';
 
 const ButtonWrapper = styled.div`
-  margin-left: 25px;
-  margin-top: 10px;
+  margin: 10px;
 `;
 const ErrorText = styled.div`
   color: red;
@@ -31,8 +31,11 @@ export default class ChallengeSelect extends React.PureComponent {
       challengeableUsers: PropTypes.arrayOf(
         PropTypes.shape(performanceProps.challengeableUser)
       ),
+      headerCategory: PropTypes.string,
+      headerNumber: PropTypes.number,
       onChallenge: PropTypes.func,
       performance: PropTypes.shape(performanceProps.performance),
+      style: PropTypes.object,
       user: PropTypes.shape(userProps)
     };
   }
@@ -40,6 +43,8 @@ export default class ChallengeSelect extends React.PureComponent {
   constructor(props) {
     super(props);
     this.state = {
+      errorMessage: null,
+      requesting: false,
       successMessage: null
     };
     this.createChallenge = this.createChallenge.bind(this);
@@ -55,10 +60,11 @@ export default class ChallengeSelect extends React.PureComponent {
 
     this.setState({
       errorMessage: null,
+      requesting: false,
       successMessage: s
     });
     if (this.props.onChallenge) {
-      this.props.onChallenge();
+      setTimeout(this.props.onChallenge, 1000);
     }
   }
 
@@ -80,6 +86,10 @@ export default class ChallengeSelect extends React.PureComponent {
   createChallenge({ file, row }) {
     const user = this.getUser();
 
+    this.setState({
+      requesting: true,
+      successMessage: null
+    });
     challengeHelpers
       .create(
         {
@@ -93,24 +103,23 @@ export default class ChallengeSelect extends React.PureComponent {
       });
   }
 
-  editCurrentChallenge(challengeableUser) {
-    const user = this.getUser();
-
-    challengeHelpers
-      .addUser(user.buckId, challengeableUser.challengeId)
-      .then(({ challengeSpot }) => {
-        this.handleChallengeCreate(challengeSpot);
-      });
-  }
-
   getUser() {
     return this.props.user || auth.getUser();
   }
 
   render() {
     const user = this.getUser();
-    const { challengeableUsers, performance } = this.props;
-    const { errorMessage, successMessage } = this.state;
+    const {
+      challengeableUsers,
+      headerCategory,
+      headerNumber,
+      performance,
+      style
+    } = this.props;
+    const { errorMessage, requesting, successMessage } = this.state;
+    const typographyCategory = headerCategory || 'display';
+    const typographyNumber = headerNumber !== null ? 1 : headerNumber;
+    const justifyContent = (style && style.justifyContent) || 'center';
 
     if (successMessage !== null && typeof successMessage !== 'undefined') {
       return (
@@ -119,7 +128,7 @@ export default class ChallengeSelect extends React.PureComponent {
           alignItems="center"
           justifyContent="center"
         >
-          <Typography category="display" number={1}>
+          <Typography category={typographyCategory} number={typographyNumber}>
             {successMessage}
           </Typography>
         </FlexContainer>
@@ -133,7 +142,7 @@ export default class ChallengeSelect extends React.PureComponent {
           alignItems="center"
           justifyContent="center"
         >
-          <Typography category="display" number={1}>
+          <Typography category={typographyCategory} number={typographyNumber}>
             Sorry! There is no one for you to challenge at this time
           </Typography>
         </FlexContainer>
@@ -144,21 +153,22 @@ export default class ChallengeSelect extends React.PureComponent {
       <FlexContainer
         flexDirection="column"
         alignItems="center"
-        justifyContent="center"
+        justifyContent={justifyContent}
       >
         {errorMessage &&
           <ErrorText>
-            <Typography category="display" number={2}>
+            <Typography category={typographyCategory} number={typographyNumber}>
               **{errorMessage}**
             </Typography>
           </ErrorText>}
-        <Typography category="display" number={1}>
+        <Typography category={typographyCategory} number={typographyNumber}>
           Please make a challenge for the {performance.name}
         </Typography>
         <FlexContainer
           alignItems="center"
-          justifyContent="center"
+          justifyContent={justifyContent}
           flexWrap="wrap"
+          width="100%"
         >
           <Select
             defaultText="Select one person or spot"
@@ -197,6 +207,7 @@ export default class ChallengeSelect extends React.PureComponent {
             </Button>
           </ButtonWrapper>
         </FlexContainer>
+        {requesting && <CircularProgress />}
       </FlexContainer>
     );
   }

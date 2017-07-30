@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+import CircularProgress from '../components/circular_progress';
+
 class Fetcher extends React.PureComponent {
   static get propTypes() {
     return {
@@ -27,7 +29,7 @@ class Fetcher extends React.PureComponent {
     let newData = data;
 
     if (data === null) {
-      return <div>Loading...</div>;
+      return <CircularProgress />;
     }
 
     if (propsFromData) newData = propsFromData(newData);

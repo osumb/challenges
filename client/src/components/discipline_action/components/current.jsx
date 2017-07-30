@@ -10,15 +10,15 @@ const Container = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  margin: 10px;
 `;
 
 export default function CurrentDisciplineAction({
-  reason,
   allowedToChallenge,
-  performance
+  performance,
+  reason
 }) {
-  const performanceStr = `Your spot was opened for the ${performance.name}`;
+  const permission = allowedToChallenge ? 'are' : "aren't";
+  const performanceStr = `You ${permission} allowed to challenge for the ${performance.name}`;
   const reasonStr = `Reason: ${reason}`;
 
   return (
@@ -26,10 +26,6 @@ export default function CurrentDisciplineAction({
       <Container>
         <Typography category="headline">{performanceStr}</Typography>
         <Typography category="headline">{reasonStr}</Typography>
-        {allowedToChallenge &&
-          <Typography category="title">
-            You are allowed to make a challenge
-          </Typography>}
       </Container>
     </Elevation>
   );

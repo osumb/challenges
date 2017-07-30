@@ -9,19 +9,20 @@ const props = ['firstName', 'lastName', 'role', 'spot'];
 const Container = styled.div`
   display: flex;
   flex-direction: row;
-  flex-wrap: nowrap;
+  flex-wrap: wrap;
   padding: 10px 0;
+  margin-bottom: 10px;
 `;
-
 const NameHeader = styled.h1`
   align-self: center;
-  padding-left: 10px;
+  margin: 0;
+  white-space: nowrap;
 `;
-
 const AdminTag = styled.h1`
   color: rgb(183, 28, 28);
+  margin: 0;
+  padding-right: 10px;
 `;
-
 const SpotCircle = styled.div`
   background: rgb(183, 28, 28);
   border-radius: 50%;
@@ -33,8 +34,8 @@ const SpotCircle = styled.div`
   text-align: center;
   vertical-align: middle;
   width: 100px;
+  margin-right: 4px;
 `;
-
 const SpotText = styled.h3`
   align-self: center;
 `;

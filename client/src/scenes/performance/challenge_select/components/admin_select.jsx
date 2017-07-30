@@ -89,7 +89,7 @@ export default class AdminSelect extends React.PureComponent {
       (!loadingChallengeableUsers && !selectedUserBuckId)
     ) {
       return (
-        <Typography category="display" number={1}>
+        <Typography category="headline">
           Select a user to make a challenge
         </Typography>
       );
@@ -103,7 +103,7 @@ export default class AdminSelect extends React.PureComponent {
       return (
         <FlexContainer
           flexDirection="column"
-          alignItems="center"
+          alignItems="flex-start"
           justifyContent="center"
         >
           <Typography category="headline">
@@ -111,8 +111,13 @@ export default class AdminSelect extends React.PureComponent {
           </Typography>
           <ChallengeSelect
             {...challengeableUsersIndex[selectedUserBuckId]}
+            headerCategory="headline"
+            headerNumber={null}
             onChallenge={this.handleChallengeCreation}
             user={selectedUser}
+            style={{
+              justifyContent: 'flex-start'
+            }}
           />
         </FlexContainer>
       );
@@ -127,8 +132,8 @@ export default class AdminSelect extends React.PureComponent {
     } = this.state;
 
     return (
-      <FlexContainer margin="0 20px" justifyContent="center">
-        <FlexChild flex={1} padding="0 10px" textAlign="center">
+      <FlexContainer justifyContent="center">
+        <FlexChild flex={1} padding="0 10px 0 0" textAlign="center">
           {usersWhoCanChallenge === null
             ? <Typography category="headline">
                 Loading users who are elligible to challenge...

@@ -1,10 +1,13 @@
 import React from 'react';
 import isEmail from 'validator/lib/isEmail';
 import keycode from 'keycode';
+import Media from 'react-media';
 import styled from 'styled-components';
 
 import { helpers } from '../../../data/password_reset_request';
+import { screenSizes } from '../../../utils';
 import Button from '../../../components/button';
+import CircularProgress from '../../../components/circular_progress';
 import Typography from '../../../components/typography';
 import TextField from '../../../components/textfield';
 
@@ -14,10 +17,12 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
+  opacity: ${({ requesting }) => (requesting ? 0.5 : 1)};
 `;
 const TextFieldContainer = styled.div`
   display: flex;
   align-items: center;
+  flex-direction: ${({ direction }) => direction};
 `;
 const TextFieldSpacer = styled.div`
   margin: 0 10px;
@@ -31,6 +36,7 @@ export default class PasswordResetRequest extends React.PureComponent {
       email: '',
       inputErrorMessage: '',
       requestError: false,
+      requesting: false,
       success: false
     };
     this.handleChange = this.handleChange.bind(this);
@@ -56,6 +62,7 @@ export default class PasswordResetRequest extends React.PureComponent {
     this.setState({
       inputErrorMessage: null,
       requestError: false,
+      requesting: true,
       success: false
     });
 
@@ -63,10 +70,10 @@ export default class PasswordResetRequest extends React.PureComponent {
       helpers
         .create(buckId, email)
         .then(() => {
-          this.setState({ success: true });
+          this.setState({ requesting: false, success: true });
         })
         .catch(() => {
-          this.setState({ requestError: true });
+          this.setState({ requestError: true, requesting: false });
         });
     } else {
       let inputErrorMessage = '';
@@ -83,7 +90,13 @@ export default class PasswordResetRequest extends React.PureComponent {
   }
 
   render() {
-    const { email, inputErrorMessage, requestError, success } = this.state;
+    const {
+      email,
+      inputErrorMessage,
+      requestError,
+      requesting,
+      success
+    } = this.state;
 
     if (success) {
       return (
@@ -96,7 +109,7 @@ export default class PasswordResetRequest extends React.PureComponent {
     }
 
     return (
-      <Container>
+      <Container requesting={requesting}>
         <Typography category="display" number={1}>
           Need A New Password?
         </Typography>
@@ -110,23 +123,29 @@ export default class PasswordResetRequest extends React.PureComponent {
             Sorry. That name.# and email combination doesn't match. Please try
             again
           </Typography>}
-        <TextFieldContainer>
-          <TextField
-            name="buckId"
-            onChange={this.handleChange}
-            onKeyUp={this.handleCheckForEnterKeyUp}
-            hint="name.#"
-          />
-          <TextFieldSpacer />
-          <TextField
-            name="email"
-            onChange={this.handleChange}
-            onKeyUp={this.handleCheckForEnterKeyUp}
-            hint="email"
-          />
-          <TextFieldSpacer />
-          <Button primary onClick={this.handleClick}>Submit</Button>
-        </TextFieldContainer>
+        <Media query={{ minWidth: screenSizes.landscapeIPhone5.width }}>
+          {matches =>
+            <TextFieldContainer direction={matches ? 'row' : 'column'}>
+              <TextField
+                name="buckId"
+                onChange={this.handleChange}
+                onKeyUp={this.handleCheckForEnterKeyUp}
+                hint="name.#"
+              />
+              <TextFieldSpacer />
+              <TextField
+                name="email"
+                onChange={this.handleChange}
+                onKeyUp={this.handleCheckForEnterKeyUp}
+                hint="email"
+              />
+              <TextFieldSpacer />
+              <Button primary onClick={this.handleClick} disabled={requesting}>
+                Submit
+              </Button>
+            </TextFieldContainer>}
+        </Media>
+        {requesting && <CircularProgress />}
       </Container>
     );
   }

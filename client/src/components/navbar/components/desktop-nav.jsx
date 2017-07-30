@@ -27,6 +27,11 @@ const LinkWrapper = styled.div`
   align-items: center;
   justify-content: center;
   padding: 0 16px;
+
+  &:hover {
+    cursor: pointer;
+    text-decoration: underline;
+  }
 `;
 
 export default class DesktopNav extends PureComponent {
@@ -49,7 +54,7 @@ export default class DesktopNav extends PureComponent {
       <Container>
         <LeftContainer>
           <LinkWrapper>
-            <Link to="/">Home</Link>
+            <Link to="/" style={{ color: 'black' }}>Home</Link>
           </LinkWrapper>
           {visibleRoutes.map(key =>
             <LinkDropdown
@@ -62,7 +67,7 @@ export default class DesktopNav extends PureComponent {
           )}
         </LeftContainer>
         {!isEmptyObject(user) &&
-          <LinkWrapper><div onClick={onLogout}>Logout</div></LinkWrapper>}
+          <LinkWrapper onClick={onLogout}>Logout</LinkWrapper>}
       </Container>
     );
   }

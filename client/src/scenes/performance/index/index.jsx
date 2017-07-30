@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 
 import { helpers, propTypes } from '../../../data/performance';
 import { fetch } from '../../../utils';
+import CircularProgress from '../../../components/circular_progress';
 import { FlexContainer, FlexChild } from '../../../components/flex';
 import Performance from '../../../components/performance';
 import Snackbar from '../../../components/snackbar';
@@ -37,6 +38,7 @@ class PerformanceIndex extends React.PureComponent {
         },
         {}
       ),
+      requesting: false,
       updated: false
     };
     this.handlePerformanceDelete = this.handlePerformanceDelete.bind(this);
@@ -44,7 +46,7 @@ class PerformanceIndex extends React.PureComponent {
   }
 
   handlePerformanceDelete({ id }) {
-    this.setState({ deleted: false });
+    this.setState({ deleted: false, requesting: true });
     helpers.del(id).then(() => {
       this.setState(({ performancesById }) => {
         const newPerformances = { ...performancesById };
@@ -53,14 +55,15 @@ class PerformanceIndex extends React.PureComponent {
 
         return {
           deleted: true,
-          performancesById: { ...newPerformances }
+          performancesById: { ...newPerformances },
+          requesting: false
         };
       });
     });
   }
 
   handlePerformanceUpdate({ id, ...rest }) {
-    this.setState({ updated: false });
+    this.setState({ requesting: true, updated: false });
     helpers.update({ id, ...rest }).then(() => {
       this.setState(({ performancesById }) => ({
         performancesById: {
@@ -70,13 +73,14 @@ class PerformanceIndex extends React.PureComponent {
             ...rest
           }
         },
-        updated: true
+        updated: true,
+        requesting: false
       }));
     });
   }
 
   render() {
-    const { deleted, performancesById, updated } = this.state;
+    const { deleted, performancesById, requesting, updated } = this.state;
     const sortedKeys = Object.keys(performancesById).sort(
       (a, b) => parseInt(a, 10) - parseInt(b, 10)
     );
@@ -87,7 +91,12 @@ class PerformanceIndex extends React.PureComponent {
     }
 
     return (
-      <FlexContainer flexDirection="column" alignItems="center" margin="20px 0">
+      <FlexContainer
+        flexDirection="column"
+        alignItems="center"
+        margin="20px 0"
+        opacity={requesting ? 0.5 : 1}
+      >
         <Typography category="display" number={2}>
           Update Performances
         </Typography>
@@ -106,6 +115,7 @@ class PerformanceIndex extends React.PureComponent {
           </FlexContainer>
         </FlexChild>
         <Snackbar show={updated || deleted} message={snackbarMessage} />
+        {requesting && <CircularProgress />}
       </FlexContainer>
     );
   }

@@ -1,12 +1,13 @@
 import React from 'react';
 import keycode from 'keycode';
 import { Link, Redirect } from 'react-router-dom';
+import Media from 'react-media';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 
-import './index.css';
-import { auth, errorEmitter } from '../../utils';
+import { auth, errorEmitter, screenSizes } from '../../utils';
 import Button from '../../components/button';
+import CircularProgress from '../../components/circular_progress';
 import TextField from '../../components/textfield';
 import Typography from '../../components/typography';
 
@@ -16,14 +17,17 @@ const Container = styled.div`
   flex-direction: column;
   height: 100%;
   width: 100%;
+  opacity: ${({ requesting }) => (requesting ? 0.5 : 1)}
 `;
 const LoginInputs = styled.div`
   display: flex;
   align-items: center;
   margin-bottom: 10px;
+  flex-direction: ${({ flexDirection }) => flexDirection};
 `;
 const LoginInput = styled.div`
   margin-right: 10px;
+  margin-bottom: ${({ mBottom }) => mBottom || '0'};
 `;
 
 export default class Login extends React.PureComponent {
@@ -40,7 +44,8 @@ export default class Login extends React.PureComponent {
     this.state = {
       buckId: '',
       password: '',
-      redirectToRefferrer: false
+      redirectToRefferrer: false,
+      requesting: false
     };
     this.handleClick = this.handleClick.bind(this);
     this.handleEnterKey = this.handleEnterKey.bind(this);
@@ -51,7 +56,7 @@ export default class Login extends React.PureComponent {
   login() {
     const { buckId, password } = this.state;
 
-    this.setState({ failed: false });
+    this.setState({ failed: false, requesting: true });
     auth
       .authenticate(buckId, password)
       .then(() => {
@@ -62,7 +67,8 @@ export default class Login extends React.PureComponent {
       .catch(err => {
         console.error(err);
         this.setState({
-          failed: true
+          failed: true,
+          requesting: false
         });
       });
   }
@@ -97,39 +103,49 @@ export default class Login extends React.PureComponent {
 
   render() {
     const { from } = this.props.location.state || '/';
+    const { requesting } = this.state;
 
     if (this.state.redirectToRefferrer) {
       return <Redirect to={from || '/'} />;
     }
 
     return (
-      <Container>
+      <Container requesting={requesting}>
         {this.state.failed &&
           <Typography category="display" number={1}>
             Sorry, the username or password is incorrect
           </Typography>}
-        <LoginInputs className="Login-inputs">
-          <LoginInput className="Login-input">
-            <TextField
-              onKeyUp={this.handleEnterKey}
-              name="buckId"
-              onChange={this.handleChange}
-              hint="name.#"
-            />
-          </LoginInput>
-          <LoginInput className="Login-input">
-            <TextField
-              onKeyUp={this.handleEnterKey}
-              name="password"
-              onChange={this.handleChange}
-              type="password"
-              hint="********"
-            />
-          </LoginInput>
-          <LoginInput className="Login-input">
-            <Button onClick={this.handleClick}>Submit</Button>
-          </LoginInput>
-        </LoginInputs>
+        <Media query={{ minWidth: screenSizes.landscapeIPhone5.width }}>
+          {matches =>
+            <LoginInputs
+              className="Login-inputs"
+              flexDirection={matches ? 'row' : 'column'}
+            >
+              <LoginInput mBottom={!matches && '10px'}>
+                <TextField
+                  onKeyUp={this.handleEnterKey}
+                  name="buckId"
+                  onChange={this.handleChange}
+                  hint="name.#"
+                />
+              </LoginInput>
+              <LoginInput mBottom={!matches && '10px'}>
+                <TextField
+                  onKeyUp={this.handleEnterKey}
+                  name="password"
+                  onChange={this.handleChange}
+                  type="password"
+                  hint="********"
+                />
+              </LoginInput>
+              <LoginInput mBottom={!matches && '10px'}>
+                <Button onClick={this.handleClick} disabled={requesting}>
+                  Submit
+                </Button>
+              </LoginInput>
+              {requesting && <CircularProgress />}
+            </LoginInputs>}
+        </Media>
         <Link to="/password_reset_requests/new">Need A New Password?</Link>
       </Container>
     );

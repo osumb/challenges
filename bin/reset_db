@@ -1,0 +1,11 @@
+#!/bin/sh
+
+# bin/reset_db: Reset dev database with seed data
+
+if [ hash docker-compose 2>/dev/null ]
+then
+  bin/rake db:reset
+else
+  docker-compose run web bin/rails db:environment:set RAILS_ENV=development
+  docker-compose run web bin/rake db:reset
+fi

@@ -126,14 +126,14 @@ export default class CreateDisciplineAction extends React.PureComponent {
           getRef={ref => {
             this.openSpot = ref;
           }}
-          label={`Check if the spot ${user.spot.row}${user.spot
+          label={`Check box if the spot ${user.spot.row}${user.spot
             .file} opens as a result of the action`}
         />
         <Checkbox
           getRef={ref => {
             this.allowedToChallenge = ref;
           }}
-          label={`Check if ${user.firstName} is allowed to challenge another spot`}
+          label={`Check box if ${user.firstName} is allowed to challenge another spot`}
         />
         <Button primary onClick={this.handleCreateClick}>Create</Button>
       </FlexContainer>
