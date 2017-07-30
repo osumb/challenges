@@ -1,4 +1,7 @@
 class UserChallenge < ApplicationRecord
+  # enums
+  enum place: { first: 1, second: 2, third: 3 }, _suffix: true
+
   # associations
   belongs_to :user, foreign_key: 'user_buck_id'
   belongs_to :challenge

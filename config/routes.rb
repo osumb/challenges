@@ -12,7 +12,12 @@ Rails.application.routes.draw do
 
     resources :challenges, only: [:create]
     resources :discipline_actions, only: [:create, :destroy]
-    resources :user_challenges, only: [:create, :destroy]
+    resources :user_challenges, only: [:create, :destroy] do
+      collection do
+        post 'comments', action: :evaluate_comments
+        post 'places', action: :evaluate_places
+      end
+    end
     resources :password_reset_requests, only: [:create, :show]
 
     resources :performances, only: [:create, :index, :update, :destroy] do

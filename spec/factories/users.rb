@@ -15,9 +15,23 @@ FactoryGirl.define do
     password_updated Time.zone.now
     association :spot, row: Spot.rows[:a], file: 2
 
+    trait :director do
+      role User.roles[:director]
+      spot nil
+    end
+
     trait :admin do
       role User.roles[:admin]
       spot nil
+    end
+
+    trait :squad_leader do
+      role User.roles[:squad_leader]
+      association :spot, row: Spot.rows[:a], file: 1
+    end
+
+    trait :member do
+      role User.roles[:member]
     end
 
     trait :alternate do
