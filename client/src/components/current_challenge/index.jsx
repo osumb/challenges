@@ -11,7 +11,6 @@ import Typography from '../typography';
 
 const Container = styled.div`
   display: flex;
-  margin: 10px;
   align-items: center;
   justify-content: center;
 `;
@@ -66,22 +65,29 @@ export default class CurrentChallenge extends React.PureComponent {
         />
       );
     }
+
+    if (deleted) {
+      return (
+        <Elevation>
+          <Container>
+            <Typography category="headline">
+              Successfully deleted challenge!
+            </Typography>
+          </Container>
+        </Elevation>
+      );
+    }
+
     return (
-      <Elevation zLevel={2}>
+      <Elevation>
         <Container>
-          {deleted
-            ? <Typography category="headline">
-                Successfully deleted challenge!
-              </Typography>
-            : <Container>
-                <Typography category="headline">
-                  You're challenging spot {this.props.spot.row}
-                  {this.props.spot.file} for the {this.props.performanceName}&nbsp;&nbsp;
-                </Typography>
-                <Button primary onClick={this.handleDeleteRequest}>
-                  Delete Challenge
-                </Button>
-              </Container>}
+          <Typography category="headline">
+            You're challenging spot {this.props.spot.row}
+            {this.props.spot.file} for the {this.props.performanceName}&nbsp;&nbsp;
+          </Typography>
+          <Button primary onClick={this.handleDeleteRequest}>
+            Delete Challenge
+          </Button>
         </Container>
       </Elevation>
     );

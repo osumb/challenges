@@ -80,7 +80,7 @@ export default class Performance extends React.PureComponent {
 
   render() {
     const { date, windowClose, windowOpen } = this.state;
-    const { buttonText, performance  } = this.props;
+    const { buttonText, performance } = this.props;
     const name = performance ? performance.name : '';
 
     return (

@@ -91,7 +91,12 @@ class PerformanceIndex extends React.PureComponent {
     }
 
     return (
-      <FlexContainer flexDirection="column" alignItems="center" margin="20px 0" opacity={requesting ? 0.5 : 1}>
+      <FlexContainer
+        flexDirection="column"
+        alignItems="center"
+        margin="20px 0"
+        opacity={requesting ? 0.5 : 1}
+      >
         <Typography category="display" number={2}>
           Update Performances
         </Typography>

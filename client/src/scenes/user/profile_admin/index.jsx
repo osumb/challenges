@@ -91,7 +91,7 @@ class Profile extends React.PureComponent {
           width="95%"
         >
           {(showCreateDisciplineAction || disciplineActions.length > 0) &&
-            <FlexChild flex="1" minWidth="350px" margin="0 10px">
+            <FlexChild flex="1" minWidth="350px" margin="10px">
               <Elevation>
                 {showCreateDisciplineAction &&
                   <FlexChild padding="10px">
@@ -108,13 +108,12 @@ class Profile extends React.PureComponent {
                       user={user}
                       onDelete={this.handleDADelete}
                     />
-                    <ListDropdownSeparator />
                   </div>
                 )}
               </Elevation>
             </FlexChild>}
           {(Boolean(currentChallenge) || pastChallenges.length > 0) &&
-            <FlexChild flex="1" minWidth="350px" margin="0 10px">
+            <FlexChild flex="1" minWidth="350px" margin="10px">
               <Elevation>
                 {currentChallenge &&
                   <FlexChild padding="10px">
@@ -124,7 +123,6 @@ class Profile extends React.PureComponent {
                       onDelete={this.handleCurrentChallengeDelete}
                       targetUserBuckId={user.buckId}
                     />
-                    <ListDropdownSeparator />
                   </FlexChild>}
                 {pastChallenges.map(c =>
                   <FlexContainer key={c.id} padding="10px">

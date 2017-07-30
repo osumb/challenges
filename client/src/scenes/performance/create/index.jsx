@@ -31,7 +31,11 @@ export default class CreatePerformance extends React.PureComponent {
     const { created, requesting } = this.state;
 
     return (
-      <FlexContainer flexDirection="column" alignItems="center" opacity={requesting ? 0.5 : 1}>
+      <FlexContainer
+        flexDirection="column"
+        alignItems="center"
+        opacity={requesting ? 0.5 : 1}
+      >
         <Typography category="display" number={2}>
           Create Performance
         </Typography>

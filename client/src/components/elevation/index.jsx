@@ -3,7 +3,13 @@ import PropTypes from 'prop-types';
 
 export default function Elevation({ children, zLevel }) {
   return (
-    <div className={`mdc-elevation--z${zLevel}`}>
+    <div
+      className={`mdc-elevation--z${zLevel}`}
+      style={{
+        borderRadius: '8px',
+        padding: 10
+      }}
+    >
       {children}
     </div>
   );

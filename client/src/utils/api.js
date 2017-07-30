@@ -24,6 +24,11 @@ const parseErrorMessage = response => {
         if ((thing.errors || []).length <= 0) {
           return getMessageFromStatus(response.status);
         }
+        if (!Array.isArray(thing.errors)) {
+          return Object.keys(thing.errors)
+            .map(key => `${key}: ${thing.errors[key].join('. ')}`)
+            .join('. ');
+        }
         return thing.errors.map(error => Object.values(error)).join('. ');
       })
       .catch(err => {
