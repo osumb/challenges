@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170711043231) do
+ActiveRecord::Schema.define(version: 20170724044933) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -21,7 +21,6 @@ ActiveRecord::Schema.define(version: 20170711043231) do
     t.integer  "stage",          default: 0
     t.integer  "spot_id"
     t.integer  "performance_id"
-    t.string   "winner_buck_id"
     t.datetime "created_at",                 null: false
     t.datetime "updated_at",                 null: false
     t.index ["performance_id"], name: "index_challenges_on_performance_id", using: :btree
@@ -68,6 +67,7 @@ ActiveRecord::Schema.define(version: 20170711043231) do
     t.integer "spot_id"
     t.string  "comments"
     t.string  "user_buck_id"
+    t.integer "place"
     t.index ["challenge_id"], name: "index_user_challenges_on_challenge_id", using: :btree
     t.index ["spot_id"], name: "index_user_challenges_on_spot_id", using: :btree
   end

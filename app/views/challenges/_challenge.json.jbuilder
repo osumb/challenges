@@ -11,4 +11,4 @@ end
 json.performance do
   json.partial! 'performances/performance', performance: challenge.performance
 end
-json.winnerBuckId challenge.winner_buck_id
+json.winnerBuckId challenge.user_challenges.find_by(place: :first)&.user_buck_id

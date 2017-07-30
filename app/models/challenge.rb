@@ -8,7 +8,6 @@ class Challenge < ApplicationRecord
   has_many :users, through: :user_challenges
   belongs_to :spot
   belongs_to :performance
-  belongs_to :winner, class_name: 'User', foreign_key: 'winner_buck_id', optional: true
 
   # validations
   validates :performance, presence: true
@@ -35,6 +34,16 @@ class Challenge < ApplicationRecord
   def self.tri_challenge_rows
     [:j]
   end
+
+  # rubocop:disable Metrics/PerceivedComplexity
+  def can_be_evaluated_by?(user:)
+    return false if user.member?
+    return true if user.admin?
+    return true if user.director? && (user.instrument_any? || user.instrument == users.first.instrument)
+    return true if user.squad_leader? && users.any? { |u| u.spot.row == user.spot.row }
+    false
+  end
+  # rubocop:enable Metrics/PerceivedComplexity
 
   private
 
