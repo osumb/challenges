@@ -19,6 +19,16 @@ class ChallengesController < ApplicationController
     end
   end
 
+  def for_evaluation
+    @evaluable_challenges = Challenge.evaluable(current_user)
+
+    if @evaluable_challenges.any?
+      render :for_evaluation, status: :ok
+    else
+      render json: { resource: 'challenge', errors: [challenge: 'not found'] }, status: :not_found
+    end
+  end
+
   private
 
   def ensure_not_challenging_alternate!
