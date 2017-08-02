@@ -24,7 +24,7 @@ class Challenge < ApplicationRecord
   # scopes
   scope :with_users_and_spots, -> { includes(user_challenges: { user: :spot }) }
   scope :needs_comments, -> { where(stage: :needs_comments) }
-  scope :evaluable, -> (user) do
+  scope :evaluable, lambda { |user|
     if user.admin? || (user.director? && user.instrument_any?)
       needs_comments.with_users_and_spots
     elsif user.director?
@@ -34,7 +34,7 @@ class Challenge < ApplicationRecord
     else
       none
     end
-  end
+  }
 
   # rubocop:disable Metrics/CyclomaticComplexity
   def full?
