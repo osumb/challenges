@@ -21,6 +21,21 @@ class Challenge < ApplicationRecord
   validate :no_duplicate_challenged_spots
   validate :correct_row_for_challenge_type
 
+  # scopes
+  scope :with_users_and_spots, -> { includes(user_challenges: { user: :spot }) }
+  scope :needs_comments, -> { where(stage: :needs_comments) }
+  scope :evaluable, -> (user) do
+    if user.admin? || (user.director? && user.instrument_any?)
+      needs_comments.with_users_and_spots
+    elsif user.director?
+      needs_comments.with_users_and_spots.where(users: { instrument: user.instrument })
+    elsif user.squad_leader?
+      needs_comments.with_users_and_spots.where(spots: { row: user.spot.row })
+    else
+      none
+    end
+  end
+
   # rubocop:disable Metrics/CyclomaticComplexity
   def full?
     return true if normal_challenge_type? && users.length == 2
@@ -34,16 +49,6 @@ class Challenge < ApplicationRecord
   def self.tri_challenge_rows
     [:j]
   end
-
-  # rubocop:disable Metrics/PerceivedComplexity
-  def can_be_evaluated_by?(user:)
-    return false if user.member?
-    return true if user.admin?
-    return true if user.director? && (user.instrument_any? || user.instrument == users.first.instrument)
-    return true if user.squad_leader? && users.any? { |u| u.spot.row == user.spot.row }
-    false
-  end
-  # rubocop:enable Metrics/PerceivedComplexity
 
   private
 

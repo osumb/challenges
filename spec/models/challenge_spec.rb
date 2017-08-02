@@ -144,8 +144,8 @@ describe Challenge, type: :model do
     end
   end
 
-  describe '#can_be_evaluated_by?' do
-    subject(:challenge) { create(:normal_challenge, spot: create(:spot, row: :x, file: 1)) }
+  describe '.evaluable' do
+    let!(:challenge) { create(:normal_challenge, spot: create(:spot, row: :x, file: 1)) }
     let(:current_instrument) { challenge.users.first.instrument }
     let(:spot_in_challenge_row) { create(:spot, row: challenge.spot.row, file: 2) }
     let(:spot_in_first_user_row) { create(:spot, row: challenge.users.first.spot.row, file: 2) }
@@ -163,32 +163,35 @@ describe Challenge, type: :model do
     context 'when a member is evaluating' do
       let(:user) { create(:user, :member) }
 
-      specify { expect(challenge.can_be_evaluated_by?(user: user)).to be(false) }
+      specify { expect(described_class.evaluable(user)).to be_empty }
     end
 
     context 'when an admin is evaluating' do
       let(:user) { create(:user, :admin) }
 
-      specify { expect(challenge.can_be_evaluated_by?(user: user)).to be(true) }
+      specify { expect(described_class.evaluable(user)).to include(challenge) }
+      specify { expect(described_class.evaluable(user).count).to eq(1) }
     end
 
     context 'when a director is evaluating' do
       context 'and they have any instrument' do
         let(:user) { create(:user, :director, instrument: :any) }
 
-        specify { expect(challenge.can_be_evaluated_by?(user: user)).to be(true) }
+        specify { expect(described_class.evaluable(user)).to include(challenge) }
+        specify { expect(described_class.evaluable(user).count).to eq(1) }
       end
 
       context 'and they have the same instrument' do
         let(:user) { create(:user, :director, instrument: current_instrument) }
 
-        specify { expect(challenge.can_be_evaluated_by?(user: user)).to be(true) }
+        specify { expect(described_class.evaluable(user)).to include(challenge) }
+        specify { expect(described_class.evaluable(user).count).to eq(1) }
       end
 
       context 'and they do not have the same instrument' do
         let(:user) { create(:user, :director, instrument: other_instrument, part: :first) }
 
-        specify { expect(challenge.can_be_evaluated_by?(user: user)).to be(false) }
+        specify { expect(described_class.evaluable(user)).to be_empty }
       end
     end
 
@@ -198,7 +201,8 @@ describe Challenge, type: :model do
           create(:user, :squad_leader, instrument: current_instrument, spot: spot_in_challenge_row)
         end
 
-        specify { expect(challenge.can_be_evaluated_by?(user: user)).to be(true) }
+        specify { expect(described_class.evaluable(user)).to include(challenge) }
+        specify { expect(described_class.evaluable(user).count).to eq(1) }
       end
 
       context 'and they are in the row of one of the participants' do
@@ -209,8 +213,10 @@ describe Challenge, type: :model do
           create(:user, :squad_leader, instrument: current_instrument, spot: spot_in_last_user_row)
         end
 
-        specify { expect(challenge.can_be_evaluated_by?(user: user_1)).to be(true) }
-        specify { expect(challenge.can_be_evaluated_by?(user: user_2)).to be(true) }
+        specify { expect(described_class.evaluable(user_1)).to include(challenge) }
+        specify { expect(described_class.evaluable(user_1).count).to eq(1) }
+        specify { expect(described_class.evaluable(user_2)).to include(challenge) }
+        specify { expect(described_class.evaluable(user_2).count).to eq(1) }
       end
 
       context 'and they are in an entirely different row' do
@@ -218,7 +224,7 @@ describe Challenge, type: :model do
           create(:user, :squad_leader, instrument: :trumpet, part: :first, spot: spot_in_other_row)
         end
 
-        specify { expect(challenge.can_be_evaluated_by?(user: user)).to be(false) }
+        specify { expect(described_class.evaluable(user)).to be_empty }
       end
     end
   end

@@ -1,8 +1,8 @@
 require 'rails_helper'
 
 describe 'User Challenges Evaluation', type: :request do
-  subject(:request) { post endpoint, params: params.to_json, headers: authenticated_header(admin) }
-  let(:admin) { create(:admin_user) }
+  subject(:request) { post endpoint, params: params.to_json, headers: authenticated_header(user) }
+  let(:user) { create(:admin_user) }
   let(:challenge) { create(:normal_challenge) }
   let(:params) { { user_challenges: user_challenge_params } }
 
@@ -29,10 +29,6 @@ describe 'User Challenges Evaluation', type: :request do
     end
 
     context 'when the user can evaluate' do
-      before do
-        allow(challenge).to receive(:can_be_evaluated_by?).and_return(true)
-      end
-
       it 'has the correct status' do
         request
         expect(response).to have_http_status(:no_content)
@@ -47,9 +43,7 @@ describe 'User Challenges Evaluation', type: :request do
     end
 
     context 'when the user cannot evaluate' do
-      before do
-        allow(challenge).to receive(:can_be_evaluated_by?).and_return(false)
-      end
+      let(:user) { create(:user, :member) }
 
       it 'has the correct status' do
         request
@@ -111,10 +105,6 @@ describe 'User Challenges Evaluation', type: :request do
     end
 
     context 'when the user can evaluate' do
-      before do
-        allow(challenge).to receive(:can_be_evaluated_by?).and_return(true)
-      end
-
       it 'has the correct status' do
         request
         expect(response).to have_http_status(:no_content)
@@ -129,9 +119,7 @@ describe 'User Challenges Evaluation', type: :request do
     end
 
     context 'when the user cannot evaluate' do
-      before do
-        allow(challenge).to receive(:can_be_evaluated_by?).and_return(false)
-      end
+      let(:user) { create(:user, :member) }
 
       it 'has the correct status' do
         request
