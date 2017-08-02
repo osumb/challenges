@@ -14,6 +14,9 @@ Rails.application.routes.draw do
       collection do
         get :for_evaluation
       end
+      member do
+        put :submit_for_approval
+      end
     end
     resources :discipline_actions, only: [:create, :destroy]
     resources :user_challenges, only: [:create, :destroy] do
