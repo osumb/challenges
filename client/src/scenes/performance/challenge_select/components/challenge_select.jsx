@@ -18,12 +18,8 @@ import TriChallengeableUser from './tri_challengeable_user';
 import Typography from '../../../../components/typography';
 import Select from '../../../../components/select';
 
-const ButtonWrapper = styled.div`
-  margin: 10px;
-`;
-const ErrorText = styled.div`
-  color: red;
-`;
+const ButtonWrapper = styled.div`margin: 10px;`;
+const ErrorText = styled.div`color: red;`;
 
 export default class ChallengeSelect extends React.PureComponent {
   static get propTypes() {

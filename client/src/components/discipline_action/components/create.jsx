@@ -14,9 +14,7 @@ import Checkbox from '../../../components/checkbox';
 import TextField from '../../../components/textfield';
 import Typography from '../../../components/typography';
 
-const Info = styled.div`
-  margin-left: 10px;
-`;
+const Info = styled.div`margin-left: 10px;`;
 
 export default class CreateDisciplineAction extends React.PureComponent {
   static get propTypes() {
@@ -135,7 +133,9 @@ export default class CreateDisciplineAction extends React.PureComponent {
           }}
           label={`Check box if ${user.firstName} is allowed to challenge another spot`}
         />
-        <Button primary onClick={this.handleCreateClick}>Create</Button>
+        <Button primary onClick={this.handleCreateClick}>
+          Create
+        </Button>
       </FlexContainer>
     );
   }

@@ -23,14 +23,14 @@ class Evaluations extends React.Component {
     );
 
     this.state = {
-      currentChallengeId: sortedChallenges[0] && sortedChallenges[0].id,
+      currentChallengeId: sortedChallenges[0] && sortedChallenges[0].id
     };
   }
 
   setActiveChallengeTo(challengeId) {
     return () => {
       this.setState({
-        currentChallengeId: challengeId,
+        currentChallengeId: challengeId
       });
     };
   }
@@ -38,29 +38,37 @@ class Evaluations extends React.Component {
   render() {
     const { challenges } = this.props;
     const { currentChallengeId } = this.state;
-    const sortedChallenges = challenges.sort((a, b) => spotHelpers.compareSpots(a.spot, b.spot));
-    const currentChallenge = sortedChallenges.find((challenge) => challenge.id === currentChallengeId);
+    const sortedChallenges = challenges.sort((a, b) =>
+      spotHelpers.compareSpots(a.spot, b.spot)
+    );
+    const currentChallenge = sortedChallenges.find(
+      challenge => challenge.id === currentChallengeId
+    );
 
     return (
       <FlexContainer>
         <FlexChild flex="0">
           <SideNav>
-            {sortedChallenges.map((challenge) => (
+            {sortedChallenges.map(challenge =>
               <SideNavItem
                 active={currentChallengeId === challenge.id}
                 key={challenge.id}
                 onClick={this.setActiveChallengeTo(challenge.id)}
-                subtitle={challenge.users.map((user) => user.firstName).join(' vs. ')}
+                subtitle={challenge.users
+                  .map(user => user.firstName)
+                  .join(' vs. ')}
                 title={`${challenge.spot.row}${challenge.spot.file}`}
               />
-            ))}
+            )}
           </SideNav>
         </FlexChild>
         <FlexChild flex="1">
           <FlexContainer alignItems="center">
             <FlexChild margin="auto">
-              {currentChallengeId && <Evaluation challenge={currentChallenge} />}
-              {!currentChallengeId && <p>Looks like you don't have any challenges to evaluate!</p>}
+              {currentChallengeId &&
+                <Evaluation challenge={currentChallenge} />}
+              {!currentChallengeId &&
+                <p>Looks like you don't have any challenges to evaluate!</p>}
             </FlexChild>
           </FlexContainer>
         </FlexChild>

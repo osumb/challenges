@@ -103,7 +103,10 @@ export default class CompletedResult extends Component {
             {!editing
               ? <CardText className="CompletedResult-text">
                   <span>
-                    <strong>{firstName}: </strong>{firstComments}
+                    <strong>
+                      {firstName}:{' '}
+                    </strong>
+                    {firstComments}
                   </span>
                 </CardText>
               : <TextField
@@ -118,7 +121,12 @@ export default class CompletedResult extends Component {
             {secondNameNumber &&
               (!editing
                 ? <CardText className="CompletedResult-text">
-                    <span><strong>{secondName}: </strong>{secondComments}</span>
+                    <span>
+                      <strong>
+                        {secondName}:{' '}
+                      </strong>
+                      {secondComments}
+                    </span>
                   </CardText>
                 : <TextField
                     multiLine

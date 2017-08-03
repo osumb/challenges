@@ -2,9 +2,11 @@ import React from 'react';
 
 import classnames from 'classnames';
 
-const SideNavItem = ({ active, onClick, subtitle, title }) => (
+const SideNavItem = ({ active, onClick, subtitle, title }) =>
   <a
-    className={classnames('mdc-list-item', { 'mdc-permanent-drawer--selected': active })}
+    className={classnames('mdc-list-item', {
+      'mdc-permanent-drawer--selected': active
+    })}
     onClick={onClick}
   >
     <i
@@ -14,7 +16,6 @@ const SideNavItem = ({ active, onClick, subtitle, title }) => (
       {title}
     </i>
     {subtitle}
-  </a>
-);
+  </a>;
 
 export default SideNavItem;

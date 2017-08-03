@@ -47,7 +47,9 @@ export default class PastDisciplineAction extends React.PureComponent {
           {reason}
         </Typography>
         {showDelete &&
-          <Button onClick={this.handleDeleteClick} primary>Delete</Button>}
+          <Button onClick={this.handleDeleteClick} primary>
+            Delete
+          </Button>}
       </div>
     );
   }

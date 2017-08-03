@@ -13,9 +13,7 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
 `;
-const Item = styled.div`
-  margin-top: 5px;
-`;
+const Item = styled.div`margin-top: 5px;`;
 
 const SearchResultList = ({ children, query, requesting }) => {
   if (!query || requesting) return null;
@@ -27,7 +25,9 @@ const SearchResultList = ({ children, query, requesting }) => {
         </Typography>}
       {React.Children.map(children, child =>
         <Item>
-          <ListDropdownItem>{child}</ListDropdownItem>
+          <ListDropdownItem>
+            {child}
+          </ListDropdownItem>
           <ListDropdownSeparator />
         </Item>
       )}

@@ -19,7 +19,9 @@ const Result = ({
       subtitle={winner ? 'You Won!' : 'You Lost'}
       avatar={winner ? '/images/trophy.png' : '/images/crying-cat-face.png'}
     />
-    <CardText>{comments}</CardText>
+    <CardText>
+      {comments}
+    </CardText>
   </Card>;
 
 Result.propTypes = {

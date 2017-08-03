@@ -176,8 +176,12 @@ export default class PendingResult extends Component {
       </FlatButton>
     ];
     const title = editing
-      ? <strong><LockOpen /> {currentWinner} ({spotId})</strong>
-      : <strong><LockOutline /> {currentWinner} ({spotId})</strong>;
+      ? <strong>
+          <LockOpen /> {currentWinner} ({spotId})
+        </strong>
+      : <strong>
+          <LockOutline /> {currentWinner} ({spotId})
+        </strong>;
 
     return (
       <div className="PendingResult">
@@ -209,8 +213,13 @@ export default class PendingResult extends Component {
                 )}
               </div>
             : <div className="PendingResult-textHeaders">
-                <p>{firstName}</p>
-                {secondNameNumber && <p>{secondName}</p>}
+                <p>
+                  {firstName}
+                </p>
+                {secondNameNumber &&
+                  <p>
+                    {secondName}
+                  </p>}
               </div>}
           <Divider />
           <div className="PendingResult-text">
@@ -223,7 +232,9 @@ export default class PendingResult extends Component {
                   rowsMax={4}
                   value={firstComments}
                 />
-              : <CardText>{firstComments}</CardText>}
+              : <CardText>
+                  {firstComments}
+                </CardText>}
             {secondNameNumber &&
               (editing
                 ? <TextField
@@ -234,7 +245,9 @@ export default class PendingResult extends Component {
                     rowsMax={4}
                     value={secondComments}
                   />
-                : <CardText>{secondComments}</CardText>)}
+                : <CardText>
+                    {secondComments}
+                  </CardText>)}
           </div>
           <CardActions>
             {editing &&

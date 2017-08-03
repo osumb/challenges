@@ -5,7 +5,9 @@ export const ITEM_HEIGHT = 48;
 
 export default function ListDropdownItem({ children }) {
   return typeof children === 'string'
-    ? <li className="mdc-list-item">{children}</li>
+    ? <li className="mdc-list-item">
+        {children}
+      </li>
     : React.cloneElement(children, { className: 'mdc-list-item' });
 }
 
