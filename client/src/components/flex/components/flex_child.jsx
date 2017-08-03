@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 export default styled.div`
-  ${({ flex }) => flex && `flex: ${flex};`};
+  flex: ${({ flex }) => flex}
   ${({ alignSelf }) => alignSelf && `align-self: ${alignSelf};`};
   ${({ minWidth }) => minWidth && `min-width: ${minWidth};`};
   ${({ maxWidth }) => maxWidth && `max-width: ${maxWidth};`};

@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { FlexChild, FlexContainer } from '../../../components/flex';
-import { helpers } from '../../../data/challenge_evaluations';
+import { helpers, propTypes } from '../../../data/challenge_evaluations';
 import { helpers as spotHelpers } from '../../../data/spot';
 import { fetch } from '../../../utils';
 import Evaluation from './components/evaluation';
@@ -9,31 +9,33 @@ import SideNav from './components/side-nav';
 import SideNavItem from './components/side-nav-item';
 
 class Evaluations extends React.Component {
+  static get propTypes() {
+    return propTypes.challengesForEvaluationPropTypes;
+  }
+
   constructor(props, context) {
     super(props, context);
 
     this.setActiveChallengeTo = this.setActiveChallengeTo.bind(this);
 
-    let currentChallengeId = null;
-
-    if (props.challenges) {
-      const sortedChallenges = props.challenges.sort((a, b) =>
-        spotHelpers.compareSpots(a.spot, b.spot)
-      );
-
-      currentChallengeId = sortedChallenges[0] && sortedChallenges[0].id
-    }
+    const sortedChallenges = props.challenges.sort((a, b) =>
+      spotHelpers.compareSpots(a.spot, b.spot)
+    );
 
     this.state = {
-      currentChallengeId,
+      currentChallengeId: sortedChallenges[0] && sortedChallenges[0].id,
+    };
+  }
+
+  setActiveChallengeTo(challengeId) {
+    return () => {
+      this.setState({
+        currentChallengeId: challengeId,
+      });
     };
   }
 
   render() {
-    if (!this.props.challenges) {
-      return null;
-    }
-
     const { challenges } = this.props;
     const { currentChallengeId } = this.state;
     const sortedChallenges = challenges.sort((a, b) => spotHelpers.compareSpots(a.spot, b.spot));
@@ -41,7 +43,7 @@ class Evaluations extends React.Component {
 
     return (
       <FlexContainer>
-        <FlexChild>
+        <FlexChild flex="0">
           <SideNav>
             {sortedChallenges.map((challenge) => (
               <SideNavItem
@@ -54,7 +56,7 @@ class Evaluations extends React.Component {
             ))}
           </SideNav>
         </FlexChild>
-        <FlexChild flex={1}>
+        <FlexChild flex="1">
           <FlexContainer alignItems="center">
             <FlexChild margin="auto">
               {currentChallengeId && <Evaluation challenge={currentChallenge} />}
@@ -64,14 +66,6 @@ class Evaluations extends React.Component {
         </FlexChild>
       </FlexContainer>
     );
-  }
-
-  setActiveChallengeTo(challengeId) {
-    return () => {
-      this.setState({
-        currentChallengeId: challengeId,
-      });
-    };
   }
 }
 
