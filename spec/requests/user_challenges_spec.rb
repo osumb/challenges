@@ -60,7 +60,10 @@ describe 'User Challenges', type: :request do
 
       context 'and the requesting user is not an admin' do
         let(:params) do
-          { challenge_id: challenge.id }
+          {
+            challenger_buck_id: new_challenger.buck_id,
+            challenge_id: challenge.id
+          }
         end
 
         it 'successfully adds the new challenge to the challenge' do
