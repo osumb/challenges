@@ -14,25 +14,25 @@ class Evaluations extends React.Component {
 
     this.setActiveChallengeTo = this.setActiveChallengeTo.bind(this);
 
-    this.state = {
-      currentChallengeId: null,
-    };
-  }
+    let currentChallengeId = null;
 
-  componentDidMount() {
-    if (!this.state.currentChallengeId && this.props.challenges) {
-      const sortedChallenges = this.props.challenges.sort((a, b) =>
+    if (props.challenges) {
+      const sortedChallenges = props.challenges.sort((a, b) =>
         spotHelpers.compareSpots(a.spot, b.spot)
       );
 
-      this.setState({
-        currentChallengeId: sortedChallenges[0] && sortedChallenges[0].id
-      });
+      currentChallengeId = sortedChallenges[0] && sortedChallenges[0].id
     }
+
+    this.state = {
+      currentChallengeId,
+    };
   }
 
   render() {
-    if (!this.props.challenges) { return null; }
+    if (!this.props.challenges) {
+      return null;
+    }
 
     const { challenges } = this.props;
     const { currentChallengeId } = this.state;
