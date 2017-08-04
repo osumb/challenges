@@ -23,11 +23,7 @@ class ChallengesController < ApplicationController
   def for_evaluation
     @evaluable_challenges = Challenge.evaluable(current_user)
 
-    if @evaluable_challenges.any?
-      render :for_evaluation, status: :ok
-    else
-      render json: { resource: 'challenge', errors: [challenge: 'not found'] }, status: :not_found
-    end
+    render :for_evaluation, status: :ok
   end
 
   def submit_for_approval
