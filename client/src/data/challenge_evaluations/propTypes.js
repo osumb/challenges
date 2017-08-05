@@ -8,6 +8,7 @@ const userChallengeForEvaluationPropTypes = {
   challengeId: PropTypes.number.isRequired,
   comments: PropTypes.string,
   id: PropTypes.number.isRequired,
+  place: PropTypes.number,
   user: PropTypes.shape(userProps).isRequired,
   userBuckId: PropTypes.string.isRequired
 };
@@ -23,6 +24,31 @@ const challengeForEvaluationPropTypes = {
   users: PropTypes.arrayOf(PropTypes.shape(userProps))
 };
 
+const challengeForEvaluationWithUserChallengesObjectPropTypes = {
+  ...challengeForEvaluationPropTypes,
+  userChallenges: (props, propName, componentName) => {
+    // eslint-disable-next-line consistent-return
+    Object.keys(props[propName]).forEach(userChallengeId => {
+      if (typeof userChallengeId !== 'string') {
+        return new Error(
+          `${propName} must be of form { [key: string]: UserChallenge } for ${componentName}`
+        );
+      }
+    });
+
+    Object.keys(props[propName]).forEach(userChallengeId => {
+      PropTypes.checkPropTypes(
+        userChallengeForEvaluationPropTypes,
+        props[propName][userChallengeId],
+        `userChallenge for key ${userChallengeId}`,
+        componentName
+      );
+    });
+
+    return null;
+  }
+};
+
 const challengesForEvaluationPropTypes = {
   challenges: PropTypes.arrayOf(
     PropTypes.shape(challengeForEvaluationPropTypes)
@@ -32,5 +58,6 @@ const challengesForEvaluationPropTypes = {
 export default {
   challengeForEvaluationPropTypes,
   challengesForEvaluationPropTypes,
+  challengeForEvaluationWithUserChallengesObjectPropTypes,
   userChallengeForEvaluationPropTypes
 };
