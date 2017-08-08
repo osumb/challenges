@@ -7,8 +7,25 @@ describe Challenge, type: :model do
   it { is_expected.to belong_to(:performance) }
 
   describe 'validations' do
+    context 'when it is not full' do
+      let(:challenge) { create(:open_spot_challenge) }
+
+      it 'is not allowed to transition to :needs_approval' do
+        expect { challenge.update(stage: :needs_approval) }
+          .not_to change { challenge.reload.stage }
+      end
+
+      it 'has the correct errors' do
+        challenge.update(stage: :needs_approval)
+
+        expect(challenge.errors.full_messages).to include('Challenge must be full')
+      end
+    end
+
     context 'normal challenge' do
       subject { build(:normal_challenge) }
+
+      it_behaves_like 'a valid transition to :needs_approval', :normal_challenge
 
       it 'is invalid without 2 users' do
         subject.users = [subject.users.first] # remove a user
@@ -51,6 +68,8 @@ describe Challenge, type: :model do
     context 'open spot challenge' do
       subject { build(:open_spot_challenge) }
 
+      it_behaves_like 'a valid transition to :needs_approval', :full_open_spot_challenge
+
       it 'is invalid with no users' do
         subject.users = []
 
@@ -70,6 +89,8 @@ describe Challenge, type: :model do
 
     context 'tri challenge' do
       subject { build(:tri_challenge) }
+
+      it_behaves_like 'a valid transition to :needs_approval', :tri_challenge
 
       it 'is invalid without 3 users' do
         subject.users = []
