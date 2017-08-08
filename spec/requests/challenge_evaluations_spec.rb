@@ -31,6 +31,12 @@ describe 'Challenge Evaluations', type: :request do
     let(:endpoint) { "/api/challenges/#{challenge.id}/submit_for_approval" }
 
     context 'when the user can submit for approval' do
+      before do
+        challenge.user_challenges.each_with_index do |uc, index|
+          uc.update(place: index + 1)
+        end
+      end
+
       it 'has the correct status' do
         request
         expect(response).to have_http_status(:no_content)
