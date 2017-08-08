@@ -20,6 +20,7 @@ class Challenge < ApplicationRecord
   validate :unique_users_in_challenge
   validate :no_duplicate_challenged_spots
   validate :correct_row_for_challenge_type
+  validate :valid_needs_approval_state
 
   # scopes
   scope :with_users_and_spots, -> { includes(user_challenges: { user: :spot }) }
@@ -109,5 +110,17 @@ class Challenge < ApplicationRecord
       return unless Challenge.tri_challenge_rows.include? spot.row
       errors.add(:challenge, "only tri challenges can involve the row: #{spot.row}")
     end
+  end
+
+  def valid_needs_approval_state
+    return unless stage_changed? to: 'needs_approval'
+
+    places = user_challenges.pluck(:place).compact.uniq
+    should_not_have_third = !tri_challenge_type? && places.include?('third')
+
+    errors.add(:challenge, 'must be full') unless full?
+    errors.add(:challenge, 'must have place assignments') if places.count.zero?
+    errors.add(:challenge, 'cannot have duplicate place assignments') if places.count < user_challenges.count
+    errors.add(:challenge, 'cannot have a third place unless the challenge is a tri challenge') if should_not_have_third
   end
 end
