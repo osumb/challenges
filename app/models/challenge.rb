@@ -20,6 +20,22 @@ class Challenge < ApplicationRecord
   validate :unique_users_in_challenge
   validate :no_duplicate_challenged_spots
   validate :correct_row_for_challenge_type
+  validate :valid_needs_approval_state
+
+  # scopes
+  scope :with_users_and_spots, -> { includes(user_challenges: { user: :spot }) }
+  scope :needs_comments, -> { where(stage: :needs_comments) }
+  scope :evaluable, lambda { |user|
+    if user.admin? || (user.director? && user.instrument_any?)
+      needs_comments.with_users_and_spots
+    elsif user.director?
+      needs_comments.with_users_and_spots.where(users: { instrument: user.instrument })
+    elsif user.squad_leader?
+      needs_comments.with_users_and_spots.where(spots: { row: user.spot.row })
+    else
+      none
+    end
+  }
 
   # rubocop:disable Metrics/CyclomaticComplexity
   def full?
@@ -34,16 +50,6 @@ class Challenge < ApplicationRecord
   def self.tri_challenge_rows
     [:j]
   end
-
-  # rubocop:disable Metrics/PerceivedComplexity
-  def can_be_evaluated_by?(user:)
-    return false if user.member?
-    return true if user.admin?
-    return true if user.director? && (user.instrument_any? || user.instrument == users.first.instrument)
-    return true if user.squad_leader? && users.any? { |u| u.spot.row == user.spot.row }
-    false
-  end
-  # rubocop:enable Metrics/PerceivedComplexity
 
   private
 
@@ -104,5 +110,17 @@ class Challenge < ApplicationRecord
       return unless Challenge.tri_challenge_rows.include? spot.row
       errors.add(:challenge, "only tri challenges can involve the row: #{spot.row}")
     end
+  end
+
+  def valid_needs_approval_state
+    return unless stage_changed? to: 'needs_approval'
+
+    places = user_challenges.pluck(:place).compact.uniq
+    should_not_have_third = !tri_challenge_type? && places.include?('third')
+
+    errors.add(:challenge, 'must be full') unless full?
+    errors.add(:challenge, 'must have place assignments') if places.count.zero?
+    errors.add(:challenge, 'cannot have duplicate place assignments') if places.count < user_challenges.count
+    errors.add(:challenge, 'cannot have a third place unless the challenge is a tri challenge') if should_not_have_third
   end
 end

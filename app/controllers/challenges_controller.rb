@@ -2,6 +2,7 @@ class ChallengesController < ApplicationController
   before_action :authenticate_user
   before_action :ensure_not_challenging_alternate!, only: [:create]
   before_action :ensure_performance_is_current_and_open!, only: [:create]
+  before_action :ensure_user_can_submit_for_approval!, only: [:submit_for_approval]
   before_action :ensure_user_has_not_already_made_challenge!, only: [:create]
   before_action :ensure_user_is_challenging_correct_instrument_and_part!, only: [:create]
   before_action :ensure_spot_has_not_been_challenged!, only: [:create]
@@ -16,6 +17,22 @@ class ChallengesController < ApplicationController
       render :show, status: 201
     else
       render json: { resource: 'challenge', errors: @challenge.errors }, status: 409
+    end
+  end
+
+  def for_evaluation
+    @evaluable_challenges = Challenge.evaluable(current_user)
+
+    render :for_evaluation, status: :ok
+  end
+
+  def submit_for_approval
+    challenge = Challenge.find(params[:id])
+
+    if challenge.update(stage: :needs_approval)
+      head :no_content
+    else
+      render json: { resource: 'challenge', errors: challenge.errors }, status: :conflict
     end
   end
 
@@ -59,5 +76,13 @@ class ChallengesController < ApplicationController
     return if challenge.nil?
     return if challenge.open_spot_challenge_type?
     render json: { resource: 'challenge', errors: [spot: 'spot has already been challenged'] }, status: 403
+  end
+
+  def ensure_user_can_submit_for_approval!
+    return if Challenge.evaluable(current_user).where(id: params[:id]).exists?
+    render json: {
+      resource: 'challenge',
+      errors: [challenge: 'not authenticated to submit challenge for approval']
+    }, status: :unauthorized
   end
 end

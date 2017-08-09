@@ -87,8 +87,8 @@ class UserChallengesController < ApplicationController
   end
 
   def ensure_user_can_evaluate!
-    challenge = UserChallenge.find(params[:user_challenges].first.try(:[], :id)).challenge
-    return if challenge.can_be_evaluated_by?(user: current_user)
+    evaluable_user_challenge_ids = Challenge.evaluable(current_user).flat_map { |c| c.user_challenges.ids }
+    return if params[:user_challenges].all? { |uc| evaluable_user_challenge_ids.include?(uc[:id]) }
     render json: {
       resource: 'user_challenge',
       errors: [user: 'doesn\'t have permission to update that challenge']

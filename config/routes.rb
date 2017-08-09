@@ -10,7 +10,14 @@ Rails.application.routes.draw do
     get 'users/profile/:buck_id', to: 'users#profile', constraints: { buck_id: /[0-z\.]+/ }
     post 'users/:buck_id/reset_password', to: 'users#reset_password', constraints: { buck_id: /[0-z\.]+/ }
 
-    resources :challenges, only: [:create]
+    resources :challenges, only: [:create] do
+      collection do
+        get :for_evaluation
+      end
+      member do
+        put :submit_for_approval
+      end
+    end
     resources :discipline_actions, only: [:create, :destroy]
     resources :user_challenges, only: [:create, :destroy] do
       collection do
