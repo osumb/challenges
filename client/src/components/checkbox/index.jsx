@@ -23,7 +23,10 @@ const Checkbox = ({ disabled, label, getRef }) =>
         </svg>
       </div>
     </div>
-    {label && <label>{label}</label>}
+    {label &&
+      <label>
+        {label}
+      </label>}
   </div>;
 
 Checkbox.propTypes = {

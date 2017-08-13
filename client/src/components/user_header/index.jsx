@@ -36,9 +36,7 @@ const SpotCircle = styled.div`
   width: 100px;
   margin-right: 4px;
 `;
-const SpotText = styled.h3`
-  align-self: center;
-`;
+const SpotText = styled.h3`align-self: center;`;
 
 const UserHeader = userProps =>
   <Container>

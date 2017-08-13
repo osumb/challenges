@@ -108,7 +108,9 @@ class CompletedResults extends Component {
 
       return (
         <div key={id}>
-          <h1>{performanceResults.performanceName}</h1>
+          <h1>
+            {performanceResults.performanceName}
+          </h1>
           <div className="CompletedResults-results">
             {sortedResultIds.map(rId =>
               <CompletedResult

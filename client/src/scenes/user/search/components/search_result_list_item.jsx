@@ -10,14 +10,14 @@ const ListItem = styled.div`
   align-items: center;
   text-decoration: underline;
 `;
-const Identity = styled.img`
-  margin-right: 10px;
-`;
+const Identity = styled.img`margin-right: 10px;`;
 
 const SearchResultListItem = ({ buckId, firstName, lastName }) =>
   <ListItem>
     <Identity src={PermIdentity} />
-    <Link to={`/users/${buckId}`}>{firstName} {lastName}</Link>
+    <Link to={`/users/${buckId}`}>
+      {firstName} {lastName}
+    </Link>
   </ListItem>;
 
 SearchResultListItem.propTypes = propTypes;

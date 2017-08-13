@@ -20,9 +20,7 @@ const Container = styled.div`
   text-align: center;
   justify-content: center;
 `;
-const Download = styled.img`
-  margin-left: 10px;
-`;
+const Download = styled.img`margin-left: 10px;`;
 
 const handleDownLoadClick = users => () => {
   const csv = usersToCsv(users);
@@ -40,7 +38,9 @@ const handleDownLoadClick = users => () => {
 export default function RosterHeader({ users }) {
   return (
     <Container>
-      <Typography category="display" number={2}>Member Roster</Typography>
+      <Typography category="display" number={2}>
+        Member Roster
+      </Typography>
       <Download src={DownloadIcon} onClick={handleDownLoadClick(users)} />
     </Container>
   );

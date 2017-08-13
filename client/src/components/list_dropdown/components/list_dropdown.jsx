@@ -56,7 +56,9 @@ export default class ListDropdown extends React.PureComponent {
     const { separatorMargin: margin, separatorPadding: padding } = this.props;
     const { open } = this.state;
     const children = React.Children.map(this.props.children, c =>
-      <ListDropdownItem>{c}</ListDropdownItem>
+      <ListDropdownItem>
+        {c}
+      </ListDropdownItem>
     );
 
     return (

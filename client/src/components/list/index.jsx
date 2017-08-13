@@ -6,7 +6,9 @@ import Typography from '../typography';
 const List = ({ children }) =>
   <ul className="mdc-list">
     {React.Children.count(children) <= 0
-      ? <Typography category="subheading" number={2}>Empty List</Typography>
+      ? <Typography category="subheading" number={2}>
+          Empty List
+        </Typography>
       : children}
   </ul>;
 

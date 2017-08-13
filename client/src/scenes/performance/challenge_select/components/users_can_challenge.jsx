@@ -77,8 +77,11 @@ export default class UsersCanChallenge extends React.PureComponent {
                 >
                   <ListItem>
                     <Typography category="subheading" number={2}>
-                      <b>{user.firstName} {user.lastName}</b>
-                      &nbsp;({user.spot.row}{user.spot.file})
+                      <b>
+                        {user.firstName} {user.lastName}
+                      </b>
+                      &nbsp;({user.spot.row}
+                      {user.spot.file})
                     </Typography>
                   </ListItem>
                 </UserContainer>

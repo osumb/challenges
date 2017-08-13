@@ -148,7 +148,9 @@ export default class Performance extends React.PureComponent {
               />
             </FlexContainer>
             <FlexContainer justifyContent="space-between" width="100%">
-              <Button onClick={this.handleActionClick}>{buttonText}</Button>
+              <Button onClick={this.handleActionClick}>
+                {buttonText}
+              </Button>
               {this.props.canDelete &&
                 <Button onClick={this.handleDeleteClick}>Delete</Button>}
             </FlexContainer>

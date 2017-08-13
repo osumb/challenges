@@ -18,8 +18,8 @@ const DoneChallenge = ({
 
   return (
     <Typography category="title">
-      {targetUser.firstName} challenged for spot {spot.row}{spot.file} for{' '}
-      {performance.name} and&nbsp;
+      {targetUser.firstName} challenged for spot {spot.row}
+      {spot.file} for {performance.name} and&nbsp;
       {winnerBuckId === targetUserBuckId ? 'won' : 'lost'}. It was a{' '}
       {challengeType} challenge
     </Typography>

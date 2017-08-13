@@ -52,10 +52,12 @@ export default class CurrentChallengeAdmin extends React.Component {
     return (
       <FlexContainer flexWrap="wrap" justifyContent="space-between">
         <Typography category="title">
-          {targetUser.firstName} is challenging spot {spot.row}{spot.file} for
-          the {performance.name}
+          {targetUser.firstName} is challenging spot {spot.row}
+          {spot.file} for the {performance.name}
         </Typography>
-        <Button primary onClick={this.handleDeleteClick}>Delete</Button>
+        <Button primary onClick={this.handleDeleteClick}>
+          Delete
+        </Button>
       </FlexContainer>
     );
   }

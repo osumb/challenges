@@ -17,7 +17,7 @@ const Container = styled.div`
   flex-direction: column;
   height: 100%;
   width: 100%;
-  opacity: ${({ requesting }) => (requesting ? 0.5 : 1)}
+  opacity: ${({ requesting }) => (requesting ? 0.5 : 1)};
 `;
 const LoginInputs = styled.div`
   display: flex;

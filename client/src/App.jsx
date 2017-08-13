@@ -9,7 +9,7 @@ import {
 
 import './App.css';
 import { auth } from './utils';
-// import ChallengeEvaluations from './challenge/challenge-evaluations.jsx';
+import ChallengeEvaluations from './scenes/challenge/evaluations';
 import ChallengeSelect from './scenes/performance/challenge_select';
 // import CompletedResults from './result/completed-results';
 import CreatePerformance from './scenes/performance/create';
@@ -65,11 +65,11 @@ const App = () =>
       <div id="App-container">
         <Switch>
           <PrivateRoute exact path="/" component={Profile} />
-          {/*<PrivateRoute
-              exact
-              path="/challenges/evaluate"
-              component={ChallengeEvaluations}
-            />*/}
+          <PrivateRoute
+            exact
+            path="/challenges/evaluate"
+            component={ChallengeEvaluations}
+          />
           <PrivateRoute
             exact
             path="/challenges/new"

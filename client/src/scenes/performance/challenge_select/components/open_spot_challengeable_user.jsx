@@ -9,7 +9,8 @@ export default function OpenSpotChallengeableUser({
 }) {
   return (
     <option className="mdc-list-item" disabled={membersInChallenge >= 2}>
-      {row}{file} (open - challenged {membersInChallenge} time(s))
+      {row}
+      {file} (open - challenged {membersInChallenge} time(s))
     </option>
   );
 }

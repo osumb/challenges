@@ -24,8 +24,12 @@ export default function CurrentDisciplineAction({
   return (
     <Elevation>
       <Container>
-        <Typography category="headline">{performanceStr}</Typography>
-        <Typography category="headline">{reasonStr}</Typography>
+        <Typography category="headline">
+          {performanceStr}
+        </Typography>
+        <Typography category="headline">
+          {reasonStr}
+        </Typography>
       </Container>
     </Elevation>
   );

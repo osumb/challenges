@@ -54,7 +54,9 @@ export default class DesktopNav extends PureComponent {
       <Container>
         <LeftContainer>
           <LinkWrapper>
-            <Link to="/" style={{ color: 'black' }}>Home</Link>
+            <Link to="/" style={{ color: 'black' }}>
+              Home
+            </Link>
           </LinkWrapper>
           {visibleRoutes.map(key =>
             <LinkDropdown

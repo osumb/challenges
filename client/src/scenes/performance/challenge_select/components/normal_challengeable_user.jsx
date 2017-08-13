@@ -11,7 +11,8 @@ export default function NormalChallengeableUser({
 }) {
   return (
     <option className="mcd-list-item" disabled={membersInChallenge >= 2}>
-      {row}{file}: {firstName} {lastName}
+      {row}
+      {file}: {firstName} {lastName}
     </option>
   );
 }

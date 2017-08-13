@@ -15,9 +15,7 @@ const ButtonContainer = styled.div`
   justify-content: flex-start;
   margin-top: 5px;
 `;
-const ButtonSpacer = styled.div`
-  margin: 0 10px;
-`;
+const ButtonSpacer = styled.div`margin: 0 10px;`;
 
 export default class Confirm extends React.PureComponent {
   static get propTypes() {
@@ -62,7 +60,9 @@ export default class Confirm extends React.PureComponent {
         }}
       >
         <Container>
-          <Typography category="title">{this.props.message}</Typography>
+          <Typography category="title">
+            {this.props.message}
+          </Typography>
           <ButtonContainer>
             <Button onClick={this.handleCloseModal}>Cancel</Button>
             <ButtonSpacer />

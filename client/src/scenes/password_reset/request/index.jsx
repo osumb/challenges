@@ -24,9 +24,7 @@ const TextFieldContainer = styled.div`
   align-items: center;
   flex-direction: ${({ direction }) => direction};
 `;
-const TextFieldSpacer = styled.div`
-  margin: 0 10px;
-`;
+const TextFieldSpacer = styled.div`margin: 0 10px;`;
 
 export default class PasswordResetRequest extends React.PureComponent {
   constructor(props) {
