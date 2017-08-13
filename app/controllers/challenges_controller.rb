@@ -72,9 +72,10 @@ class ChallengesController < ApplicationController
 
   def ensure_spot_has_not_been_challenged!
     spot = Spot.find_by(row: Spot.rows[params[:spot][:row].downcase], file: params[:spot][:file])
-    challenge = Challenge.find_by(spot: spot)
+    performance = Performance.next
+    challenge = Challenge.find_by(spot: spot, performance: performance)
     return if challenge.nil?
-    return if challenge.open_spot_challenge_type?
+    return if challenge.open_spot_challenge_type? && challenge.users.length < 2
     render json: { resource: 'challenge', errors: [spot: 'spot has already been challenged'] }, status: 403
   end
 
