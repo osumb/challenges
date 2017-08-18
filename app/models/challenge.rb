@@ -37,8 +37,8 @@ class Challenge < ApplicationRecord
       none
     end
   }
-  scope :evaluable, lambda { |user| viewable_by_user(user).needs_comments }
-  scope :with_updatable_comments, lambda { |user| viewable_by_user(user).comments_submitted }
+  scope :evaluable, ->(user) { viewable_by_user(user).needs_comments }
+  scope :with_updatable_comments, ->(user) { viewable_by_user(user).comments_submitted }
 
   # rubocop:disable Metrics/CyclomaticComplexity
   def full?
