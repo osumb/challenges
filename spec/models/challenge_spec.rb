@@ -165,7 +165,7 @@ describe Challenge, type: :model do
     end
   end
 
-  describe '.evaluable' do
+  describe '.viewable_by_user' do
     let!(:challenge) { create(:normal_challenge, spot: create(:spot, row: :x, file: 1)) }
     let(:current_instrument) { challenge.users.first.instrument }
     let(:spot_in_challenge_row) { create(:spot, row: challenge.spot.row, file: 2) }
@@ -184,35 +184,35 @@ describe Challenge, type: :model do
     context 'when a member is evaluating' do
       let(:user) { create(:user, :member) }
 
-      specify { expect(described_class.evaluable(user)).to be_empty }
+      specify { expect(described_class.viewable_by_user(user)).to be_empty }
     end
 
     context 'when an admin is evaluating' do
       let(:user) { create(:user, :admin) }
 
-      specify { expect(described_class.evaluable(user)).to include(challenge) }
-      specify { expect(described_class.evaluable(user).count).to eq(1) }
+      specify { expect(described_class.viewable_by_user(user)).to include(challenge) }
+      specify { expect(described_class.viewable_by_user(user).count).to eq(1) }
     end
 
     context 'when a director is evaluating' do
       context 'and they have any instrument' do
         let(:user) { create(:user, :director, instrument: :any) }
 
-        specify { expect(described_class.evaluable(user)).to include(challenge) }
-        specify { expect(described_class.evaluable(user).count).to eq(1) }
+        specify { expect(described_class.viewable_by_user(user)).to include(challenge) }
+        specify { expect(described_class.viewable_by_user(user).count).to eq(1) }
       end
 
       context 'and they have the same instrument' do
         let(:user) { create(:user, :director, instrument: current_instrument) }
 
-        specify { expect(described_class.evaluable(user)).to include(challenge) }
-        specify { expect(described_class.evaluable(user).count).to eq(1) }
+        specify { expect(described_class.viewable_by_user(user)).to include(challenge) }
+        specify { expect(described_class.viewable_by_user(user).count).to eq(1) }
       end
 
       context 'and they do not have the same instrument' do
         let(:user) { create(:user, :director, instrument: other_instrument, part: :first) }
 
-        specify { expect(described_class.evaluable(user)).to be_empty }
+        specify { expect(described_class.viewable_by_user(user)).to be_empty }
       end
     end
 
@@ -222,8 +222,8 @@ describe Challenge, type: :model do
           create(:user, :squad_leader, instrument: current_instrument, spot: spot_in_challenge_row)
         end
 
-        specify { expect(described_class.evaluable(user)).to include(challenge) }
-        specify { expect(described_class.evaluable(user).count).to eq(1) }
+        specify { expect(described_class.viewable_by_user(user)).to include(challenge) }
+        specify { expect(described_class.viewable_by_user(user).count).to eq(1) }
       end
 
       context 'and they are in the row of one of the participants' do
@@ -234,10 +234,10 @@ describe Challenge, type: :model do
           create(:user, :squad_leader, instrument: current_instrument, spot: spot_in_last_user_row)
         end
 
-        specify { expect(described_class.evaluable(user_1)).to include(challenge) }
-        specify { expect(described_class.evaluable(user_1).count).to eq(1) }
-        specify { expect(described_class.evaluable(user_2)).to include(challenge) }
-        specify { expect(described_class.evaluable(user_2).count).to eq(1) }
+        specify { expect(described_class.viewable_by_user(user_1)).to include(challenge) }
+        specify { expect(described_class.viewable_by_user(user_1).count).to eq(1) }
+        specify { expect(described_class.viewable_by_user(user_2)).to include(challenge) }
+        specify { expect(described_class.viewable_by_user(user_2).count).to eq(1) }
       end
 
       context 'and they are in an entirely different row' do
@@ -245,7 +245,76 @@ describe Challenge, type: :model do
           create(:user, :squad_leader, instrument: :trumpet, part: :first, spot: spot_in_other_row)
         end
 
-        specify { expect(described_class.evaluable(user)).to be_empty }
+        specify { expect(described_class.viewable_by_user(user)).to be_empty }
+      end
+    end
+  end
+
+  describe '.evaluable' do
+    let(:user) { create(:user, :admin) }
+    let!(:challenge_needs_comments) do
+      create(:normal_challenge, spot: create(:spot, row: :x, file: 1), stage: :needs_comments)
+    end
+    let!(:challenge_doesnt_need_comments) do
+      create(:normal_challenge, spot: create(:spot, row: :x, file: 1), stage: :needs_comments)
+    end
+
+    before do
+      challenge_doesnt_need_comments.user_challenges.each_with_index do |user_challenge, index|
+        user_challenge.update(place: index + 1)
+      end
+      challenge_doesnt_need_comments.update(stage: :needs_approval)
+      allow(described_class).to receive(:viewable_by_user).with(user).and_return(described_class.all)
+    end
+
+    it 'uses .viewable_by_user to scope the query' do
+      described_class.evaluable(user)
+      expect(described_class).to have_received(:viewable_by_user).exactly(1).times
+    end
+
+    it 'only includes challenges that need comments' do
+      challenges = described_class.evaluable(user)
+
+      challenges.each do |challenge|
+        expect(challenge.stage).to eq('needs_comments')
+      end
+    end
+  end
+
+  describe '.with_updatable_comments' do
+    let(:user) { create(:user, :admin) }
+    let!(:challenge_needs_comments) do
+      create(:normal_challenge, spot: create(:spot, row: :x, file: 1), stage: :needs_comments)
+    end
+    let!(:challenge_doesnt_need_comments_1) do
+      create(:normal_challenge, spot: create(:spot, row: :x, file: 1), stage: :needs_comments)
+    end
+    let!(:challenge_doesnt_need_comments_2) do
+      create(:normal_challenge, spot: create(:spot, row: :x, file: 1), stage: :needs_comments)
+    end
+
+    before do
+      challenge_doesnt_need_comments_1.user_challenges.each_with_index do |user_challenge, index|
+        user_challenge.update(place: index + 1)
+      end
+      challenge_doesnt_need_comments_2.user_challenges.each_with_index do |user_challenge, index|
+        user_challenge.update(place: index + 1)
+      end
+      challenge_doesnt_need_comments_1.update(stage: :needs_approval)
+      challenge_doesnt_need_comments_2.update(stage: :needs_approval)
+      allow(described_class).to receive(:viewable_by_user).with(user).and_return(described_class.all)
+    end
+
+    it 'uses .viewable_by_user to scope the query' do
+      described_class.with_updatable_comments(user)
+      expect(described_class).to have_received(:viewable_by_user).exactly(1).times
+    end
+
+    it 'only includes challenges that do not need comments' do
+      challenges = described_class.with_updatable_comments(user)
+
+      challenges.each do |challenge|
+        expect(challenge.stage).not_to eq('needs_comments')
       end
     end
   end

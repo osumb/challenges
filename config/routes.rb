@@ -13,6 +13,7 @@ Rails.application.routes.draw do
     resources :challenges, only: [:create] do
       collection do
         get :for_evaluation
+        get :with_updatable_comments
       end
       member do
         put :submit_for_approval
@@ -23,6 +24,8 @@ Rails.application.routes.draw do
       collection do
         post 'comments', action: :evaluate_comments
         post 'places', action: :evaluate_places
+
+        put 'comments', action: :update_comments
       end
     end
     resources :password_reset_requests, only: [:create, :show]

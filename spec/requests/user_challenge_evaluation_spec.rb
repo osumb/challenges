@@ -23,11 +23,6 @@ describe 'User Challenges Evaluation', type: :request do
       ]
     end
 
-    before do
-      allow(UserChallenge).to receive(:find).and_return(challenge.user_challenges.first)
-      allow(challenge.user_challenges.first).to receive(:challenge).and_return(challenge)
-    end
-
     context 'when the user can evaluate' do
       it 'has the correct status' do
         request
@@ -97,11 +92,6 @@ describe 'User Challenges Evaluation', type: :request do
           place: place_2
         }
       ]
-    end
-
-    before do
-      allow(UserChallenge).to receive(:find).and_return(challenge.user_challenges.first)
-      allow(challenge.user_challenges.first).to receive(:challenge).and_return(challenge)
     end
 
     context 'when the user can evaluate' do

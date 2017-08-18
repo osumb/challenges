@@ -10,7 +10,7 @@ json.users do
 end
 json.user_challenges do
   json.array! challenge.user_challenges.each do |user_challenge|
-    json.partial! 'user_challenges/user_challenge_for_evaluation', user_challenge: user_challenge
+    json.partial! 'user_challenges/user_challenge_for_evaluation_or_update', user_challenge: user_challenge
   end
 end
 json.performance do
