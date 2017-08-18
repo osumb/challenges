@@ -24,6 +24,8 @@ Rails.application.routes.draw do
       collection do
         post 'comments', action: :evaluate_comments
         post 'places', action: :evaluate_places
+
+        put 'comments', action: :update_comments
       end
     end
     resources :password_reset_requests, only: [:create, :show]

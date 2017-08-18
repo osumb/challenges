@@ -8,6 +8,7 @@ describe 'User Challenges Evaluation', type: :request do
 
   describe 'PUT /api/user_challenges/comments' do
     let(:endpoint) { '/api/user_challenges/comments' }
+    let(:garbage_comment) { 'garbage comment' }
     let(:comments_1) { 'User 1 did some things.' }
     let(:comments_2) { 'User 2 did some other things.' }
     let(:user_challenge_params) do
@@ -26,7 +27,7 @@ describe 'User Challenges Evaluation', type: :request do
     before do
       challenge.user_challenges.each_with_index do |user_challenge, index|
         user_challenge.update(place: index + 1)
-        user_challenge.update(comments: 'garbage comment')
+        user_challenge.update(comments: garbage_comment)
       end
       challenge.update(stage: :needs_approval)
     end
@@ -56,8 +57,8 @@ describe 'User Challenges Evaluation', type: :request do
       it 'does not update the user challenges' do
         request
 
-        expect(challenge.reload.user_challenges.first.comments).to be_nil
-        expect(challenge.reload.user_challenges.last.comments).to be_nil
+        expect(challenge.reload.user_challenges.first.comments).to eq(garbage_comment)
+        expect(challenge.reload.user_challenges.last.comments).to eq(garbage_comment)
       end
     end
 
@@ -79,8 +80,8 @@ describe 'User Challenges Evaluation', type: :request do
       it 'does not update the user challenges' do
         request
 
-        expect(challenge.reload.user_challenges.first.comments).to be_nil
-        expect(challenge.reload.user_challenges.last.comments).to be_nil
+        expect(challenge.reload.user_challenges.first.comments).to eq(garbage_comment)
+        expect(challenge.reload.user_challenges.last.comments).to eq(garbage_comment)
       end
     end
   end
