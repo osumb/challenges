@@ -24,18 +24,21 @@ class Challenge < ApplicationRecord
 
   # scopes
   scope :with_users_and_spots, -> { includes(user_challenges: { user: :spot }) }
+  scope :comments_submitted, -> { where.not(stage: :needs_comments) }
   scope :needs_comments, -> { where(stage: :needs_comments) }
-  scope :evaluable, lambda { |user|
+  scope :viewable_by_user, lambda { |user|
     if user.admin? || (user.director? && user.instrument_any?)
-      needs_comments.with_users_and_spots
+      with_users_and_spots
     elsif user.director?
-      needs_comments.with_users_and_spots.where(users: { instrument: user.instrument })
+      with_users_and_spots.where(users: { instrument: user.instrument })
     elsif user.squad_leader?
-      needs_comments.with_users_and_spots.where(spots: { row: user.spot.row })
+      with_users_and_spots.where(spots: { row: user.spot.row })
     else
       none
     end
   }
+  scope :evaluable, lambda { |user| viewable_by_user(user).needs_comments }
+  scope :with_updatable_comments, lambda { |user| viewable_by_user(user).comments_submitted }
 
   # rubocop:disable Metrics/CyclomaticComplexity
   def full?
