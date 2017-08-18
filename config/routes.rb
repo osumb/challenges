@@ -13,6 +13,7 @@ Rails.application.routes.draw do
     resources :challenges, only: [:create] do
       collection do
         get :for_evaluation
+        get :with_updatable_comments
       end
       member do
         put :submit_for_approval
