@@ -6,6 +6,7 @@ class ChallengesController < ApplicationController
   before_action :ensure_user_has_not_already_made_challenge!, only: [:create]
   before_action :ensure_user_is_challenging_correct_instrument_and_part!, only: [:create]
   before_action :ensure_spot_has_not_been_challenged!, only: [:create]
+  before_action :ensure_admin!, only: [:approve]
 
   def create
     @challenge = Challenge::Bylder.perform(
@@ -30,6 +31,16 @@ class ChallengesController < ApplicationController
     challenge = Challenge.find(params[:id])
 
     if challenge.update(stage: :needs_approval)
+      head :no_content
+    else
+      render json: { resource: 'challenge', errors: challenge.errors }, status: :conflict
+    end
+  end
+
+  def approve
+    challenge = Challenge.find(params[:id])
+
+    if challenge.update(stage: :done)
       head :no_content
     else
       render json: { resource: 'challenge', errors: challenge.errors }, status: :conflict
