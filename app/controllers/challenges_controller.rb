@@ -37,15 +37,26 @@ class ChallengesController < ApplicationController
     end
   end
 
+  # rubocop:disable Metrics/MethodLength
   def approve
     challenge = Challenge.find(params[:id])
 
     if challenge.update(stage: :done)
+      if challenge.performance.challenges.all?(&:done_stage?)
+        switcher = Challenge::SpotSwitcher.new(challenge.performance)
+        begin
+          switcher.run!
+          SpotSwitchMailer.spot_switch_email
+        rescue StandardError => e
+          SpotSwitchMailer.spot_switch_email e.messsage
+        end
+      end
       head :no_content
     else
       render json: { resource: 'challenge', errors: challenge.errors }, status: :conflict
     end
   end
+  # rubocop:enable Metrics/MethodLength
 
   private
 
