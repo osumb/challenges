@@ -22,9 +22,15 @@ class ChallengesController < ApplicationController
   end
 
   def for_evaluation
-    @evaluable_challenges = Challenge.evaluable(current_user)
+    @challenges = Challenge.evaluable(current_user)
 
-    render :for_evaluation, status: :ok
+    render :for_evaluation_or_update, status: :ok
+  end
+
+  def with_updatable_comments
+    @challenges = Challenge.with_updatable_comments(current_user)
+
+    render :for_evaluation_or_update, status: :ok
   end
 
   def submit_for_approval

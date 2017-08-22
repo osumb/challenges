@@ -5,6 +5,7 @@ class UserChallengesController < ApplicationController
   before_action :ensure_challenge_not_full!, only: [:create]
   before_action :ensure_correct_user_for_delete!, only: [:destroy]
   before_action :ensure_user_can_evaluate!, only: [:evaluate_comments, :evaluate_places]
+  before_action :ensure_user_can_update_comments!, only: [:update_comments]
 
   def create
     challenge = Challenge.find_by id: params[:challenge_id]
@@ -59,6 +60,20 @@ class UserChallengesController < ApplicationController
     end
   end
 
+  def update_comments
+    evaluator = UserChallenge::Evaluator.new(params: params)
+    result = evaluator.save_comments
+
+    if result.success?
+      head :no_content
+    else
+      render json: {
+        resource: 'user_challenge',
+        errors: [user_challenge: result.errors.first]
+      }, status: :unprocessable_entity
+    end
+  end
+
   private
 
   def ensure_challenge_exists!
@@ -87,8 +102,17 @@ class UserChallengesController < ApplicationController
   end
 
   def ensure_user_can_evaluate!
-    evaluable_user_challenge_ids = Challenge.evaluable(current_user).flat_map { |c| c.user_challenges.ids }
-    return if params[:user_challenges].all? { |uc| evaluable_user_challenge_ids.include?(uc[:id]) }
+    evaluable_ids = Challenge.evaluable(current_user).flat_map { |c| c.user_challenges.ids }
+    return if params[:user_challenges].all? { |uc| evaluable_ids.include?(uc[:id]) }
+    render json: {
+      resource: 'user_challenge',
+      errors: [user: 'doesn\'t have permission to update that challenge']
+    }, status: :unauthorized
+  end
+
+  def ensure_user_can_update_comments!
+    updatable_ids = Challenge.with_updatable_comments(current_user).flat_map { |c| c.user_challenges.ids }
+    return if params[:user_challenges].all? { |uc| updatable_ids.include?(uc[:id]) }
     render json: {
       resource: 'user_challenge',
       errors: [user: 'doesn\'t have permission to update that challenge']
