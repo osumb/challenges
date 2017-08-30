@@ -80,7 +80,7 @@ export const mainRoutes = {
     links: [
       {
         name: 'Approve',
-        path: '/results/pending',
+        path: '/challenges/approve',
         roles: [ADMIN],
         show: true
       },

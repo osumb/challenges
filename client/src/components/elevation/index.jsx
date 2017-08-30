@@ -1,13 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-export default function Elevation({ children, zLevel }) {
+export default function Elevation({ children, style = {}, zLevel }) {
   return (
     <div
       className={`mdc-elevation--z${zLevel}`}
       style={{
         borderRadius: '8px',
-        padding: 10
+        padding: 10,
+        ...style
       }}
     >
       {children}
@@ -26,6 +27,7 @@ Elevation.propTypes = {
       ])
     )
   ]).isRequired,
+  style: PropTypes.object,
   zLevel: PropTypes.number.isRequired
 };
 

@@ -64,19 +64,20 @@ class Evaluations extends React.Component {
 
   saveComments(challengeId) {
     const challenge = this.state.challenges[challengeId];
-    helpers.postSaveComments(challenge);
+    return helpers.postSaveComments(challenge);
   }
 
   saveCommentsAndPlaces(challengeId) {
-    return () => {
-      this.saveComments(challengeId);
-      this.savePlaces(challengeId);
-    };
+    return () =>
+      Promise.all([
+        this.saveComments(challengeId),
+        this.savePlaces(challengeId)
+      ]);
   }
 
   savePlaces(challengeId) {
     const challenge = this.state.challenges[challengeId];
-    helpers.postSavePlaces(challenge);
+    return helpers.postSavePlaces(challenge);
   }
 
   setActiveChallengeTo(challengeId) {
@@ -93,15 +94,17 @@ class Evaluations extends React.Component {
   submitForEvaluation(challengeId) {
     return () => {
       const challenge = this.state.challenges[challengeId];
-      helpers.putSubmitForEvaluation(challenge).then(() => {
-        this.setState(prevState => {
-          const newState = { ...prevState };
-          delete newState.challenges[challengeId];
-          const nextChallenge = localHelpers.sortChallenges(
-            Object.values(newState.challenges)
-          )[0];
-          newState.currentChallengeId = nextChallenge && nextChallenge.id;
-          return newState;
+      this.saveCommentsAndPlaces(challenge.id)().then(() => {
+        helpers.putSubmitForEvaluation(challenge).then(() => {
+          this.setState(prevState => {
+            const newState = { ...prevState };
+            delete newState.challenges[challengeId];
+            const nextChallenge = localHelpers.sortChallenges(
+              Object.values(newState.challenges)
+            )[0];
+            newState.currentChallengeId = nextChallenge && nextChallenge.id;
+            return newState;
+          });
         });
       });
     };

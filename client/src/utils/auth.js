@@ -3,10 +3,9 @@ import jwtDecode from 'jwt-decode';
 import * as routes from './routes';
 
 const LOCAL_STORE_STRING = 'userJWT';
-const url =
-  process.env.NODE_ENV === 'development'
-    ? `http://localhost:${process.env.REACT_APP_SERVER_PORT}`
-    : '';
+const url = process.env.NODE_ENV === 'development'
+  ? `http://localhost:${process.env.REACT_APP_SERVER_PORT}`
+  : '';
 
 const authenticate = (buck_id, password) =>
   fetch(`${url}/api/user_token`, {
