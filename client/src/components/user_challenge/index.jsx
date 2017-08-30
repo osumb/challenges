@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 import CryingCat from '../../assets/images/crying-cat-face.png';
@@ -20,16 +21,18 @@ const Place = styled.div`
   margin: 8px 0;
 `;
 
-export default function UserChallenge({ comments, user, place }) {
+export default function UserChallenge({ comments, user, place, hideName, style = {} }) {
   const imageSrc = place === 1 ? Trophy : CryingCat;
 
   return (
-    <FlexContainer flexDirection="column" alignItems="flex-start">
-      <Wrapper>
-        <Typography category="headline">
-          {user.firstName} {user.lastName}
-        </Typography>
-      </Wrapper>
+    <FlexContainer flexDirection="column" alignItems="flex-start" style={{ ...style }}>
+      {hideName &&
+        <Wrapper>
+          <Typography category="headline">
+            {user.firstName} {user.lastName}
+          </Typography>
+        </Wrapper>
+      }
       <Place>
         <img
           src={imageSrc}
@@ -46,5 +49,7 @@ export default function UserChallenge({ comments, user, place }) {
 }
 
 UserChallenge.propTypes = {
-  ...propTypes.userChallengeForEvaluationPropTypes
+  ...propTypes.userChallengeForEvaluationPropTypes,
+  hideName: PropTypes.bool,
+  style: PropTypes.object
 };

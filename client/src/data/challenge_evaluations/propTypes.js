@@ -9,7 +9,7 @@ const userChallengeForEvaluationPropTypes = {
   comments: PropTypes.string,
   id: PropTypes.number.isRequired,
   place: PropTypes.number,
-  user: PropTypes.shape(userProps).isRequired,
+  user: PropTypes.shape(userProps),
   userBuckId: PropTypes.string.isRequired
 };
 
