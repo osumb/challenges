@@ -15,6 +15,10 @@ class Spot < ApplicationRecord
     row <=> other.row
   end
 
+  def to_s
+    "#{row.upcase}#{file}"
+  end
+
   class << self
     # rubocop:disable Metrics/MethodLength, Metrics/CyclomaticComplexity, Style/IndentationConsistency
     def valid_instrument_part_for_row(row, instrument, part)
