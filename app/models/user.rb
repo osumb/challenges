@@ -34,7 +34,7 @@ class User < ApplicationRecord
   validates :role, presence: true
   validates :spot_id, uniqueness: { allow_blank: true }
 
-  validate :performing_member_has_spot
+  validate :performing_member_has_spot, on: :create
   validate :admin_does_not_have_spot
   validate :valid_instrument_part_for_user
   validate :valid_instrument_part_for_admin

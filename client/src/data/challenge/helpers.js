@@ -12,6 +12,7 @@ const addUser = (buckId, challengeId) =>
         challenge_id: challengeId
       });
 
+const approve = id => api.put(`/challenges/${id}/approve`);
 const create = ({ file, row }, challenger_buck_id) =>
   userHelpers.isAdmin(auth.getUser())
     ? api.post('/challenges', {
@@ -28,13 +29,16 @@ const create = ({ file, row }, challenger_buck_id) =>
         }
       });
 
+const getForApproval = () => api.get('/challenges/for_approval');
 const isNormalChallenge = challengeType => challengeType === 'normal';
 const isOpenSpotChallenge = challengeType => challengeType === 'open_spot';
 const isTriChallenge = challengeType => challengeType === 'tri';
 
 export default {
   addUser,
+  approve,
   create,
+  getForApproval,
   isNormalChallenge,
   isOpenSpotChallenge,
   isTriChallenge

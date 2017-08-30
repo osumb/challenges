@@ -6,6 +6,7 @@ class ChallengesController < ApplicationController
   before_action :ensure_user_has_not_already_made_challenge!, only: [:create]
   before_action :ensure_user_is_challenging_correct_instrument_and_part!, only: [:create]
   before_action :ensure_spot_has_not_been_challenged!, only: [:create]
+  before_action :ensure_admin!, only: [:approve]
 
   def create
     @challenge = Challenge::Bylder.perform(
@@ -20,10 +21,16 @@ class ChallengesController < ApplicationController
     end
   end
 
+  def for_approval
+    @challenges = Challenge.includes(:users, :user_challenges).where(stage: :needs_approval)
+
+    render :index, status: :ok
+  end
+
   def for_evaluation
     @challenges = Challenge.evaluable(current_user)
 
-    render :for_evaluation_or_update, status: :ok
+    render :index, status: :ok
   end
 
   def with_updatable_comments
@@ -41,6 +48,27 @@ class ChallengesController < ApplicationController
       render json: { resource: 'challenge', errors: challenge.errors }, status: :conflict
     end
   end
+
+  # rubocop:disable Metrics/MethodLength
+  def approve
+    challenge = Challenge.find(params[:id])
+
+    if challenge.update(stage: :done)
+      if challenge.performance.challenges.all?(&:done_stage?)
+        switcher = Challenge::SpotSwitcher.new(challenge.performance)
+        begin
+          switcher.run!
+          SpotSwitchMailer.spot_switch_email
+        rescue StandardError => e
+          SpotSwitchMailer.spot_switch_email e.messsage
+        end
+      end
+      head :no_content
+    else
+      render json: { resource: 'challenge', errors: challenge.errors }, status: :conflict
+    end
+  end
+  # rubocop:enable Metrics/MethodLength
 
   private
 

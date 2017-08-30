@@ -9,6 +9,7 @@ import {
 
 import './App.css';
 import { auth } from './utils';
+import ChallengeApproval from './scenes/challenge/approval';
 import ChallengeEvaluations from './scenes/challenge/evaluations';
 import ChallengeSelect from './scenes/performance/challenge_select';
 // import CompletedResults from './result/completed-results';
@@ -67,6 +68,11 @@ const App = () =>
           <PrivateRoute exact path="/" component={Profile} />
           <PrivateRoute
             exact
+            path="/challenges/approve"
+            component={ChallengeApproval}
+          />
+          <PrivateRoute
+            exact
             path="/challenges/evaluate"
             component={ChallengeEvaluations}
           />
@@ -89,11 +95,6 @@ const App = () =>
             exact
             path="/results/completed"
             component={CompletedResults}
-          />*/}
-          {/*<PrivateRoute
-            exact
-            path="/results/pending"
-            component={PendingResults}
           />*/}
           <PrivateRoute exact path="/roster" component={Roster} />
           <PrivateRoute exact path="/search" component={Search} />

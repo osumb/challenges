@@ -13,4 +13,5 @@ if [ -z "$TRAVIS" ]; then
   echo "==> Done creating test database"
 fi
 
+export RAILS_ENV=test
 bin/rspec
