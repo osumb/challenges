@@ -8,3 +8,4 @@ end
 json.spot do
   json.partial! 'spots/spot', spot: user_challenge.spot
 end
+json.place UserChallenge.places[user_challenge.place]
