@@ -13,6 +13,7 @@ const fetchProfile = () => helpers.getProfile();
 
 const Profile = ({
   canChallenge,
+  challenges,
   currentChallenge,
   currentDisciplineAction,
   nextPerformance,
@@ -22,6 +23,7 @@ const Profile = ({
     ? <AdminProfile nextPerformance={nextPerformance} user={user} />
     : <MemberProfile
         canChallenge={canChallenge}
+        challenges={challenges}
         currentChallenge={currentChallenge}
         currentDisciplineAction={currentDisciplineAction}
         nextPerformance={nextPerformance}
@@ -30,6 +32,7 @@ const Profile = ({
 
 Profile.propTypes = {
   canChallenge: PropTypes.bool.isRequired,
+  challenges: PropTypes.arrayOf(PropTypes.shape(challengeProps)),
   currentChallenge: PropTypes.shape(challengeProps),
   currentDisciplineAction: PropTypes.shape(disciplineActionProps),
   nextPerformance: PropTypes.shape(performanceProps.performance),

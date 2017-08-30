@@ -32,3 +32,21 @@ else
     json.partial! 'discipline_actions/discipline_action', discipline_action: @user.discipline_actions.last
   end
 end
+
+json.challenges do
+  json.array! @user.challenges.select(&:done_stage?).each do |challenge|
+    json.id challenge.id
+    json.performance do
+      json.partial! 'performances/performance', performance: challenge.performance
+    end
+    json.user_challenges do
+      json.array! challenge.user_challenges.select { |uc| uc.user.buck_id == @user.buck_id }.each do |uc|
+        json.partial! 'user_challenges/user_challenge', user_challenge: uc
+      end
+    end
+    json.spot do
+      json.partial! 'spots/spot', spot: challenge.spot
+    end
+    json.challengeType challenge.challenge_type
+  end
+end
