@@ -21,10 +21,16 @@ class ChallengesController < ApplicationController
     end
   end
 
+  def for_approval
+    @challenges = Challenge.includes(:users, :user_challenges).where(stage: :needs_approval)
+
+    render :index, status: :ok
+  end
+
   def for_evaluation
     @challenges = Challenge.evaluable(current_user)
 
-    render :for_evaluation_or_update, status: :ok
+    render :index, status: :ok
   end
 
   def with_updatable_comments

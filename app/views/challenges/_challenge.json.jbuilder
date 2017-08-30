@@ -8,7 +8,11 @@ json.users do
     json.partial! 'users/user', user: user
   end
 end
+json.user_challenges do
+  json.array! challenge.user_challenges.each do |user_challenge|
+    json.partial! 'user_challenges/user_challenge_for_evaluation_or_update', user_challenge: user_challenge
+  end
+end
 json.performance do
   json.partial! 'performances/performance', performance: challenge.performance
 end
-json.winnerBuckId challenge.user_challenges.find_by(place: :first)&.user_buck_id
