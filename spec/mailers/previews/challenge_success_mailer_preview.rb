@@ -1,4 +1,4 @@
-# Preview all emails at http://localhost:3001/rails/mailers/password_reset_mailer
+# Preview all emails at http://localhost:3001/rails/mailers/challenge_success_mailer
 class ChallengeSuccessMailerPreview < ActionMailer::Preview
   def challenge_success_email_by_self
     ChallengeSuccessMailer.challenge_success_email(
