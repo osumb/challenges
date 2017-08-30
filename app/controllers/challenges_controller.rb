@@ -9,12 +9,12 @@ class ChallengesController < ApplicationController
   before_action :ensure_admin!, only: [:approve]
 
   def create
-    @challenge = Challenge::Bylder.perform(
-      challenger,
-      Performance.next,
-      Spot.find_by(row: Spot.rows[params[:spot][:row].downcase], file: params[:spot][:file])
-    )
+    performance = Performance.next
+    spot = Spot.find_by(row: Spot.rows[params[:spot][:row].downcase], file: params[:spot][:file])
+    @challenge = Challenge::Bylder.perform(challenger, performance, spot)
+
     if @challenge.save
+      send_challenge_success_email
       render :show, status: 201
     else
       render json: { resource: 'challenge', errors: @challenge.errors }, status: 409
@@ -71,6 +71,14 @@ class ChallengesController < ApplicationController
   # rubocop:enable Metrics/MethodLength
 
   private
+
+  def send_challenge_success_email
+    ChallengeSuccessMailer.challenge_success_email(
+      challenge: @challenge,
+      initiated_by: current_user,
+      email: challenger.email
+    )
+  end
 
   def ensure_not_challenging_alternate!
     return if params[:spot][:file] < 13

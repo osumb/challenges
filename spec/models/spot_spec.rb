@@ -20,8 +20,13 @@ shared_examples_for 'common row validations' do |row, instrument, parts|
 end
 
 describe Spot, type: :model do
+  subject(:spot) { build(:spot) }
   it { is_expected.to validate_presence_of(:row) }
   it { is_expected.to validate_presence_of(:file) }
+
+  describe '#to_s' do
+    specify { expect(spot.to_s).to eq("#{spot.row.upcase}#{spot.file}") }
+  end
 
   describe 'validations' do
     context 'a row' do
