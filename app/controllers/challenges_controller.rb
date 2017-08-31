@@ -35,8 +35,8 @@ class ChallengesController < ApplicationController
     render :index, status: :ok
   end
 
-  def with_updatable_comments
-    @challenges = Challenge.with_updatable_comments(current_user)
+  def completed
+    @challenges = Challenge.completed(current_user)
 
     render :for_evaluation_or_update, status: :ok
   end

@@ -4,12 +4,12 @@ describe 'Challenge Comment Updates', type: :request do
   let(:user) { create(:admin_user) }
   let(:challenge) { create(:normal_challenge) }
 
-  describe 'GET /api/challenges/with_updatable_comments' do
+  describe 'GET /api/challenges/completed' do
     subject(:request) { get endpoint, headers: authenticated_header(user) }
-    let(:endpoint) { '/api/challenges/with_updatable_comments' }
+    let(:endpoint) { '/api/challenges/completed' }
 
     before do
-      allow(Challenge).to receive(:with_updatable_comments).with(user).and_return([challenge])
+      allow(Challenge).to receive(:completed).with(user).and_return([challenge])
     end
 
     it 'has the correct status' do

@@ -29,7 +29,7 @@ describe 'User Challenges Evaluation', type: :request do
         user_challenge.update(place: index + 1)
         user_challenge.update(comments: garbage_comment)
       end
-      challenge.update(stage: :needs_approval)
+      challenge.update(stage: :done)
     end
 
     context 'when the user can update' do
