@@ -1,3 +1,4 @@
+# rubocop:disable Metrics/ClassLength
 class ChallengesController < ApplicationController
   before_action :authenticate_user
   before_action :ensure_not_challenging_alternate!, only: [:create]
@@ -7,6 +8,7 @@ class ChallengesController < ApplicationController
   before_action :ensure_user_is_challenging_correct_instrument_and_part!, only: [:create]
   before_action :ensure_spot_has_not_been_challenged!, only: [:create]
   before_action :ensure_admin!, only: [:approve]
+  before_action :ensure_challenge_is_needs_approval!, only: [:disapprove]
 
   def create
     performance = Performance.next
@@ -70,6 +72,16 @@ class ChallengesController < ApplicationController
   end
   # rubocop:enable Metrics/MethodLength
 
+  def disapprove
+    challenge = Challenge.find(params[:id])
+
+    if challenge.update(stage: :needs_comments)
+      head :no_content
+    else
+      render json: { resource: 'challenge', errors: challenge.errors }, status: :conflict
+    end
+  end
+
   private
 
   def send_challenge_success_email
@@ -127,5 +139,13 @@ class ChallengesController < ApplicationController
       resource: 'challenge',
       errors: [challenge: 'not authenticated to submit challenge for approval']
     }, status: :unauthorized
+  end
+
+  def ensure_challenge_is_needs_approval!
+    return if Challenge.find(params[:id]).needs_approval_stage?
+    render json: {
+      resource: 'challenge',
+      errors: [challenge: 'can disapprove a challenge not up for approval']
+    }, status: :conflict
   end
 end

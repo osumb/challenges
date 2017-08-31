@@ -19,6 +19,7 @@ Rails.application.routes.draw do
       member do
         put :submit_for_approval
         put :approve
+        put :disapprove
       end
     end
     resources :discipline_actions, only: [:create, :destroy]
