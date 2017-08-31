@@ -12,7 +12,7 @@ import { auth } from './utils';
 import ChallengeApproval from './scenes/challenge/approval';
 import ChallengeEvaluations from './scenes/challenge/evaluations';
 import ChallengeSelect from './scenes/performance/challenge_select';
-// import CompletedResults from './result/completed-results';
+import CompletedResults from './scenes/results/completed';
 import CreatePerformance from './scenes/performance/create';
 import Login from './scenes/login';
 import Navbar from './components/navbar';
@@ -91,11 +91,11 @@ const App = () =>
             path="/performances/new"
             component={CreatePerformance}
           />
-          {/*<PrivateRoute
+          <PrivateRoute
             exact
             path="/results/completed"
             component={CompletedResults}
-          />*/}
+          />
           <PrivateRoute exact path="/roster" component={Roster} />
           <PrivateRoute exact path="/search" component={Search} />
           <PrivateRoute exact path="/users/:buckId" component={ProfileAdmin} />

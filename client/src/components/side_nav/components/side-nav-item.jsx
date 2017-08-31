@@ -26,7 +26,7 @@ SideNavItem.propTypes = {
   active: PropTypes.bool.isRequired,
   onClick: PropTypes.func.isRequired,
   subtitle: PropTypes.string.isRequired,
-  title: PropTypes.string.isRequired
+  title: PropTypes.string
 };
 
 export default SideNavItem;

@@ -3,13 +3,13 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
-import * as styles from '../../../../styles';
-import { propTypes } from '../../../../data/challenge_evaluations';
-import { FlexContainer } from '../../../../components/flex';
-import Button from '../../../../components/button';
-import Elevation from '../../../../components/elevation';
-import Typography from '../../../../components/typography';
-import UserChallenge from '../../../../components/user_challenge';
+import * as styles from '../../../styles';
+import { propTypes } from '../../../data/challenge_evaluations';
+import { FlexContainer } from '../../flex';
+import Button from '../../button';
+import Elevation from '../../elevation';
+import Typography from '../../typography';
+import UserChallenge from '../../user_challenge';
 
 const UCContainer = styled.div`
   &:not(:first-child) {
@@ -20,10 +20,14 @@ const UCContainer = styled.div`
 `;
 
 export default function Challenge({
+  leftButtonText,
+  rightButtonText,
   id,
+  hasEditableComments,
   spot,
-  onApprove,
-  onDisapprove,
+  onLeftButtonClick,
+  onRightButtonClick,
+  onCommentEdit,
   style,
   userChallenges
 }) {
@@ -49,8 +53,8 @@ export default function Challenge({
             {spot.row}{spot.file}
           </Typography>
           <div>
-            <Button onClick={() => onApprove(id)}>Approve</Button>
-            <Button onClick={() => onDisapprove(id)} style={{ marginLeft: 4 }}>Disapprove</Button>
+            {leftButtonText && <Button onClick={onLeftButtonClick}>{leftButtonText}</Button>}
+            {rightButtonText && <Button onClick={onRightButtonClick} style={{ marginLeft: 4 }}>{rightButtonText}</Button>}
           </div>
         </FlexContainer>
         <FlexContainer
@@ -63,7 +67,7 @@ export default function Challenge({
         >
           {userChallenges.map(uc =>
             <UCContainer key={uc.id}>
-              <UserChallenge {...uc} />
+              <UserChallenge {...uc} hasEditableComments={hasEditableComments} onCommentEdit={onCommentEdit(uc.id)} />
             </UCContainer>
           )}
         </FlexContainer>
@@ -74,6 +78,15 @@ export default function Challenge({
 
 Challenge.propTypes = {
   ...propTypes.challengeForEvaluationPropTypes,
-  onApprove: PropTypes.func.isRequired,
-  onDisapprove: PropTypes.func.isRequired
+  leftButtonText: PropTypes.string,
+  rightButtonText: PropTypes.string,
+  hasEditableComments: PropTypes.bool.isRequired,
+  onLeftButtonClick: PropTypes.func,
+  onRightButtonClick: PropTypes.func,
+  onCommentEdit: PropTypes.func.isRequired
+};
+
+Challenge.defaultProps = {
+  hasEditableComments: false,
+  onCommentEdit: () => () => null
 };

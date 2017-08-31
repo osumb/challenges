@@ -1,11 +1,10 @@
 import React from 'react';
 
 import { FlexChild, FlexContainer } from '../../../components/flex';
+import { SideNav, SideNavItem } from '../../../components/side_nav';
 import { helpers, propTypes } from '../../../data/challenge_evaluations';
 import { fetch } from '../../../utils';
 import Evaluation from './components/challenge-evaluation';
-import SideNav from './components/side-nav';
-import SideNavItem from './components/side-nav-item';
 import localHelpers from './helpers';
 
 class Evaluations extends React.Component {

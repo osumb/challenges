@@ -21,7 +21,7 @@ const Place = styled.div`
   margin: 8px 0;
 `;
 
-export default function UserChallenge({ comments, user, place, hideName, style = {} }) {
+export default function UserChallenge({ comments, user, place, hideName, hasEditableComments, onCommentEdit, style = {} }) {
   const imageSrc = place === 1 ? Trophy : CryingCat;
 
   return (
@@ -43,7 +43,17 @@ export default function UserChallenge({ comments, user, place, hideName, style =
       </Place>
       <Wrapper><Typography category="headline">Comments:</Typography></Wrapper>
       <Wrapper>
-        <Typography category="subheading" number={2}>{comments}</Typography>
+        {!hasEditableComments &&
+          <Typography category="subheading" number={2}>{comments}</Typography>
+        }
+        {hasEditableComments &&
+           <textarea
+            defaultValue={comments}
+            onChange={onCommentEdit}
+            rows="10"
+            style={{ width: '100%' }}
+          />
+        }
       </Wrapper>
     </FlexContainer>
   );
@@ -51,6 +61,13 @@ export default function UserChallenge({ comments, user, place, hideName, style =
 
 UserChallenge.propTypes = {
   ...propTypes.userChallengeForEvaluationPropTypes,
+  hasEditableComments: PropTypes.bool.isRequired,
   hideName: PropTypes.bool,
-  style: PropTypes.object
+  style: PropTypes.object,
+  onCommentEdit: PropTypes.func.isRequired
+};
+
+UserChallenge.defaultProps = {
+  hasEditableComments: false,
+  onCommentEdit: () => null
 };
