@@ -61,7 +61,7 @@ class UserChallengesController < ApplicationController
   end
 
   def update_comments
-    evaluator = UserChallenge::Evaluator.new(params: params)
+    evaluator = UserChallenge::Evaluator.new(params: params.permit(user_challenges: [:id, :comments]))
     result = evaluator.save_comments
 
     if result.success?
