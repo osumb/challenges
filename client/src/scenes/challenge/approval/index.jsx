@@ -7,6 +7,7 @@ import { fetch } from '../../../utils';
 import { FlexContainer } from '../../../components/flex';
 import Button from '../../../components/button';
 import Challenge from './components/challenge';
+import CircularProgress from '../../../components/circular_progress';
 import Typography from '../../../components/typography';
 
 const { challengeForEvaluationPropTypes } = propTypes;
@@ -24,31 +25,45 @@ class ChallengeApproval extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      challenges: props.challenges
+      challenges: props.challenges,
+      requesting: false
     };
     this.handleApprove = this.handleApprove.bind(this);
     this.handleApproveAll = this.handleApproveAll.bind(this);
   }
 
   handleApprove(challengeId) {
+    this.setState({ requesting: true });
     helpers.approve(challengeId).then(() => {
       this.setState(({ challenges }) => ({
-        challenges: challenges.filter(({ id }) => id !== challengeId)
+        challenges: challenges.filter(({ id }) => id !== challengeId),
+        requesting: false
       }));
+    }).catch(() => {
+      this.setState({
+        requesting: false
+      });
     });
   }
 
   handleApproveAll() {
     const { challenges } = this.state;
+
+    this.setState({ requesting: true });
     Promise.all(challenges.map(({ id }) => helpers.approve(id))).then(() => {
       this.setState({
-        challenges: []
+        challenges: [],
+        requesting: false
+      });
+    }).catch(() => {
+      this.setState({
+        requesting: false
       });
     });
   }
 
   render() {
-    const { challenges } = this.state;
+    const { challenges, requesting } = this.state;
 
     if (challenges.length <= 0) {
       return (
@@ -74,6 +89,7 @@ class ChallengeApproval extends React.Component {
             />
           )}
         </FlexContainer>
+        {requesting && <CircularProgress />}
       </FlexContainer>
     );
   }

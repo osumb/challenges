@@ -35,6 +35,7 @@ export default function UserChallenge({ comments, user, place, hideName, style =
       }
       <Place>
         <img
+          alt={place === 1 ? 'Winner' : 'Loser'}
           src={imageSrc}
           style={{ height: 30, width: 30, paddingRight: 8 }}
         />

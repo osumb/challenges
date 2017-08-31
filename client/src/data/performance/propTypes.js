@@ -12,8 +12,8 @@ const performance = {
   date: PropTypes.string,
   id: PropTypes.number,
   name: PropTypes.string,
-  windowClose: PropTypes.string,
-  windowOpen: PropTypes.string
+  windowClose: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
+  windowOpen: PropTypes.oneOfType([PropTypes.string, PropTypes.object])
 };
 
 export default {
