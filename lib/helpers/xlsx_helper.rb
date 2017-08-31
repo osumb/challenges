@@ -1,54 +1,49 @@
 require 'rubyXL'
 require 'securerandom'
 
-# Name	Instrument	Spot	Part	name.#	Email
+# Spot Name Instrument Part name.# Role Email
 module XLSXHelper
+  # rubocop:disable Metrics/MethodLength
   def self.parse_users(file)
     users_worksheet = RubyXL::Parser.parse(file)[0]
     users = []
     i = 1
     until users_worksheet[i].nil?
-      spread_sheet_user = parse_user_row(users_worksheet[i])
-      users << user_from_spread_sheet_row(spread_sheet_user)
+      spread_sheet_row = users_worksheet[i]
+
+      spot = spread_sheet_row[0] && spread_sheet_row[0].value
+      full_name = spread_sheet_row[1].value
+      instrument = spread_sheet_row[2].value
+      part = spread_sheet_row[3].value.downcase
+      buck_id = spread_sheet_row[4].value.downcase
+      role = spread_sheet_row[5].value
+      email = spread_sheet_row[6].value.downcase
+
+      # Create spot
+      if spot
+        row = spot[0]
+        file = spot[1..2].to_i
+        db_spot = Spot.new(row: row, file: file)
+      else
+        db_spot = nil
+      end
+
+      first_name = full_name.split(' ')[0]
+      last_name = last_name.split(' ')[1]
+      user = User.new(
+        first_name: first_name,
+        last_name: last_name,
+        instrument: User.instruments[instrument],
+        part: User.parts[part],
+        buck_id: buck_id,
+        role: User.roles[role],
+        password_digest: SecureRandom.base64(15),
+        email: email,
+        spot: db_spot
+      )
+      users << user
+      i += 1
     end
     users
   end
-
-  private
-
-  # rubocop:disable Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
-  def parse_user_row(row)
-    {
-      full_name: row[0] && row[0].value,
-      instrument: row[1] && row[1].value,
-      spot: row[2] && row[2].value,
-      part: row[3] && row[3].value,
-      buck_id: row[4] && row[4].value,
-      email: row[5] && row[5].value,
-      role: row[6] && row[6].value
-    }
-  end
-  # rubocop:enable Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
-
-  # rubocop:disable Metrics/MethodLength
-  def user_from_spread_sheet_row(row)
-    password_digest = SecureRandom.base64(15)
-    spot = row[:spot] && Spot.create(
-      row: row[:spot].split(' ').join[0].downcase,
-      file: row[:spot].split(' ').join[1..2].to_i
-    )
-    user = User.create(
-      first_name: row[:full_name].split(' '),
-      last_name: row[:full_name].split(' '),
-      spot: spot,
-      instrument: row[:instrument],
-      part: User.parts[row[:part]],
-      buck_id: row[:buck_id],
-      role: User.roles[row[:role]],
-      password_digest: password_digest,
-      email: row[:email]
-    )
-    [user, password_digest]
-  end
-  # rubocop:enable Metrics/MethodLength
 end
