@@ -11,7 +11,7 @@ export default class Button extends React.PureComponent {
   }
 
   render() {
-    const { children, className, onClick, disabled, ...rest } = this.props;
+    const { children, className, onClick, disabled, style = {}, ...rest } = this.props;
     const classes = classNames({
       [className]: Boolean(className),
       'mdc-button': true,
@@ -32,7 +32,8 @@ export default class Button extends React.PureComponent {
         }}
         style={{
           color: 'white',
-          backgroundColor: rest.primary ? primaryGray : secondaryGray
+          backgroundColor: rest.primary ? primaryGray : secondaryGray,
+          ...style
         }}
       >
         {children}
@@ -45,5 +46,6 @@ Button.propTypes = {
   children: PropTypes.node,
   className: PropTypes.string,
   disabled: PropTypes.bool,
-  onClick: PropTypes.func
+  onClick: PropTypes.func,
+  style: PropTypes.object
 };
