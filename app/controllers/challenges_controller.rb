@@ -29,7 +29,7 @@ class ChallengesController < ApplicationController
 
   def for_evaluation
     @challenges = Challenge.evaluable(current_user)
-
+    @challenges = @challenges.select { |c| c.performance.stale? }
     render :index, status: :ok
   end
 

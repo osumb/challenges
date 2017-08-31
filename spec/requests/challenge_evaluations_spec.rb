@@ -2,7 +2,7 @@ require 'rails_helper'
 
 describe 'Challenge Evaluations', type: :request do
   let(:user) { create(:admin_user) }
-  let(:challenge) { create(:normal_challenge) }
+  let(:challenge) { create(:normal_challenge, performance: create(:stale_performance)) }
 
   describe 'GET /api/challenges/for_evaluation' do
     subject(:request) { get endpoint, headers: authenticated_header(user) }
