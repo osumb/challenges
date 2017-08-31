@@ -50,4 +50,43 @@ describe 'Challenge Approval', type: :request do
       end
     end
   end
+
+  describe 'PUT /api/challenges/disapprove' do
+    let(:endpoint) { "/api/challenges/#{challenge.id}/disapprove" }
+
+    context 'the challenge is in :needs_approval stage' do
+      let(:challenge) { create(:normal_challenge) }
+
+      before do
+        challenge.user_challenges.each_with_index do |uc, index|
+          uc.update(place: index + 1)
+        end
+        challenge.update(stage: :needs_approval)
+      end
+
+      it 'changes the challenge to :needs_comments' do
+        put endpoint, headers: authenticated_header(user)
+
+        expect(response).to have_http_status(:no_content)
+        expect(challenge.reload.stage).to eq(:needs_comments.to_s)
+      end
+    end
+
+    context 'the challenge isn\'t in :needs_comments' do
+      let(:challenge) { create(:normal_challenge, stage: :done) }
+
+      before do
+        challenge.user_challenges.each_with_index do |uc, index|
+          uc.update(place: index + 1)
+        end
+      end
+
+      it 'does not change the challenge\'s stage to :needs_comments' do
+        put endpoint, headers: authenticated_header(user)
+
+        expect(response).to have_http_status(:conflict)
+        expect(challenge.reload.stage).to eq(:done.to_s)
+      end
+    end
+  end
 end

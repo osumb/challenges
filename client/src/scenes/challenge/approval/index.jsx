@@ -30,11 +30,26 @@ class ChallengeApproval extends React.Component {
     };
     this.handleApprove = this.handleApprove.bind(this);
     this.handleApproveAll = this.handleApproveAll.bind(this);
+    this.handleDisapproval = this.handleDisapproval.bind(this);
   }
 
   handleApprove(challengeId) {
     this.setState({ requesting: true });
     helpers.approve(challengeId).then(() => {
+      this.setState(({ challenges }) => ({
+        challenges: challenges.filter(({ id }) => id !== challengeId),
+        requesting: false
+      }));
+    }).catch(() => {
+      this.setState({
+        requesting: false
+      });
+    });
+  }
+
+  handleDisapproval(challengeId) {
+    this.setState({ requesting: true });
+    helpers.disapprove(challengeId).then(() => {
       this.setState(({ challenges }) => ({
         challenges: challenges.filter(({ id }) => id !== challengeId),
         requesting: false
@@ -85,6 +100,7 @@ class ChallengeApproval extends React.Component {
               id={id}
               {...rest}
               onApprove={this.handleApprove}
+              onDisapprove={this.handleDisapproval}
               style={{ margin: 10 }}
             />
           )}

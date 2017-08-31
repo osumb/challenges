@@ -23,6 +23,7 @@ export default function Challenge({
   id,
   spot,
   onApprove,
+  onDisapprove,
   style,
   userChallenges
 }) {
@@ -47,7 +48,10 @@ export default function Challenge({
           <Typography category="display" number={1}>
             {spot.row}{spot.file}
           </Typography>
-          <Button onClick={() => onApprove(id)}>Approve</Button>
+          <div>
+            <Button onClick={() => onApprove(id)}>Approve</Button>
+            <Button onClick={() => onDisapprove(id)} style={{ marginLeft: 4 }}>Disapprove</Button>
+          </div>
         </FlexContainer>
         <FlexContainer
           style={{
@@ -70,5 +74,6 @@ export default function Challenge({
 
 Challenge.propTypes = {
   ...propTypes.challengeForEvaluationPropTypes,
-  onApprove: PropTypes.func.isRequired
+  onApprove: PropTypes.func.isRequired,
+  onDisapprove: PropTypes.func.isRequired
 };

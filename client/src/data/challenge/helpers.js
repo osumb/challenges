@@ -28,7 +28,7 @@ const create = ({ file, row }, challenger_buck_id) =>
           file
         }
       });
-
+const disapprove = id => api.put(`/challenges/${id}/disapprove`);
 const getForApproval = () => api.get('/challenges/for_approval');
 const isNormalChallenge = challengeType => challengeType === 'normal';
 const isOpenSpotChallenge = challengeType => challengeType === 'open_spot';
@@ -38,6 +38,7 @@ export default {
   addUser,
   approve,
   create,
+  disapprove,
   getForApproval,
   isNormalChallenge,
   isOpenSpotChallenge,
