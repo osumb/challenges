@@ -300,8 +300,8 @@ describe Challenge, type: :model do
       challenge_doesnt_need_comments_2.user_challenges.each_with_index do |user_challenge, index|
         user_challenge.update(place: index + 1)
       end
-      challenge_doesnt_need_comments_1.update(stage: :needs_approval)
-      challenge_doesnt_need_comments_2.update(stage: :needs_approval)
+      challenge_doesnt_need_comments_1.update(stage: :done)
+      challenge_doesnt_need_comments_2.update(stage: :done)
       allow(described_class).to receive(:viewable_by_user).with(user).and_return(described_class.all)
     end
 
