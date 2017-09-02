@@ -31,12 +31,8 @@ class Challenge
     end
     # rubocop:enable Metrics/MethodLength
 
-    def write_list_to_disk
-      Raise 'Build challenge list before writing to disk' unless @list_built
-      file_loc = Rails.root.join('tmp', 'challenge_lists', "Challenge List #{@date}.xlsx")
-      @workbook.write(file_loc)
-      @list_built = true
-      file_loc
+    def write_list_to_buffer
+      @workbook.stream
     end
 
     private
@@ -90,6 +86,15 @@ class Challenge
         challenge.spot.to_s,
         challengee.user.full_name
       ]
+    end
+
+    def create_challenge_list_dir
+      return unless Dir.exist? tmp_dir
+      FileUtils.mkdir_p tmp_dir
+    end
+
+    def tmp_dir
+      Rails.root.join('tmp', 'challenge_lists')
     end
   end
 end
