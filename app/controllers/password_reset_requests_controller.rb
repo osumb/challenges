@@ -10,7 +10,7 @@ class PasswordResetRequestsController < ApplicationController
     # We're reloading because prr.expires is a default value created in the db. Unfortunately, it doesn't get returned
     if @prr.save && @prr.reload
       render :create, status: 201
-      PasswordResetMailer.password_reset_email(user, @prr.id).deliver_now
+      PasswordResetMailer.password_reset_email(user, @prr.id).deliver
     else
       render json: { resource: 'PasswordResetRequest', errors: @prr.errors }, status: 409
     end

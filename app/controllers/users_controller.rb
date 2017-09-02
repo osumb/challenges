@@ -82,10 +82,10 @@ class UsersController < ApplicationController
   # rubocop:enable Metrics/MethodLength
 
   def upload
-    file = File::Uploader.temporarily_save_file(params[:file])
+    file = Files::Uploader.temporarily_save_file(params[:file])
     loader = User::Loader.new(file: file)
     loader.create_users
-    File::Uploader.remove_temporary_file(file)
+    Files::Uploader.remove_temporary_file(file)
 
     if !loader.errors.any?
       loader.email_users

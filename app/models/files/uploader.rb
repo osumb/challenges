@@ -1,4 +1,4 @@
-module File
+module Files
   module Uploader
     def self.temporarily_save_file(original_file)
       file_path = Rails.root.join('public', 'uploads', original_file.original_filename)

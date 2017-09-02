@@ -14,3 +14,7 @@ def unauthenticated_header
     'ACCEPT' => 'application/json'
   }
 end
+
+def authenticated_file_upload_headers(user)
+  authenticated_header(user).merge('CONTENT_TYPE': 'multipart/form-data')
+end
