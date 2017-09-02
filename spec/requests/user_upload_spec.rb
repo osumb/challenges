@@ -3,7 +3,7 @@ require 'rails_helper'
 describe 'User Upload', type: :request do
   let(:endpoint) { '/api/users/upload' }
   let(:request) { post endpoint, params: { file: file }, headers: authenticated_file_upload_headers(admin) }
-  let(:errors) { instance_double(ActiveModel::Errors, any?: !was_successful_create, messages: {})}
+  let(:errors) { instance_double(ActiveModel::Errors, any?: !was_successful_create, messages: {}) }
   let(:filename) { Rails.root.join('spec', 'fixtures', 'test_user_upload.xlsx').to_s }
   let(:new_filename) { Rails.root.join('public', 'uploads', 'test_user_upload.xlsx').to_s }
   let(:mime_type) { 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' }
