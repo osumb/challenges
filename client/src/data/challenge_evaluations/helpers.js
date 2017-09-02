@@ -22,6 +22,15 @@ const postSaveComments = challenge =>
     `Comments were not able to be saved for ${challenge.spot.row}${challenge
       .spot.file}'s challenge`
   );
+const putSaveComments = challenge =>
+  api.put(
+    '/user_challenges/comments',
+    {
+      user_challenges: reduceUserChallengesToIdAndField(challenge, 'comments')
+    },
+    `Comments were not able to be saved for ${challenge.spot.row}${challenge
+      .spot.file}'s challenge`
+  );
 const postSavePlaces = challenge =>
   api.post(
     '/user_challenges/places',
@@ -40,6 +49,7 @@ const putSubmitForEvaluation = challenge =>
 export default {
   getEvaluableChallenges,
   postSaveComments,
+  putSaveComments,
   postSavePlaces,
   putSubmitForEvaluation
 };

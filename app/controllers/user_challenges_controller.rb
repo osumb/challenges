@@ -61,7 +61,7 @@ class UserChallengesController < ApplicationController
   end
 
   def update_comments
-    evaluator = UserChallenge::Evaluator.new(params: params)
+    evaluator = UserChallenge::Evaluator.new(params: params.permit(user_challenges: [:id, :comments]))
     result = evaluator.save_comments
 
     if result.success?
@@ -111,7 +111,7 @@ class UserChallengesController < ApplicationController
   end
 
   def ensure_user_can_update_comments!
-    updatable_ids = Challenge.with_updatable_comments(current_user).flat_map { |c| c.user_challenges.ids }
+    updatable_ids = Challenge.completed(current_user).flat_map { |c| c.user_challenges.ids }
     return if params[:user_challenges].all? { |uc| updatable_ids.include?(uc[:id]) }
     render json: {
       resource: 'user_challenge',

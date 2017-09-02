@@ -28,7 +28,9 @@ const create = ({ file, row }, challenger_buck_id) =>
           file
         }
       });
+
 const disapprove = id => api.put(`/challenges/${id}/disapprove`);
+const getCompleted = () => api.get('/challenges/completed');
 const getForApproval = () => api.get('/challenges/for_approval');
 const isNormalChallenge = challengeType => challengeType === 'normal';
 const isOpenSpotChallenge = challengeType => challengeType === 'open_spot';
@@ -39,6 +41,7 @@ export default {
   approve,
   create,
   disapprove,
+  getCompleted,
   getForApproval,
   isNormalChallenge,
   isOpenSpotChallenge,

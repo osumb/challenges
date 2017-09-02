@@ -14,7 +14,7 @@ Rails.application.routes.draw do
       collection do
         get :for_approval
         get :for_evaluation
-        get :with_updatable_comments
+        get :completed
       end
       member do
         put :submit_for_approval

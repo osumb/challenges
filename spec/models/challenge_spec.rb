@@ -281,16 +281,16 @@ describe Challenge, type: :model do
     end
   end
 
-  describe '.with_updatable_comments' do
+  describe '.completed' do
     let(:user) { create(:user, :admin) }
     let!(:challenge_needs_comments) do
       create(:normal_challenge, spot: create(:spot, row: :x, file: 1), stage: :needs_comments)
     end
     let!(:challenge_doesnt_need_comments_1) do
-      create(:normal_challenge, spot: create(:spot, row: :x, file: 1), stage: :needs_comments)
+      create(:normal_challenge, spot: create(:spot, row: :x, file: 1), stage: :done)
     end
     let!(:challenge_doesnt_need_comments_2) do
-      create(:normal_challenge, spot: create(:spot, row: :x, file: 1), stage: :needs_comments)
+      create(:normal_challenge, spot: create(:spot, row: :x, file: 1), stage: :done)
     end
 
     before do
@@ -300,18 +300,18 @@ describe Challenge, type: :model do
       challenge_doesnt_need_comments_2.user_challenges.each_with_index do |user_challenge, index|
         user_challenge.update(place: index + 1)
       end
-      challenge_doesnt_need_comments_1.update(stage: :needs_approval)
-      challenge_doesnt_need_comments_2.update(stage: :needs_approval)
+      challenge_doesnt_need_comments_1.update(stage: :done)
+      challenge_doesnt_need_comments_2.update(stage: :done)
       allow(described_class).to receive(:viewable_by_user).with(user).and_return(described_class.all)
     end
 
     it 'uses .viewable_by_user to scope the query' do
-      described_class.with_updatable_comments(user)
+      described_class.completed(user)
       expect(described_class).to have_received(:viewable_by_user).exactly(1).times
     end
 
     it 'only includes challenges that do not need comments' do
-      challenges = described_class.with_updatable_comments(user)
+      challenges = described_class.completed(user)
 
       challenges.each do |challenge|
         expect(challenge.stage).not_to eq('needs_comments')
