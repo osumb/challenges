@@ -31,6 +31,8 @@ class User
     end
 
     def create_users
+      reset_database
+
       worksheet.each_with_index do |row, index|
         break if row[BUCK_ID]&.value.nil?
         next if index.zero?
@@ -52,6 +54,16 @@ class User
     end
 
     private
+
+    def reset_database
+      Challenge.destroy_all
+      UserChallenge.destroy_all
+      PasswordResetRequest.destroy_all
+      DisciplineAction.destroy_all
+      Performance.destroy_all
+      Spot.destroy_all
+      User.where.not(role: :admin).destroy_all
+    end
 
     def create_spot_from_row(row)
       spot_value = row[SPOT]&.value

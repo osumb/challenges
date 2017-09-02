@@ -18,17 +18,41 @@ describe User::Loader, type: :model do
   end
 
   describe '#create_user' do
-    it 'successfully creates the users' do
-      expect { loader.create_users }.to change { User.count }.by(236)
-    end
+    let!(:non_admin_user) { create(:user, role: :member) }
+    let!(:admin_user) { create(:admin_user) }
 
-    it 'successfully creates the spots' do
-      expect { loader.create_users }.to change { Spot.count }.by(228)
+    before do
+      allow(Challenge).to receive(:destroy_all).and_return(nil)
+      allow(UserChallenge).to receive(:destroy_all).and_return(nil)
+      allow(PasswordResetRequest).to receive(:destroy_all).and_return(nil)
+      allow(DisciplineAction).to receive(:destroy_all).and_return(nil)
+      allow(Performance).to receive(:destroy_all).and_return(nil)
+      allow(Spot).to receive(:destroy_all).and_return(nil)
     end
 
     it 'has no errors' do
       loader.create_users
       expect(loader.errors.any?).to be(false)
+    end
+
+    it 'does not clear the admin users' do
+      loader.create_users
+      expect(User.find_by(buck_id: admin_user.buck_id)).not_to be_nil
+    end
+
+    it 'clears the non-admin users' do
+      loader.create_users
+      expect(User.find_by(buck_id: non_admin_user.buck_id)).to be_nil
+    end
+
+    it 'clears the other models' do
+      loader.create_users
+      expect(Challenge).to have_received(:destroy_all)
+      expect(UserChallenge).to have_received(:destroy_all)
+      expect(PasswordResetRequest).to have_received(:destroy_all)
+      expect(DisciplineAction).to have_received(:destroy_all)
+      expect(Performance).to have_received(:destroy_all)
+      expect(Spot).to have_received(:destroy_all)
     end
   end
 
