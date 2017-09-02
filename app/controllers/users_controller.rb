@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
   before_action :authenticate_user, except: [:reset_password]
-  before_action :ensure_admin!, except: [:profile, :reset_password, :update]
+  before_action :ensure_admin!, except: [:profile, :reset_password, :update, :upload]
   before_action :ensure_correct_user!, only: [:profile, :update]
   before_action :ensure_password_reset_request_is_valid!, only: [:reset_password]
   before_action :ensure_new_part_exists!, only: [:update]
@@ -80,6 +80,20 @@ class UsersController < ApplicationController
     end
   end
   # rubocop:enable Metrics/MethodLength
+
+  def upload
+    file = File::Uploader.temporarily_save_file(params[:file])
+    loader = User::Loader.new(file: file)
+    loader.create_users
+    File::Uploader.remove_temporary_file(file)
+
+    if !loader.errors.any?
+      loader.email_users
+      head :no_content
+    else
+      render json: { errors: loader.errors.messages }, status: :unprocessible_entity
+    end
+  end
 
   private
 
