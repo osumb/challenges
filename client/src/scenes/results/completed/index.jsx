@@ -3,6 +3,7 @@ import moment from 'moment';
 
 import { Challenge } from '../../../components/challenge';
 import { SideNav, SideNavItem } from '../../../components/side_nav';
+import Snackbar from '../../../components/snackbar';
 import { helpers as challengeHelpers } from '../../../data/challenge';
 import { helpers as challengeEvaluationHelpers } from '../../../data/challenge_evaluations';
 import { propTypes } from '../../../data/challenge_evaluations';
@@ -19,13 +20,20 @@ class CompletedResults extends React.Component {
 
   constructor(props) {
     super(props);
+    this.getCurrentChallenges = this.getCurrentChallenges.bind(this);
     this.getSortedPerformances = this.getSortedPerformances.bind(this);
+    this.handleCommentEdit = this.handleCommentEdit.bind(this);
+    this.handleDisappear = this.handleDisappear.bind(this);
+    this.handleSaveComments = this.handleSaveComments.bind(this);
     this.setActivePerformanceTo = this.setActivePerformanceTo.bind(this);
 
     const sortedPerformances = this.getSortedPerformances(props.challenges);
     this.state = {
       challenges: props.challenges,
-      currentPerformanceId: sortedPerformances[0] && sortedPerformances[0].id
+      currentPerformanceId: sortedPerformances[0] && sortedPerformances[0].id,
+      failure: false,
+      requesting: false,
+      success: false
     };
   }
 
@@ -66,10 +74,31 @@ class CompletedResults extends React.Component {
     };
   }
 
+  handleDisappear() {
+    this.setState({
+      failure: false,
+      requesting: false,
+      success: false
+    });
+  }
+
   handleSaveComments(challengeId) {
     return () => {
+      this.setState({ requesting: true, success: false, failure: false });
       const challenge = this.state.challenges.find((challenge) => challenge.id === challengeId);
-      return challengeEvaluationHelpers.putSaveComments(challenge);
+      challengeEvaluationHelpers.putSaveComments(challenge).then(() => {
+        this.setState({
+          failure: false,
+          requesting: false,
+          success: true
+        });
+      }).catch(() => {
+        this.setState({
+          failure: true,
+          requesting: false,
+          success: false
+        });
+      });
     };
   }
 
@@ -82,7 +111,7 @@ class CompletedResults extends React.Component {
   }
 
   render() {
-    const { challenges, currentPerformanceId } = this.state;
+    const { challenges, currentPerformanceId, failure, requesting, success } = this.state;
     const sortedPerformances = this.getSortedPerformances();
     const currentChallenges = this.getCurrentChallenges();
 
@@ -126,6 +155,9 @@ class CompletedResults extends React.Component {
                 />
               )}
             </FlexContainer>
+            {failure && <Snackbar message="There was a problem saving the comments..." show={failure} onDisappear={this.handleDisappear} />}
+            {requesting && <Snackbar message="Saving Comments" show={requesting} onDisappear={this.handleDisappear} />}
+            {success && <Snackbar message="Saved Comments" show={success} onDisappear={this.handleDisappear} />}
           </FlexContainer>
         </FlexChild>
       </FlexContainer>

@@ -8,7 +8,9 @@ export default class Snackbar extends React.PureComponent {
   static get propTypes() {
     return {
       message: PropTypes.string.isRequired,
-      show: PropTypes.bool.isRequired
+      onDisappear: PropTypes.func,
+      show: PropTypes.bool.isRequired,
+      timeout: PropTypes.number
     };
   }
 
@@ -30,8 +32,16 @@ export default class Snackbar extends React.PureComponent {
     }
   }
 
+  componentWillUnmount() {
+    if (this.dismissTimeout) {
+      window.clearTimeout(this.dismissTimeout);
+    }
+  }
+
   showSnackbar() {
+    const timeout = this.props.timeout || 2750;
     const data = {
+      timeout,
       actionHandler: noOp,
       actionOnBottom: false,
       actionText: ' ',
@@ -40,6 +50,7 @@ export default class Snackbar extends React.PureComponent {
     };
 
     this.mdcSnackbar.show(data);
+    this.dismissTimeout = this.props.onDisappear && window.setTimeout(this.props.onDisappear, timeout);
   }
 
   render() {
