@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170724044933) do
+ActiveRecord::Schema.define(version: 20170902203217) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -47,12 +47,13 @@ ActiveRecord::Schema.define(version: 20170724044933) do
   end
 
   create_table "performances", force: :cascade do |t|
-    t.string   "name",         null: false
-    t.datetime "date",         null: false
-    t.datetime "window_open",  null: false
-    t.datetime "window_close", null: false
-    t.datetime "created_at",   null: false
-    t.datetime "updated_at",   null: false
+    t.string   "name",                          null: false
+    t.datetime "date",                          null: false
+    t.datetime "window_open",                   null: false
+    t.datetime "window_close",                  null: false
+    t.datetime "created_at",                    null: false
+    t.datetime "updated_at",                    null: false
+    t.boolean  "list_exported", default: false
   end
 
   create_table "spots", force: :cascade do |t|
