@@ -20,6 +20,7 @@ class UserUpload extends React.Component {
 
   handleSubmit(event) {
     event.preventDefault();
+    if (this.state.requesting) return;
     this.setState({
       requesting: true
     });
