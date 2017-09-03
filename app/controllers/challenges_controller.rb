@@ -10,18 +10,23 @@ class ChallengesController < ApplicationController
   before_action :ensure_admin!, only: [:approve]
   before_action :ensure_challenge_is_needs_approval!, only: [:disapprove]
 
+  # rubocop:disable Metrics/MethodLength, Metrics/LineLength
   def create
     performance = Performance.next
     spot = Spot.find_by(row: Spot.rows[params[:spot][:row].downcase], file: params[:spot][:file])
     @challenge = Challenge::Bylder.perform(challenger, performance, spot)
+    Rails.logger.info "CHALLENGE_LOG: #{current_user.full_name} attempted to challenge the #{spot&.to_s} spot"
 
     if @challenge.save
+      Rails.logger.info "CHALLENGE_LOG: #{current_user.full_name} successfully challenged the #{spot&.to_s} spot"
       send_challenge_success_email
       render :show, status: 201
     else
+      Rails.logger.info "CHALLENGE_LOG: #{current_user.full_name} couldn't challenge #{spot&.to_s}. Errors: #{@challenge.errors}"
       render json: { resource: 'challenge', errors: @challenge.errors }, status: 409
     end
   end
+  # rubocop:enable Metrics/MethodLength, Metrics/LineLength
 
   def for_approval
     @challenges = Challenge.includes(:users, :user_challenges).where(stage: :needs_approval)
