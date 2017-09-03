@@ -56,12 +56,6 @@ export const mainRoutes = {
     displayName: 'Challenges',
     links: [
       {
-        name: 'Previous',
-        path: '/challenges',
-        roles: [ANY],
-        show: true
-      },
-      {
         name: 'Make A Challenge',
         path: '/challenges/new',
         roles: [ANY],

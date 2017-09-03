@@ -17,7 +17,6 @@ import CreatePerformance from './scenes/performance/create';
 import Login from './scenes/login';
 import Navbar from './components/navbar';
 import NotFound from './components/not_found';
-// import PendingResults from './result/pending-results';
 import Profile from './scenes/user/profile';
 import PasswordResetRequest from './scenes/password_reset/request';
 import PasswordResetReset from './scenes/password_reset/reset';
