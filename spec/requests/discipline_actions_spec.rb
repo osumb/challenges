@@ -4,7 +4,7 @@ describe 'DisciplineActions', type: :request do
   let(:endpoint) { '/api/discipline_actions/' }
   let(:admin) { create(:admin_user) }
   let(:user) { create(:user) }
-  let(:performance) { create(:performance) }
+  let(:performance) { create(:performance, window_open: Time.zone.now, window_close: Time.zone.now + 1.day) }
   let(:discipline_action_params) do
     {
       discipline_action: {
