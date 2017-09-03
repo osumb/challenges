@@ -72,7 +72,9 @@ class User
       password = SecureRandom.base64(15)
       digest = BCrypt::Password.create(password)
       user_attrs = user_attrs_from_row(row).merge!(password_digest: digest, spot: spot)
-      user = User.create(user_attrs)
+      user = User.new(user_attrs)
+      return if user.admin? && User.exists?(buck_id: user.buck_id)
+      user.save
       user.errors.full_messages.map(&:downcase).each { |e| errors.add(user.buck_id, e) }
       users_and_passwords << [user, password]
     end
