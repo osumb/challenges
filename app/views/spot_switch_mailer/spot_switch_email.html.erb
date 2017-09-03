@@ -1,0 +1,25 @@
+<table class="mui-body" cellpadding="0" cellspacing="0" border="0">
+  <tr>
+    <td class="mui-panel">
+      <center>
+        <!--[if mso]><table><tr><td class="mui-container-fixed"><![endif]-->
+        <div class="mui-container">
+          <div class="mui--text-headline">
+            <span style="padding-right: 350px;">Spot Switch Results,</span>
+          </div>
+          <% if @err %>
+            <div class="mui--text-body2">
+              There was an error:<br />
+              <%= @err %>
+            </div>
+          <% else %>
+            <div class="mui--text-body2">
+              It was successful!
+            </div>
+          <% end%>
+        </div>
+        <!--[if mso]></td></tr></table><![endif]-->
+      </center>
+    </td>
+  </tr>
+</table>

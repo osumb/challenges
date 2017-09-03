@@ -1,10 +1,12 @@
 #!/bin/sh
 
-# bin/server: Start the api server for development
+# bin/server: Start up the docker containers
 
-set -e
+# Check for the existence of docker-compose
+hash docker-compose 2>/dev/null || { echo >&2 "Please install docker-compose before trying to start challenges.  Aborting."; exit 1; }
 
-cd "$(dirname "$0")/.."
+# Remove any rails pid files
+rm tmp/pids/*
 
-node config/set-environment-variables.js
-npm run server
+# Start up the docker containers
+docker-compose up

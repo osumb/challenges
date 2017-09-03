@@ -1,0 +1,26 @@
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  font-family: sans-serif;
+  width: 100%;
+}
+
+#root {
+  height: 100%;
+  width: 100%;
+  overflow-x: hidden;
+}
+
+a {
+  color: #1a0dab;
+  text-decoration: none;
+}
+
+a:visited {
+  color: #1a0dab;
+}
+
+a:hover {
+  text-decoration: underline;
+}

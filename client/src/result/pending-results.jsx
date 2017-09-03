@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import Snackbar from 'material-ui/Snackbar';
 
 import './pending-results.scss';
@@ -11,20 +12,21 @@ const endPoint = '/results/pending';
 const approveEndPoint = '/results/approve';
 
 class PendingResults extends Component {
-
   static get propTypes() {
     return {
-      results: PropTypes.arrayOf(PropTypes.shape({
-        firstComments: PropTypes.string.isRequired,
-        firstName: PropTypes.string.isRequired,
-        firstNameNumber: PropTypes.string.isRequired,
-        id: PropTypes.number.isRequired,
-        secondComments: PropTypes.string,
-        secondName: PropTypes.string,
-        secondNameNumber: PropTypes.string,
-        spotId: PropTypes.string.isRequired,
-        winnerId: PropTypes.string.isRequired
-      }))
+      results: PropTypes.arrayOf(
+        PropTypes.shape({
+          firstComments: PropTypes.string.isRequired,
+          firstName: PropTypes.string.isRequired,
+          firstNameNumber: PropTypes.string.isRequired,
+          id: PropTypes.number.isRequired,
+          secondComments: PropTypes.string,
+          secondName: PropTypes.string,
+          secondNameNumber: PropTypes.string,
+          spotId: PropTypes.string.isRequired,
+          winnerId: PropTypes.string.isRequired
+        })
+      )
     };
   }
 
@@ -41,8 +43,7 @@ class PendingResults extends Component {
   }
 
   handleApproveOne(id) {
-    api.put(approveEndPoint, { ids: [id] })
-    .then(() => {
+    api.put(approveEndPoint, { ids: [id] }).then(() => {
       const { results } = this.state;
 
       this.setState({
@@ -53,15 +54,16 @@ class PendingResults extends Component {
   }
 
   handleApproveAll() {
-    api.put(approveEndPoint, {
-      ids: this.state.results.map(({ id }) => id)
-    })
-    .then(() => {
-      this.setState({
-        results: [],
-        success: true
+    api
+      .put(approveEndPoint, {
+        ids: this.state.results.map(({ id }) => id)
+      })
+      .then(() => {
+        this.setState({
+          results: [],
+          success: true
+        });
       });
-    });
   }
 
   render() {
@@ -97,9 +99,14 @@ class PendingResults extends Component {
           </RaisedButton>
         </div>
         <div className="PendingResults-results">
-          {results.map(({ id, ...rest }) => (
-            <PendingResult key={id} id={id} {...rest} onApprove={this.handleApproveOne} />
-          ))}
+          {results.map(({ id, ...rest }) =>
+            <PendingResult
+              key={id}
+              id={id}
+              {...rest}
+              onApprove={this.handleApproveOne}
+            />
+          )}
         </div>
       </div>
     );
@@ -108,10 +115,7 @@ class PendingResults extends Component {
 
 export default function PendingResultsContainer(props) {
   return (
-    <Fetch
-      {...props}
-      endPoint={endPoint}
-    >
+    <Fetch {...props} endPoint={endPoint}>
       <PendingResults />
     </Fetch>
   );

@@ -1,2 +1,2 @@
-api: bin/server
-create-react-app: bin/create-react-app
+client: cd client && yarn start
+api: PORT=$SERVER_PORT bundle exec rails s -p 3001 -b '0.0.0.0'

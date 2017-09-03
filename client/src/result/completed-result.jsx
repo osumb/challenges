@@ -1,13 +1,13 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
 import { Card, CardActions, CardHeader, CardText } from 'material-ui/Card';
 import Divider from 'material-ui/Divider';
 import FlatButton from 'material-ui/FlatButton';
+import PropTypes from 'prop-types';
 import TextField from 'material-ui/TextField';
 
 import './completed-result.scss';
 
 export default class CompletedResult extends Component {
-
   static get propTypes() {
     return {
       firstComments: PropTypes.string.isRequired,
@@ -80,57 +80,89 @@ export default class CompletedResult extends Component {
   }
 
   render() {
-    const { firstName, firstNameNumber, secondName, secondNameNumber, spotId, winnerId } = this.props;
+    const {
+      firstName,
+      firstNameNumber,
+      secondName,
+      secondNameNumber,
+      spotId,
+      winnerId
+    } = this.props;
     const { editing, firstComments, secondComments } = this.state;
-    const winner = firstNameNumber === winnerId
-      ? firstName
-      : secondName;
+    const winner = firstNameNumber === winnerId ? firstName : secondName;
 
     return (
       <div className="CompletedResult">
         <Card>
-          <CardHeader className="CompletedResult-header" title={`Winner: ${winner} ${spotId}`} />
+          <CardHeader
+            className="CompletedResult-header"
+            title={`Winner: ${winner} ${spotId}`}
+          />
           <Divider />
           <div className="CompletedResult-textWrapper">
-            {!editing ?
-              <CardText className="CompletedResult-text">
-                <span>
-                  <strong>{firstName}: </strong>{firstComments}
-                </span>
-              </CardText> :
-              <TextField
-                multiLine
-                name="firstComments"
-                onChange={this.handleCommentsChange}
-                placeholder={`Comments for ${firstName}`}
-                rows={4}
-                rowsMax={4}
-                value={firstComments}
-              />
-            }
-            {secondNameNumber && (!editing ?
-              <CardText className="CompletedResult-text"><span><strong>{secondName}: </strong>{secondComments}</span></CardText> :
-              <TextField
-                multiLine
-                name="secondComments"
-                onChange={this.handleCommentsChange}
-                placeholder={`Comments for ${secondName}`}
-                rows={4}
-                rowsMax={4}
-                value={secondComments}
-              />
-            )}
+            {!editing
+              ? <CardText className="CompletedResult-text">
+                  <span>
+                    <strong>
+                      {firstName}:{' '}
+                    </strong>
+                    {firstComments}
+                  </span>
+                </CardText>
+              : <TextField
+                  multiLine
+                  name="firstComments"
+                  onChange={this.handleCommentsChange}
+                  placeholder={`Comments for ${firstName}`}
+                  rows={4}
+                  rowsMax={4}
+                  value={firstComments}
+                />}
+            {secondNameNumber &&
+              (!editing
+                ? <CardText className="CompletedResult-text">
+                    <span>
+                      <strong>
+                        {secondName}:{' '}
+                      </strong>
+                      {secondComments}
+                    </span>
+                  </CardText>
+                : <TextField
+                    multiLine
+                    name="secondComments"
+                    onChange={this.handleCommentsChange}
+                    placeholder={`Comments for ${secondName}`}
+                    rows={4}
+                    rowsMax={4}
+                    value={secondComments}
+                  />)}
           </div>
           <CardActions>
-            {editing && <FlatButton className="CompletedResult-button" onTouchTap={this.handleCancel}>Cancel</FlatButton>}
-            {editing ?
+            {editing &&
               <FlatButton
                 className="CompletedResult-button"
-                disabled={firstComments === this.state.originalFirstComments && secondComments === this.state.originalSecondComments}
-                onTouchTap={this.handleConfirm}
-              >Submit</FlatButton> :
-              <FlatButton className="CompletedResult-button" onTouchTap={this.handleEditClick}>Edit</FlatButton>
-            }
+                onTouchTap={this.handleCancel}
+              >
+                Cancel
+              </FlatButton>}
+            {editing
+              ? <FlatButton
+                  className="CompletedResult-button"
+                  disabled={
+                    firstComments === this.state.originalFirstComments &&
+                    secondComments === this.state.originalSecondComments
+                  }
+                  onTouchTap={this.handleConfirm}
+                >
+                  Submit
+                </FlatButton>
+              : <FlatButton
+                  className="CompletedResult-button"
+                  onTouchTap={this.handleEditClick}
+                >
+                  Edit
+                </FlatButton>}
           </CardActions>
         </Card>
       </div>

@@ -1,0 +1,46 @@
+{
+    "rules": {
+        "indent": [
+            2,
+            2
+        ],
+        "quotes": [
+            2,
+            "single"
+        ],
+        "linebreak-style": [
+            2,
+            "unix"
+        ],
+        "semi": [
+            2,
+            "always"
+        ],
+        "no-console": [
+            0
+        ],
+        "lines-around-comment": [
+            "off"
+        ],
+        "react/jsx-indent": [
+            2,
+            2
+        ],
+        "react/jsx-indent-props": "off",
+        "react/no-multi-comp": "off",
+        "import/no-unresolved": "off"
+    },
+    "env": {
+        "browser": true,
+        "es6": true,
+        "node": true
+    },
+    "globals": {
+        "it": true
+    },
+    "extends": [
+        "@btmills/eslint-config-btmills/es6",
+        "@btmills/eslint-config-btmills/react",
+        "prettier"
+    ]
+}

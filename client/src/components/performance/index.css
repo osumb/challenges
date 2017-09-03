@@ -1,0 +1,7 @@
+.Challenges-Datetime > input {
+  border: 1px solid #efefef;
+  border-radius: 3px;
+  font-size: 16px;
+  height: 2em;
+  width: 16em;
+}

@@ -1,11 +1,10 @@
-import React, { Component, PropTypes } from 'react';
-import CircularProgress from 'material-ui/CircularProgress';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 
 import './fetch.scss';
 import { api, errorEmitter } from '../utils';
 
 export default class Fetch extends Component {
-
   static get propTypes() {
     return {
       children: PropTypes.element.isRequired,
@@ -37,12 +36,13 @@ export default class Fetch extends Component {
         ? `${endPoint}?${paramId}=${params[paramId]}`
         : endPoint;
 
-      api.get(url, errorMessage)
-      .then(data => {
+      api.get(url, errorMessage).then(data => {
         this.setState({ data, error: false });
       });
     } catch (e) {
-      errorEmitter.dispatch(errorMessage || 'Sorry, there was a problem sending your request');
+      errorEmitter.dispatch(
+        errorMessage || 'Sorry, there was a problem sending your request'
+      );
       console.error(e);
     }
   }
@@ -51,7 +51,7 @@ export default class Fetch extends Component {
     const { data, error } = this.state;
 
     if (!data) {
-      return <div className="Fetch"><CircularProgress /></div>;
+      return <div className="Fetch">Loading...</div>;
     }
 
     return !error && React.cloneElement(this.props.children, { ...data });

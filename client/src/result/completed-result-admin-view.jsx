@@ -1,11 +1,11 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
 import { Card, CardTitle, CardText } from 'material-ui/Card';
 import classnames from 'classnames';
+import PropTypes from 'prop-types';
 
 import './completed-result-admin-view.scss';
 
 export default class CompletedIndividualResult extends Component {
-
   static get propTypes() {
     return {
       firstComments: PropTypes.string.isRequired,
@@ -45,8 +45,10 @@ export default class CompletedIndividualResult extends Component {
       'CompletedResultAdminView-text--winner': winnerId !== firstNameNumber
     });
     const winnerMarkerClass = classnames({
-      'CompletedResultAdminView-winnerMarker--left': winnerId === firstNameNumber,
-      'CompletedResultAdminView-winnerMarker--right': winnerId !== firstNameNumber
+      'CompletedResultAdminView-winnerMarker--left':
+        winnerId === firstNameNumber,
+      'CompletedResultAdminView-winnerMarker--right':
+        winnerId !== firstNameNumber
     });
 
     let displayName, userComments;
@@ -61,28 +63,27 @@ export default class CompletedIndividualResult extends Component {
 
     return (
       <Card style={{ margin: '10px' }}>
-        <CardTitle
-          title={performanceName}
-          subtitle={spotId}
-        />
+        <CardTitle title={performanceName} subtitle={spotId} />
         <div className="CompletedResultAdminView-text--wrapper">
           <h3 className={leftNameClass}>
             {firstName}
           </h3>
           {secondName &&
-            <h3 className="CompletedResultAdminView-text--center">vs</h3>
-          }
+            <h3 className="CompletedResultAdminView-text--center">vs</h3>}
           {secondName &&
             <h3 className={rightNameClass}>
               {secondName}
-            </h3>
-          }
+            </h3>}
         </div>
         <div className="CompletedResultAdminView-winnerMarker--wrapper">
           <p className={winnerMarkerClass}>*Winner</p>
         </div>
-        <h3 className="CompletedResultAdminView-text">{`${displayName.split(' ')[0]}'s`} comments: </h3>
-        <CardText style={{ fontSize: '18px', padding: textDivPadding }}>{userComments}</CardText>
+        <h3 className="CompletedResultAdminView-text">
+          {`${displayName.split(' ')[0]}'s`} comments:{' '}
+        </h3>
+        <CardText style={{ fontSize: '18px', padding: textDivPadding }}>
+          {userComments}
+        </CardText>
       </Card>
     );
   }

@@ -1,33 +1,9 @@
 #!/bin/sh
 
-# bin/setup: Set up application for the first time after cloning, or set it
-#               back to the initial first unused state.
+# bin/setup: Builds docker images
 
-set -e
+# Check for the existence of docker-compose
+hash docker-compose 2>/dev/null || { echo >&2 "Please install docker-compose before trying to start challenges.  Aborting."; exit 1; }
 
-cd "$(dirname "$0")/.."
-
-if [ -f "Brewfile" ] && [ "$(uname -s)" = "Darwin" ]; then
-  brew update
-  brew tap homebrew/bundle 2>/dev/null
-fi
-
-if [ -f "Brewfile" ] && [ "$(uname -s)" = "Darwin" ]; then
-  brew bundle check 2>&1 >/dev/null || {
-    echo "==> Installing Homebrew dependencies…"
-    brew bundle
-  }
-fi
-
-echo "==> Installing node modules"
-npm install
-
-if psql -lqt | cut -d \| -f 1 | grep -w challenges_dev; then
-  echo "Database already exists"
-else
-  echo "===> Setting up DB..."
-  createdb challenges_dev
-fi
-
-npm run seed
-echo "==> App is now ready to go!"
+# Start up the docker containers
+docker-compose build

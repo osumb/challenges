@@ -1,15 +1,16 @@
-export const ADMIN = 'ADMIN';
-export const ANY = 'ANY';
-export const HOME = 'Home';
-export const SQUAD_LEADER = 'SQUAD_LEADER';
+import { helpers } from '../data/user';
+import { isEmptyObject } from '../utils';
+
+const ADMIN = 'ADMIN';
+const ANY = 'ANY';
+const SQUAD_LEADER = 'SQUADLEADER';
 
 export const canUserSeeLink = (link, user = {}) =>
   link.show &&
-  (
-    link.roles.includes(ANY) ||
-    (user.squadLeader && link.roles.some((role) => role === SQUAD_LEADER)) ||
-    (user.admin && link.roles.some((role) => role === ADMIN))
-  );
+  (link.roles.includes(ANY) ||
+    (helpers.isSquadLeader(user) &&
+      link.roles.some(role => role === SQUAD_LEADER)) ||
+    (helpers.isAdmin(user) && link.roles.some(role => role === ADMIN)));
 
 export const canUserAccessPattern = (user, pattern) => {
   if (typeof user === 'undefined' || user === null) {
@@ -20,24 +21,34 @@ export const canUserAccessPattern = (user, pattern) => {
     return true;
   }
 
-  const patternMainRouteKey = Object.keys(mainRoutes).find((key) => mainRoutes[key].links.some(({ path }) => path === pattern));
+  const patternMainRouteKey = Object.keys(mainRoutes).find(key =>
+    mainRoutes[key].links.some(({ path }) => path === pattern)
+  );
 
   if (!patternMainRouteKey) {
     return false;
   }
 
-  const link = mainRoutes[patternMainRouteKey].links.find(({ path }) => path === pattern);
+  const link = mainRoutes[patternMainRouteKey].links.find(
+    ({ path }) => path === pattern
+  );
   const { roles } = link;
 
-  return roles.includes(ANY) || (user.squadLeader && roles.includes(SQUAD_LEADER)) || (user.admin && roles.includes(ADMIN));
+  return (
+    roles.includes(ANY) ||
+    (helpers.isSquadLeader(user) && roles.includes(SQUAD_LEADER)) ||
+    (helpers.isAdmin(user) && roles.includes(ADMIN))
+  );
 };
 
-export const getVisibleMainRoutesForUser = (user) => {
-  if (typeof user === 'undefined' || user === null) {
+export const getVisibleMainRoutesForUser = user => {
+  if (typeof user === 'undefined' || user === null || isEmptyObject(user)) {
     return [];
   }
 
-  return Object.keys(mainRoutes).filter((key) => mainRoutes[key].links.some((link) => canUserSeeLink(link, user)));
+  return Object.keys(mainRoutes).filter(key =>
+    mainRoutes[key].links.some(link => canUserSeeLink(link, user))
+  );
 };
 
 export const mainRoutes = {
@@ -69,7 +80,7 @@ export const mainRoutes = {
     links: [
       {
         name: 'Approve',
-        path: '/results/pending',
+        path: '/challenges/approve',
         roles: [ADMIN],
         show: true
       },
@@ -102,7 +113,7 @@ export const mainRoutes = {
     displayName: 'Users',
     links: [
       {
-        path: '/users/:nameNumber',
+        path: '/users/:buckId',
         roles: [ADMIN],
         show: false
       },

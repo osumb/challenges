@@ -1,0 +1,11 @@
+#!/bin/sh
+
+# bin/client_build: Run build for client side code and move up to /public
+# NOTE: if you don't have yarn actually installed on your machine, you can run this through docker-compose
+
+# Run the build
+(cd client && yarn run build)
+
+rm -rf public && mkdir public
+mv client/build/* ./public
+rm -rf client/build
