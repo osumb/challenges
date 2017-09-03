@@ -66,12 +66,47 @@ const headers = () => ({
   'Content-Type': 'application/json'
 });
 
+const multipartHeaders = () => ({
+  Accept: 'application/json, text/html',
+  Authorization: getToken() && `Bearer ${getToken()}`
+});
+
 const request = (url, { method, body }, errorMessage, hideError) =>
   fetch(`${baseRoute}/api${url}`, {
     headers: headers(),
     method,
     mode: 'cors',
     body: JSON.stringify(body)
+  })
+    .then(response => {
+      if (!response.ok) throw response;
+      if (!headersHelpers.isJSONResponse(response)) return response.status;
+
+      return response.json().then(handleResponseJSON);
+    })
+    .catch(response => {
+      if (hideError) {
+        throw response;
+      }
+      if (errorMessage) {
+        errorEmitter.dispatch(errorMessage);
+      } else {
+        parseErrorMessage(response).then(message =>
+          errorEmitter.dispatch(message)
+        );
+      }
+      throw response.status;
+    });
+
+const multipartFormRequest = (url, { method, body }, errorMessage, hideError) =>
+  fetch(`${baseRoute}/api${url}`, {
+    method,
+    body: Object.keys(body).reduce((acc, key) => {
+      acc.append(key, body[key]);
+      return acc;
+    }, new FormData()),
+    headers: multipartHeaders(),
+    mode: 'cors'
   })
     .then(response => {
       if (!response.ok) throw response;
@@ -101,5 +136,7 @@ const post = (url, body, errorMessage, hideError) =>
   request(url, { method: 'post', body }, errorMessage, hideError);
 const put = (url, body, errorMessage, hideError) =>
   request(url, { method: 'put', body }, errorMessage, hideError);
+const postFormData = (url, body, errorMessage, hideError) =>
+  multipartFormRequest(url, { method: 'POST', body }, errorMessage, hideError);
 
-export default { del, get, post, put };
+  export default { del, get, post, postFormData, put };

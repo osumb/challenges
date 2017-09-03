@@ -128,6 +128,12 @@ export const mainRoutes = {
         path: '/roster',
         roles: [ADMIN],
         show: true
+      },
+      {
+        name: 'Upload',
+        path: '/user/upload',
+        roles: [ADMIN],
+        show: true
       }
     ]
   }

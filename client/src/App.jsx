@@ -25,6 +25,7 @@ import PerformanceIndex from './scenes/performance/index';
 import ProfileAdmin from './scenes/user/profile_admin';
 import Roster from './scenes/user/roster';
 import Search from './scenes/user/search';
+import Upload from './scenes/user/upload';
 
 const handleLogout = push => {
   auth.logout();
@@ -95,6 +96,11 @@ const App = () =>
             exact
             path="/results/completed"
             component={CompletedResults}
+          />
+          <PrivateRoute
+            exact
+            path="/user/upload"
+            component={Upload}
           />
           <PrivateRoute exact path="/roster" component={Roster} />
           <PrivateRoute exact path="/search" component={Search} />

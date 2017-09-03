@@ -58,12 +58,14 @@ describe User::Loader, type: :model do
 
   describe '#email_users' do
     let(:password) { 'password' }
+    let(:mail) { instance_double(ActionMailer::MessageDelivery, deliver_now: nil) }
     let(:user) { create(:user, password: password, password_confirmation: password) }
 
     before do
       allow(loader).to receive(:users_and_passwords).and_return([[user, password]])
       allow(UserPasswordMailer).to receive(:user_password_email).and_return(nil)
       allow(RubyXL::Parser).to receive(:parse).with(filename).and_return(workbook)
+      allow(UserPasswordMailer).to receive(:user_password_email).and_return(mail)
     end
 
     context 'when there are no errors' do
