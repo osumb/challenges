@@ -5,7 +5,7 @@ describe 'User Upload', type: :request do
   let(:request) { post endpoint, params: { file: file }, headers: authenticated_file_upload_headers(admin) }
   let(:errors) { instance_double(ActiveModel::Errors, any?: !was_successful_create, messages: {}) }
   let(:filename) { Rails.root.join('spec', 'fixtures', 'test_user_upload.xlsx').to_s }
-  let(:new_filename) { Rails.root.join('public', 'uploads', 'test_user_upload.xlsx').to_s }
+  let(:new_filename) { Rails.root.join('tmp', 'test_user_upload.xlsx').to_s }
   let(:mime_type) { 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' }
   let(:file) { Rack::Test::UploadedFile.new(filename, mime_type) }
   let(:loader) { instance_double(User::Loader, create_users: nil, email_users: nil, errors: errors) }

@@ -56,12 +56,6 @@ export const mainRoutes = {
     displayName: 'Challenges',
     links: [
       {
-        name: 'Previous',
-        path: '/challenges',
-        roles: [ANY],
-        show: true
-      },
-      {
         name: 'Make A Challenge',
         path: '/challenges/new',
         roles: [ANY],
@@ -126,6 +120,12 @@ export const mainRoutes = {
       {
         name: 'Roster',
         path: '/roster',
+        roles: [ADMIN],
+        show: true
+      },
+      {
+        name: 'Upload',
+        path: '/user/upload',
         roles: [ADMIN],
         show: true
       }

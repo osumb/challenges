@@ -17,7 +17,6 @@ import CreatePerformance from './scenes/performance/create';
 import Login from './scenes/login';
 import Navbar from './components/navbar';
 import NotFound from './components/not_found';
-// import PendingResults from './result/pending-results';
 import Profile from './scenes/user/profile';
 import PasswordResetRequest from './scenes/password_reset/request';
 import PasswordResetReset from './scenes/password_reset/reset';
@@ -25,6 +24,7 @@ import PerformanceIndex from './scenes/performance/index';
 import ProfileAdmin from './scenes/user/profile_admin';
 import Roster from './scenes/user/roster';
 import Search from './scenes/user/search';
+import Upload from './scenes/user/upload';
 
 const handleLogout = push => {
   auth.logout();
@@ -95,6 +95,11 @@ const App = () =>
             exact
             path="/results/completed"
             component={CompletedResults}
+          />
+          <PrivateRoute
+            exact
+            path="/user/upload"
+            component={Upload}
           />
           <PrivateRoute exact path="/roster" component={Roster} />
           <PrivateRoute exact path="/search" component={Search} />

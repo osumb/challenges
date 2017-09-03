@@ -77,6 +77,8 @@ const update = ({ firstName: first_name, lastName: last_name, buckId, part }) =>
     part: part.toLowerCase()
   });
 const partsForInstrument = instrument => instrumentParts[instrument];
+const postUpload = (file) =>
+  api.postFormData('/users/upload', { file });
 
 export default {
   getAll,
@@ -91,6 +93,7 @@ export default {
   isTriChallengeUser,
   parts,
   partsForInstrument,
+  postUpload,
   resetPassword,
   search,
   switchSpots,

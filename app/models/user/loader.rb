@@ -45,7 +45,7 @@ class User
 
     def email_users
       return false if errors.any?
-      users_and_passwords.each { |(user, password)| UserPasswordMailer.user_password_email(user, password) }
+      users_and_passwords.each { |(user, password)| UserPasswordMailer.user_password_email(user, password).deliver_now }
       true
     end
 

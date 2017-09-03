@@ -10,7 +10,7 @@ describe Files::Uploader do
     end
 
     it 'returns the correct directory of the new file' do
-      expect(described_class.temporarily_save_file(uploaded_file)).to eq(Rails.root.join('public', 'uploads', filename))
+      expect(described_class.temporarily_save_file(uploaded_file)).to eq(Rails.root.join('tmp', filename))
     end
   end
 
