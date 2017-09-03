@@ -3,7 +3,6 @@ class ChallengeListPreview < ActionMailer::Preview
   def challenge_list_email
     builder = Challenge::ListBuilder.new(Performance.first)
     builder.build_challenge_list
-    loc = builder.write_list_to_disk
-    ChallengeListMailer.challenge_list_email(loc)
+    ChallengeListMailer.challenge_list_email('fake steam')
   end
 end
