@@ -32,7 +32,7 @@ class DisciplineActionsController < ApplicationController
   def ensure_performance_is_not_expired!
     p = Performance.find_by id: params[:discipline_action][:performance_id]
     p = DisciplineAction.find_by(id: params[:id])&.performance if p.nil?
-    return if !p.nil? && p&.window_open?
+    return if !p.nil? && !p.stale?
     render json: { resource: 'discipline_action', errors: [{ performance: 'can\'t be expired' }] }, status: 403
   end
 
