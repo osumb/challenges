@@ -26,7 +26,7 @@ export default function UserChallenge({ comments, user, place, hideName, hasEdit
 
   return (
     <FlexContainer flexDirection="column" alignItems="flex-start" style={{ ...style }}>
-      {hideName &&
+      {!hideName &&
         <Wrapper>
           <Typography category="headline">
             {user.firstName} {user.lastName}

@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 
-import { auth } from '../../../../utils';
+import { auth, errorEmitter } from '../../../../utils';
 import { propTypes as performanceProps } from '../../../../data/performance';
 import { helpers as challengeHelpers } from '../../../../data/challenge';
 import {
@@ -46,7 +46,12 @@ export default class ChallengeSelect extends React.PureComponent {
     this.createChallenge = this.createChallenge.bind(this);
     this.getUser = this.getUser.bind(this);
     this.handleChallengeCreate = this.handleChallengeCreate.bind(this);
+    this.handleErrorBannerClose = this.handleErrorBannerClose.bind(this);
     this.handleSelectClick = this.handleSelectClick.bind(this);
+  }
+
+  componentDidMount() {
+    errorEmitter.on('close', this.handleErrorBannerClose);
   }
 
   handleChallengeCreate(spot) {
@@ -62,6 +67,10 @@ export default class ChallengeSelect extends React.PureComponent {
     if (this.props.onChallenge) {
       setTimeout(this.props.onChallenge, 1000);
     }
+  }
+
+  handleErrorBannerClose() {
+    this.setState({ requesting: false });
   }
 
   handleSelectClick() {

@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import moment from 'moment';
 import PropTypes from 'prop-types';
 
@@ -101,18 +102,21 @@ class PerformanceIndex extends React.PureComponent {
           Update Performances
         </Typography>
         <FlexChild flex={1} padding="20px 0 0 0" width="100%">
-          <FlexContainer justifyContent="center" flexWrap="wrap">
-            {sortedKeys.map(id =>
-              <Performance
-                key={id}
-                buttonText="Update"
-                canDelete
-                onAction={this.handlePerformanceUpdate}
-                onDelete={this.handlePerformanceDelete}
-                performance={performancesById[id]}
-              />
-            )}
-          </FlexContainer>
+          {sortedKeys.length > 0 ?
+            <FlexContainer justifyContent="center" flexWrap="wrap">
+              {sortedKeys.map(id =>
+                <Performance
+                  key={id}
+                  buttonText="Update"
+                  canDelete
+                  onAction={this.handlePerformanceUpdate}
+                  onDelete={this.handlePerformanceDelete}
+                  performance={performancesById[id]}
+                />
+              )}
+            </FlexContainer> :
+            <Link to="/performances/create">Create A Performance</Link>
+          }
         </FlexChild>
         <Snackbar show={updated || deleted} message={snackbarMessage} />
         {requesting && <CircularProgress />}
