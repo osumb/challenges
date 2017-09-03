@@ -5,6 +5,6 @@ class ChallengeSuccessMailer < ApplicationMailer
     return if Rails.env.test?
     @initiated_by = initiated_by
     @challenge = challenge
-    mail(to: email, subject: 'OSUMB Challenge Creation Success').deliver_now
+    mail(to: email, subject: 'OSUMB Challenge Creation Success').deliver
   end
 end

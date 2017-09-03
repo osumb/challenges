@@ -26,7 +26,7 @@ class User < ApplicationRecord
 
   validates :password_digest, presence: true
   validates :buck_id, presence: true, uniqueness: true, format: {
-    with: /\A[a-z]+\.[1-9][0-9]*\z/,
+    with: /\A[a-z\-]+\.[1-9][0-9]*\z/,
     message: 'must be a valid name.number'
   }
   validates :instrument, presence: true

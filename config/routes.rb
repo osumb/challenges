@@ -9,6 +9,7 @@ Rails.application.routes.draw do
     resources :users, only: [:index, :show, :update], constraints: { id: /[0-z\.]+/ }
     get 'users/profile/:buck_id', to: 'users#profile', constraints: { buck_id: /[0-z\.]+/ }
     post 'users/:buck_id/reset_password', to: 'users#reset_password', constraints: { buck_id: /[0-z\.]+/ }
+    post 'users/upload', to: 'users#upload'
 
     resources :challenges, only: [:create] do
       collection do
