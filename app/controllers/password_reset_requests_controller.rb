@@ -1,7 +1,7 @@
 class PasswordResetRequestsController < ApplicationController
   # rubocop:disable Metrics/MethodLength
   def create
-    user = User.find_by buck_id: params[:buck_id]
+    user = User.find_by buck_id: params[:buck_id]&.downcase
     unless !user.nil? && user.email == params[:email]&.downcase
       head 403
       return

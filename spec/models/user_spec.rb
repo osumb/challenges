@@ -25,7 +25,7 @@ describe User, type: :model do
 
   describe 'callbacks' do
     let(:user) { create(:user, email: email) }
-    let(:email) { "BUCKIDCALLBACKTEST.1@osu.edu" }
+    let(:email) { 'BUCKIDCALLBACKTEST.1@osu.edu' }
 
     it 'downcases the email on save' do
       expect(user.email).to eq(email.downcase)
