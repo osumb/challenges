@@ -50,6 +50,7 @@ export default class ErrorBanner extends Component {
 
   handleCloseRequest() {
     this.setState({ errorMessage: null });
+    errorEmitter.close();
   }
 
   render() {

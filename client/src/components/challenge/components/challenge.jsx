@@ -20,9 +20,9 @@ const UCContainer = styled.div`
 `;
 
 export default function Challenge({
+  hideName,
   leftButtonText,
   rightButtonText,
-  id,
   hasEditableComments,
   spot,
   onLeftButtonClick,
@@ -67,7 +67,7 @@ export default function Challenge({
         >
           {userChallenges.map(uc =>
             <UCContainer key={uc.id}>
-              <UserChallenge {...uc} hasEditableComments={hasEditableComments} onCommentEdit={onCommentEdit(uc.id)} />
+              <UserChallenge {...uc} hasEditableComments={hasEditableComments} onCommentEdit={onCommentEdit(uc.id)} hideName={hideName} />
             </UCContainer>
           )}
         </FlexContainer>
@@ -78,6 +78,7 @@ export default function Challenge({
 
 Challenge.propTypes = {
   ...propTypes.challengeForEvaluationPropTypes,
+  hideName: PropTypes.bool,
   leftButtonText: PropTypes.string,
   rightButtonText: PropTypes.string,
   hasEditableComments: PropTypes.bool.isRequired,
@@ -88,5 +89,6 @@ Challenge.propTypes = {
 
 Challenge.defaultProps = {
   hasEditableComments: false,
-  onCommentEdit: () => () => null
+  onCommentEdit: () => () => null,
+  hideName: false
 };
