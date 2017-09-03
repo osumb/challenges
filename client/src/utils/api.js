@@ -139,4 +139,4 @@ const put = (url, body, errorMessage, hideError) =>
 const postFormData = (url, body, errorMessage, hideError) =>
   multipartFormRequest(url, { method: 'POST', body }, errorMessage, hideError);
 
-  export default { del, get, post, postFormData, put };
+export default { del, get, post, postFormData, put };
