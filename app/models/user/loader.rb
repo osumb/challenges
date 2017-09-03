@@ -1,6 +1,7 @@
 require 'rubyXL'
 require 'securerandom'
 
+# rubocop:disable Metrics/ClassLength
 class User
   class Loader
     include ActiveModel::Validations
@@ -149,3 +150,4 @@ class User
     end
   end
 end
+# rubocop:enable Metrics/ClassLength
