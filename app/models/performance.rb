@@ -24,6 +24,10 @@ class Performance < ApplicationRecord
     window_close < Time.zone.now
   end
 
+  def not_open_yet?
+    Time.zone.now < window_open
+  end
+
   private
 
   def window_open_before_window_close
