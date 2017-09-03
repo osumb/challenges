@@ -44,8 +44,16 @@ class UserUpload extends React.Component {
     return (
       <FlexContainer>
         <form onSubmit={this.handleSubmit}>
-          <input required type="file" accept="xlsx" multiple={false} ref={this.setFileUploadRef} />
-          <Button onClick={this.handleSubmit}>Submit</Button>
+          <input
+            required
+            type="file"
+            accept="xlsx"
+            multiple={false}
+            ref={this.setFileUploadRef}
+          />
+          <Button onClick={this.handleSubmit} disabled={this.state.requesting}>
+            Submit
+          </Button>
         </form>
         {requesting && <CircularProgress />}
       </FlexContainer>

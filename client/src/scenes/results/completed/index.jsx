@@ -38,36 +38,39 @@ class CompletedResults extends React.Component {
   }
 
   getCurrentChallenges() {
-    if (!this.state.currentPerformanceId) { return []; }
+    if (!this.state.currentPerformanceId) {
+      return [];
+    }
 
-    return this.state.challenges.filter((challenge) => challenge.performance.id === this.state.currentPerformanceId);
+    return this.state.challenges.filter(
+      challenge => challenge.performance.id === this.state.currentPerformanceId
+    );
   }
 
   getSortedPerformances(challenges = this.state.challenges) {
-    const performances = challenges.map((challenge) => challenge.performance).reduce((acc, val) => {
-      if (acc.some((performance) => performance.id === val.id)) {
-        return acc;
-      } else {
-        return [
-          ...acc,
-          val
-        ];
-      }
-    }, []);
+    const performances = challenges
+      .map(challenge => challenge.performance)
+      .reduce((acc, val) => {
+        if (acc.some(performance => performance.id === val.id)) {
+          return acc;
+        } else {
+          return [...acc, val];
+        }
+      }, []);
 
     return performances.sort((a, b) => new Date(b.date) - new Date(a.date));
   }
 
   handleCommentEdit(challengeId) {
-    return (userChallengeId) => (event) => {
+    return userChallengeId => event => {
       const target = event.currentTarget;
-      this.setState((prevState) => {
+      this.setState(prevState => {
         const newState = { ...prevState };
 
-        newState
-          .challenges.find((challenge) => challenge.id === challengeId)
-          .userChallenges.find((uc) => uc.id === userChallengeId)
-          .comments = target.value;
+        newState.challenges
+          .find(challenge => challenge.id === challengeId)
+          .userChallenges.find(uc => uc.id === userChallengeId).comments =
+          target.value;
 
         return newState;
       });
@@ -85,20 +88,25 @@ class CompletedResults extends React.Component {
   handleSaveComments(challengeId) {
     return () => {
       this.setState({ requesting: true, success: false, failure: false });
-      const challenge = this.state.challenges.find((challenge) => challenge.id === challengeId);
-      challengeEvaluationHelpers.putSaveComments(challenge).then(() => {
-        this.setState({
-          failure: false,
-          requesting: false,
-          success: true
+      const challenge = this.state.challenges.find(
+        challenge => challenge.id === challengeId
+      );
+      challengeEvaluationHelpers
+        .putSaveComments(challenge)
+        .then(() => {
+          this.setState({
+            failure: false,
+            requesting: false,
+            success: true
+          });
+        })
+        .catch(() => {
+          this.setState({
+            failure: true,
+            requesting: false,
+            success: false
+          });
         });
-      }).catch(() => {
-        this.setState({
-          failure: true,
-          requesting: false,
-          success: false
-        });
-      });
     };
   }
 
@@ -111,7 +119,13 @@ class CompletedResults extends React.Component {
   }
 
   render() {
-    const { challenges, currentPerformanceId, failure, requesting, success } = this.state;
+    const {
+      challenges,
+      currentPerformanceId,
+      failure,
+      requesting,
+      success
+    } = this.state;
     const sortedPerformances = this.getSortedPerformances();
     const currentChallenges = this.getCurrentChallenges();
 
@@ -129,12 +143,14 @@ class CompletedResults extends React.Component {
       <FlexContainer>
         <FlexChild flex="0">
           <SideNav>
-            {sortedPerformances.map((performance) =>
+            {sortedPerformances.map(performance =>
               <SideNavItem
                 active={currentPerformanceId === performance.id}
                 key={performance.id}
                 onClick={this.setActivePerformanceTo(performance.id)}
-                subtitle={`${performance.name}\n${moment(new Date(performance.date)).format(formatString)}`}
+                subtitle={`${performance.name}\n${moment(
+                  new Date(performance.date)
+                ).format(formatString)}`}
               />
             )}
           </SideNav>
@@ -155,9 +171,24 @@ class CompletedResults extends React.Component {
                 />
               )}
             </FlexContainer>
-            {failure && <Snackbar message="There was a problem saving the comments..." show={failure} onDisappear={this.handleDisappear} />}
-            {requesting && <Snackbar message="Saving Comments" show={requesting} onDisappear={this.handleDisappear} />}
-            {success && <Snackbar message="Saved Comments" show={success} onDisappear={this.handleDisappear} />}
+            {failure &&
+              <Snackbar
+                message="There was a problem saving the comments..."
+                show={failure}
+                onDisappear={this.handleDisappear}
+              />}
+            {requesting &&
+              <Snackbar
+                message="Saving Comments"
+                show={requesting}
+                onDisappear={this.handleDisappear}
+              />}
+            {success &&
+              <Snackbar
+                message="Saved Comments"
+                show={success}
+                onDisappear={this.handleDisappear}
+              />}
           </FlexContainer>
         </FlexChild>
       </FlexContainer>

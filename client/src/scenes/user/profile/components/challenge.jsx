@@ -25,9 +25,13 @@ export default function Challenge({ performanceName, spot, userChallenge }) {
     <Elevation style={{ margin: 4 }}>
       <Container>
         <Header>
-          <Typography category="display" number={1}>{performanceName}</Typography>
+          <Typography category="display" number={1}>
+            {performanceName}
+          </Typography>
           <div>&nbsp;&nbsp;&nbsp;&nbsp;</div>
-          <Typography category="display" number={1}>{spot.row}{spot.file}</Typography>
+          <Typography category="display" number={1}>
+            {spot.row}{spot.file}
+          </Typography>
         </Header>
         <UserChallenge
           {...userChallenge}

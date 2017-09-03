@@ -96,11 +96,7 @@ const App = () =>
             path="/results/completed"
             component={CompletedResults}
           />
-          <PrivateRoute
-            exact
-            path="/user/upload"
-            component={Upload}
-          />
+          <PrivateRoute exact path="/user/upload" component={Upload} />
           <PrivateRoute exact path="/roster" component={Roster} />
           <PrivateRoute exact path="/search" component={Search} />
           <PrivateRoute exact path="/users/:buckId" component={ProfileAdmin} />

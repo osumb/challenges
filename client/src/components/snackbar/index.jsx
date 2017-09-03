@@ -50,7 +50,9 @@ export default class Snackbar extends React.PureComponent {
     };
 
     this.mdcSnackbar.show(data);
-    this.dismissTimeout = this.props.onDisappear && window.setTimeout(this.props.onDisappear, timeout);
+    this.dismissTimeout =
+      this.props.onDisappear &&
+      window.setTimeout(this.props.onDisappear, timeout);
   }
 
   render() {
