@@ -53,8 +53,12 @@ export default function Challenge({
             {spot.row}{spot.file}
           </Typography>
           <div>
-            {leftButtonText && <Button onClick={onLeftButtonClick}>{leftButtonText}</Button>}
-            {rightButtonText && <Button onClick={onRightButtonClick} style={{ marginLeft: 4 }}>{rightButtonText}</Button>}
+            {leftButtonText &&
+              <Button onClick={onLeftButtonClick}>{leftButtonText}</Button>}
+            {rightButtonText &&
+              <Button onClick={onRightButtonClick} style={{ marginLeft: 4 }}>
+                {rightButtonText}
+              </Button>}
           </div>
         </FlexContainer>
         <FlexContainer
@@ -67,7 +71,12 @@ export default function Challenge({
         >
           {userChallenges.map(uc =>
             <UCContainer key={uc.id}>
-              <UserChallenge {...uc} hasEditableComments={hasEditableComments} onCommentEdit={onCommentEdit(uc.id)} hideName={hideName} />
+              <UserChallenge
+                {...uc}
+                hasEditableComments={hasEditableComments}
+                onCommentEdit={onCommentEdit(uc.id)}
+                hideName={hideName}
+              />
             </UCContainer>
           )}
         </FlexContainer>

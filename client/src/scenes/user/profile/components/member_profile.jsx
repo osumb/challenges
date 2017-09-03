@@ -37,21 +37,21 @@ const MemberProfile = props =>
       />}
     {props.currentDisciplineAction &&
       <CurrentDisciplineAction {...props.currentDisciplineAction} />}
-    {props.challenges && props.challenges.length > 0 &&
+    {props.challenges &&
+      props.challenges.length > 0 &&
       <Container>
         <Typography category="display" number={1}>
           Past Challenge Results
         </Typography>
-        {props.challenges.map(({id, ...rest }) => (
+        {props.challenges.map(({ id, ...rest }) =>
           <Challenge
             key={id}
             performanceName={rest.performance.name}
             spot={rest.spot}
             userChallenge={rest.userChallenges[0]}
           />
-        ))}
-      </Container>
-    }
+        )}
+      </Container>}
   </Container>;
 
 MemberProfile.propTypes = {

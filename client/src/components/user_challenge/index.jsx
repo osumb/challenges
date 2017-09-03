@@ -21,18 +21,29 @@ const Place = styled.div`
   margin: 8px 0;
 `;
 
-export default function UserChallenge({ comments, user, place, hideName, hasEditableComments, onCommentEdit, style = {} }) {
+export default function UserChallenge({
+  comments,
+  user,
+  place,
+  hideName,
+  hasEditableComments,
+  onCommentEdit,
+  style = {}
+}) {
   const imageSrc = place === 1 ? Trophy : CryingCat;
 
   return (
-    <FlexContainer flexDirection="column" alignItems="flex-start" style={{ ...style }}>
+    <FlexContainer
+      flexDirection="column"
+      alignItems="flex-start"
+      style={{ ...style }}
+    >
       {!hideName &&
         <Wrapper>
           <Typography category="headline">
             {user.firstName} {user.lastName}
           </Typography>
-        </Wrapper>
-      }
+        </Wrapper>}
       <Place>
         <img
           alt={place === 1 ? 'Winner' : 'Loser'}
@@ -44,16 +55,14 @@ export default function UserChallenge({ comments, user, place, hideName, hasEdit
       <Wrapper><Typography category="headline">Comments:</Typography></Wrapper>
       <Wrapper>
         {!hasEditableComments &&
-          <Typography category="subheading" number={2}>{comments}</Typography>
-        }
+          <Typography category="subheading" number={2}>{comments}</Typography>}
         {hasEditableComments &&
-           <textarea
+          <textarea
             defaultValue={comments}
             onChange={onCommentEdit}
             rows="10"
             style={{ width: '100%' }}
-          />
-        }
+          />}
       </Wrapper>
     </FlexContainer>
   );

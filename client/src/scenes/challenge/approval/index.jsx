@@ -36,32 +36,38 @@ class ChallengeApproval extends React.Component {
   handleApprove(challengeId) {
     return () => {
       this.setState({ requesting: true });
-      helpers.approve(challengeId).then(() => {
-        this.setState(({ challenges }) => ({
-          challenges: challenges.filter(({ id }) => id !== challengeId),
-          requesting: false
-        }));
-      }).catch(() => {
-        this.setState({
-          requesting: false
+      helpers
+        .approve(challengeId)
+        .then(() => {
+          this.setState(({ challenges }) => ({
+            challenges: challenges.filter(({ id }) => id !== challengeId),
+            requesting: false
+          }));
+        })
+        .catch(() => {
+          this.setState({
+            requesting: false
+          });
         });
-      });
     };
   }
 
   handleDisapproval(challengeId) {
     return () => {
       this.setState({ requesting: true });
-      helpers.disapprove(challengeId).then(() => {
-        this.setState(({ challenges }) => ({
-          challenges: challenges.filter(({ id }) => id !== challengeId),
-          requesting: false
-        }));
-      }).catch(() => {
-        this.setState({
-          requesting: false
+      helpers
+        .disapprove(challengeId)
+        .then(() => {
+          this.setState(({ challenges }) => ({
+            challenges: challenges.filter(({ id }) => id !== challengeId),
+            requesting: false
+          }));
+        })
+        .catch(() => {
+          this.setState({
+            requesting: false
+          });
         });
-      });
     };
   }
 
@@ -69,16 +75,18 @@ class ChallengeApproval extends React.Component {
     const { challenges } = this.state;
 
     this.setState({ requesting: true });
-    Promise.all(challenges.map(({ id }) => helpers.approve(id))).then(() => {
-      this.setState({
-        challenges: [],
-        requesting: false
+    Promise.all(challenges.map(({ id }) => helpers.approve(id)))
+      .then(() => {
+        this.setState({
+          challenges: [],
+          requesting: false
+        });
+      })
+      .catch(() => {
+        this.setState({
+          requesting: false
+        });
       });
-    }).catch(() => {
-      this.setState({
-        requesting: false
-      });
-    });
   }
 
   render() {

@@ -11,7 +11,14 @@ export default class Button extends React.PureComponent {
   }
 
   render() {
-    const { children, className, onClick, disabled, style = {}, ...rest } = this.props;
+    const {
+      children,
+      className,
+      onClick,
+      disabled,
+      style = {},
+      ...rest
+    } = this.props;
     const classes = classNames({
       [className]: Boolean(className),
       'mdc-button': true,
