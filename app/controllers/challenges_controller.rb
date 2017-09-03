@@ -60,9 +60,9 @@ class ChallengesController < ApplicationController
         switcher = Challenge::SpotSwitcher.new(challenge.performance)
         begin
           switcher.run!
-          SpotSwitchMailer.spot_switch_email
+          SpotSwitchMailer.spot_switch_email.deliver_now
         rescue StandardError => e
-          SpotSwitchMailer.spot_switch_email e.messsage
+          SpotSwitchMailer.spot_switch_email(e.messsage).deliver_now
         end
       end
       head :no_content
@@ -89,7 +89,7 @@ class ChallengesController < ApplicationController
       challenge: @challenge,
       initiated_by: current_user,
       email: challenger.email
-    )
+    ).deliver_now
   end
 
   def ensure_not_challenging_alternate!

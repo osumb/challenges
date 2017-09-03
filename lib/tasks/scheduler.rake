@@ -13,10 +13,7 @@ task email_challenge_list: :environment do
     builder = Challenge::ListBuilder.new(p.id)
     builder.build_challenge_list
     stream = builder.write_list_to_buffer
-    puts stream
-    mail = ChallengeListMailer.challenge_list_email(stream)
-    puts mail
-    mail.deliver_now
+    ChallengeListMailer.challenge_list_email(stream).deliver_now
     p.update!(list_exported: true)
   else
     puts "List for #{p.name} has already been exported"

@@ -5,6 +5,7 @@ class UserPasswordMailer < ApplicationMailer
     return if Rails.env.test?
     @user = user
     @password = password
-    mail(to: user.email, subject: 'OSUMB Challenge App').deliver
+    to = Rails.env.production? ? user.email : ENV['MAINTAINER_EMAIL']
+    mail(to: to, subject: 'OSUMB Challenge App')
   end
 end
