@@ -28,7 +28,7 @@ class Challenge
         if type == Challenge.challenge_types[:normal]
           users << associated_user_for_normal_challenge(spot)
         elsif type == Challenge.challenge_types[:tri]
-          users << associated_user_for_tri_challenge(challenger)
+          users << associated_users_for_tri_challenge(challenger, spot)
         end
         users.flatten
       end
@@ -37,13 +37,15 @@ class Challenge
         spot.user
       end
 
-      def associated_user_for_tri_challenge(challenger)
-        User.includes(:spot).where(
-          'instrument = ? and part = ? and buck_id != ?',
+      def associated_users_for_tri_challenge(challenger, spot)
+        regular_user = spot.user
+        other_alternate = User.joins('LEFT OUTER JOIN spots on spots.id = users.spot_id').find_by(
+          'instrument = ? and part = ? and buck_id != ? and file > 12',
           User.instruments[challenger.instrument],
           User.parts[challenger.part],
           challenger.buck_id
         )
+        [regular_user, other_alternate]
       end
     end
   end
