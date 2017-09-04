@@ -44,6 +44,7 @@ describe 'Challenge::Bylder' do
 
         expect(challenge.valid?).to be(true)
         expect(challenge.tri_challenge_type?).to be(true)
+        expect(challenge.users).not_to include(extra_member)
       end
     end
   end
