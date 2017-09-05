@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 describe 'Challenge::Bylder' do
-  let(:performance) { create(:performance) }
+  let!(:performance) { create(:performance) }
 
   context 'Normal Challenge' do
     let!(:spot) { create(:spot, row: :a, file: 1) }
@@ -21,12 +21,27 @@ describe 'Challenge::Bylder' do
     let!(:challengee) { create(:user, :trumpet, :solo, spot: spot) }
     let!(:challenger) { create(:user, :spot_a13, :trumpet, :solo) }
     let!(:user_da) { create(:discipline_action, user: challengee, performance: performance) }
+    let!(:challenge) {
+      c = Challenge::Bylder.perform(challenger, performance, spot)
+      c.save
+      c
+    }
+    let!(:second_challenger) { create(:user, :spot_x13, :trumpet, :solo) }
 
     it 'creates a valid open spot challenge' do
-      challenge = Challenge::Bylder.perform challenger, performance, spot
-
       expect(challenge.valid?).to be(true)
       expect(challenge.open_spot_challenge_type?).to be(true)
+    end
+
+    it 'adds a second challenger to the challenge' do
+      expect {
+        Challenge::Bylder.perform(second_challenger, challenge.performance, challenge.spot).save
+      }.not_to change { Challenge.count }
+
+      challenge.reload
+      expect(challenge.valid?).to be(true)
+      expect(challenge.open_spot_challenge_type?).to be(true)
+      expect(challenge.users.length).to eq(2)
     end
   end
 
