@@ -23,6 +23,15 @@ describe User, type: :model do
   it { is_expected.to validate_presence_of(:role) }
   it { is_expected.to validate_presence_of(:spot) }
 
+  describe 'callbacks' do
+    let(:user) { create(:user, email: email) }
+    let(:email) { 'BUCKIDCALLBACKTEST.1@osu.edu' }
+
+    it 'downcases the email on save' do
+      expect(user.email).to eq(email.downcase)
+    end
+  end
+
   describe 'validations' do
     it 'does not allow multiple users to share a spot' do
       user_a = create(:user)

@@ -32,5 +32,17 @@ describe 'Password Reset Requests', type: :request do
         expect(response).to have_http_status(403)
       end
     end
+
+    context 'when an uppercase buck_id is passed' do
+      let(:reset_params) { super().merge(buck_id: buck_id.upcase) }
+
+      it 'still creates the request' do
+        expect {
+          post endpoint, params: reset_params.to_json, headers: unauthenticated_header
+        }.to change { PasswordResetRequest.count }.by(1)
+
+        expect(response).to have_http_status(201)
+      end
+    end
   end
 end

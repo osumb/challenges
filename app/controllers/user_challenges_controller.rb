@@ -82,7 +82,7 @@ class UserChallengesController < ApplicationController
   end
 
   def ensure_user_exists!
-    return if User.exists? buck_id: params[:challenger_buck_id]
+    return if User.exists? buck_id: params[:challenger_buck_id]&.downcase
     render json: { resource: 'user_challenge', errors: [user: 'user doesn\'t exist'] }, status: 403
   end
 
