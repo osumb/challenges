@@ -3,7 +3,7 @@ class ApplicationController < ActionController::API
   include Knock::Authenticable
 
   def challenger
-    current_user.admin? ? User.find(params[:challenger_buck_id]) : current_user
+    current_user.admin? ? User.find(params[:challenger_buck_id]&.downcase) : current_user
   end
 
   def ensure_admin!

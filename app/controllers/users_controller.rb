@@ -50,7 +50,7 @@ class UsersController < ApplicationController
 
   # rubocop:disable Metrics/MethodLength
   def switch_spot
-    user = User.find params[:user_buck_id]
+    user = User.find params[:user_buck_id]&.downcase
     target_spot = Spot.where(row: params[:target_spot][:row].downcase, file: params[:target_spot][:file]).first
     old_user_spot = user.spot
     target_user = target_spot.user
@@ -117,7 +117,7 @@ class UsersController < ApplicationController
     prr = PasswordResetRequest.includes(:user).find(params[:password_reset_request_id])
     invalid_prr = prr.nil? || prr.used? || prr.expired?
     invalid_password = params[:password].nil? || params[:password].length <= 0
-    invalid_user_id = prr.user.id != User.find(params[:buck_id])&.id
+    invalid_user_id = prr.user.id != User.find(params[:buck_id]&.downcase)&.id
     return unless invalid_prr || invalid_password || invalid_user_id
     head 403
   end
