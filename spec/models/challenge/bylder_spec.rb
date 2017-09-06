@@ -36,11 +36,16 @@ describe 'Challenge::Bylder' do
     let!(:challenger) { create(:user, :spot_j13, :percussion, :bass) }
     let!(:other_challenger) { create(:user, :spot_j17, :percussion, :bass) }
 
-    it 'creates a valid tri challenge' do
-      challenge = Challenge::Bylder.perform challenger, performance, spot
+    context 'with more than 3 performers of the same instrument' do
+      let!(:extra_member) { create(:user, :spot_j2, :percussion, :bass) }
 
-      expect(challenge.valid?).to be(true)
-      expect(challenge.tri_challenge_type?).to be(true)
+      it 'creates a valid tri challenge' do
+        challenge = Challenge::Bylder.perform challenger, performance, spot
+
+        expect(challenge.valid?).to be(true)
+        expect(challenge.tri_challenge_type?).to be(true)
+        expect(challenge.users).not_to include(extra_member)
+      end
     end
   end
 end
