@@ -32,7 +32,8 @@ class Challenge < ApplicationRecord
     elsif user.director?
       with_users_and_spots.where(users: { instrument: user.instrument })
     elsif user.squad_leader?
-      with_users_and_spots.where(spots: { row: user.spot.row })
+      ids = with_users_and_spots.where(spots: { row: user.spot.row }).pluck(:id)
+      with_users_and_spots.where(id: ids)
     else
       none
     end
