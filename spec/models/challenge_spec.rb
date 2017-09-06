@@ -236,8 +236,10 @@ describe Challenge, type: :model do
 
         specify { expect(described_class.viewable_by_user(user_1)).to include(challenge) }
         specify { expect(described_class.viewable_by_user(user_1).count).to eq(1) }
+        specify { expect(described_class.viewable_by_user(user_1).first.user_challenges.length).to eq(challenge.user_challenges.count) }
         specify { expect(described_class.viewable_by_user(user_2)).to include(challenge) }
         specify { expect(described_class.viewable_by_user(user_2).count).to eq(1) }
+        specify { expect(described_class.viewable_by_user(user_2).first.user_challenges.length).to eq(challenge.user_challenges.count) }
       end
 
       context 'and they are in an entirely different row' do
