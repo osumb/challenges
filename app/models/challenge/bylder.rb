@@ -12,7 +12,7 @@ class Challenge
       private
 
       def create_or_update(performance:, spot:, challenge_type:, users:)
-        challenge = find_challenge(performance: performance, spot: spot)
+        challenge = Challenge.find_by(performance: performance, spot: spot)
         if challenge.nil?
           create(performance: performance, spot: spot, challenge_type: challenge_type, users: users)
         else
@@ -49,7 +49,7 @@ class Challenge
         if type == Challenge.challenge_types[:normal]
           users << associated_user_for_normal_challenge(spot)
         elsif type == Challenge.challenge_types[:tri]
-          users << associated_user_for_tri_challenge(challenger)
+          users << associated_users_for_tri_challenge(challenger, spot)
         elsif type == Challenge.challenge_types[:open_spot]
           new_user = associated_user_for_open_spot_challenge(spot: spot, performance: performance)
           users << [new_user] unless new_user.nil?
@@ -76,11 +76,7 @@ class Challenge
       end
 
       def associated_user_for_open_spot_challenge(spot:, performance:)
-        (find_challenge(spot: spot, performance: performance)&.users || []).first
-      end
-
-      def find_challenge(spot:, performance:)
-        Challenge.find_by(performance: performance, spot: spot)
+        (Challenge.find_by(performance: performance, spot: spot)&.users || []).first
       end
     end
   end
