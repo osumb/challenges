@@ -318,4 +318,14 @@ describe Challenge, type: :model do
       end
     end
   end
+
+  describe 'invalid challenge' do
+    let(:challenge) { create(:open_spot_challenge) }
+
+    it 'throws when a challenge is created with the same spot and performance as an existing one' do
+      expect {
+        create(:open_spot_challenge, spot: challenge.spot, performance: challenge.performance)
+      }.to raise_error(Exception)
+    end
+  end
 end
