@@ -1,9 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-export default function Typography({ category, children, number }) {
+export default function Typography({ category, children, number, style = {} }) {
   return (
-    <div className={`mdc-typography--${category || 'caption'}${number || ''}`}>
+    <div
+      className={`mdc-typography--${category || 'caption'}${number || ''}`}
+      style={{ ...style }}
+    >
       {children}
     </div>
   );
@@ -15,5 +18,6 @@ Typography.propTypes = {
     PropTypes.arrayOf(PropTypes.node),
     PropTypes.node
   ]),
-  number: PropTypes.number
+  number: PropTypes.number,
+  style: PropTypes.object
 };
