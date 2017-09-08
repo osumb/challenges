@@ -2,8 +2,7 @@ import React from 'react';
 
 import Button from '../../../components/button';
 import CircularProgress from '../../../components/circular_progress';
-import { FlexChild, FlexContainer } from '../../../components/flex';
-import Typography from '../../../components/typography';
+import { FlexContainer } from '../../../components/flex';
 import { helpers } from '../../../data/user';
 
 class UserUpload extends React.Component {
