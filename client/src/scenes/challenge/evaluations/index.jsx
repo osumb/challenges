@@ -3,8 +3,10 @@ import React from 'react';
 import { FlexChild, FlexContainer } from '../../../components/flex';
 import { SideNav, SideNavItem } from '../../../components/side_nav';
 import { helpers, propTypes } from '../../../data/challenge_evaluations';
-import { fetch } from '../../../utils';
+import { errorEmitter, fetch } from '../../../utils';
+import CircularProgress from '../../../components/circular_progress';
 import Evaluation from './components/challenge-evaluation';
+import Typography from '../../../components/typography';
 import localHelpers from './helpers';
 
 class Evaluations extends React.Component {
@@ -15,6 +17,7 @@ class Evaluations extends React.Component {
   constructor(props, context) {
     super(props, context);
 
+    this.handleErrorClose = this.handleErrorClose.bind(this);
     this.onCommentsChange = this.onCommentsChange.bind(this);
     this.onPlacePick = this.onPlacePick.bind(this);
     this.saveComments = this.saveComments.bind(this);
@@ -29,8 +32,23 @@ class Evaluations extends React.Component {
 
     this.state = {
       challenges: challengesAndUserChallengesById,
-      currentChallengeId: sortedChallenges[0] && sortedChallenges[0].id
+      currentChallengeId: sortedChallenges[0] && sortedChallenges[0].id,
+      requesting: false
     };
+  }
+
+  componentDidMount() {
+    errorEmitter.on('close', this.handleErrorClose);
+  }
+
+  componentWillUnmount() {
+    errorEmitter.removeListener('close', this.handleErrorClose);
+  }
+
+  handleErrorClose() {
+    this.setState({
+      requesting: false
+    });
   }
 
   onCommentsChange(challengeId) {
@@ -67,11 +85,21 @@ class Evaluations extends React.Component {
   }
 
   saveCommentsAndPlaces(challengeId) {
-    return () =>
-      Promise.all([
+    return () => {
+      this.setState({
+        requesting: true
+      });
+
+      return Promise.all([
         this.saveComments(challengeId),
         this.savePlaces(challengeId)
-      ]);
+      ]).then(() => {
+        this.setState({
+          requesting: false
+        });
+        return;
+      });
+    };
   }
 
   savePlaces(challengeId) {
@@ -92,11 +120,14 @@ class Evaluations extends React.Component {
 
   submitForEvaluation(challengeId) {
     return () => {
+      this.setState({
+        requesting: true
+      });
       const challenge = this.state.challenges[challengeId];
       this.saveCommentsAndPlaces(challenge.id)().then(() => {
         helpers.putSubmitForEvaluation(challenge).then(() => {
           this.setState(prevState => {
-            const newState = { ...prevState };
+            const newState = { ...prevState, requesting: false };
             delete newState.challenges[challengeId];
             const nextChallenge = localHelpers.sortChallenges(
               Object.values(newState.challenges)
@@ -110,14 +141,25 @@ class Evaluations extends React.Component {
   }
 
   render() {
-    const { challenges, currentChallengeId } = this.state;
+    const { challenges, currentChallengeId, requesting } = this.state;
     const sortedChallenges = localHelpers.sortChallenges(
       Object.values(challenges)
     );
     const currentChallenge = challenges[currentChallengeId];
 
+    if (sortedChallenges.length <= 0) {
+      return (
+        <Typography
+          category="display"
+          number={1}
+          style={{ textAlign: 'center' }}
+        >
+          There are no challenges for you to evaluate
+        </Typography>
+      );
+    }
     return (
-      <FlexContainer>
+      <FlexContainer style={{ opacity: requesting ? '0.5' : '1' }}>
         <FlexChild flex="0">
           <SideNav>
             {sortedChallenges.map(challenge =>
@@ -153,6 +195,7 @@ class Evaluations extends React.Component {
             </FlexChild>
           </FlexContainer>
         </FlexChild>
+        {requesting && <CircularProgress />}
       </FlexContainer>
     );
   }
