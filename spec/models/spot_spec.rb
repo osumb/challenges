@@ -141,4 +141,14 @@ describe Spot, type: :model do
                       [User.parts[:second], User.parts[:flugel]]
     end
   end
+
+  describe 'db validations' do
+    let!(:spot) { create(:spot) }
+
+    it 'prevents another spot to be created for the same row and file' do
+      expect {
+        Spot.create!(row: spot.row, file: spot.file)
+      }.to raise_error(StandardError)
+    end
+  end
 end

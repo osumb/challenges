@@ -33,7 +33,6 @@ class User
 
     def create_users
       reset_database
-
       worksheet.each_with_index do |row, index|
         break if row[BUCK_ID]&.value.nil?
         next if index.zero?

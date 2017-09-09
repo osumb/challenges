@@ -22,12 +22,12 @@ describe User::Loader, type: :model do
     let!(:admin_user) { create(:admin_user) }
 
     before do
-      allow(Challenge).to receive(:destroy_all).and_return(nil)
-      allow(UserChallenge).to receive(:destroy_all).and_return(nil)
-      allow(PasswordResetRequest).to receive(:destroy_all).and_return(nil)
-      allow(DisciplineAction).to receive(:destroy_all).and_return(nil)
-      allow(Performance).to receive(:destroy_all).and_return(nil)
-      allow(Spot).to receive(:destroy_all).and_return(nil)
+      allow(Challenge).to receive(:destroy_all).and_call_original
+      allow(UserChallenge).to receive(:destroy_all).and_call_original
+      allow(PasswordResetRequest).to receive(:destroy_all).and_call_original
+      allow(DisciplineAction).to receive(:destroy_all).and_call_original
+      allow(Performance).to receive(:destroy_all).and_call_original
+      allow(Spot).to receive(:destroy_all).and_call_original
     end
 
     it 'has no errors' do
