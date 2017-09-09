@@ -3,7 +3,7 @@ require 'rails_helper'
 describe 'Password Reset Requests', type: :request do
   let(:endpoint) { "/api/users/#{user.id}/reset_password/" }
   let(:user) { create(:user) }
-  let(:other_user) { create(:user) }
+  let(:other_user) { create(:user, :spot_a3) }
   let(:prr) { create(:unused_password_reset_request, user: user) }
   let(:new_password) { 'NEW PASSWORD$$$?!?!?' }
   let(:reset_params) do
@@ -183,9 +183,9 @@ describe 'User Requests', type: :request do
     let!(:endpoint) { '/api/users/can_challenge' }
     let!(:performance) { create(:performance) }
     let!(:alternate_no_da) { create(:alternate_user) }
-    let!(:alternate_da) { create(:alternate_user) }
+    let!(:alternate_da) { create(:alternate_user, :spot_x13) }
     let!(:member_no_da) { create(:user) }
-    let!(:member_da) { create(:user) }
+    let!(:member_da) { create(:user, :spot_a3) }
     let!(:da_for_alternate) {
       create(:discipline_action, user: alternate_da, performance: performance, allowed_to_challenge: false)
     }

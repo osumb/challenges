@@ -61,7 +61,7 @@ describe 'DisciplineActions', type: :request do
     end
 
     context 'when the user is an not admin' do
-      let(:admin) { create(:user) }
+      let(:admin) { create(:user, :spot_a3) }
 
       it 'does not create a discipline action' do
         expect {

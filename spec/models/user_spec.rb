@@ -146,7 +146,7 @@ describe User, type: :model do
     end
 
     context 'when the user is a regular member' do
-      let(:user) { build(:user) }
+      let(:user) { build(:user, :spot_a3) }
 
       specify { expect(user.can_challenge_for_performance?(performance)).to be(false) }
 

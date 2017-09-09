@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170906022328) do
+ActiveRecord::Schema.define(version: 20170908015143) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -62,6 +62,7 @@ ActiveRecord::Schema.define(version: 20170906022328) do
     t.integer  "file",       null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["row", "file"], name: "index_spots_on_row_and_file", unique: true, using: :btree
   end
 
   create_table "user_challenges", force: :cascade do |t|

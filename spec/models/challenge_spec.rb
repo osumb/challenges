@@ -41,7 +41,7 @@ describe Challenge, type: :model do
       end
 
       it 'requires users in a challenge to have the same instrument and part' do
-        subject.users = [build(:user, :trumpet, :solo), build(:user, :trumpet, :first)]
+        subject.users = [build(:user, :trumpet, :solo), build(:user, :trumpet, :first, :spot_a3)]
         subject.valid?
         expect(subject.errors.full_messages)
           .to include('Users must all have the same instrument and part')
@@ -79,7 +79,7 @@ describe Challenge, type: :model do
       end
 
       it 'is valid with 2 users' do
-        subject.users = [build(:user), build(:user)]
+        subject.users = [build(:user), build(:user, :spot_a4)]
 
         subject.valid?
         expect(subject.errors.full_messages)
@@ -100,7 +100,7 @@ describe Challenge, type: :model do
       end
 
       it 'is valid with 3 users' do
-        subject.users = [build(:user), build(:user), build(:user)]
+        subject.users = [build(:user), build(:user, :spot_j4), build(:user, :spot_j3)]
         subject.valid?
         expect(subject.errors.full_messages)
           .not_to include('Users only three users are allowed in a tri challenge')
@@ -135,7 +135,7 @@ describe Challenge, type: :model do
       context 'when the challenge is open spot' do
         subject { build(:open_spot_challenge) }
         it 'is full with two users' do
-          subject.users = [build(:user), build(:user)]
+          subject.users = [build(:user), build(:user, :spot_a5)]
 
           expect(subject.full?).to be(true)
         end
@@ -258,7 +258,13 @@ describe Challenge, type: :model do
       create(:normal_challenge, spot: create(:spot, row: :x, file: 1), stage: :needs_comments)
     end
     let!(:challenge_doesnt_need_comments) do
-      create(:normal_challenge, spot: create(:spot, row: :x, file: 1), stage: :needs_comments)
+      spot = create(:spot, row: :x, file: 2)
+      create(
+        :normal_challenge,
+        spot: spot,
+        users: [create(:user, :solo, :trumpet, spot: spot), create(:user, :spot_a14, :solo, :trumpet)],
+        stage: :needs_comments
+      )
     end
 
     before do
@@ -289,10 +295,22 @@ describe Challenge, type: :model do
       create(:normal_challenge, spot: create(:spot, row: :x, file: 1), stage: :needs_comments)
     end
     let!(:challenge_doesnt_need_comments_1) do
-      create(:normal_challenge, spot: create(:spot, row: :x, file: 1), stage: :done)
+      spot = create(:spot, row: :x, file: 2)
+      create(
+        :normal_challenge,
+        spot: spot,
+        users: [create(:user, :solo, :trumpet, spot: spot), create(:user, :spot_a14, :solo, :trumpet)],
+        stage: :done
+      )
     end
     let!(:challenge_doesnt_need_comments_2) do
-      create(:normal_challenge, spot: create(:spot, row: :x, file: 1), stage: :done)
+      spot = create(:spot, row: :x, file: 3)
+      create(
+        :normal_challenge,
+        spot: spot,
+        users: [create(:user, :solo, :trumpet, spot: spot), create(:user, :spot_x13, :solo, :trumpet)],
+        stage: :done
+      )
     end
 
     before do
