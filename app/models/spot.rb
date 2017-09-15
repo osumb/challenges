@@ -15,6 +15,14 @@ class Spot < ApplicationRecord
     row <=> other.row
   end
 
+  def >(other)
+    (self <=> other).positive?
+  end
+
+  def <(other)
+    (self <=> other).negative?
+  end
+
   def to_s
     "#{row.upcase}#{file}"
   end

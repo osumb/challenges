@@ -77,9 +77,10 @@ class Challenge
       end
     end
 
+    # rubocop:disable Performance/CompareWithBlock, Metrics/LineLength
     def tri_challenge_to_list_row(challenge)
-      challengers = challenge.user_challenges.select { |uc| uc.spot != challenge.spot }.sort(&:spot)
-      challengee = challenge.user_challenges.reject { |uc| uc.spot != challenge.spot }
+      challengers = challenge.user_challenges.select { |uc| uc.spot != challenge.spot }.sort { |a, b| a.spot <=> b.spot }
+      challengee = challenge.user_challenges.reject { |uc| uc.spot != challenge.spot }.first
       [
         "#{challengers.first.spot}, #{challengers.last.spot}",
         "#{challengers.first.user.full_name}, #{challengers.last.user.full_name}",
@@ -87,6 +88,7 @@ class Challenge
         challengee.user.full_name
       ]
     end
+    # rubocop:enable Performance/CompareWithBlock, Metrics/LineLength
 
     def create_challenge_list_dir
       return unless Dir.exist? tmp_dir
