@@ -48,6 +48,13 @@ class Challenge < ApplicationRecord
     return true if tri_challenge_type? && users.length == 3
     false
   end
+
+  def enough_users?
+    return true if normal_challenge_type? && users.length == 2
+    return true if open_spot_challenge_type? && users.length >= 1
+    return true if tri_challenge_type? && users.length == 3
+    false
+  end
   # rubpcop:enable Metrics/CyclomaticComplexity
 
   # rows that are allowed to have a tri challenge associated with it
@@ -122,7 +129,7 @@ class Challenge < ApplicationRecord
     places = user_challenges.pluck(:place).compact.uniq
     should_not_have_third = !tri_challenge_type? && places.include?('third')
 
-    errors.add(:challenge, 'must be full') unless full?
+    errors.add(:challenge, 'must be full') unless enough_users?
     errors.add(:challenge, 'must have place assignments') if places.count.zero?
     errors.add(:challenge, 'cannot have duplicate place assignments') if places.count < user_challenges.count
     errors.add(:challenge, 'cannot have a third place unless the challenge is a tri challenge') if should_not_have_third

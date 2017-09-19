@@ -7,21 +7,6 @@ describe Challenge, type: :model do
   it { is_expected.to belong_to(:performance) }
 
   describe 'validations' do
-    context 'when it is not full' do
-      let(:challenge) { create(:open_spot_challenge) }
-
-      it 'is not allowed to transition to :needs_approval' do
-        expect { challenge.update(stage: :needs_approval) }
-          .not_to change { challenge.reload.stage }
-      end
-
-      it 'has the correct errors' do
-        challenge.update(stage: :needs_approval)
-
-        expect(challenge.errors.full_messages).to include('Challenge must be full')
-      end
-    end
-
     context 'normal challenge' do
       subject { build(:normal_challenge) }
 
@@ -160,6 +145,57 @@ describe Challenge, type: :model do
         it 'is not full with less than three users' do
           subject.users = []
           expect(subject.full?).to be(false)
+        end
+      end
+    end
+
+    describe '#enough_users?' do
+      context 'when the challenge is normal' do
+        subject { build(:normal_challenge) }
+
+        it 'has enough with two users' do
+          expect(subject.enough_users?).to be(true)
+        end
+
+        it 'doesn\'t have enough with less than two users' do
+          subject.users = []
+          expect(subject.enough_users?).to be(false)
+        end
+      end
+
+      context 'when the challenge is open spot' do
+        subject { build(:open_spot_challenge) }
+        it 'has enough with two users' do
+          subject.users = [build(:user), build(:user, :spot_a5)]
+
+          expect(subject.enough_users?).to be(true)
+        end
+
+        it 'has enough with less than two users' do
+          subject.users = [build(:user)]
+          expect(subject.enough_users?).to be(true)
+        end
+
+        it 'doesn\'t have enough with 0 users' do
+          subject.users = []
+          expect(subject.enough_users?).to be(false)
+        end
+      end
+
+      context 'when the challenge is tri' do
+        subject { build(:tri_challenge) }
+
+        let(:user) { build(:user) }
+
+        it 'has enough with three users' do
+          subject.users = [user, user, user]
+
+          expect(subject.enough_users?).to be(true)
+        end
+
+        it 'is not full with less than three users' do
+          subject.users = []
+          expect(subject.enough_users?).to be(false)
         end
       end
     end
