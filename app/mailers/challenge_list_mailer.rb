@@ -5,7 +5,8 @@ class ChallengeListMailer < ApplicationMailer
       mime_type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
       content: file_stream.read
     }
-    to = Rails.env.production? ? ENV['CHALLENGE_LIST_RECIPIENTS'].split(',') : ENV['MAINTAINER_EMAIL']
+    # This env variable should be a comma separated list of email addresses
+    to = ENV['CHALLENGE_LIST_RECIPIENTS'].split(',')
     mail(to: to, subject: 'Challenge List', from: 'osumbit@gmail.com')
   end
 end
