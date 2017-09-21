@@ -6,9 +6,9 @@ Rails.application.routes.draw do
     get 'users/can_challenge', to: 'users#can_challenge'
     put 'users/switch_spots', to: 'users#switch_spot'
     get 'users/search', to: 'users#search'
-    resources :users, only: [:index, :show, :update], constraints: { id: /[0-z\.]+/ }
-    get 'users/profile/:buck_id', to: 'users#profile', constraints: { buck_id: /[0-z\.]+/ }
-    post 'users/:buck_id/reset_password', to: 'users#reset_password', constraints: { buck_id: /[0-z\.]+/ }
+    resources :users, only: [:index, :show, :update], constraints: { id: /[a-zA-Z]+(?:-[a-zA-Z]+)?\.[0-9]+/ }
+    get 'users/profile/:buck_id', to: 'users#profile', constraints: { buck_id: /[a-zA-Z]+(?:-[a-zA-Z]+)?\.[0-9]+/ }
+    post 'users/:buck_id/reset_password', to: 'users#reset_password', constraints: { buck_id: /[a-zA-Z]+(?:-[a-zA-Z]+)?\.[0-9]+/ }
     post 'users/upload', to: 'users#upload'
 
     resources :challenges, only: [:create] do
