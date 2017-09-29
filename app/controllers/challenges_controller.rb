@@ -118,7 +118,7 @@ class ChallengesController < ApplicationController
 
   def ensure_user_is_challenging_correct_instrument_and_part!
     spot = Spot.find_by(row: Spot.rows[params[:spot][:row].downcase], file: params[:spot][:file])
-    challengee = User.find_by spot: spot
+    challengee = User.find_by current_spot: spot
     return if challenger.instrument == challengee.instrument && challenger.part == challengee.part
     render(
       json: {

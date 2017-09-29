@@ -3,7 +3,7 @@ FactoryGirl.define do
     performance { FactoryGirl.create(:performance) }
     after(:build) do |c|
       c.user_challenges.each do |uc|
-        uc.spot = uc.user.spot
+        uc.spot = uc.user.current_spot
       end
     end
   end
@@ -31,7 +31,7 @@ FactoryGirl.define do
     users {
       [
         FactoryGirl.create(:user, :spot_a13, :trumpet, :solo),
-        FactoryGirl.create(:user, :trumpet, :solo, spot: spot)
+        FactoryGirl.create(:user, :trumpet, :solo, current_spot: spot)
       ]
     }
   end
@@ -43,7 +43,7 @@ FactoryGirl.define do
       [
         FactoryGirl.create(:user, :spot_j15, :percussion, :bass),
         FactoryGirl.create(:user, :spot_j17, :percussion, :bass),
-        FactoryGirl.create(:user, :percussion, :bass, spot: spot)
+        FactoryGirl.create(:user, :percussion, :bass, current_spot: spot)
       ]
     }
   end

@@ -17,6 +17,6 @@ class UserChallenge < ApplicationRecord
   # for non open spot challenges only
   def self.user_being_challenged?(user, challenge)
     return false if user.alternate?
-    user.spot == challenge.spot
+    user.current_spot == challenge.spot
   end
 end

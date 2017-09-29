@@ -6,14 +6,12 @@ class UsersController < ApplicationController
   before_action :ensure_new_part_exists!, only: [:update]
   before_action :ensure_target_spot_exists!, only: [:switch_spot]
 
-  # rubocop:disable Performance/CompareWithBlock
   def index
-    @users = User.performers.includes(:spot).sort { |a, b| a.spot <=> b.spot }
+    @users = User.performers.includes(:current_spot).sort_by(&:current_spot)
   end
-  # rubocop:enable Performance/CompareWithBlock
 
   def show
-    @user = User.includes(:spot, :challenges, :discipline_actions).find(params[:id])
+    @user = User.includes(:current_spot, :challenges, :discipline_actions).find(params[:id])
     @performance = Performance.next
   end
 
@@ -30,7 +28,7 @@ class UsersController < ApplicationController
   end
 
   def profile
-    @user = User.includes(:spot, :challenges, :discipline_actions).find_by(buck_id: current_user.buck_id)
+    @user = User.includes(:current_spot, :challenges, :discipline_actions).find_by(buck_id: current_user.buck_id)
     @next_performance = Performance.next
   end
 
@@ -44,7 +42,7 @@ class UsersController < ApplicationController
 
   def can_challenge
     p = Performance.next
-    @users = User.includes(:challenges, :discipline_actions)
+    @users = User.includes(:challenges, :discipline_actions, :current_spot)
                  .performers.select { |u| u.can_challenge_for_performance? p }
   end
 
@@ -52,10 +50,10 @@ class UsersController < ApplicationController
   def switch_spot
     user = User.find params[:user_buck_id]&.downcase
     target_spot = Spot.where(row: params[:target_spot][:row].downcase, file: params[:target_spot][:file]).first
-    old_user_spot = user.spot
-    target_user = target_spot.user
-    user.spot = target_spot
-    target_user.spot = old_user_spot
+    old_user_spot = user.current_spot
+    target_user = target_spot.current_user
+    user.current_spot = target_spot
+    target_user.current_spot = old_user_spot
 
     User.transaction do
       if user.save(validate: false) && target_user.save(validate: false)

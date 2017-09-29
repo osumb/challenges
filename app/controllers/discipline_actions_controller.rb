@@ -40,7 +40,7 @@ class DisciplineActionsController < ApplicationController
   def ensure_spot_hasnt_been_challenged!
     da = DisciplineAction.find params[:id]
     user = da.user
-    user_spot = user.spot
+    user_spot = user.current_spot
     performance = da.performance
     challenges = Challenge.where(performance: performance, spot: user_spot)
     return if challenges.empty?

@@ -9,7 +9,7 @@ class UserChallengesController < ApplicationController
 
   def create
     challenge = Challenge.find_by id: params[:challenge_id]
-    @user_challenge = UserChallenge.new(user: challenger, challenge: challenge, spot: challenger.spot)
+    @user_challenge = UserChallenge.new(user: challenger, challenge: challenge, spot: challenger.current_spot)
 
     if @user_challenge.save
       render 'user_challenges/show', status: 201

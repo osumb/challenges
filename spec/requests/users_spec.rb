@@ -123,35 +123,35 @@ describe 'User Requests', type: :request do
     let(:switch_params) do
       {
         user_buck_id: user.buck_id,
-        target_spot: target_user.spot
+        target_spot: target_user.current_spot
       }
     end
 
     it 'successfully switches two user\'s spots' do
       put switch_endpoint, params: switch_params.to_json, headers: authenticated_header(requesting_user)
 
-      old_user_spot = user.spot
+      old_user_spot = user.current_spot
       target_spot = switch_params[:target_spot]
       user.reload
       target_user.reload
 
       expect(response).to have_http_status(204)
-      expect(user.spot).to eq(target_spot)
-      expect(target_user.spot).to eq(old_user_spot)
+      expect(user.current_spot).to eq(target_spot)
+      expect(target_user.current_spot).to eq(old_user_spot)
     end
 
     context 'requesting user isn\'t an admin' do
       it 'returns a 403' do
         put switch_endpoint, params: switch_params.to_json, headers: authenticated_header(user)
 
-        user_spot = user.spot
+        user_spot = user.current_spot
         target_spot = switch_params[:target_spot]
         user.reload
         target_user.reload
 
         expect(response).to have_http_status(403)
-        expect(user.spot).to eq(user_spot)
-        expect(target_user.spot).to eq(target_spot)
+        expect(user.current_spot).to eq(user_spot)
+        expect(target_user.current_spot).to eq(target_spot)
       end
     end
 
@@ -169,11 +169,11 @@ describe 'User Requests', type: :request do
       it 'returns a 409' do
         put switch_endpoint, params: switch_params.to_json, headers: authenticated_header(requesting_user)
 
-        user_spot = user.spot
+        user_spot = user.current_spot
         user.reload
 
         expect(response).to have_http_status(409)
-        expect(user.spot).to eq(user_spot)
+        expect(user.current_spot).to eq(user_spot)
       end
     end
   end

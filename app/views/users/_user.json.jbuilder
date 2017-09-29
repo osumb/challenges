@@ -7,6 +7,6 @@ json.role user.role.camelcase
 json.instrument user.instrument.titleize
 json.part user.part.titleize
 
-json.spot do
-  json.partial! 'spots/spot', spot: user.spot
+json.current_spot do
+  json.partial! 'spots/spot', spot: user.current_spot
 end

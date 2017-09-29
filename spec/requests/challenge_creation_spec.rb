@@ -12,8 +12,8 @@ describe 'Challenge Creation', type: :request do
   let(:params) do
     {
       spot: {
-        row: challengee.spot.row.upcase,
-        file: challengee.spot.file
+        row: challengee.current_spot.row.upcase,
+        file: challengee.current_spot.file
       }
     }
   end
@@ -24,7 +24,7 @@ describe 'Challenge Creation', type: :request do
         let(:params) do
           {
             spot: {
-              row: challengee.spot.row.upcase,
+              row: challengee.current_spot.row.upcase,
               file: 13
             }
           }
@@ -96,8 +96,8 @@ describe 'Challenge Creation', type: :request do
           {
             challenge_type: 'normal',
             spot: {
-              row: other_challengee.spot.row.upcase,
-              file: other_challengee.spot.file
+              row: other_challengee.current_spot.row.upcase,
+              file: other_challengee.current_spot.file
             },
             performance_id: performance.id
           }
@@ -121,8 +121,8 @@ describe 'Challenge Creation', type: :request do
         {
           challenger_buck_id: challenger.buck_id,
           spot: {
-            row: challengee.spot.row.upcase,
-            file: challengee.spot.file
+            row: challengee.current_spot.row.upcase,
+            file: challengee.current_spot.file
           }
         }
       end
@@ -137,8 +137,8 @@ describe 'Challenge Creation', type: :request do
 
           expect(challenge).to include('challenge_type' => 'normal',
                                        'spot' => {
-                                         'row' => challengee.spot.row.upcase,
-                                         'file' => challengee.spot.file
+                                         'row' => challengee.current_spot.row.upcase,
+                                         'file' => challengee.current_spot.file
                                        },
                                        'users' => contain_exactly(
                                          include('id' => challenger.id),
@@ -155,8 +155,8 @@ describe 'Challenge Creation', type: :request do
           {
             challenger_buck_id: challenger.buck_id,
             spot: {
-              row: challengee.spot.row.upcase,
-              file: challengee.spot.file
+              row: challengee.current_spot.row.upcase,
+              file: challengee.current_spot.file
             }
           }
         end
@@ -170,8 +170,8 @@ describe 'Challenge Creation', type: :request do
 
           expect(challenge).to include('challenge_type' => 'tri',
                                        'spot' => {
-                                         'row' => challengee.spot.row.upcase,
-                                         'file' => challengee.spot.file
+                                         'row' => challengee.current_spot.row.upcase,
+                                         'file' => challengee.current_spot.file
                                        },
                                        'users' => contain_exactly(
                                          include('id' => challenger.id),
@@ -195,8 +195,8 @@ describe 'Challenge Creation', type: :request do
 
           expect(challenge).to include('challenge_type' => 'open_spot',
                                        'spot' => {
-                                         'row' => challengee.spot.row.upcase,
-                                         'file' => challengee.spot.file
+                                         'row' => challengee.current_spot.row.upcase,
+                                         'file' => challengee.current_spot.file
                                        },
                                        'users' => contain_exactly(
                                          include('id' => challenger.id)
@@ -209,8 +209,8 @@ describe 'Challenge Creation', type: :request do
       let(:params) do
         {
           spot: {
-            row: challengee.spot.row.upcase,
-            file: challengee.spot.file
+            row: challengee.current_spot.row.upcase,
+            file: challengee.current_spot.file
           }
         }
       end
@@ -225,8 +225,8 @@ describe 'Challenge Creation', type: :request do
 
           expect(challenge).to include('challenge_type' => 'normal',
                                        'spot' => {
-                                         'row' => challengee.spot.row.upcase,
-                                         'file' => challengee.spot.file
+                                         'row' => challengee.current_spot.row.upcase,
+                                         'file' => challengee.current_spot.file
                                        },
                                        'users' => contain_exactly(
                                          include('id' => challenger.id),
@@ -242,8 +242,8 @@ describe 'Challenge Creation', type: :request do
         let(:params) do
           {
             spot: {
-              row: challengee.spot.row.upcase,
-              file: challengee.spot.file
+              row: challengee.current_spot.row.upcase,
+              file: challengee.current_spot.file
             }
           }
         end
@@ -257,8 +257,8 @@ describe 'Challenge Creation', type: :request do
 
           expect(challenge).to include('challenge_type' => 'tri',
                                        'spot' => {
-                                         'row' => challengee.spot.row.upcase,
-                                         'file' => challengee.spot.file
+                                         'row' => challengee.current_spot.row.upcase,
+                                         'file' => challengee.current_spot.file
                                        },
                                        'users' => contain_exactly(
                                          include('id' => challenger.id),
@@ -282,8 +282,8 @@ describe 'Challenge Creation', type: :request do
 
           expect(challenge).to include('challenge_type' => 'open_spot',
                                        'spot' => {
-                                         'row' => challengee.spot.row.upcase,
-                                         'file' => challengee.spot.file
+                                         'row' => challengee.current_spot.row.upcase,
+                                         'file' => challengee.current_spot.file
                                        },
                                        'users' => contain_exactly(
                                          include('id' => challenger.id)
