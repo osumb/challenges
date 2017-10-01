@@ -5,6 +5,7 @@ class Spot < ApplicationRecord
   # associations
   has_many :challenges
   has_one :current_user, class_name: 'User', foreign_key: 'current_spot_id'
+  has_one :original_user, class_name: 'User', foreign_key: 'original_spot_id'
 
   # validations
   validates :row, presence: true

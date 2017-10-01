@@ -22,6 +22,7 @@ describe User, type: :model do
   it { is_expected.to validate_presence_of(:part) }
   it { is_expected.to validate_presence_of(:role) }
   it { is_expected.to validate_presence_of(:current_spot) }
+  it { is_expected.to validate_presence_of(:original_spot) }
 
   describe 'callbacks' do
     let(:user) { create(:user, email: email) }

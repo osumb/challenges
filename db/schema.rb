@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170926013227) do
+ActiveRecord::Schema.define(version: 20170929220708) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -88,6 +88,7 @@ ActiveRecord::Schema.define(version: 20170926013227) do
     t.datetime "created_at",                                 null: false
     t.datetime "updated_at",                                 null: false
     t.datetime "revoke_token_date"
+    t.integer  "original_spot_id"
     t.index ["buck_id"], name: "index_users_on_buck_id", using: :btree
     t.index ["current_spot_id"], name: "index_users_on_current_spot_id", using: :btree
     t.index ["email"], name: "index_users_on_email", using: :btree
@@ -96,4 +97,5 @@ ActiveRecord::Schema.define(version: 20170926013227) do
   add_foreign_key "discipline_actions", "users", column: "user_buck_id", primary_key: "buck_id"
   add_foreign_key "password_reset_requests", "users", column: "user_buck_id", primary_key: "buck_id"
   add_foreign_key "user_challenges", "users", column: "user_buck_id", primary_key: "buck_id"
+  add_foreign_key "users", "spots", column: "original_spot_id"
 end

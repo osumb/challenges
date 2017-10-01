@@ -11,6 +11,7 @@ class User < ApplicationRecord
 
   # associations
   belongs_to :current_spot, class_name: 'Spot', foreign_key: :current_spot_id, optional: true
+  belongs_to :original_spot, class_name: 'Spot', foreign_key: :original_spot_id, optional: true
   has_many :user_challenges, foreign_key: 'user_buck_id'
   has_many :challenges, through: :user_challenges
   has_many :discipline_actions, foreign_key: 'user_buck_id'
@@ -33,6 +34,7 @@ class User < ApplicationRecord
   validates :part, presence: true
   validates :role, presence: true
   validates :current_spot_id, uniqueness: { allow_blank: true }
+  validates :original_spot_id, uniqueness: { allow_blank: true }
 
   validate :performing_member_has_spot, on: :create
   validate :admin_does_not_have_spot
@@ -105,6 +107,7 @@ class User < ApplicationRecord
     return if admin? || director?
     return unless current_spot.nil?
     errors.add(:current_spot, 'can\'t be blank')
+    errors.add(:original_spot, 'can\'t be blank')
   end
 
   def admin_does_not_have_spot

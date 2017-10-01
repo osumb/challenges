@@ -71,7 +71,7 @@ class User
     def create_user_from_row(row, spot)
       password = SecureRandom.base64(15)
       digest = BCrypt::Password.create(password)
-      user_attrs = user_attrs_from_row(row).merge!(password_digest: digest, current_spot: spot)
+      user_attrs = user_attrs_from_row(row).merge!(password_digest: digest, current_spot: spot, original_spot: spot)
       user = User.new(user_attrs)
       return if user.admin? && User.exists?(buck_id: user.buck_id)
       user.save
