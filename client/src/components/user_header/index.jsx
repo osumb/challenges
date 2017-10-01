@@ -4,7 +4,7 @@ import pick from 'lodash.pick';
 
 import { helpers, propTypes as userPropTypes } from '../../data/user';
 
-const props = ['firstName', 'lastName', 'role', 'spot'];
+const props = ['firstName', 'lastName', 'role', 'currentSpot'];
 
 const Container = styled.div`
   display: flex;
@@ -43,7 +43,8 @@ const UserHeader = userProps =>
     {helpers.isAdmin(userProps) || helpers.isDirector(userProps)
       ? <AdminTag>Admin</AdminTag>
       : <SpotCircle>
-          <SpotText>{`${userProps.spot.row}${userProps.spot.file}`}</SpotText>
+          <SpotText>{`${userProps.currentSpot.row}${userProps.currentSpot
+            .file}`}</SpotText>
         </SpotCircle>}
     <NameHeader>
       {`${userProps.firstName} ${userProps.lastName}`}
@@ -54,7 +55,7 @@ UserHeader.propTypes = pick(userPropTypes, [
   'firstName',
   'lastName',
   'role',
-  'spot'
+  'currentSpot'
 ]);
 UserHeader.props = props;
 

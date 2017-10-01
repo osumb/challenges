@@ -124,8 +124,8 @@ export default class CreateDisciplineAction extends React.PureComponent {
           getRef={ref => {
             this.openSpot = ref;
           }}
-          label={`Check box if the spot ${user.spot.row}${user.spot
-            .file} opens as a result of the action`}
+          label={`Check box if the spot ${user.currentSpot.row}${user
+            .currentSpot.file} opens as a result of the action`}
         />
         <Checkbox
           getRef={ref => {

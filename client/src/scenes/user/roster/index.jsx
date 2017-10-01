@@ -20,7 +20,10 @@ const Container = styled.div`
 const filterMethod = ({ id, value }, row) =>
   row[id].toLowerCase().includes(value.toLowerCase());
 const flattenSpotToString = oldUsers =>
-  oldUsers.map(({ spot, ...a }) => ({ spot: `${spot.row}${spot.file}`, ...a }));
+  oldUsers.map(({ currentSpot, ...a }) => ({
+    spot: `${currentSpot.row}${currentSpot.file}`,
+    ...a
+  }));
 const updateStateWithNewRow = newRow => ({ users }) => {
   const newSpot = newRow.spot;
   let oldSpot, oldSpotUserIndex; // index at which the user who currently holds `newSpot` resides

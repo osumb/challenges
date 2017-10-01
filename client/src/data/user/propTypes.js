@@ -11,7 +11,7 @@ const propTypes = {
   lastName: PropTypes.string.isRequired,
   part: PropTypes.oneOf(Object.values(helpers.parts)).isRequired,
   role: PropTypes.oneOf(Object.values(helpers.roles)),
-  spot: PropTypes.shape(spotProps)
+  current_spot: PropTypes.shape(spotProps)
 };
 
 export default propTypes;

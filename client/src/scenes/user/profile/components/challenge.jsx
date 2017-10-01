@@ -35,7 +35,7 @@ export default function Challenge({ performanceName, spot, userChallenge }) {
         </Header>
         <UserChallenge
           {...userChallenge}
-          hideName={true}
+          hideName
           style={{
             width: '100%'
           }}

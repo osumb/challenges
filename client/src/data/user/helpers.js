@@ -61,7 +61,7 @@ const isAdmin = ({ role }) => role === ADMIN;
 const isDirector = ({ role }) => role === DIRECTOR;
 const isMember = ({ role }) => role === MEMBER;
 const isSquadLeader = ({ role }) => role === SQUAD_LEADER;
-const isTriChallengeUser = ({ spot }) => ['J'].includes(spot.row);
+const isTriChallengeUser = ({ currentSpot }) => ['J'].includes(currentSpot.row);
 const resetPassword = (password_reset_request_id, password, { id }) =>
   api.post(`/users/${id}/reset_password`, {
     password_reset_request_id,
