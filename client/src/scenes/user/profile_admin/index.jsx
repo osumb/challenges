@@ -76,7 +76,7 @@ class Profile extends React.PureComponent {
       (Boolean(performance) && disciplineActions.length <= 0) ||
       (disciplineActions.length >= 1 &&
         disciplineActions[disciplineActions.length - 1].performance.id !==
-          performance.id);
+          (performance && performance.id));
 
     return (
       <FlexContainer
