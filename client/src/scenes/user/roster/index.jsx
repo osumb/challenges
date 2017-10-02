@@ -90,6 +90,14 @@ export default class Roster extends React.PureComponent {
     return <EditSpot {...props} onChange={this.handleRowChange} />;
   }
 
+  renderOriginalSpot(props) {
+    return (
+      <span>
+        {props.value.row.toUpperCase()}{props.value.file}
+      </span>
+    );
+  }
+
   render() {
     const { users } = this.state;
     const columns = [
@@ -111,12 +119,18 @@ export default class Roster extends React.PureComponent {
         ]
       },
       {
-        header: 'Spot',
+        header: 'Spots',
         columns: [
           {
-            header: 'Spot',
+            header: 'Current',
             accessor: 'spot',
             render: this.renderEditSpot,
+            filterMethod
+          },
+          {
+            header: 'Original',
+            accessor: 'originalSpot',
+            render: this.renderOriginalSpot,
             filterMethod
           }
         ]

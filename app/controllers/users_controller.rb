@@ -7,7 +7,7 @@ class UsersController < ApplicationController
   before_action :ensure_target_spot_exists!, only: [:switch_spot]
 
   def index
-    @users = User.performers.includes(:current_spot).sort_by(&:current_spot)
+    @users = User.performers.includes(:current_spot, :original_spot).sort_by(&:current_spot)
   end
 
   def show

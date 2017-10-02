@@ -10,3 +10,7 @@ json.part user.part.titleize
 json.current_spot do
   json.partial! 'spots/spot', spot: user.current_spot
 end
+
+json.original_spot do
+  json.partial! 'spots/spot', spot: user.original_spot
+end
