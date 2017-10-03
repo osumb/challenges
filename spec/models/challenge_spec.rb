@@ -205,9 +205,8 @@ describe Challenge, type: :model do
     let!(:challenge) { create(:normal_challenge, spot: create(:spot, row: :x, file: 1)) }
     let(:current_instrument) { challenge.users.first.instrument }
     let(:spot_in_challenge_row) { create(:spot, row: challenge.spot.row, file: 2) }
-    let(:spot_in_first_user_row) { create(:spot, row: challenge.users.first.current_spot.row, file: 2) }
-    let(:spot_in_last_user_row) { create(:spot, row: challenge.users.last.current_spot.row, file: 2) }
-    let(:last_user_row) { challenge.users.last.spot.row }
+    let(:spot_in_first_user_row) { create(:spot, row: challenge.users.first.original_spot.row, file: 2) }
+    let(:spot_in_last_user_row) { create(:spot, row: challenge.users.last.original_spot.row, file: 2) }
     let(:other_instrument) do
       User.instruments.find { |key, _value| key != current_instrument && key != 'any' }.first.to_sym
     end
@@ -264,10 +263,10 @@ describe Challenge, type: :model do
 
       context 'and they are in the row of one of the participants' do
         let(:user_1) do
-          create(:user, :squad_leader, instrument: current_instrument, current_spot: spot_in_first_user_row)
+          create(:user, :squad_leader, instrument: current_instrument, current_spot: spot_in_first_user_row, original_spot: spot_in_first_user_row)
         end
         let(:user_2) do
-          create(:user, :squad_leader, instrument: current_instrument, current_spot: spot_in_last_user_row)
+          create(:user, :squad_leader, instrument: current_instrument, current_spot: spot_in_last_user_row, original_spot: spot_in_last_user_row)
         end
 
         specify { expect(described_class.viewable_by_user(user_1)).to include(challenge) }

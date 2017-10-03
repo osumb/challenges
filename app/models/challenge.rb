@@ -23,7 +23,7 @@ class Challenge < ApplicationRecord
   validate :valid_needs_approval_state
 
   # scopes
-  scope :with_users_and_spots, -> { includes(user_challenges: { user: :current_spot }) }
+  scope :with_users_and_spots, -> { includes(user_challenges: { user: :original_spot }) }
   scope :done, -> { where(stage: :done) }
   scope :needs_comments, -> { where(stage: :needs_comments) }
   scope :viewable_by_user, lambda { |user|
@@ -32,7 +32,7 @@ class Challenge < ApplicationRecord
     elsif user.director?
       with_users_and_spots.where(users: { instrument: user.instrument })
     elsif user.squad_leader?
-      ids = with_users_and_spots.where(spots: { row: user.current_spot.row }).pluck(:id)
+      ids = with_users_and_spots.where(spots: { row: user.original_spot.row }).pluck(:id)
       with_users_and_spots.where(id: ids)
     else
       none

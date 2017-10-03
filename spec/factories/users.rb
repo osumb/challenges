@@ -14,6 +14,9 @@ FactoryGirl.define do
     role User.roles[:member]
     password_updated Time.zone.now
     association :current_spot, factory: :spot, row: :a, file: 2
+    original_spot do
+      current_spot
+    end
 
     trait :director do
       role User.roles[:director]

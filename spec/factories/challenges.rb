@@ -31,7 +31,7 @@ FactoryGirl.define do
     users {
       [
         FactoryGirl.create(:user, :spot_a13, :trumpet, :solo),
-        FactoryGirl.create(:user, :trumpet, :solo, current_spot: spot)
+        FactoryGirl.create(:user, :trumpet, :solo, current_spot: spot, original_spot: spot)
       ]
     }
   end

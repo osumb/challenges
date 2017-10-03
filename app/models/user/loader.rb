@@ -57,8 +57,8 @@ class User
       PasswordResetRequest.destroy_all
       DisciplineAction.destroy_all
       Performance.destroy_all
-      Spot.destroy_all
       User.where.not(role: :admin).destroy_all
+      Spot.destroy_all
     end
 
     def create_spot_from_row(row)
