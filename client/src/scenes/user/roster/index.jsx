@@ -20,8 +20,9 @@ const Container = styled.div`
 const filterMethod = ({ id, value }, row) =>
   row[id].toLowerCase().includes(value.toLowerCase());
 const flattenSpotToString = oldUsers =>
-  oldUsers.map(({ currentSpot, ...a }) => ({
-    spot: `${currentSpot.row}${currentSpot.file}`,
+  oldUsers.map(({ currentSpot, originalSpot, ...a }) => ({
+    currentSpot: `${currentSpot.row}${currentSpot.file}`,
+    originalSpot: `${originalSpot.row}${originalSpot.file}`,
     ...a
   }));
 const updateStateWithNewRow = newRow => ({ users }) => {
@@ -93,7 +94,7 @@ export default class Roster extends React.PureComponent {
   renderOriginalSpot(props) {
     return (
       <span>
-        {props.value.row.toUpperCase()}{props.value.file}
+        {props.value}
       </span>
     );
   }
@@ -123,7 +124,7 @@ export default class Roster extends React.PureComponent {
         columns: [
           {
             header: 'Current',
-            accessor: 'spot',
+            accessor: 'currentSpot',
             render: this.renderEditSpot,
             filterMethod
           },
