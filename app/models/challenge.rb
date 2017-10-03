@@ -32,8 +32,19 @@ class Challenge < ApplicationRecord
     elsif user.director?
       with_users_and_spots.where(users: { instrument: user.instrument })
     elsif user.squad_leader?
-      ids = with_users_and_spots.where(spots: { row: user.original_spot.row }).pluck(:id)
-      with_users_and_spots.where(id: ids)
+      safe_row = connection.quote(Spot.rows[user.original_spot.row])
+      sql = <<~SQL
+        SELECT DISTINCT c.id
+          FROM challenges c
+            JOIN spots challenge_spots on c.spot_id = challenge_spots.id
+            JOIN user_challenges uc on uc.challenge_id = c.id
+            JOIN users u on uc.user_buck_id = u.buck_id
+            JOIN spots users_original_spots on users_original_spots.id = u.original_spot_id
+          WHERE
+            challenge_spots.row = #{safe_row} OR
+            users_original_spots.row = #{safe_row};
+      SQL
+      with_users_and_spots.where(id: find_by_sql(sql))
     else
       none
     end
