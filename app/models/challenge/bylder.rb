@@ -22,18 +22,18 @@ class Challenge
 
       def create(performance:, spot:, challenge_type:, users:)
         challenge = Challenge.new(performance: performance, spot: spot, challenge_type: challenge_type, users: users)
-        challenge.user_challenges.each { |uc| uc.spot = uc.user.spot }
+        challenge.user_challenges.each { |uc| uc.spot = uc.user.current_spot }
         challenge
       end
 
       def update(challenge:, users:)
         new_user = users.select { |u| !challenge.users.include? u }.first
-        challenge.user_challenges.create(user: new_user, spot: new_user.spot)
+        challenge.user_challenges.create(user: new_user, spot: new_user.current_spot)
         challenge
       end
 
       def challenge_type_from_spot(spot:, performance:)
-        spot_user_das = spot.user.discipline_actions.select { |da| da.performance.id == performance.id }
+        spot_user_das = spot.current_user.discipline_actions.select { |da| da.performance.id == performance.id }
         if Challenge.tri_challenge_rows.include? spot.row.downcase.to_sym
           Challenge.challenge_types[:tri]
         elsif spot_user_das.last&.open_spot
@@ -61,12 +61,12 @@ class Challenge
       # rubocop:enable Metrics/MethodLength
 
       def associated_user_for_normal_challenge(spot)
-        spot.user
+        spot.current_user
       end
 
       def associated_users_for_tri_challenge(challenger, spot)
-        regular_user = spot.user
-        other_alternate = User.joins('LEFT OUTER JOIN spots on spots.id = users.spot_id').find_by(
+        regular_user = spot.current_user
+        other_alternate = User.joins('LEFT OUTER JOIN spots on spots.id = users.current_spot_id').find_by(
           'instrument = ? and part = ? and buck_id != ? and file > 12',
           User.instruments[challenger.instrument],
           User.parts[challenger.part],

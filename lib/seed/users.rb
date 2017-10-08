@@ -16,6 +16,7 @@ def seed_users
     buck_id = row[6].value.downcase
     role = row[7].value.split(' ').join('').underscore
     email = row[9].value.downcase
+    spot = Spot.where(row: Spot.rows[user_row], file: user_file)[0]
     user = User.new(
       first_name: first_name,
       last_name: last_name,
@@ -25,7 +26,8 @@ def seed_users
       role: User.roles[role],
       password_digest: password_digest,
       email: email,
-      spot: Spot.where(row: Spot.rows[user_row], file: user_file)[0]
+      current_spot: spot,
+      original_spot: spot
     )
     i += 1
     users << user

@@ -31,7 +31,7 @@ JOIN (
   ) disciplines_for_performance
   ON users.buck_id = disciplines_for_performance.user_buck_id
   WHERE users.instrument = %{instrument} AND users.part = %{part} AND NOT users.buck_id = '%{buck_id}'
-) users_disciplines ON s.id = users_disciplines.spot_id
+) users_disciplines ON s.id = users_disciplines.current_spot_id
 LEFT OUTER JOIN user_challenges AS uc ON c.id = uc.challenge_id
 WHERE s.file < 13
 GROUP BY

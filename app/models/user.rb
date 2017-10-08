@@ -10,7 +10,8 @@ class User < ApplicationRecord
   enum role: [:admin, :director, :member, :squad_leader]
 
   # associations
-  belongs_to :spot, optional: true
+  belongs_to :current_spot, class_name: 'Spot', foreign_key: :current_spot_id, optional: true
+  belongs_to :original_spot, class_name: 'Spot', foreign_key: :original_spot_id, optional: true
   has_many :user_challenges, foreign_key: 'user_buck_id'
   has_many :challenges, through: :user_challenges
   has_many :discipline_actions, foreign_key: 'user_buck_id'
@@ -32,7 +33,8 @@ class User < ApplicationRecord
   validates :instrument, presence: true
   validates :part, presence: true
   validates :role, presence: true
-  validates :spot_id, uniqueness: { allow_blank: true }
+  validates :current_spot_id, uniqueness: { allow_blank: true }
+  validates :original_spot_id, uniqueness: { allow_blank: true }
 
   validate :performing_member_has_spot, on: :create
   validate :admin_does_not_have_spot
@@ -60,7 +62,7 @@ class User < ApplicationRecord
     payload[:buckId] = buck_id
     payload[:firstName] = first_name
     payload[:lastName] = last_name
-    payload[:spot] = spot && { row: spot.row.upcase, file: spot.file }
+    payload[:currentSpot] = current_spot && { row: current_spot.row.upcase, file: current_spot.file }
     payload[:instrument] = instrument&.capitalize
     payload[:part] = part&.capitalize
     payload[:role] = role.camelize
@@ -71,7 +73,7 @@ class User < ApplicationRecord
   # rubocop:enable Metrics/MethodLength
 
   def alternate?
-    spot.file > 12
+    current_spot.file > 12
   end
 
   def can_challenge_for_performance?(performance)
@@ -103,27 +105,28 @@ class User < ApplicationRecord
 
   def performing_member_has_spot
     return if admin? || director?
-    return unless spot.nil?
-    errors.add(:spot, 'can\'t be blank')
+    return unless current_spot.nil?
+    errors.add(:current_spot, 'can\'t be blank')
+    errors.add(:original_spot, 'can\'t be blank')
   end
 
   def admin_does_not_have_spot
     return if !admin? && !director?
-    return if spot.nil?
+    return if current_spot.nil?
     errors.add(:role, 'admin or director can\'t have a spot')
   end
 
-  # rubocop:disable Metrics/CyclomaticComplexity
+  # rubocop:disable Metrics/CyclomaticComplexity, Metrics/LineLength
   def valid_instrument_part_for_user
     return if admin? || director?
     return if instrument.nil? || part.nil?
-    return if spot.nil?
-    return if Spot.valid_instrument_part_for_row(Spot.rows[spot.row], User.instruments[instrument], User.parts[part])
-    errors.add(:spot, "row #{spot.row}, can't be a #{part} #{instrument}")
+    return if current_spot.nil?
+    return if Spot.valid_instrument_part_for_row(Spot.rows[current_spot.row], User.instruments[instrument], User.parts[part])
+    errors.add(:current_spot, "row #{current_spot.row}, can't be a #{part} #{instrument}")
   end
-  # rubocop:enable Metrics/CyclomaticComplexity
+  # rubocop:enable Metrics/LineLength
 
-  # rubocop:disable Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
+  # rubocop:disable Metrics/PerceivedComplexity
   def valid_instrument_part_for_admin
     return unless admin? || director?
     return if instrument_any? || any_part?

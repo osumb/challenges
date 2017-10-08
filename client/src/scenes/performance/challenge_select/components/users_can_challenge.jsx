@@ -80,8 +80,8 @@ export default class UsersCanChallenge extends React.PureComponent {
                       <b>
                         {user.firstName} {user.lastName}
                       </b>
-                      &nbsp;({user.spot.row}
-                      {user.spot.file})
+                      &nbsp;({user.currentSpot.row}
+                      {user.currentSpot.file})
                     </Typography>
                   </ListItem>
                 </UserContainer>

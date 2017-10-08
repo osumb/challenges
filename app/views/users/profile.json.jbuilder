@@ -11,7 +11,7 @@ else
     json.partial! 'performances/performance', performance: @next_performance
   end
 
-  if @user.challenges.length <= 0 || @user.challenges.last.spot == @user.spot
+  if @user.challenges.length <= 0 || @user.challenges.last.spot == @user.current_spot
     json.current_challenge nil
   elsif !@user.challenges.last.nil? && @user.challenges.last.performance.id == @next_performance.id
     json.current_challenge do

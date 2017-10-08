@@ -17,7 +17,7 @@ describe 'User Challenges', type: :request do
       let(:new_challenger) {
         create(
           :alternate_user,
-          "spot_#{challenger.spot.row}#{challenger.spot.file + 1}".to_sym,
+          "spot_#{challenger.current_spot.row}#{challenger.current_spot.file + 1}".to_sym,
           challenger.instrument.to_sym,
           challenger.part.to_sym
         )

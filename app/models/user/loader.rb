@@ -57,8 +57,8 @@ class User
       PasswordResetRequest.destroy_all
       DisciplineAction.destroy_all
       Performance.destroy_all
-      Spot.destroy_all
       User.where.not(role: :admin).destroy_all
+      Spot.destroy_all
     end
 
     def create_spot_from_row(row)
@@ -71,7 +71,7 @@ class User
     def create_user_from_row(row, spot)
       password = SecureRandom.base64(15)
       digest = BCrypt::Password.create(password)
-      user_attrs = user_attrs_from_row(row).merge!(password_digest: digest, spot: spot)
+      user_attrs = user_attrs_from_row(row).merge!(password_digest: digest, current_spot: spot, original_spot: spot)
       user = User.new(user_attrs)
       return if user.admin? && User.exists?(buck_id: user.buck_id)
       user.save

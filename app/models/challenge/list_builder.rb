@@ -46,7 +46,7 @@ class Challenge
     end
 
     def discipline_action_to_list_row(da)
-      [da.user.spot.to_s, da.user.full_name, da.reason]
+      [da.user.current_spot.to_s, da.user.full_name, da.reason]
     end
 
     def challenge_list_to_rows(challenges)

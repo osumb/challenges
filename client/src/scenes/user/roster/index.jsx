@@ -20,7 +20,11 @@ const Container = styled.div`
 const filterMethod = ({ id, value }, row) =>
   row[id].toLowerCase().includes(value.toLowerCase());
 const flattenSpotToString = oldUsers =>
-  oldUsers.map(({ spot, ...a }) => ({ spot: `${spot.row}${spot.file}`, ...a }));
+  oldUsers.map(({ currentSpot, originalSpot, ...a }) => ({
+    currentSpot: `${currentSpot.row}${currentSpot.file}`,
+    originalSpot: `${originalSpot.row}${originalSpot.file}`,
+    ...a
+  }));
 const updateStateWithNewRow = newRow => ({ users }) => {
   const newSpot = newRow.spot;
   let oldSpot, oldSpotUserIndex; // index at which the user who currently holds `newSpot` resides
@@ -87,6 +91,14 @@ export default class Roster extends React.PureComponent {
     return <EditSpot {...props} onChange={this.handleRowChange} />;
   }
 
+  renderOriginalSpot(props) {
+    return (
+      <span>
+        {props.value}
+      </span>
+    );
+  }
+
   render() {
     const { users } = this.state;
     const columns = [
@@ -108,12 +120,18 @@ export default class Roster extends React.PureComponent {
         ]
       },
       {
-        header: 'Spot',
+        header: 'Spots',
         columns: [
           {
-            header: 'Spot',
-            accessor: 'spot',
+            header: 'Current',
+            accessor: 'currentSpot',
             render: this.renderEditSpot,
+            filterMethod
+          },
+          {
+            header: 'Original',
+            accessor: 'originalSpot',
+            render: this.renderOriginalSpot,
             filterMethod
           }
         ]

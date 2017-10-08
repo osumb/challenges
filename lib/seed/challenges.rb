@@ -18,12 +18,12 @@ def seed_challenges(performance)
     winner_id = row[2].value
     challenger_comments = row[3].value
     challengee_comments = row[4].value
-    challengee = User.where(spot: Spot.where(row: row_in_challenge, file: file_in_challenge)).first
+    challengee = User.where(current_spot: Spot.where(row: row_in_challenge, file: file_in_challenge)).first
     challenge.users = [challenger, challengee]
-    challenge.user_challenges[0].spot = challenger.spot
+    challenge.user_challenges[0].spot = challenger.current_spot
     challenge.user_challenges[0].comments = challenger_comments
     challenge.user_challenges[0].place = winner_id == challenger.buck_id ? :first : :second
-    challenge.user_challenges[1].spot = challengee.spot
+    challenge.user_challenges[1].spot = challengee.current_spot
     challenge.user_challenges[1].comments = challengee_comments
     challenge.user_challenges[1].place = winner_id == challengee.buck_id ? :first : :second
     challenges << challenge

@@ -101,7 +101,7 @@ describe 'DisciplineActions', type: :request do
 
       context 'but the associated spot has already been challenged' do
         let!(:challenge) {
-          spot = discipline_action.user.spot
+          spot = discipline_action.user.current_spot
           create(:open_spot_challenge, spot: spot, performance: discipline_action.performance)
         }
 
