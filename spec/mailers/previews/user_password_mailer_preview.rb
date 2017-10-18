@@ -2,8 +2,8 @@
 class UserPasswordMailerPreview < ActionMailer::Preview
   def user_password_email
     UserPasswordMailer.user_password_email(
-      user: User.first,
-      password: 'SomePasswordString'
+      User.first,
+      PasswordResetRequest.first || PasswordResetRequest.new(id: 'some_uuid', user: User.first)
     )
   end
 end

@@ -62,13 +62,18 @@ describe User::Loader, type: :model do
     let(:user) { create(:user, password: password, password_confirmation: password) }
 
     before do
-      allow(loader).to receive(:users_and_passwords).and_return([[user, password]])
+      allow(loader).to receive(:users).and_return([user])
       allow(UserPasswordMailer).to receive(:user_password_email).and_return(nil)
       allow(RubyXL::Parser).to receive(:parse).with(filename).and_return(workbook)
       allow(UserPasswordMailer).to receive(:user_password_email).and_return(mail)
     end
 
     context 'when there are no errors' do
+      it 'creates password reset requests for the users' do
+        loader.email_users
+        expect(PasswordResetRequest).to have_received(:create)
+      end
+
       it 'email the users' do
         loader.email_users
         expect(UserPasswordMailer).to have_received(:user_password_email)
