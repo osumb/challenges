@@ -66,6 +66,7 @@ describe User::Loader, type: :model do
       allow(PasswordResetMailer).to receive(:user_creation_email).and_return(nil)
       allow(RubyXL::Parser).to receive(:parse).with(filename).and_return(workbook)
       allow(PasswordResetMailer).to receive(:user_creation_email).and_return(mail)
+      allow(PasswordResetRequest).to receive(:create).and_call_original
     end
 
     context 'when there are no errors' do
