@@ -63,9 +63,9 @@ describe User::Loader, type: :model do
 
     before do
       allow(loader).to receive(:users).and_return([user])
-      allow(UserPasswordMailer).to receive(:user_password_email).and_return(nil)
+      allow(PasswordResetMailer).to receive(:user_creation_email).and_return(nil)
       allow(RubyXL::Parser).to receive(:parse).with(filename).and_return(workbook)
-      allow(UserPasswordMailer).to receive(:user_password_email).and_return(mail)
+      allow(PasswordResetMailer).to receive(:user_creation_email).and_return(mail)
     end
 
     context 'when there are no errors' do
@@ -76,7 +76,7 @@ describe User::Loader, type: :model do
 
       it 'email the users' do
         loader.email_users
-        expect(UserPasswordMailer).to have_received(:user_password_email)
+        expect(PasswordResetMailer).to have_received(:user_creation_email)
       end
     end
 
@@ -89,7 +89,7 @@ describe User::Loader, type: :model do
 
       it 'does not email the users' do
         loader.email_users
-        expect(UserPasswordMailer).not_to have_received(:user_password_email)
+        expect(PasswordResetMailer).not_to have_received(:user_creation_email)
       end
     end
   end
