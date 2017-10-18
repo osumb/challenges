@@ -81,6 +81,20 @@ describe User::Loader, type: :model do
       end
     end
 
+    context 'when the password reset request has errors' do
+      let(:bad_reset_request) { instance_double(PasswordResetRequest, valid?: false) }
+
+      before do
+        allow(PasswordResetRequest).to receive(:create).and_return(bad_reset_request)
+        allow(Rails.logger).to receive(:info).and_call_original
+      end
+
+      it 'logs that there was an error' do
+        loader.email_users
+        expect(Rails.logger).to have_received(:info).with(include(user.buck_id))
+      end
+    end
+
     context 'when there are errors' do
       let(:errors) { instance_double(ActiveModel::Errors, any?: true) }
 
