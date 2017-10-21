@@ -5,6 +5,7 @@ import Media from 'react-media';
 
 import Button from '../../../../components/button';
 import Confirm from '../../../../components/confirm';
+import Typography from '../../../../components/typography';
 import { FlexChild, FlexContainer } from '../../../../components/flex';
 import { propTypes } from '../../../../data/challenge_evaluations';
 import { screenSizes } from '../../../../utils';
@@ -59,10 +60,13 @@ class ChallengeEvaluation extends React.Component {
     if (this.state.confirming) {
       return (
         <Confirm
-          message="Are you sure you want to submit this challenge for evaluation?"
           onCancel={this.handleSubmissionCancel}
           onConfirm={this.handleSubmissionConfirm}
-        />
+        >
+          <Typography category="title">
+            Are you sure you want to submit this challenge for evaluation?
+          </Typography>
+        </Confirm>
       );
     }
 

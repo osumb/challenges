@@ -4,7 +4,6 @@ import styled from 'styled-components';
 import PropTypes from 'prop-types';
 
 import Button from '../button';
-import Typography from '../typography';
 
 const Container = styled.div`
   display: flex;
@@ -20,7 +19,7 @@ const ButtonSpacer = styled.div`margin: 0 10px;`;
 export default class Confirm extends React.PureComponent {
   static get propTypes() {
     return {
-      message: PropTypes.string.isRequired,
+      children: PropTypes.node.isRequired,
       onCancel: PropTypes.func.isRequired,
       onConfirm: PropTypes.func.isRequired
     };
@@ -60,9 +59,7 @@ export default class Confirm extends React.PureComponent {
         }}
       >
         <Container>
-          <Typography category="title">
-            {this.props.message}
-          </Typography>
+          {this.props.children}
           <ButtonContainer>
             <Button onClick={this.handleCloseModal}>Cancel</Button>
             <ButtonSpacer />

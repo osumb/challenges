@@ -59,10 +59,13 @@ export default class CurrentChallenge extends React.PureComponent {
     if (confirming) {
       return (
         <Confirm
-          message="Are you sure you want to delete this challenge?"
           onCancel={this.handleDeleteCancel}
           onConfirm={this.handleDeleteConfirm}
-        />
+        >
+          <Typography category="title">
+            Are you sure you want to delete this challenge?{' '}
+          </Typography>
+        </Confirm>
       );
     }
 
