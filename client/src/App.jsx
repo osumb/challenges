@@ -24,6 +24,7 @@ import ProfileAdmin from './scenes/user/profile_admin';
 import Roster from './scenes/user/roster';
 import Search from './scenes/user/search';
 import Upload from './scenes/user/upload';
+import UserCreate from './scenes/user/create';
 
 const handleLogout = push => {
   auth.logout();
@@ -93,6 +94,7 @@ const App = () =>
           <PrivateRoute exact path="/user/upload" component={Upload} />
           <PrivateRoute exact path="/roster" component={Roster} />
           <PrivateRoute exact path="/search" component={Search} />
+          <PrivateRoute path="/user/new" component={UserCreate} />
           <PrivateRoute exact path="/users/:buckId" component={ProfileAdmin} />
           <PublicRoute exact path="/login" component={Login} />
           <PublicRoute

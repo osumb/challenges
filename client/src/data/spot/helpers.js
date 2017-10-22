@@ -1,5 +1,6 @@
 /* eslint-disable complexity, yoda */
 import { helpers as userHelpers } from '../user';
+import { api } from '../../utils';
 
 const stringSplitRegex = /[a-zA-Z]+|[0-9]+/g;
 const rows = {
@@ -20,6 +21,24 @@ const rows = {
   T: 'T',
   X: 'X'
 };
+const rowFileMinMax = {
+  A: { min: 1, max: 14 },
+  B: { min: 1, max: 14 },
+  C: { min: 1, max: 14 },
+  E: { min: 1, max: 14 },
+  F: { min: 1, max: 14 },
+  H: { min: 1, max: 14 },
+  I: { min: 1, max: 14 },
+  J: { min: 1, max: 18 },
+  K: { min: 1, max: 14 },
+  L: { min: 1, max: 14 },
+  M: { min: 1, max: 14 },
+  Q: { min: 1, max: 14 },
+  R: { min: 1, max: 14 },
+  S: { min: 1, max: 14 },
+  T: { min: 1, max: 14 },
+  X: { min: 1, max: 14 }
+};
 const compareSpots = (a, b) => {
   if (typeof a === 'string')
     return compareSpots(spotFromString(a), spotFromString(b));
@@ -29,11 +48,60 @@ const compareSpots = (a, b) => {
     return a.row > b.row ? 1 : -1;
   }
 };
+const rowInstrumentMap = () => ({
+  A: userHelpers.instruments.TRUMPET,
+  B: userHelpers.instruments.TRUMPET,
+  C: userHelpers.instruments.TRUMPET,
+  E: userHelpers.instruments.MELLOPHONE,
+  F: userHelpers.instruments.TROMBONE,
+  H: userHelpers.instruments.BARITONE,
+  I: userHelpers.instruments.PERCUSSION,
+  J: userHelpers.instruments.PERCUSSION,
+  K: userHelpers.instruments.SOUSAPHONE,
+  L: userHelpers.instruments.SOUSAPHONE,
+  M: userHelpers.instruments.BARITONE,
+  Q: userHelpers.instruments.TROMBONE,
+  R: userHelpers.instruments.MELLOPHONE,
+  S: userHelpers.instruments.TRUMPET,
+  T: userHelpers.instruments.TRUMPET,
+  X: userHelpers.instruments.TRUMPET
+});
+const rowPartsMap = () => ({
+  A: [userHelpers.parts.EFER, userHelpers.parts.SOLO],
+  B: [userHelpers.parts.FIRST, userHelpers.parts.SECOND],
+  C: [userHelpers.parts.FLUGEL],
+  E: [userHelpers.parts.FIRST, userHelpers.parts.SECOND],
+  F: [
+    userHelpers.parts.FIRST,
+    userHelpers.parts.SECOND,
+    userHelpers.parts.BASS
+  ],
+  H: [userHelpers.parts.FIRST],
+  I: [userHelpers.parts.SNARE],
+  J: [
+    userHelpers.parts.CYMBALS,
+    userHelpers.parts.TENOR,
+    userHelpers.parts.BASS
+  ],
+  K: [userHelpers.parts.FIRST],
+  L: [userHelpers.parts.FIRST],
+  M: [userHelpers.parts.FIRST],
+  Q: [
+    userHelpers.parts.FIRST,
+    userHelpers.parts.SECOND,
+    userHelpers.parts.BASS
+  ],
+  R: [userHelpers.parts.FIRST, userHelpers.parts.SECOND],
+  S: [userHelpers.parts.SECOND, userHelpers.parts.FLUGEL],
+  T: [userHelpers.parts.FIRST, userHelpers.parts.SECOND],
+  X: [userHelpers.parts.EFER, userHelpers.parts.SOLO]
+});
 const spotFromString = spot => {
   const [row, file] = spot.match(stringSplitRegex);
 
   return { row, file };
 };
+const toString = ({ row, file }) => `${row}${file}`;
 const validInstrumentForRow = (row, instrument) => {
   if (
     row === rows.A ||
@@ -101,11 +169,17 @@ const validSpot = ({ row, file }) => {
   if (row === rows.I || row === rows.J) return 1 <= numFile && numFile <= 18;
   return 1 <= numFile && numFile <= 14 && Boolean(rows[row]);
 };
+const find = ({ row, file }) => api.get(`/spots/find?query=${row}${file}`);
 
 export default {
   compareSpots,
+  find,
   rows,
+  rowInstrumentMap,
+  rowPartsMap,
+  rowFileMinMax,
   spotFromString,
+  toString,
   validPartForRow,
   validInstrumentForRow,
   validSpot

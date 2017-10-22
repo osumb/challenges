@@ -40,7 +40,8 @@ export default class Button extends React.PureComponent {
         style={{
           color: 'white',
           backgroundColor: rest.primary ? primaryGray : secondaryGray,
-          ...style
+          ...style,
+          opacity: disabled ? '0.4' : '1'
         }}
       >
         {children}

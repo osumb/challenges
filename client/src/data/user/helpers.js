@@ -60,6 +60,7 @@ const getProfile = () => api.get(`/users/profile/${auth.getUser().buckId}`);
 const isAdmin = ({ role }) => role === ADMIN;
 const isDirector = ({ role }) => role === DIRECTOR;
 const isMember = ({ role }) => role === MEMBER;
+const isPerformerRole = role => role === MEMBER || role === SQUAD_LEADER;
 const isSquadLeader = ({ role }) => role === SQUAD_LEADER;
 const isTriChallengeUser = ({ currentSpot }) => ['J'].includes(currentSpot.row);
 const resetPassword = (password_reset_request_id, password, { id }) =>
@@ -89,6 +90,7 @@ export default {
   isDirector,
   isMember,
   isSquadLeader,
+  isPerformerRole,
   isTriChallengeUser,
   parts,
   partsForInstrument,
