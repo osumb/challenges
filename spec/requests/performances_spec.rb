@@ -263,4 +263,28 @@ describe 'Performances', type: :request do
       end
     end
   end
+
+  describe 'GET /:id/challenge_list' do
+    let(:performance) { create(:performance) }
+
+    context 'non admin user' do
+      it 'returns a 403' do
+        get "#{endpoint}/#{performance.id}/challenge_list", headers: authenticated_header(user)
+
+        expect(response).to have_http_status(403)
+      end
+    end
+
+    context 'admin user' do
+      before do
+        allow(Rails.env).to receive(:test?).and_return(true)
+      end
+      it 'emails the challenge list' do
+        expect(ChallengeListMailer).to receive(:challenge_list_email).and_call_original
+        get "#{endpoint}/#{performance.id}/challenge_list", headers: authenticated_header(admin)
+
+        expect(response).to have_http_status(204)
+      end
+    end
+  end
 end

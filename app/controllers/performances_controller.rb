@@ -61,6 +61,10 @@ class PerformancesController < ApplicationController
   end
   # rubocop:enable Metrics/MethodLength
 
+  def challenge_list
+    PerformanceService.email_challenge_list(performance_id: params[:id].to_i)
+  end
+
   private
 
   def create_params
