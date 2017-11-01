@@ -29,6 +29,7 @@ export default class Performance extends React.PureComponent {
       buttonText: PropTypes.string.isRequired,
       canDelete: PropTypes.bool,
       onAction: PropTypes.func.isRequired,
+      onChallengeListRequest: PropTypes.func,
       onDelete: PropTypes.func,
       performance: PropTypes.shape(performanceProps.performance)
     };
@@ -40,6 +41,9 @@ export default class Performance extends React.PureComponent {
       ...props.performance
     };
     this.handleActionClick = this.handleActionClick.bind(this);
+    this.handleChallengeListRequest = this.handleChallengeListRequest.bind(
+      this
+    );
     this.handleDateChange = this.handleDateChange.bind(this);
     this.handleDeleteClick = this.handleDeleteClick.bind(this);
     this.handleWindowCloseChange = this.handleWindowCloseChange.bind(this);
@@ -57,6 +61,12 @@ export default class Performance extends React.PureComponent {
         .performanceErrors(performance)
         .join('; ');
       errorEmitter.dispatch(errorMessage);
+    }
+  }
+
+  handleChallengeListRequest() {
+    if (this.props.onChallengeListRequest) {
+      this.props.onChallengeListRequest(this.state.id);
     }
   }
 
@@ -151,6 +161,10 @@ export default class Performance extends React.PureComponent {
             </Button>
             {this.props.canDelete &&
               <Button onClick={this.handleDeleteClick}>Delete</Button>}
+            {this.props.onChallengeListRequest &&
+              <Button onClick={this.handleChallengeListRequest}>
+                Email Challenge List
+              </Button>}
           </FlexContainer>
         </FlexContainer>
       </FlexContainer>

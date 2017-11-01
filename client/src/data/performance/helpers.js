@@ -30,6 +30,7 @@ const getChallengeableUsers = userBuckId =>
   userBuckId
     ? api.get(`/performances/challengeable_users?user_buck_id=${userBuckId}`)
     : api.get('/performances/challengeable_users');
+const getChallengeList = id => api.get(`/performances/${id}/challenge_list`);
 const getNext = () => api.get('/performances/next');
 
 const isValidPerformance = ({ date, name, windowClose, windowOpen }) => {
@@ -69,6 +70,7 @@ export default {
   del,
   getAll,
   getChallengeableUsers,
+  getChallengeList,
   getNext,
   isValidPerformance,
   isWindowOpen,
