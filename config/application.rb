@@ -33,5 +33,7 @@ module Challenges
     end
 
     config.middleware.use "NewTokenMiddleware"
+
+    config.action_view.logger = nil
   end
 end
