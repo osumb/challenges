@@ -1,12 +1,4 @@
 #!/bin/sh
 
 # bin/server: Start up the docker containers
-
-# Check for the existence of docker-compose
-hash docker-compose 2>/dev/null || { echo >&2 "Please install docker-compose before trying to start challenges.  Aborting."; exit 1; }
-
-# Remove any rails pid files
-rm tmp/pids/*
-
-# Start up the docker containers
-docker-compose up
+heroku local -f Procfile.dev
