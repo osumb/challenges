@@ -39,14 +39,9 @@ describe 'Challenge Approval', type: :request do
         end
       end
 
-      it 'gives the winner the regular spot and the loser the alternate spot' do
+      it 'calls the job' do
+        expect(CheckChallengesDoneJob).to receive(:perform_later).with(performance_id: challenge.performance.id).and_return(true)
         put endpoint, headers: authenticated_header(user)
-
-        winner = challenge.reload.user_challenges.select(&:first_place?).first.user.reload
-        loser = challenge.reload.user_challenges.reject(&:first_place?).first.user.reload
-
-        expect(winner.alternate?).to eq(false)
-        expect(loser.alternate?).to eq(true)
       end
     end
   end
