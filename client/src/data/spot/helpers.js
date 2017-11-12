@@ -50,7 +50,7 @@ const validInstrumentForRow = (row, instrument) => {
     return instrument === userHelpers.instruments.TROMBONE;
   } else if (row === rows.H || row === rows.M) {
     return instrument === userHelpers.instruments.BARITONE;
-  } else if (row === row.K || row === rows.L) {
+  } else if (row === rows.K || row === rows.L) {
     return instrument === userHelpers.instruments.SOUSAPHONE;
   } else {
     // JI row
