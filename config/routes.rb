@@ -1,5 +1,9 @@
 # frozen_string_literal: true
 Rails.application.routes.draw do
+
+  require 'resque/server'
+  mount Resque::Server, at: '/jobs'
+
   scope :api do
     post 'user_token' => 'user_token#create'
 

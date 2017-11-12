@@ -1,24 +1,13 @@
 version: '3'
 services:
   postgres:
-    container_name: "postgres"
-    restart: "always"
-    image: "postgres:9.6.2"
-    environment:
-      POSTGRES_USER: "postgres"
+    image: "postgres:9.6.1"
+    ports:
+      - "5432:5432"
     volumes:
       - "~/.docker-volumes/challenges/postgresql/data:/var/lib/postgresql/data"
-  web:
-     container_name: "web"
-     build: .
-     command: "/usr/src/app/bin/heroku_local"
-     ports:
-      - "3000:3000" # webpack dev server
-      - "3001:3001" # rails api server
-     depends_on:
-       - "postgres"
-     volumes:
-       - "${VOLUME:-.:/usr/src/app}"
-       - /usr/src/app/client/node_modules
-     env_file:
-       - .env
+  redis:
+    image: "redis:4.0.2"
+    ports:
+      - "6379:6379"
+    command: redis-server --loglevel warning

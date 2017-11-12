@@ -56,26 +56,17 @@ class ChallengesController < ApplicationController
     end
   end
 
-  # rubocop:disable Metrics/MethodLength
   def approve
     challenge = Challenge.find(params[:id])
+    performance_id = challenge.performance_id
 
     if challenge.update(stage: :done)
-      if challenge.performance.challenges.all?(&:done_stage?)
-        switcher = Challenge::SpotSwitcher.new(challenge.performance)
-        begin
-          switcher.run!
-          SpotSwitchMailer.spot_switch_email.deliver_now
-        rescue StandardError => e
-          SpotSwitchMailer.spot_switch_email(e.messsage).deliver_now
-        end
-      end
+      CheckChallengesDoneJob.perform_later(performance_id: performance_id)
       head :no_content
     else
       render json: { resource: 'challenge', errors: challenge.errors }, status: :conflict
     end
   end
-  # rubocop:enable Metrics/MethodLength
 
   def disapprove
     challenge = Challenge.find(params[:id])
@@ -90,11 +81,15 @@ class ChallengesController < ApplicationController
   private
 
   def send_challenge_success_email
-    ChallengeSuccessMailer.challenge_success_email(
-      challenge: @challenge,
-      initiated_by: current_user,
-      email: challenger.email
-    ).deliver_now
+    EmailJob.perform_later(
+      klass: 'ChallengeSuccessMailer',
+      method: 'challenge_success_email',
+      args: {
+        challenge_id: @challenge.id,
+        initiator_buck_id: current_user.buck_id,
+        email: challenger.email
+      }
+    )
   end
 
   def ensure_not_challenging_alternate!
