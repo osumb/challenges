@@ -1,3 +1,4 @@
+# rubocop:disable Metrics/ClassLength
 class ChallengesController < ApplicationController
   before_action :authenticate_user
   before_action :ensure_not_challenging_alternate!, only: [:create]
@@ -80,11 +81,15 @@ class ChallengesController < ApplicationController
   private
 
   def send_challenge_success_email
-    ChallengeSuccessMailer.challenge_success_email(
-      challenge: @challenge,
-      initiated_by: current_user,
-      email: challenger.email
-    ).deliver_now
+    EmailJob.perform_later(
+      klass: 'ChallengeSuccessMailer',
+      method: 'challenge_success_email',
+      args: {
+        challenge_id: @challenge.id,
+        initiator_buck_id: current_user.buck_id,
+        email: challenger.email
+      }
+    )
   end
 
   def ensure_not_challenging_alternate!
