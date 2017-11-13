@@ -22,8 +22,8 @@ export default class EditSpot extends React.PureComponent {
     this.validNewValue = this.validNewValue.bind(this);
   }
 
-  handleUpdate(spot) {
-    this.props.onChange({ ...this.props.row, spot });
+  handleUpdate(currentSpot) {
+    this.props.onChange({ ...this.props.row, currentSpot });
   }
 
   errorMessage(newSpot) {
