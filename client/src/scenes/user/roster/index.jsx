@@ -26,21 +26,21 @@ const flattenSpotToString = oldUsers =>
     ...a
   }));
 const updateStateWithNewRow = newRow => ({ users }) => {
-  const newSpot = newRow.spot;
-  let oldSpot, oldSpotUserIndex; // index at which the user who currently holds `newSpot` resides
-  const newUsers = users.map(({ id, ...rest }, index) => {
-    if (rest.spot === newSpot) oldSpotUserIndex = index;
-    if (id === newRow.id) {
-      oldSpot = rest.spot;
-      return newRow;
-    } else {
-      return { id, ...rest };
-    }
-  });
-  newUsers[oldSpotUserIndex].spot = oldSpot;
+  const oldUserIndex = users.findIndex(({ buckId }) => buckId === newRow.buckId);
+  const newUsers = [...users];
+  
+  if (spotHelpers.compareSpots(newRow.currentSpot, users[oldUserIndex].currentSpot)) {
+    const userHoldingNewSpotIndex = newUsers.findIndex(({ currentSpot }) => spotHelpers.compareSpots(currentSpot, newRow.currentSpot) === 0);
+    const userHoldingNewSpot = newUsers[userHoldingNewSpotIndex];
+    const oldUser = newUsers[oldUserIndex];
+
+    userHoldingNewSpot.currentSpot = oldUser.currentSpot;
+  }
+
+  newUsers[oldUserIndex] = newRow;
 
   return {
-    users: newUsers.sort((a, b) => spotHelpers.compareSpots(a.spot, b.spot))
+    users: newUsers.sort((a, b) => spotHelpers.compareSpots(a.currentSpot, b.currentSpot))
   };
 };
 
