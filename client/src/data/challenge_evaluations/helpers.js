@@ -38,9 +38,9 @@ const postSavePlaces = challenge =>
     `Places were not able to be saved for ${challenge.spot.row}${challenge.spot
       .file}'s challenge`
   );
-const putSubmitForEvaluation = challenge =>
+const putSubmitEvaluation = challenge =>
   api.put(
-    `/challenges/${challenge.id}/submit_for_approval`,
+    `/challenges/${challenge.id}/submit_evaluation`,
     {},
     `${challenge.spot.row}${challenge.spot
       .file}'s challenge was not able to be submitted for approval`
@@ -51,5 +51,5 @@ export default {
   postSaveComments,
   putSaveComments,
   postSavePlaces,
-  putSubmitForEvaluation
+  putSubmitEvaluation
 };

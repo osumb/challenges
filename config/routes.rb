@@ -22,7 +22,7 @@ Rails.application.routes.draw do
         get :completed
       end
       member do
-        put :submit_for_approval
+        put :submit_evaluation
         put :approve
         put :disapprove
       end

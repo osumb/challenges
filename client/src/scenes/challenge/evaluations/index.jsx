@@ -125,7 +125,7 @@ class Evaluations extends React.Component {
       });
       const challenge = this.state.challenges[challengeId];
       this.saveCommentsAndPlaces(challenge.id)().then(() => {
-        helpers.putSubmitForEvaluation(challenge).then(() => {
+        helpers.putSubmitEvaluation(challenge).then(() => {
           this.setState(prevState => {
             const newState = { ...prevState, requesting: false };
             delete newState.challenges[challengeId];

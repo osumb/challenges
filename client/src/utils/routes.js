@@ -73,12 +73,6 @@ export const mainRoutes = {
     displayName: 'Results',
     links: [
       {
-        name: 'Approve',
-        path: '/challenges/approve',
-        roles: [ADMIN],
-        show: true
-      },
-      {
         name: 'Completed',
         path: '/results/completed',
         roles: [ADMIN, SQUAD_LEADER],
