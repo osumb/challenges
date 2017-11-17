@@ -26,9 +26,9 @@ describe 'Challenge Evaluations', type: :request do
     end
   end
 
-  describe 'PUT /api/challenges/:id/submit_for_approval' do
+  describe 'PUT /api/challenges/:id/submit_evaluation' do
     subject(:request) { put endpoint, headers: authenticated_header(user) }
-    let(:endpoint) { "/api/challenges/#{challenge.id}/submit_for_approval" }
+    let(:endpoint) { "/api/challenges/#{challenge.id}/submit_evaluation" }
 
     context 'when the user can submit for approval' do
       before do
@@ -43,7 +43,7 @@ describe 'Challenge Evaluations', type: :request do
       end
 
       it 'updates the stage' do
-        expect { request }.to change { challenge.reload.stage }.to('needs_approval')
+        expect { request }.to change { challenge.reload.stage }.to('done')
       end
 
       context 'but the update fails' do
@@ -70,6 +70,13 @@ describe 'Challenge Evaluations', type: :request do
         request
         expect(response).to have_http_status(:unauthorized)
       end
+    end
+
+    it 'calls the check other challenges done job' do
+      expect(CheckOtherChallengesDoneJob).to receive(:perform_later)
+        .with(challenge_id: challenge.id)
+
+      request
     end
   end
 end

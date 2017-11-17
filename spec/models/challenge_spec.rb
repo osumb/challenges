@@ -10,8 +10,6 @@ describe Challenge, type: :model do
     context 'normal challenge' do
       subject { build(:normal_challenge) }
 
-      it_behaves_like 'a valid transition to :needs_approval', :normal_challenge
-
       it 'is invalid without 2 users' do
         subject.users = [subject.users.first] # remove a user
         subject.valid?
@@ -53,8 +51,6 @@ describe Challenge, type: :model do
     context 'open spot challenge' do
       subject { build(:open_spot_challenge) }
 
-      it_behaves_like 'a valid transition to :needs_approval', :full_open_spot_challenge
-
       it 'is invalid with no users' do
         subject.users = []
 
@@ -74,8 +70,6 @@ describe Challenge, type: :model do
 
     context 'tri challenge' do
       subject { build(:tri_challenge) }
-
-      it_behaves_like 'a valid transition to :needs_approval', :tri_challenge
 
       it 'is invalid without 3 users' do
         subject.users = []
@@ -306,7 +300,7 @@ describe Challenge, type: :model do
       challenge_doesnt_need_comments.user_challenges.each_with_index do |user_challenge, index|
         user_challenge.update(place: index + 1)
       end
-      challenge_doesnt_need_comments.update(stage: :needs_approval)
+      challenge_doesnt_need_comments.update(stage: :done)
       allow(described_class).to receive(:viewable_by_user).with(user).and_return(described_class.all)
     end
 
