@@ -41,6 +41,7 @@ class ChallengesController < ApplicationController
     challenge = Challenge.find(params[:id])
 
     if challenge.update(stage: :done)
+      CheckOtherChallengesDoneJob.perform_later(challenge_id: challenge.id)
       head :no_content
     else
       render json: { resource: 'challenge', errors: challenge.errors }, status: :conflict

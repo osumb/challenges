@@ -71,5 +71,12 @@ describe 'Challenge Evaluations', type: :request do
         expect(response).to have_http_status(:unauthorized)
       end
     end
+
+    it 'calls the check other challenges done job' do
+      expect(CheckOtherChallengesDoneJob).to receive(:perform_later)
+        .with(challenge_id: challenge.id)
+
+      request
+    end
   end
 end
