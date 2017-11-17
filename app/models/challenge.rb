@@ -1,13 +1,13 @@
 class Challenge < ApplicationRecord
   # enums
-  enum challenge_type: [:open_spot, :normal, :tri], _suffix: true
   enum stage: {
     needs_comments: 0,
     done: 2
   }, _suffix: true
+  enum challenge_type: %i[open_spot normal tri], _suffix: true
 
   # associations
-  has_many :user_challenges
+  has_many :user_challenges, dependent: :destroy
   has_many :users, through: :user_challenges
   belongs_to :spot
   belongs_to :performance

@@ -87,7 +87,7 @@ describe Challenge, type: :model do
 
       it 'can\'t involve all rows' do
         invalid_rows = Spot.rows.reject { |row| Challenge.tri_challenge_rows.include? row.to_sym }
-        invalid_rows.each do |_, row_value|
+        invalid_rows.each_value do |row_value|
           subject.spot = build(:spot, row: row_value)
 
           subject.valid?

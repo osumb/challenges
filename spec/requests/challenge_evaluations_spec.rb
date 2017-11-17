@@ -1,3 +1,4 @@
+# rubocop:disable Lint/AmbiguousBlockAssociation
 require 'rails_helper'
 
 describe 'Challenge Evaluations', type: :request do

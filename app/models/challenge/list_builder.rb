@@ -66,8 +66,8 @@ class Challenge
     end
 
     def normal_challenge_to_list_item(challenge)
-      challenger = challenge.user_challenges.select { |uc| uc.spot != challenge.spot }.first.user
-      challengee = challenge.users.select { |u| u != challenger }.first
+      challenger = challenge.user_challenges.reject { |uc| uc.spot == challenge.spot }.first.user
+      challengee = challenge.users.reject { |u| u == challenger }.first
       ListItem.new(
         challenger_spots: [challenger.current_spot],
         challenger_names: [challenger.full_name],
@@ -89,8 +89,8 @@ class Challenge
 
     # rubocop:disable Performance/CompareWithBlock, Metrics/LineLength
     def tri_challenge_to_list_item(challenge)
-      challengers = challenge.user_challenges.select { |uc| uc.spot != challenge.spot }.sort { |a, b| a.spot <=> b.spot }
-      challengee = challenge.user_challenges.reject { |uc| uc.spot != challenge.spot }.first
+      challengers = challenge.user_challenges.reject { |uc| uc.spot == challenge.spot }.sort { |a, b| a.spot <=> b.spot }
+      challengee = challenge.user_challenges.select { |uc| uc.spot == challenge.spot }.first
       ListItem.new(
         challenger_spots: challengers.map(&:spot),
         challenger_names: challengers.map { |uc| uc.user.first_name },

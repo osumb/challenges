@@ -11,9 +11,9 @@ shared_examples_for 'common row validations' do |row, instrument, parts|
   end
 
   it 'does not allow other instruments' do
-    instruments = User.instruments.select { |i| User.instruments[i] != instrument }
+    instruments = User.instruments.reject { |i| User.instruments[i] == instrument }
 
-    instruments.each do |_key, value|
+    instruments.each_value do |value|
       expect(Spot.valid_instrument_part_for_row(row, value, parts.first)).to be(false)
     end
   end
