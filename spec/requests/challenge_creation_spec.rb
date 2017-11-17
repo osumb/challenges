@@ -1,3 +1,4 @@
+# rubocop:disable Lint/AmbiguousBlockAssociation
 require 'rails_helper'
 
 # The purpose of this test file is to test the controller action for creating (and ONLY creating) challenges

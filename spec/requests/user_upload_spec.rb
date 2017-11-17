@@ -33,10 +33,6 @@ describe 'User Upload', type: :request do
       expect(Files::Uploader).to have_received(:remove_temporary_file)
     end
 
-    it 'emails the users if the loader successfully loads the users' do
-      expect(loader).to have_received(:email_users)
-    end
-
     context 'when the creation is not successful' do
       let(:was_successful_create) { false }
 

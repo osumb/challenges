@@ -1,7 +1,7 @@
 class PerformancesController < ApplicationController
   before_action :authenticate_user
   before_action :ensure_admin!, except: [:challengeable_users]
-  before_action :ensure_performance_not_stale!, only: [:update, :destroy]
+  before_action :ensure_performance_not_stale!, only: %i[update destroy]
   before_action :ensure_performance_is_unused!, only: [:destroy]
 
   def create

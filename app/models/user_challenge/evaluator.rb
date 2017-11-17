@@ -3,7 +3,7 @@ class UserChallenge
     attr_reader :ids_to_comments, :ids_to_places, :user_challenge_ids
 
     def initialize(params:)
-      permitted_params = params.permit(user_challenges: [:id, :comments, :place])
+      permitted_params = params.permit(user_challenges: %i[id comments place])
 
       @user_challenge_ids = permitted_params['user_challenges'].pluck(:id)
       @ids_to_comments = permitted_params['user_challenges'].each_with_object({}) do |val, acc|

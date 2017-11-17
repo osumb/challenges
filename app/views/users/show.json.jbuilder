@@ -7,7 +7,7 @@ json.disciplineActions do
   end
 end
 json.pastChallenges do
-  json.array! @user.challenges.select { |c| c.performance.id != @performance&.id }.each do |c|
+  json.array! @user.challenges.reject { |c| c.performance.id == @performance&.id }.each do |c|
     json.partial! 'challenges/challenge', challenge: c
   end
 end

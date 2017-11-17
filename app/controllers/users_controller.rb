@@ -1,7 +1,7 @@
 class UsersController < ApplicationController
   before_action :authenticate_user, except: [:reset_password]
-  before_action :ensure_admin!, except: [:profile, :reset_password, :update, :upload]
-  before_action :ensure_correct_user!, only: [:profile, :update]
+  before_action :ensure_admin!, except: %i[profile reset_password update upload]
+  before_action :ensure_correct_user!, only: %i[profile update]
   before_action :ensure_password_reset_request_is_valid!, only: [:reset_password]
   before_action :ensure_new_part_exists!, only: [:update]
   before_action :ensure_target_spot_exists!, only: [:switch_spot]
@@ -85,8 +85,7 @@ class UsersController < ApplicationController
     loader.create_users
     Files::Uploader.remove_temporary_file(file)
 
-    if !loader.errors.any?
-      loader.email_users
+    if !loader.errors.any? # rubocop:disable Style/InverseMethods
       head :no_content
     else
       render json: { errors: loader.errors.messages }, status: :unprocessible_entity

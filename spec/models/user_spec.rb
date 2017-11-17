@@ -2,11 +2,11 @@ require 'rails_helper'
 
 shared_examples_for 'instrument and part validations' do |instrument, parts|
   it 'allows the correct parts' do
-    User.parts.select { |_key, value| parts.include? value }.each do |key, _value|
+    User.parts.select { |_key, value| parts.include? value }.each_key do |key|
       user = build(:admin_user, instrument, part: User.parts[key])
       expect(user).to be_valid
     end
-    User.parts.reject { |_key, value| parts.include? value }.each do |key, _value|
+    User.parts.reject { |_key, value| parts.include? value }.each_key do |key|
       user = build(:admin_user, instrument, part: User.parts[key])
       expect(user).not_to be_valid
     end
@@ -49,7 +49,7 @@ describe User, type: :model do
       end
 
       it 'can have any part' do
-        User.parts.each do |key, _value|
+        User.parts.each_key do |key|
           user = build(:admin_user, :any, part: User.parts[key])
           expect(user).to be_valid
         end
