@@ -7,6 +7,7 @@ class PerformancesController < ApplicationController
   def create
     @performance = Performance.new create_params
     if @performance.save
+      QueueNewPerformanceEmailsJob.perform_later(performance_id: @performance.id)
       render :show, status: 201
     else
       render json: { resource: 'performance', errors: @performance.errors }, status: 409

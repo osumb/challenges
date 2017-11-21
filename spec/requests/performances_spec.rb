@@ -26,6 +26,12 @@ describe 'Performances', type: :request do
         expect(response).to have_http_status(201)
       end
 
+      it 'calls the queue new performance emails job' do
+        expect(QueueNewPerformanceEmailsJob).to receive(:perform_later)
+
+        post endpoint, params: performance_params.to_json, headers: authenticated_header(admin)
+      end
+
       context 'but the params are bad' do
         it 'is invalid without a name' do
           performance_params[:performance].except!(:name)
