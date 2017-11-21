@@ -3,6 +3,7 @@ class User < ApplicationRecord
   self.primary_key = 'buck_id'
 
   scope :performers, -> { where(role: %i[member squad_leader]) }
+  scope :alternates, -> { joins(:current_spot).where('file > 12') }
 
   # enums
   enum instrument: %i[any trumpet mellophone trombone baritone percussion sousaphone], _prefix: true
