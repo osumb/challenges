@@ -15,6 +15,17 @@ class UsersController < ApplicationController
     @performance = Performance.next
   end
 
+  def create
+    user = UserService.create(params: params)
+
+    @user = UserService.swap_in_new_user(user: user)
+    if @user.errors.empty?
+      render 'users/show', status: 201
+    else
+      render json: { resource: 'user', errors: @user.errors }, status: 409
+    end
+  end
+
   def update
     @user = User.find params[:id]
     part = User.parts[params[:part]]

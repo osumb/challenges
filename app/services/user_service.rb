@@ -11,6 +11,20 @@ module UserService
       user
     end
 
+    def swap_in_new_user(user:)
+      User.transaction do
+        if user.performer?
+          old_user = User.find_by(current_spot: user.current_spot)
+          deactivate_user(buck_id: old_user.buck_id) unless old_user.nil?
+        end
+        user.save
+      end
+
+      user
+    end
+
+    private
+
     # rubocop:disable Metrics/MethodLength
     def _user_from_params(params)
       user_attributes = _create_params(params).to_h
