@@ -2,20 +2,21 @@
 class User < ApplicationRecord
   self.primary_key = 'buck_id'
 
-  scope :performers, -> { where(role: [:member, :squad_leader]) }
+  scope :performers, -> { where(role: %i[member squad_leader]) }
+  scope :alternates, -> { joins(:current_spot).where('file > 12') }
 
   # enums
-  enum instrument: [:any, :trumpet, :mellophone, :trombone, :baritone, :percussion, :sousaphone], _prefix: true
-  enum part: [:any, :efer, :solo, :first, :second, :flugel, :bass, :snare, :cymbals, :tenor], _suffix: true
-  enum role: [:admin, :director, :member, :squad_leader]
+  enum instrument: %i[any trumpet mellophone trombone baritone percussion sousaphone], _prefix: true
+  enum part: %i[any efer solo first second flugel bass snare cymbals tenor], _suffix: true
+  enum role: %i[admin director member squad_leader]
 
   # associations
   belongs_to :current_spot, class_name: 'Spot', foreign_key: :current_spot_id, optional: true
   belongs_to :original_spot, class_name: 'Spot', foreign_key: :original_spot_id, optional: true
-  has_many :user_challenges, foreign_key: 'user_buck_id'
+  has_many :user_challenges, foreign_key: 'user_buck_id', dependent: :destroy
   has_many :challenges, through: :user_challenges
-  has_many :discipline_actions, foreign_key: 'user_buck_id'
-  has_many :password_change_requests, foreign_key: 'user_buck_id'
+  has_many :discipline_actions, foreign_key: 'user_buck_id', dependent: :destroy
+  has_many :password_reset_requests, foreign_key: 'user_buck_id', dependent: :destroy
 
   # validations
   validates :first_name, presence: true

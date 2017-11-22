@@ -9,7 +9,6 @@ import {
 
 import './App.css';
 import { auth } from './utils';
-import ChallengeApproval from './scenes/challenge/approval';
 import ChallengeEvaluations from './scenes/challenge/evaluations';
 import ChallengeSelect from './scenes/performance/challenge_select';
 import CompletedResults from './scenes/results/completed';
@@ -38,11 +37,11 @@ const PublicRoute = ({ component, ...rest }) =>
       !auth.isAuthenticated()
         ? React.createElement(component, props)
         : <Redirect
-            to={{
-              pathname: '/',
-              state: { from: props.location }
-            }}
-          />}
+          to={{
+            pathname: '/',
+            state: { from: props.location }
+          }}
+        />}
   />;
 
 const PrivateRoute = ({ component, ...rest }) =>
@@ -52,11 +51,11 @@ const PrivateRoute = ({ component, ...rest }) =>
       auth.isAuthenticated() && auth.canUserAccess(rest.path)
         ? React.createElement(component, props)
         : <Redirect
-            to={{
-              pathname: '/login',
-              state: { from: props.location }
-            }}
-          />}
+          to={{
+            pathname: '/login',
+            state: { from: props.location }
+          }}
+        />}
   />;
 
 const App = () =>
@@ -66,11 +65,6 @@ const App = () =>
       <div id="App-container">
         <Switch>
           <PrivateRoute exact path="/" component={Profile} />
-          <PrivateRoute
-            exact
-            path="/challenges/approve"
-            component={ChallengeApproval}
-          />
           <PrivateRoute
             exact
             path="/challenges/evaluate"

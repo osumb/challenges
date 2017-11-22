@@ -1,3 +1,4 @@
+# rubocop:disable Lint/AmbiguousBlockAssociation
 shared_examples_for 'a valid transition to :needs_approval' do |challenge_factory|
   let(:challenge) { create(challenge_factory, stage: :needs_comments) }
 

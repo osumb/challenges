@@ -1,7 +1,7 @@
+# rubocop:disable Rails/Blank, Style/InverseMethods, Metrics/ClassLength
 require 'rubyXL'
 require 'securerandom'
 
-# rubocop:disable Metrics/ClassLength
 class User
   class Loader
     include ActiveModel::Validations

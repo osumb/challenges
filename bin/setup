@@ -1,9 +1,0 @@
-#!/bin/sh
-
-# bin/setup: Builds docker images
-
-# Check for the existence of docker-compose
-hash docker-compose 2>/dev/null || { echo >&2 "Please install docker-compose before trying to start challenges.  Aborting."; exit 1; }
-
-# Start up the docker containers
-docker-compose build

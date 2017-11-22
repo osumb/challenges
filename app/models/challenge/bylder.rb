@@ -27,7 +27,7 @@ class Challenge
       end
 
       def update(challenge:, users:)
-        new_user = users.select { |u| !challenge.users.include? u }.first
+        new_user = users.reject { |u| challenge.users.include? u }.first
         challenge.user_challenges.create(user: new_user, spot: new_user.current_spot)
         challenge
       end

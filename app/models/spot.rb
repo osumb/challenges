@@ -1,11 +1,11 @@
 class Spot < ApplicationRecord
   # enums
-  enum row: [:a, :b, :c, :e, :f, :h, :i, :j, :k, :l, :m, :q, :r, :s, :t, :x]
+  enum row: %i[a b c e f h i j k l m q r s t x]
 
   # associations
-  has_many :challenges
-  has_one :current_user, class_name: 'User', foreign_key: 'current_spot_id'
-  has_one :original_user, class_name: 'User', foreign_key: 'original_spot_id'
+  has_many :challenges, dependent: :destroy
+  has_one :current_user, class_name: 'User', foreign_key: 'current_spot_id', dependent: :destroy
+  has_one :original_user, class_name: 'User', foreign_key: 'original_spot_id', dependent: :destroy
 
   # validations
   validates :row, presence: true

@@ -1,3 +1,4 @@
+# rubocop:disable Lint/AmbiguousBlockAssociation
 require 'rails_helper'
 
 describe 'Performances', type: :request do
@@ -23,6 +24,12 @@ describe 'Performances', type: :request do
         }.to change { Performance.count }.by(1)
 
         expect(response).to have_http_status(201)
+      end
+
+      it 'calls the queue new performance emails job' do
+        expect(QueueNewPerformanceEmailsJob).to receive(:perform_later)
+
+        post endpoint, params: performance_params.to_json, headers: authenticated_header(admin)
       end
 
       context 'but the params are bad' do
@@ -260,6 +267,30 @@ describe 'Performances', type: :request do
         }.to_not change { Performance.count }
 
         expect(response).to have_http_status(403)
+      end
+    end
+  end
+
+  describe 'GET /:id/challenge_list' do
+    let(:performance) { create(:performance) }
+
+    context 'non admin user' do
+      it 'returns a 403' do
+        get "#{endpoint}/#{performance.id}/challenge_list", headers: authenticated_header(user)
+
+        expect(response).to have_http_status(403)
+      end
+    end
+
+    context 'admin user' do
+      before do
+        allow(Rails.env).to receive(:test?).and_return(true)
+      end
+      it 'emails the challenge list' do
+        expect(ChallengeListMailer).to receive(:challenge_list_email).and_call_original
+        get "#{endpoint}/#{performance.id}/challenge_list", headers: authenticated_header(admin)
+
+        expect(response).to have_http_status(204)
       end
     end
   end

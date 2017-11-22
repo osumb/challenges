@@ -1,12 +1,13 @@
 class PerformancesController < ApplicationController
   before_action :authenticate_user
   before_action :ensure_admin!, except: [:challengeable_users]
-  before_action :ensure_performance_not_stale!, only: [:update, :destroy]
+  before_action :ensure_performance_not_stale!, only: %i[update destroy]
   before_action :ensure_performance_is_unused!, only: [:destroy]
 
   def create
     @performance = Performance.new create_params
     if @performance.save
+      QueueNewPerformanceEmailsJob.perform_later(performance_id: @performance.id)
       render :show, status: 201
     else
       render json: { resource: 'performance', errors: @performance.errors }, status: 409
@@ -60,6 +61,10 @@ class PerformancesController < ApplicationController
     end
   end
   # rubocop:enable Metrics/MethodLength
+
+  def challenge_list
+    PerformanceService.email_challenge_list(performance_id: params[:id].to_i)
+  end
 
   private
 

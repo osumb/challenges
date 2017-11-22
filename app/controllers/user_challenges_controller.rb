@@ -4,7 +4,7 @@ class UserChallengesController < ApplicationController
   before_action :ensure_user_exists!, only: [:create]
   before_action :ensure_challenge_not_full!, only: [:create]
   before_action :ensure_correct_user_for_delete!, only: [:destroy]
-  before_action :ensure_user_can_evaluate!, only: [:evaluate_comments, :evaluate_places]
+  before_action :ensure_user_can_evaluate!, only: %i[evaluate_comments evaluate_places]
   before_action :ensure_user_can_update_comments!, only: [:update_comments]
 
   def create
@@ -61,7 +61,7 @@ class UserChallengesController < ApplicationController
   end
 
   def update_comments
-    evaluator = UserChallenge::Evaluator.new(params: params.permit(user_challenges: [:id, :comments]))
+    evaluator = UserChallenge::Evaluator.new(params: params.permit(user_challenges: %i[id comments]))
     result = evaluator.save_comments
 
     if result.success?

@@ -1,5 +1,9 @@
 # frozen_string_literal: true
 Rails.application.routes.draw do
+
+  require 'resque/server'
+  mount Resque::Server, at: '/jobs'
+
   scope :api do
     post 'user_token' => 'user_token#create'
 
@@ -18,7 +22,7 @@ Rails.application.routes.draw do
         get :completed
       end
       member do
-        put :submit_for_approval
+        put :submit_evaluation
         put :approve
         put :disapprove
       end
@@ -40,6 +44,7 @@ Rails.application.routes.draw do
       end
     end
     get 'performances/next', to: 'performances#next'
+    get 'performances/:id/challenge_list', to: 'performances#challenge_list'
   end
 
   get '*path', to: 'index#index'

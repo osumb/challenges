@@ -1,14 +1,11 @@
-# rubocop:disable Metrics/ClassLength
 class ChallengesController < ApplicationController
   before_action :authenticate_user
   before_action :ensure_not_challenging_alternate!, only: [:create]
   before_action :ensure_performance_is_current_and_open!, only: [:create]
-  before_action :ensure_user_can_submit_for_approval!, only: [:submit_for_approval]
+  before_action :ensure_user_can_submit_for_approval!, only: [:submit_evaluation]
   before_action :ensure_user_has_not_already_made_challenge!, only: [:create]
   before_action :ensure_user_is_challenging_correct_instrument_and_part!, only: [:create]
   before_action :ensure_spot_has_not_been_challenged!, only: [:create]
-  before_action :ensure_admin!, only: [:approve]
-  before_action :ensure_challenge_is_needs_approval!, only: [:disapprove]
 
   # rubocop:disable Metrics/MethodLength, Metrics/LineLength
   def create
@@ -28,12 +25,6 @@ class ChallengesController < ApplicationController
   end
   # rubocop:enable Metrics/MethodLength, Metrics/LineLength
 
-  def for_approval
-    @challenges = Challenge.includes(:users, :user_challenges).where(stage: :needs_approval)
-
-    render :index, status: :ok
-  end
-
   def for_evaluation
     @challenges = Challenge.evaluable(current_user)
     @challenges = @challenges.select { |c| c.performance.stale? }
@@ -46,41 +37,11 @@ class ChallengesController < ApplicationController
     render :for_evaluation_or_update, status: :ok
   end
 
-  def submit_for_approval
-    challenge = Challenge.find(params[:id])
-
-    if challenge.update(stage: :needs_approval)
-      head :no_content
-    else
-      render json: { resource: 'challenge', errors: challenge.errors }, status: :conflict
-    end
-  end
-
-  # rubocop:disable Metrics/MethodLength
-  def approve
+  def submit_evaluation
     challenge = Challenge.find(params[:id])
 
     if challenge.update(stage: :done)
-      if challenge.performance.challenges.all?(&:done_stage?)
-        switcher = Challenge::SpotSwitcher.new(challenge.performance)
-        begin
-          switcher.run!
-          SpotSwitchMailer.spot_switch_email.deliver_now
-        rescue StandardError => e
-          SpotSwitchMailer.spot_switch_email(e.messsage).deliver_now
-        end
-      end
-      head :no_content
-    else
-      render json: { resource: 'challenge', errors: challenge.errors }, status: :conflict
-    end
-  end
-  # rubocop:enable Metrics/MethodLength
-
-  def disapprove
-    challenge = Challenge.find(params[:id])
-
-    if challenge.update(stage: :needs_comments)
+      CheckOtherChallengesDoneJob.perform_later(challenge_id: challenge.id)
       head :no_content
     else
       render json: { resource: 'challenge', errors: challenge.errors }, status: :conflict
@@ -90,11 +51,15 @@ class ChallengesController < ApplicationController
   private
 
   def send_challenge_success_email
-    ChallengeSuccessMailer.challenge_success_email(
-      challenge: @challenge,
-      initiated_by: current_user,
-      email: challenger.email
-    ).deliver_now
+    EmailJob.perform_later(
+      klass: 'ChallengeSuccessMailer',
+      method: 'challenge_success_email',
+      args: {
+        challenge_id: @challenge.id,
+        initiator_buck_id: current_user.buck_id,
+        email: challenger.email
+      }
+    )
   end
 
   def ensure_not_challenging_alternate!
@@ -144,13 +109,5 @@ class ChallengesController < ApplicationController
       resource: 'challenge',
       errors: [challenge: 'not authenticated to submit challenge for approval']
     }, status: :unauthorized
-  end
-
-  def ensure_challenge_is_needs_approval!
-    return if Challenge.find(params[:id]).needs_approval_stage?
-    render json: {
-      resource: 'challenge',
-      errors: [challenge: 'can disapprove a challenge not up for approval']
-    }, status: :conflict
   end
 end

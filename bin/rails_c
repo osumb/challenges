@@ -1,9 +1,0 @@
-#!/bin/sh
-set -e
-
-# bin/rails_c: rails console, but for docker
-
-# Check for the existence of docker-compose
-hash docker-compose 2>/dev/null || { echo >&2 "Please install docker-compose before trying to run tests.  Aborting."; exit 1; }
-
-docker-compose run web bin/rails c

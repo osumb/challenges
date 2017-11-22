@@ -33,5 +33,9 @@ module Challenges
     end
 
     config.middleware.use "NewTokenMiddleware"
+
+    config.action_view.logger = nil
+
+    config.active_job.queue_adapter = :resque
   end
 end

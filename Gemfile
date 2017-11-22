@@ -19,6 +19,9 @@ gem 'rubyXL', '~> 3.3'
 gem 'knock', '~> 2.1', '>= 2.1.1'
 # JWT encode/decode lib
 gem 'jwt', '~>1.5.6'
+# Job processing
+gem 'resque', '~>1.27.4'
+gem 'resque-heroku-signals'
 
 gem 'tzinfo-data', '~> 1.2017', '>= 1.2017.2'
 

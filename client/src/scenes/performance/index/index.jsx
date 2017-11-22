@@ -42,8 +42,23 @@ class PerformanceIndex extends React.PureComponent {
       requesting: false,
       updated: false
     };
+    this.handleChallengeListRequest = this.handleChallengeListRequest.bind(
+      this
+    );
     this.handlePerformanceDelete = this.handlePerformanceDelete.bind(this);
     this.handlePerformanceUpdate = this.handlePerformanceUpdate.bind(this);
+  }
+
+  handleChallengeListRequest(performanceId) {
+    this.setState({ requesting: true });
+    helpers
+      .getChallengeList(performanceId)
+      .then(() => {
+        this.setState({ requesting: false });
+      })
+      .catch(() => {
+        this.setState({ requesting: false });
+      });
   }
 
   handlePerformanceDelete({ id }) {
@@ -110,6 +125,7 @@ class PerformanceIndex extends React.PureComponent {
                     buttonText="Update"
                     canDelete
                     onAction={this.handlePerformanceUpdate}
+                    onChallengeListRequest={this.handleChallengeListRequest}
                     onDelete={this.handlePerformanceDelete}
                     performance={performancesById[id]}
                   />
