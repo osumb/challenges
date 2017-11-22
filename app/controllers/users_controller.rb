@@ -76,19 +76,18 @@ class UsersController < ApplicationController
   end
 
   def reset_password
-    prr = PasswordResetRequest.includes(:user).find_by id: params[:password_reset_request_id]
-    user = prr.user
-    password_digest = BCrypt::Password.create params[:password]
-    user.password_digest = password_digest
-    user.revoke_token_date = Time.now.utc
-    prr.used = true
-    if user.save && prr.save
+    password_digest = PasswordService.encrypt_password(password: params[:password])
+    errors = PasswordService.reset_password(
+      password_reset_request_id: params[:password_reset_request_id],
+      password_digest: password_digest
+    )
+
+    if errors.none?
       head 204
     else
-      render json: { resource: 'user', errors: user.errors }, status: 409
+      render json: { resource: 'user', errors: errors }, status: 409
     end
   end
-  # rubocop:enable Metrics/MethodLength
 
   def upload
     file = Files::Uploader.temporarily_save_file(params[:file])
