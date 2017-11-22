@@ -19,7 +19,7 @@ const DropdownContainer = styled.div`
   background-color: white;
   box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 6px, rgba(0, 0, 0, 0.12) 0px 1px 4px;
   z-index: 1;
-  max-height: ${({ show }) => (show ? '175px' : 0)};
+  max-height: ${({ show }) => (show ? '200px' : 0)};
   transition: all 0.25s ease-in-out;
   overflow-y: hidden;
   top: 100%;

@@ -4,6 +4,7 @@ class User < ApplicationRecord
 
   scope :performers, -> { where(role: %i[member squad_leader]) }
   scope :alternates, -> { joins(:current_spot).where('file > 12') }
+  scope :active, -> { where(active: true) }
 
   # enums
   enum instrument: %i[any trumpet mellophone trombone baritone percussion sousaphone], _prefix: true
@@ -34,8 +35,8 @@ class User < ApplicationRecord
   validates :instrument, presence: true
   validates :part, presence: true
   validates :role, presence: true
-  validates :current_spot_id, uniqueness: { allow_blank: true }
-  validates :original_spot_id, uniqueness: { allow_blank: true }
+  validates :current_spot_id, uniqueness: { allow_blank: true }, if: :active
+  validates :original_spot_id, uniqueness: { allow_blank: true }, if: :active
 
   validate :performing_member_has_spot, on: :create
   validate :admin_does_not_have_spot
@@ -75,6 +76,10 @@ class User < ApplicationRecord
 
   def alternate?
     current_spot.file > 12
+  end
+
+  def performer?
+    squad_leader? || member?
   end
 
   def can_challenge_for_performance?(performance)

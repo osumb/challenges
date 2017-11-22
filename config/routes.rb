@@ -15,6 +15,8 @@ Rails.application.routes.draw do
     post 'users/:buck_id/reset_password', to: 'users#reset_password', constraints: { buck_id: /[a-zA-Z]+(?:-[a-zA-Z]+)?\.[0-9]+/ }
     post 'users/upload', to: 'users#upload'
 
+    get 'spots/find', to: 'spots#find'
+
     resources :challenges, only: [:create] do
       collection do
         get :for_approval

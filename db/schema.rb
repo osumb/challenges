@@ -89,6 +89,7 @@ ActiveRecord::Schema.define(version: 20171114012621) do
     t.datetime "updated_at",                                 null: false
     t.datetime "revoke_token_date"
     t.integer  "original_spot_id"
+    t.boolean  "active",            default: true,           null: false
     t.index ["buck_id"], name: "index_users_on_buck_id", using: :btree
     t.index ["current_spot_id"], name: "index_users_on_current_spot_id", using: :btree
     t.index ["email"], name: "index_users_on_email", using: :btree
