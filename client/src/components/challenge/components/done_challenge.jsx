@@ -16,7 +16,9 @@ const DoneChallenge = ({
   const targetUser = users.filter(
     ({ buckId }) => buckId === targetUserBuckId
   )[0];
-  const targetUserChallenge = userChallenges.find(({ userBuckId }) => userBuckId === targetUserBuckId);
+  const targetUserChallenge = userChallenges.find(
+    ({ userBuckId }) => userBuckId === targetUserBuckId
+  );
   const { place } = targetUserChallenge;
 
   return (

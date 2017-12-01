@@ -37,11 +37,11 @@ const PublicRoute = ({ component, ...rest }) =>
       !auth.isAuthenticated()
         ? React.createElement(component, props)
         : <Redirect
-          to={{
-            pathname: '/',
-            state: { from: props.location }
-          }}
-        />}
+            to={{
+              pathname: '/',
+              state: { from: props.location }
+            }}
+          />}
   />;
 
 const PrivateRoute = ({ component, ...rest }) =>
@@ -51,11 +51,11 @@ const PrivateRoute = ({ component, ...rest }) =>
       auth.isAuthenticated() && auth.canUserAccess(rest.path)
         ? React.createElement(component, props)
         : <Redirect
-          to={{
-            pathname: '/login',
-            state: { from: props.location }
-          }}
-        />}
+            to={{
+              pathname: '/login',
+              state: { from: props.location }
+            }}
+          />}
   />;
 
 const App = () =>
