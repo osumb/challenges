@@ -32,7 +32,7 @@ class ChallengesController < ApplicationController
   end
 
   def completed
-    @challenges = Challenge.completed(current_user)
+    @challenges = Challenge.completed(current_user).order('spots.row, spots.file')
 
     render :for_evaluation_or_update, status: :ok
   end
