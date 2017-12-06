@@ -6,7 +6,7 @@ class User
   class Loader
     include ActiveModel::Validations
 
-    attr_reader :users_and_passwords, :worksheet
+    attr_reader :users, :worksheet
 
     FULL_NAME = 0
     INSTRUMENT = 1
@@ -27,7 +27,7 @@ class User
     }.freeze
 
     def initialize(file:)
-      @users_and_passwords = []
+      @users = []
       @worksheet = RubyXL::Parser.parse(file)[0]
     end
 
@@ -45,11 +45,21 @@ class User
 
     def email_users
       return false if errors.any?
-      users_and_passwords.each { |(user, password)| UserPasswordMailer.user_password_email(user, password).deliver_now }
+      users.each { |user| send_user_creation_email(user) }
       true
     end
 
     private
+
+    def send_user_creation_email(user)
+      PasswordResetRequest.create(user: user).tap do |password_reset_request|
+        if password_reset_request.valid?
+          PasswordResetMailer.user_creation_email(user, password_reset_request.id).deliver_now
+        else
+          Rails.logger.info "USER_LOADER: Error while creating password reset request for #{user.buck_id}"
+        end
+      end
+    end
 
     def reset_database
       Challenge.destroy_all
@@ -76,7 +86,7 @@ class User
       return if user.admin? && User.exists?(buck_id: user.buck_id)
       user.save
       user.errors.full_messages.map(&:downcase).each { |e| errors.add(user.buck_id, e) }
-      users_and_passwords << [user, password]
+      users << user
     end
 
     def user_attrs_from_row(row)

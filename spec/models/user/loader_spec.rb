@@ -62,16 +62,36 @@ describe User::Loader, type: :model do
     let(:user) { create(:user, password: password, password_confirmation: password) }
 
     before do
-      allow(loader).to receive(:users_and_passwords).and_return([[user, password]])
-      allow(UserPasswordMailer).to receive(:user_password_email).and_return(nil)
+      allow(loader).to receive(:users).and_return([user])
+      allow(PasswordResetMailer).to receive(:user_creation_email).and_return(nil)
       allow(RubyXL::Parser).to receive(:parse).with(filename).and_return(workbook)
-      allow(UserPasswordMailer).to receive(:user_password_email).and_return(mail)
+      allow(PasswordResetMailer).to receive(:user_creation_email).and_return(mail)
+      allow(PasswordResetRequest).to receive(:create).and_call_original
     end
 
     context 'when there are no errors' do
+      it 'creates password reset requests for the users' do
+        loader.email_users
+        expect(PasswordResetRequest).to have_received(:create)
+      end
+
       it 'email the users' do
         loader.email_users
-        expect(UserPasswordMailer).to have_received(:user_password_email)
+        expect(PasswordResetMailer).to have_received(:user_creation_email)
+      end
+    end
+
+    context 'when the password reset request has errors' do
+      let(:bad_reset_request) { instance_double(PasswordResetRequest, valid?: false) }
+
+      before do
+        allow(PasswordResetRequest).to receive(:create).and_return(bad_reset_request)
+        allow(Rails.logger).to receive(:info).and_call_original
+      end
+
+      it 'logs that there was an error' do
+        loader.email_users
+        expect(Rails.logger).to have_received(:info).with(include(user.buck_id))
       end
     end
 
@@ -84,7 +104,7 @@ describe User::Loader, type: :model do
 
       it 'does not email the users' do
         loader.email_users
-        expect(UserPasswordMailer).not_to have_received(:user_password_email)
+        expect(PasswordResetMailer).not_to have_received(:user_creation_email)
       end
     end
   end
