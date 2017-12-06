@@ -2,23 +2,25 @@ require 'rails_helper'
 
 describe 'User Creation', type: :request do
   subject(:request) { post endpoint, params: params.to_json, headers: authenticated_header(user) }
-  let(:user) { create(:admin_user) }
+  let!(:user) { create(:admin_user) }
 
   describe 'POST /api/users/create' do
     let(:endpoint) { '/api/users/create' }
     let!(:params) do
       {
-        first_name: 'First',
-        last_name: 'Last',
-        buck_id: 'last.1',
-        email: 'last.1@osu.edu',
-        role: 'squad_leader',
-        instrument: 'trumpet',
-        part: 'solo',
-        spot: { row: :a, file: 2 }
+        user: {
+          first_name: 'First',
+          last_name: 'Last',
+          buck_id: 'last.1',
+          email: 'last.1@osu.edu',
+          role: 'squad_leader',
+          instrument: 'trumpet',
+          part: 'solo',
+          spot: { row: 'A', file: 2 }
+        }
       }
     end
-    let!(:spot) { create(:spot, row: params[:spot][:row], file: params[:spot][:file]) }
+    let!(:spot) { create(:spot, row: params[:user][:spot][:row].to_s.downcase.to_sym, file: params[:user][:spot][:file]) }
     let!(:existing_user) { create(:user, :member, current_spot: spot, original_spot: spot) }
 
     it 'creates a new user' do
@@ -29,6 +31,12 @@ describe 'User Creation', type: :request do
 
     it 'swaps in a new user' do
       expect(UserService).to receive(:create).and_call_original
+
+      request
+    end
+
+    it 'creates a password reset request and sends the user creation email' do
+      expect(PasswordResetRequestService).to receive(:send_for_new_user).and_return(nil)
 
       request
     end

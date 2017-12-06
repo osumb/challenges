@@ -20,6 +20,7 @@ class UsersController < ApplicationController
 
     @user = UserService.swap_in_new_user(user: user)
     if @user.errors.empty?
+      PasswordResetRequestService.send_for_new_user(user: user)
       render 'users/show', status: 201
     else
       render json: { resource: 'user', errors: @user.errors }, status: 409
