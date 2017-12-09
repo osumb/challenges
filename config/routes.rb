@@ -14,6 +14,9 @@ Rails.application.routes.draw do
     get 'users/profile/:buck_id', to: 'users#profile', constraints: { buck_id: /[a-zA-Z]+(?:-[a-zA-Z]+)?\.[0-9]+/ }
     post 'users/:buck_id/reset_password', to: 'users#reset_password', constraints: { buck_id: /[a-zA-Z]+(?:-[a-zA-Z]+)?\.[0-9]+/ }
     post 'users/upload', to: 'users#upload'
+    post 'users/create', to: 'users#create'
+
+    get 'spots/find', to: 'spots#find'
 
     resources :challenges, only: [:create] do
       collection do

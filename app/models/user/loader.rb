@@ -52,13 +52,7 @@ class User
     private
 
     def send_user_creation_email(user)
-      PasswordResetRequest.create(user: user).tap do |password_reset_request|
-        if password_reset_request.valid?
-          PasswordResetMailer.user_creation_email(user, password_reset_request.id).deliver_now
-        else
-          Rails.logger.info "USER_LOADER: Error while creating password reset request for #{user.buck_id}"
-        end
-      end
+      PasswordResetRequestService.send_for_new_user(user: user)
     end
 
     def reset_database

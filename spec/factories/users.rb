@@ -17,6 +17,7 @@ FactoryGirl.define do
     original_spot do
       current_spot
     end
+    active true
 
     trait :director do
       role User.roles[:director]
@@ -39,6 +40,14 @@ FactoryGirl.define do
 
     trait :alternate do
       association :current_spot, factory: :spot, file: 13
+    end
+
+    trait :active do
+      active true
+    end
+
+    trait :inactive do
+      active false
     end
 
     User.instruments.each do |name, value|
