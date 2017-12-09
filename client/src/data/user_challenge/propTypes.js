@@ -7,6 +7,7 @@ const propTypes = {
   challengeSpot: PropTypes.shape(spotProps).isRequired,
   comments: PropTypes.string,
   id: PropTypes.number.isRequired,
+  place: PropTypes.number.isRequired,
   spot: PropTypes.shape(spotProps).isRequired,
   userBuckId: PropTypes.string.isRequired
 };
