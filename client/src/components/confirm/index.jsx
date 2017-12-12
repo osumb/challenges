@@ -48,6 +48,7 @@ export default class Confirm extends React.PureComponent {
   render() {
     return (
       <Modal
+        ariaHideApp={false}
         contentLabel="Confirm"
         isOpen={this.state.modalOpen}
         onRequestClose={this.handleCloseModal}

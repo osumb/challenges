@@ -36,21 +36,24 @@ export default class ErrorBanner extends Component {
       errorMessage: null
     };
     this.handleCloseRequest = this.handleCloseRequest.bind(this);
+    this.handleErrorEmission = this.handleErrorEmission.bind(this);
   }
 
   componentDidMount() {
-    errorEmitter.on('error', errorMessage => {
-      this.setState({ errorMessage });
-    });
+    errorEmitter.on('error', this.handleErrorEmission);
   }
 
   componentWillUnmount() {
-    errorEmitter.removeListener('error');
+    errorEmitter.removeListener('error', this.handleErrorEmission);
   }
 
   handleCloseRequest() {
     this.setState({ errorMessage: null });
     errorEmitter.close();
+  }
+
+  handleErrorEmission(errorMessage) {
+    this.setState({ errorMessage });
   }
 
   render() {
