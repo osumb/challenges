@@ -6,6 +6,7 @@ export default class TextField extends React.PureComponent {
   static get propTypes() {
     return {
       autoFocus: PropTypes.bool,
+      disabled: PropTypes.bool,
       labelStyle: PropTypes.object,
       hint: PropTypes.string,
       name: PropTypes.string,
@@ -13,12 +14,13 @@ export default class TextField extends React.PureComponent {
       onKeyUp: PropTypes.func,
       placeholder: PropTypes.string,
       type: PropTypes.string,
-      value: PropTypes.string
+      value: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
     };
   }
 
   static get defaultProps() {
     return {
+      disabled: false,
       name: 'text',
       type: 'text'
     };
@@ -58,6 +60,7 @@ export default class TextField extends React.PureComponent {
         <input
           className="mdc-textfield__input"
           autoFocus={this.props.autoFocus}
+          disabled={this.props.disabled}
           type={this.props.type}
           name={this.props.name}
           onChange={this.handleTextChange}
