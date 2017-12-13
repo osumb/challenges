@@ -41,6 +41,18 @@ describe 'User Creation', type: :request do
       request
     end
 
+    context 'failed request' do
+      before do
+        params[:user][:email] = nil
+      end
+
+      it 'doesn\'t deactivate the old user if the new user fails to get created' do
+        expect do
+          request
+        end.to change { User.where(active: false).count }.by 0
+      end
+    end
+
     context 'auth' do
       let(:user) { create(:user, :alternate) }
 
