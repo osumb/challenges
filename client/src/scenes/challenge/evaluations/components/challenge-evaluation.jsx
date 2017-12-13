@@ -8,6 +8,7 @@ import Confirm from '../../../../components/confirm';
 import { FlexChild, FlexContainer } from '../../../../components/flex';
 import { propTypes } from '../../../../data/challenge_evaluations';
 import { screenSizes } from '../../../../utils';
+import Typography from '../../../../components/typography';
 import UserChallengeEvaluation from './user-challenge-evaluation';
 
 class ChallengeEvaluation extends React.Component {
@@ -59,10 +60,13 @@ class ChallengeEvaluation extends React.Component {
     if (this.state.confirming) {
       return (
         <Confirm
-          message="Are you sure you want to submit this challenge for evaluation?"
           onCancel={this.handleSubmissionCancel}
           onConfirm={this.handleSubmissionConfirm}
-        />
+        >
+          <Typography category="title">
+            Are you sure you want to submit this challenge for evaluation?
+          </Typography>
+        </Confirm>
       );
     }
 
