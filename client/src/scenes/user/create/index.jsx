@@ -58,15 +58,17 @@ const STAGE_COMPONENT = {
   [EMAIL_STAGE_PATH]: EmailStage,
   [ROLE_SPOT_STAGE_PATH]: RoleSpotStage,
   [INSTRUMENT_STAGE_PATH]: InstrumentStage,
-  [CONFIRM_STAGE_PATH]: ConfirmStage,
+  [CONFIRM_STAGE_PATH]: ConfirmStage
 };
 
 const stageRouteFromRoute = route => {
   const splitArr = route.split('/');
   return splitArr[splitArr.length - 1];
 };
-const shouldRenderBack = route => stageRouteFromRoute(route) !== NAME_STAGE_PATH;
-const shouldRenderNext = (state, route) => state.navigateNext && stageRouteFromRoute(route) !== CONFIRM_STAGE_PATH;
+const shouldRenderBack = route =>
+  stageRouteFromRoute(route) !== NAME_STAGE_PATH;
+const shouldRenderNext = (state, route) =>
+  state.navigateNext && stageRouteFromRoute(route) !== CONFIRM_STAGE_PATH;
 
 const initialState = {
   user: {
@@ -158,9 +160,7 @@ class CreateUser extends React.Component {
     const nextStageRoute = NEXT_ROUTE[stageRoute];
 
     if (currentPath === basePath) {
-      return (
-        <Redirect to={`${basePath}/${NAME_STAGE_PATH}`} />
-      );
+      return <Redirect to={`${basePath}/${NAME_STAGE_PATH}`} />;
     }
 
     return (
@@ -173,7 +173,9 @@ class CreateUser extends React.Component {
           }}
         >
           <StageContainer>
-            <Typography category="display" number={2}>Create New User</Typography>
+            <Typography category="display" number={2}>
+              Create New User
+            </Typography>
             <Route
               path={`${basePath}/${NAME_STAGE_PATH}`}
               render={this.renderStage}
@@ -196,10 +198,24 @@ class CreateUser extends React.Component {
             />
             <ButtonContainer>
               <Button primary disabled={!canNavigateBack}>
-                <Link to={`${basePath}/${previousStageRoute}`} style={{ ...linkStyle }}>Back</Link>
+                <Link
+                  to={`${basePath}/${previousStageRoute}`}
+                  style={{ ...linkStyle }}
+                >
+                  Back
+                </Link>
               </Button>
-              <Button primary disabled={!canNavigateNext} style={{ marginLeft: '4px' }}>
-                <Link to={`${basePath}/${nextStageRoute}`} style={{ ...linkStyle }}>Next</Link>
+              <Button
+                primary
+                disabled={!canNavigateNext}
+                style={{ marginLeft: '4px' }}
+              >
+                <Link
+                  to={`${basePath}/${nextStageRoute}`}
+                  style={{ ...linkStyle }}
+                >
+                  Next
+                </Link>
               </Button>
             </ButtonContainer>
           </StageContainer>
@@ -210,4 +226,3 @@ class CreateUser extends React.Component {
 }
 
 export default withRouter(CreateUser);
-

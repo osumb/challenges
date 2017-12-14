@@ -26,7 +26,8 @@ const FieldContainer = styled.div`
   align-items: center;
 `;
 
-const isFormComplete = (role, spot) => Boolean(role) && Boolean(spot.row) && spot.file !== null;
+const isFormComplete = (role, spot) =>
+  Boolean(role) && Boolean(spot.row) && spot.file !== null;
 const roleKeys = Object.keys(userHelpers.roles);
 const roleValues = roleKeys.map(key => userHelpers.roles[key]);
 const rowKeys = Object.keys(spotHelpers.rows);
@@ -108,22 +109,20 @@ export default class RoleSpotStage extends React.Component {
         <Typography category="title">What is their role and spot?</Typography>
         <FieldsContainer>
           <FieldContainer>
-            <Select
-              onChange={this.handleRoleChange}
-            > 
+            <Select onChange={this.handleRoleChange}>
               {roleValues.map(key => <option key={key}>{key}</option>)}
             </Select>
           </FieldContainer>
           <FieldContainer>
             <Select
               disabled={disableSpotSelect}
-              onChange={this.handleSpotChange} 
+              onChange={this.handleSpotChange}
             >
               {rowValues.map(key => <option key={key}>{key}</option>)}
             </Select>
             <Textfield
               disabled={disableSpotSelect}
-              type="number" 
+              type="number"
               labelStyle={{
                 height: '24px',
                 marginLeft: '16px',
@@ -138,4 +137,3 @@ export default class RoleSpotStage extends React.Component {
     );
   }
 }
-

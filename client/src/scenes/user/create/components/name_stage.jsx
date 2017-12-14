@@ -41,7 +41,10 @@ export default class NameStage extends React.Component {
   }
 
   componentDidMount() {
-    if (Boolean(this.props.user.firstName) && Boolean(this.props.user.lastName)) {
+    if (
+      Boolean(this.props.user.firstName) &&
+      Boolean(this.props.user.lastName)
+    ) {
       this.props.onFormComplete();
     } else {
       this.props.onFormIncomplete();
@@ -65,8 +68,20 @@ export default class NameStage extends React.Component {
       <Container>
         <Typography category="title">What is their name?</Typography>
         <TextfieldContainer>
-          <Textfield labelStyle={textfieldStyle} hint="First Name" name="firstName" value={this.state.firstName} onChange={this.handleTextChange} />
-          <Textfield labelStyle={textfieldStyle} hint="Last Name" name="lastName" value={this.state.lastName} onChange={this.handleTextChange} />
+          <Textfield
+            labelStyle={textfieldStyle}
+            hint="First Name"
+            name="firstName"
+            value={this.state.firstName}
+            onChange={this.handleTextChange}
+          />
+          <Textfield
+            labelStyle={textfieldStyle}
+            hint="Last Name"
+            name="lastName"
+            value={this.state.lastName}
+            onChange={this.handleTextChange}
+          />
         </TextfieldContainer>
       </Container>
     );

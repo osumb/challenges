@@ -25,10 +25,13 @@ const FieldContainer = styled.div`
   align-items: center;
 `;
 
-const isFormComplete = (instrument, part) => Boolean(instrument) && Boolean(part);
+const isFormComplete = (instrument, part) =>
+  Boolean(instrument) && Boolean(part);
 const instrumentKeys = Object.keys(userHelpers.instruments);
 const partKeys = Object.keys(userHelpers.parts);
-const instrumentValues = instrumentKeys.map(key => userHelpers.instruments[key]);
+const instrumentValues = instrumentKeys.map(
+  key => userHelpers.instruments[key]
+);
 const partValues = partKeys.map(key => userHelpers.parts[key]);
 
 export default class InstrumentStage extends React.Component {
@@ -86,19 +89,17 @@ export default class InstrumentStage extends React.Component {
   render() {
     return (
       <Container>
-        <Typography category="title">What is their instrument and part?</Typography>
+        <Typography category="title">
+          What is their instrument and part?
+        </Typography>
         <FieldsContainer>
           <FieldContainer>
-            <Select
-              onChange={this.handleInstrumentChange}
-            > 
+            <Select onChange={this.handleInstrumentChange}>
               {instrumentValues.map(key => <option key={key}>{key}</option>)}
             </Select>
           </FieldContainer>
           <FieldContainer>
-            <Select
-              onChange={this.handlePartChange} 
-            >
+            <Select onChange={this.handlePartChange}>
               {partValues.map(key => <option key={key}>{key}</option>)}
             </Select>
           </FieldContainer>
@@ -107,5 +108,3 @@ export default class InstrumentStage extends React.Component {
     );
   }
 }
-
-

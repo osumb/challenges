@@ -48,54 +48,6 @@ const compareSpots = (a, b) => {
     return a.row > b.row ? 1 : -1;
   }
 };
-const rowInstrumentMap = () => ({
-  A: userHelpers.instruments.TRUMPET,
-  B: userHelpers.instruments.TRUMPET,
-  C: userHelpers.instruments.TRUMPET,
-  E: userHelpers.instruments.MELLOPHONE,
-  F: userHelpers.instruments.TROMBONE,
-  H: userHelpers.instruments.BARITONE,
-  I: userHelpers.instruments.PERCUSSION,
-  J: userHelpers.instruments.PERCUSSION,
-  K: userHelpers.instruments.SOUSAPHONE,
-  L: userHelpers.instruments.SOUSAPHONE,
-  M: userHelpers.instruments.BARITONE,
-  Q: userHelpers.instruments.TROMBONE,
-  R: userHelpers.instruments.MELLOPHONE,
-  S: userHelpers.instruments.TRUMPET,
-  T: userHelpers.instruments.TRUMPET,
-  X: userHelpers.instruments.TRUMPET
-});
-const rowPartsMap = () => ({
-  A: [userHelpers.parts.EFER, userHelpers.parts.SOLO],
-  B: [userHelpers.parts.FIRST, userHelpers.parts.SECOND],
-  C: [userHelpers.parts.FLUGEL],
-  E: [userHelpers.parts.FIRST, userHelpers.parts.SECOND],
-  F: [
-    userHelpers.parts.FIRST,
-    userHelpers.parts.SECOND,
-    userHelpers.parts.BASS
-  ],
-  H: [userHelpers.parts.FIRST],
-  I: [userHelpers.parts.SNARE],
-  J: [
-    userHelpers.parts.CYMBALS,
-    userHelpers.parts.TENOR,
-    userHelpers.parts.BASS
-  ],
-  K: [userHelpers.parts.FIRST],
-  L: [userHelpers.parts.FIRST],
-  M: [userHelpers.parts.FIRST],
-  Q: [
-    userHelpers.parts.FIRST,
-    userHelpers.parts.SECOND,
-    userHelpers.parts.BASS
-  ],
-  R: [userHelpers.parts.FIRST, userHelpers.parts.SECOND],
-  S: [userHelpers.parts.SECOND, userHelpers.parts.FLUGEL],
-  T: [userHelpers.parts.FIRST, userHelpers.parts.SECOND],
-  X: [userHelpers.parts.EFER, userHelpers.parts.SOLO]
-});
 const spotFromString = spot => {
   const [row, file] = spot.match(stringSplitRegex);
 
@@ -175,8 +127,6 @@ export default {
   compareSpots,
   find,
   rows,
-  rowInstrumentMap,
-  rowPartsMap,
   rowFileMax,
   spotFromString,
   toString,

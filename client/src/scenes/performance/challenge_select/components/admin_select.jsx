@@ -137,12 +137,12 @@ export default class AdminSelect extends React.PureComponent {
           {usersWhoCanChallenge === null
             ? <Typography category="headline">
                 Loading users who are elligible to challenge...
-            </Typography>
+              </Typography>
             : <UsersCanChallenge
-              onSelect={this.handleUserSelect}
-              selectedUserBuckId={selectedUserBuckId}
-              users={usersWhoCanChallenge}
-            />}
+                onSelect={this.handleUserSelect}
+                selectedUserBuckId={selectedUserBuckId}
+                users={usersWhoCanChallenge}
+              />}
         </FlexChild>
         {usersWhoCanChallenge !== null &&
           usersWhoCanChallenge.length > 0 &&

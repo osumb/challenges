@@ -61,7 +61,19 @@ const create = ({
   part,
   spot,
   role
-}) => api.post('/users/create', { user: { first_name, last_name, buck_id, email, instrument, part, spot, role } });
+}) =>
+  api.post('/users/create', {
+    user: {
+      first_name,
+      last_name,
+      buck_id,
+      email,
+      instrument,
+      part,
+      spot,
+      role
+    }
+  });
 const getAll = () => api.get('/users');
 const getByBuckId = buckId =>
   api.get(`/users/${buckId || auth.getUser().buckId}`);

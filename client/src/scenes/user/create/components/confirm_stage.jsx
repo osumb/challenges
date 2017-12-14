@@ -2,8 +2,14 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
-import { helpers as spotHelpers, propTypes as spotProps } from '../../../../data/spot';
-import { helpers as userHelpers, propTypes as userProps } from '../../../../data/user';
+import {
+  helpers as spotHelpers,
+  propTypes as spotProps
+} from '../../../../data/spot';
+import {
+  helpers as userHelpers,
+  propTypes as userProps
+} from '../../../../data/user';
 import { errorEmitter } from '../../../../utils';
 import CircularProgress from '../../../../components/circular_progress';
 import Confirm from '../../../../components/confirm';
@@ -45,8 +51,8 @@ export default class ConfirmStage extends React.Component {
       errorEmitter.dispatch('Whoops! Please make sure this user has a spot');
       setTimeout(() => this.setState({ loading: false }), 0);
     } else if (userHelpers.isPerformerRole(role)) {
-      spotHelpers.find(spot).then((s) => {
-        this.setState({ 
+      spotHelpers.find(spot).then(s => {
+        this.setState({
           loading: false,
           userToReplace: s.currentUser
         });
@@ -100,14 +106,13 @@ export default class ConfirmStage extends React.Component {
           {userHelpers.isPerformerRole(user.role) &&
             <Typography category="subheading" number={2}>
               {user.firstName}'s spot will be: {spotHelpers.toString(user.spot)}
-            </Typography>
-          }
+            </Typography>}
           {userToReplace !== null &&
             <Typography category="subheading" number={2}>
-              Doing so will deactivate {userToReplace.firstName} {userToReplace.lastName}<br />
+              Doing so will deactivate {userToReplace.firstName}{' '}
+              {userToReplace.lastName}<br />
               who is currently {spotHelpers.toString(userToReplace.currentSpot)}
-            </Typography>
-          }
+            </Typography>}
         </div>
       </Confirm>
     );

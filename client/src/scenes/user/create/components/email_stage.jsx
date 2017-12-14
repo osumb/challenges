@@ -66,10 +66,24 @@ export default class EmailStage extends React.Component {
   render() {
     return (
       <Container>
-        <Typography category="title">What is their dot number and email?</Typography>
+        <Typography category="title">
+          What is their dot number and email?
+        </Typography>
         <TextfieldContainer>
-          <Textfield labelStyle={textfieldStyle} hint="Name.#" name="buckId" value={this.state.buckId} onChange={this.handleTextChange} />
-          <Textfield labelStyle={textfieldStyle} hint="Email" name="email" value={this.state.email} onChange={this.handleTextChange} />
+          <Textfield
+            labelStyle={textfieldStyle}
+            hint="Name.#"
+            name="buckId"
+            value={this.state.buckId}
+            onChange={this.handleTextChange}
+          />
+          <Textfield
+            labelStyle={textfieldStyle}
+            hint="Email"
+            name="email"
+            value={this.state.email}
+            onChange={this.handleTextChange}
+          />
         </TextfieldContainer>
       </Container>
     );
