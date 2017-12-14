@@ -1,3 +1,4 @@
+# rubocop:disable Metrics/ClassLength
 class UsersController < ApplicationController
   before_action :authenticate_user, except: [:reset_password]
   before_action :ensure_admin!, except: %i[profile reset_password update upload]
