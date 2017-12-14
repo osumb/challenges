@@ -2,7 +2,7 @@
 class User < ApplicationRecord
   self.primary_key = 'buck_id'
 
-  scope :performers, -> { where(role: %i[member squad_leader]) }
+  scope :performers, -> { where(role: %i[member squad_leader], active: true) }
   scope :alternates, -> { joins(:current_spot).where('file > 12') }
   scope :active, -> { where(active: true) }
 

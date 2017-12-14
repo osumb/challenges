@@ -1,5 +1,6 @@
 /* eslint-disable complexity, yoda */
 import { helpers as userHelpers } from '../user';
+import { api } from '../../utils';
 
 const stringSplitRegex = /[a-zA-Z]+|[0-9]+/g;
 const rows = {
@@ -20,6 +21,24 @@ const rows = {
   T: 'T',
   X: 'X'
 };
+const rowFileMax = {
+  A: 14,
+  B: 14,
+  C: 14,
+  E: 14,
+  F: 14,
+  H: 14,
+  I: 14,
+  J: 18,
+  K: 14,
+  L: 14,
+  M: 14,
+  Q: 14,
+  R: 14,
+  S: 14,
+  T: 14,
+  X: 14
+};
 const compareSpots = (a, b) => {
   if (typeof a === 'string')
     return compareSpots(spotFromString(a), spotFromString(b));
@@ -34,6 +53,7 @@ const spotFromString = spot => {
 
   return { row, file };
 };
+const toString = ({ row, file }) => `${row}${file}`;
 const validInstrumentForRow = (row, instrument) => {
   if (
     row === rows.A ||
@@ -101,11 +121,15 @@ const validSpot = ({ row, file }) => {
   if (row === rows.I || row === rows.J) return 1 <= numFile && numFile <= 18;
   return 1 <= numFile && numFile <= 14 && Boolean(rows[row]);
 };
+const find = ({ row, file }) => api.get(`/spots/find?query=${row}${file}`);
 
 export default {
   compareSpots,
+  find,
   rows,
+  rowFileMax,
   spotFromString,
+  toString,
   validPartForRow,
   validInstrumentForRow,
   validSpot

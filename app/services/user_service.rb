@@ -23,6 +23,13 @@ module UserService
       user
     end
 
+    def user_only_has_spot_errors(user:)
+      return true if user.valid?
+      error_messages = user.errors.messages
+      return false if error_messages.keys.length > 2
+      error_messages.keys.include?(:current_spot_id) && error_messages.keys.include?(:original_spot_id)
+    end
+
     private
 
     # rubocop:disable Metrics/MethodLength
@@ -38,6 +45,11 @@ module UserService
         user_attributes[:current_spot] = spot
         user_attributes[:original_spot] = spot
       end
+
+      user_attributes[:role] = user_attributes[:role]&.downcase&.to_sym
+      user_attributes[:instrument] = user_attributes[:instrument]&.downcase&.to_sym
+      user_attributes[:part] = user_attributes[:part]&.downcase&.to_sym
+
       User.new(user_attributes)
     end
     # rubocop:enable Metrics/MethodLength

@@ -1,3 +1,4 @@
+# rubocop:disable Metrics/ClassLength
 class UsersController < ApplicationController
   before_action :authenticate_user, except: [:reset_password]
   before_action :ensure_admin!, except: %i[profile reset_password update upload]
@@ -5,6 +6,7 @@ class UsersController < ApplicationController
   before_action :ensure_password_reset_request_is_valid!, only: [:reset_password]
   before_action :ensure_new_part_exists!, only: [:update]
   before_action :ensure_target_spot_exists!, only: [:switch_spot]
+  before_action :ensure_new_user_does_not_exist!, only: [:create]
 
   def index
     @users = User.performers.active.includes(:current_spot, :original_spot).sort_by(&:current_spot)
@@ -16,12 +18,14 @@ class UsersController < ApplicationController
   end
 
   def create
-    user = UserService.create(params: params)
+    @user = UserService.create(params: params)
+    should_swap_in_new_user =
+      (@user.squad_leader? || @user.member?) && UserService.user_only_has_spot_errors(user: @user)
 
-    @user = UserService.swap_in_new_user(user: user)
-    if @user.errors.empty?
-      PasswordResetRequestService.send_for_new_user(user: user)
-      render 'users/show', status: 201
+    @user = UserService.swap_in_new_user(user: @user) if should_swap_in_new_user
+    if @user.valid?
+      PasswordResetRequestService.send_for_new_user(user: @user)
+      render 'users/new', status: 201
     else
       render json: { resource: 'user', errors: @user.errors }, status: 409
     end
@@ -144,4 +148,14 @@ class UsersController < ApplicationController
     head 409
   end
   # rubocop:enable Metrics/LineLength
+
+  def ensure_new_user_does_not_exist!
+    buck_id = params[:user][:buck_id]
+    Rails.logger.info buck_id.inspect
+    return if User.where(buck_id: buck_id).count.zero?
+    render json: {
+      resource: 'user',
+      errors: [user: "id: #{buck_id} is already taken"]
+    }, status: :unauthorized
+  end
 end

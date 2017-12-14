@@ -52,6 +52,28 @@ const roles = {
   SQUAD_LEADER
 };
 
+const create = ({
+  firstName: first_name,
+  lastName: last_name,
+  buckId: buck_id,
+  email,
+  instrument,
+  part,
+  spot,
+  role
+}) =>
+  api.post('/users/create', {
+    user: {
+      first_name,
+      last_name,
+      buck_id,
+      email,
+      instrument,
+      part,
+      spot,
+      role
+    }
+  });
 const getAll = () => api.get('/users');
 const getByBuckId = buckId =>
   api.get(`/users/${buckId || auth.getUser().buckId}`);
@@ -60,6 +82,7 @@ const getProfile = () => api.get(`/users/profile/${auth.getUser().buckId}`);
 const isAdmin = ({ role }) => role === ADMIN;
 const isDirector = ({ role }) => role === DIRECTOR;
 const isMember = ({ role }) => role === MEMBER;
+const isPerformerRole = role => role === MEMBER || role === SQUAD_LEADER;
 const isSquadLeader = ({ role }) => role === SQUAD_LEADER;
 const isTriChallengeUser = ({ currentSpot }) => ['J'].includes(currentSpot.row);
 const resetPassword = (password_reset_request_id, password, { id }) =>
@@ -80,6 +103,7 @@ const partsForInstrument = instrument => instrumentParts[instrument];
 const postUpload = file => api.postFormData('/users/upload', { file });
 
 export default {
+  create,
   getAll,
   getByBuckId,
   getCanChallenge,
@@ -89,6 +113,7 @@ export default {
   isDirector,
   isMember,
   isSquadLeader,
+  isPerformerRole,
   isTriChallengeUser,
   parts,
   partsForInstrument,
