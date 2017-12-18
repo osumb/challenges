@@ -74,7 +74,7 @@ class SpotSwitchService
   end
   # rubocop:enable Metrics/MethodLength, Metrics/LineLength
 
-  # rubocop:disable Metrics/LineLength, Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
+  # rubocop:disable Metrics/LineLength, Metrics/PerceivedComplexity
   def self._sort_challenges(challenges)
     challenges.sort do |a, b|
       a_vacated_spot = a.users.any? { |u| u.discipline_actions.select { |da| da.performance == @performance && da.open_spot } }

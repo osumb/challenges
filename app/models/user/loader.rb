@@ -153,4 +153,4 @@ class User
     end
   end
 end
-# rubocop:enable Metrics/ClassLength
+# rubocop:enable Rails/Blank, Style/InverseMethods, Metrics/ClassLength

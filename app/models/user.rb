@@ -122,7 +122,7 @@ class User < ApplicationRecord
     errors.add(:role, 'admin or director can\'t have a spot')
   end
 
-  # rubocop:disable Metrics/CyclomaticComplexity, Metrics/LineLength
+  # rubocop:disable Metrics/LineLength
   def valid_instrument_part_for_user
     return if admin? || director?
     return if instrument.nil? || part.nil?
@@ -180,3 +180,4 @@ class User < ApplicationRecord
     [parts[:first]].include? part
   end
 end
+# rubocop:enable Metrics/ClassLength

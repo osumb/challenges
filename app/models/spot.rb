@@ -29,7 +29,7 @@ class Spot < ApplicationRecord
   end
 
   class << self
-    # rubocop:disable Metrics/MethodLength, Metrics/CyclomaticComplexity, Style/IndentationConsistency
+    # rubocop:disable Metrics/MethodLength, Style/IndentationConsistency
     def valid_instrument_part_for_row(row, instrument, part)
       case row
       when Spot.rows[:a], Spot.rows[:x]
@@ -54,7 +54,7 @@ class Spot < ApplicationRecord
         valid_s_row_instrument_part(instrument, part)
       end
     end
-    # rubocop:enable Metrics/MethodLength, Metrics/CyclomaticComplexity, Style/IndentationConsistency
+    # rubocop:enable Metrics/MethodLength, Style/IndentationConsistency
 
     private
 

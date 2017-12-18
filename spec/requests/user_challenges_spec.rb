@@ -316,3 +316,4 @@ describe 'User Challenges', type: :request do
     end
   end
 end
+# rubocop:enable Lint/AmbiguousBlockAssociation

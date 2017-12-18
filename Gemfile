@@ -53,3 +53,4 @@ group :test do
   gem 'codecov', require: false
   gem 'database_cleaner', require: false
 end
+# rubocop:enable Style/FileName

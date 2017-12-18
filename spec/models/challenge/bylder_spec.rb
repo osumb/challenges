@@ -65,3 +65,4 @@ describe 'Challenge::Bylder' do
     end
   end
 end
+# rubocop:enable Lint/AmbiguousBlockAssociation

@@ -19,4 +19,5 @@ class ChallengeService
       SwitchSpotForChallengeJob.perform_later(challenge_id: c.id)
     end
   end
+  # rubocop:enable Metrics/MethodLength
 end

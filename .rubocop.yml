@@ -15,6 +15,9 @@ AllCops:
 Rails:
   Enabled: true
 
+Rails/InverseOf:
+  Enabled: false
+
 TrailingBlankLines:
   Enabled: true
 
@@ -25,6 +28,9 @@ Metrics/ClassLength:
   Max: 120
   Exclude:
     - 'spec/**/*'
+
+Metrics/CyclomaticComplexity:
+  Enabled: false
 
 Metrics/LineLength:
   Max: 120
@@ -51,3 +57,6 @@ Metrics/MethodLength:
 Style/BlockDelimiters:
   Exclude:
     - 'spec/**/*'
+
+Lint/MissingCopEnableDirective:
+  Enabled: false
