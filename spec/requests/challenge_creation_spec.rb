@@ -294,3 +294,4 @@ describe 'Challenge Creation', type: :request do
     end
   end
 end
+# rubocop:enable Lint/AmbiguousBlockAssociation

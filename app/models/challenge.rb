@@ -8,7 +8,7 @@ class Challenge < ApplicationRecord
 
   # associations
   has_many :user_challenges, dependent: :destroy
-  has_many :users, through: :user_challenges
+  has_many :users, through: :user_challenges, inverse_of: :challenges
   belongs_to :spot
   belongs_to :performance
 
@@ -54,7 +54,6 @@ class Challenge < ApplicationRecord
   scope :evaluable, ->(user) { viewable_by_user(user).needs_comments }
   scope :completed, ->(user) { viewable_by_user(user).done }
 
-  # rubocop:disable Metrics/CyclomaticComplexity
   def full?
     return true if normal_challenge_type? && users.length == 2
     return true if open_spot_challenge_type? && users.length == 2
@@ -68,7 +67,6 @@ class Challenge < ApplicationRecord
     return true if tri_challenge_type? && users.length == 3
     false
   end
-  # rubpcop:enable Metrics/CyclomaticComplexity
 
   # rows that are allowed to have a tri challenge associated with it
   def self.tri_challenge_rows

@@ -104,3 +104,4 @@ describe UserChallenge::Evaluator, type: :model do
     end
   end
 end
+# rubocop:enable Lint/AmbiguousBlockAssociation

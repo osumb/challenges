@@ -79,6 +79,7 @@ class UsersController < ApplicationController
       end
     end
   end
+  # rubocop:enable Metrics/MethodLength
 
   def reset_password
     password_digest = PasswordService.encrypt_password(password: params[:password])
@@ -124,7 +125,6 @@ class UsersController < ApplicationController
     head 401
   end
 
-  # rubocop:disable Metrics/CyclomaticComplexity
   def ensure_password_reset_request_is_valid!
     prr = PasswordResetRequest.includes(:user).find(params[:password_reset_request_id])
     invalid_prr = prr.nil? || prr.used? || prr.expired?
@@ -159,3 +159,4 @@ class UsersController < ApplicationController
     }, status: :unauthorized
   end
 end
+# rubocop:enable Metrics/ClassLength
