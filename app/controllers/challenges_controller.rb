@@ -32,7 +32,9 @@ class ChallengesController < ApplicationController
   end
 
   def completed
-    @challenges = Challenge.completed(current_user).order('spots.row, spots.file')
+    @challenges = Challenge.joins(
+      'INNER JOIN spots ON challenges.spot_id = spots.id'
+    ).order('spots.row, spots.file').completed(current_user)
 
     render :for_evaluation_or_update, status: :ok
   end
