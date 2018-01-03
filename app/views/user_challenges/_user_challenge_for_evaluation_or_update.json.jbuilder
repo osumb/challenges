@@ -6,3 +6,6 @@ json.challengeId user_challenge.challenge.id
 json.user do
   json.partial! 'users/user', user: user_challenge.user
 end
+json.spot do
+  json.partial! 'spots/spot', spot: user_challenge.spot
+end

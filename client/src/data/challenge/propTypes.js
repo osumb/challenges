@@ -11,8 +11,7 @@ const propTypes = {
   performance: PropTypes.shape(performanceProps.performance),
   spot: PropTypes.shape(spotProps),
   userChallenges: PropTypes.arrayOf(PropTypes.shape(userChallengeProps)),
-  users: PropTypes.arrayOf(PropTypes.shape(userProps)),
-  winnerBuckId: PropTypes.string
+  users: PropTypes.arrayOf(PropTypes.shape(userProps))
 };
 
 export default propTypes;
