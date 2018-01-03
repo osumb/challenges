@@ -74,7 +74,6 @@ const create = ({
       role
     }
   });
-const fullName = ({ firstName, lastName }) => `${firstName} ${lastName}`;
 const getAll = () => api.get('/users');
 const getByBuckId = buckId =>
   api.get(`/users/${buckId || auth.getUser().buckId}`);
@@ -105,7 +104,6 @@ const postUpload = file => api.postFormData('/users/upload', { file });
 
 export default {
   create,
-  fullName,
   getAll,
   getByBuckId,
   getCanChallenge,
