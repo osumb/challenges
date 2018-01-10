@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :performance do
     name 'Oklahoma Game'
     window_open { Time.zone.now }

@@ -1,8 +1,8 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :password_reset_request do
     used false
     expires Time.zone.now + 1.hour
-    user { User.first || FactoryGirl.create(:user) }
+    user { User.first || FactoryBot.create(:user) }
 
     trait :used do
       used true
