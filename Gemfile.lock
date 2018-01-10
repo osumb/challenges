@@ -195,6 +195,8 @@ GEM
       nokogiri (>= 1.4.4)
       rubyzip (>= 1.1.6)
     rubyzip (1.2.1)
+    sentry-raven (2.7.1)
+      faraday (>= 0.7.6, < 1.0)
     simplecov (0.15.1)
       docile (~> 1.1.0)
       json (>= 1.8, < 3)
@@ -259,6 +261,7 @@ DEPENDENCIES
   rspec-rails
   rubocop
   rubyXL (~> 3.3)
+  sentry-raven
   shoulda-matchers!
   spring
   spring-watcher-listen (~> 2.0.0)

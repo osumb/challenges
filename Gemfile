@@ -22,6 +22,8 @@ gem 'jwt', '~>1.5.6'
 # Job processing
 gem 'resque', '~>1.27.4'
 gem 'resque-heroku-signals'
+# Error Tracking
+gem 'sentry-raven'
 
 gem 'tzinfo-data', '~> 1.2017', '>= 1.2017.2'
 
