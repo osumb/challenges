@@ -2,7 +2,7 @@ require 'bcrypt'
 
 password_digest = BCrypt::Password.create 'password'
 
-FactoryGirl.define do
+FactoryBot.define do
   factory :user do
     first_name 'Brutus'
     last_name 'Buckeye'

@@ -48,6 +48,7 @@ Rails.application.routes.draw do
     end
     get 'performances/next', to: 'performances#next'
     get 'performances/:id/challenge_list', to: 'performances#challenge_list'
+    get 'testing/exception', to: 'testing#exception'
   end
 
   get '*path', to: 'index#index'

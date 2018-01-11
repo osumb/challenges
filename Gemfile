@@ -22,6 +22,8 @@ gem 'jwt', '~>1.5.6'
 # Job processing
 gem 'resque', '~>1.27.4'
 gem 'resque-heroku-signals'
+# Error Tracking
+gem 'sentry-raven'
 
 gem 'tzinfo-data', '~> 1.2017', '>= 1.2017.2'
 
@@ -29,7 +31,7 @@ group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platform: :mri
   gem 'dotenv-rails'
-  gem 'factory_girl_rails', '~> 4.8'
+  gem 'factory_bot_rails', '~> 4.8'
   gem 'pry'
   gem 'pry-byebug'
   gem 'pry-doc'
