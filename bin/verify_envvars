@@ -32,15 +32,14 @@ end.compact
 
 envvars = YAML.safe_load(File.open(File.expand_path("./config/envvars.yml")))
 
-required = envvars['required']
-required_keys = required.keys
-
-development = envvars['development']
-development_keys = development.keys
-
+required_keys = envvars['required'].keys
+development_keys = envvars['development'].keys
+heroku_keys = envvars['heroku'].keys
 all_keys = envvars.keys.reduce([]) do |prev, key|
   prev + envvars[key].keys
 end
+
+config_keys = config_keys - heroku_keys # Remove keys that are set in Heroku, but aren't necessary to validate here
 
 missing_required = required_keys - config_keys
 missing_development = development_keys - config_keys

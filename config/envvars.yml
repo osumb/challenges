@@ -45,3 +45,15 @@ development:
   REACT_APP_SERVER_PORT:
     - description: "Create react app specific variable"
     - example: 3001
+
+# These environment variables are necessary for Heroku, but not needed to be used or set anywhere by the app
+heroku:
+  DATABASE_URL:
+    - description: "Database url that Heroku handles. We don't need one for dev"
+    - example: "Don't need one. Heroku sets this"
+  NODE_MODULES_CACHE:
+    - description: "Cache node modules when running `npm install`"
+    - example: "true or false"
+  RAILS_ENV:
+    - description: "Sets the rails environment"
+    - example: "staging"
