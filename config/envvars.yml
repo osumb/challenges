@@ -1,0 +1,56 @@
+# These environment variables are necessary for any non local app to run
+required:
+  CHALLENGE_LIST_RECIPIENTS:
+    - description: "Comma separated list of people who should receive the challenge list email"
+    - example: "joe@example.com,dr.h@osu.example.com"
+  DISABLE_ROBOTS:
+    - description: "Whether or not to disable robot scrapers (Google search engine and such)"
+    - example: "true"
+  FROM_EMAIL:
+    - description: "The address all emails sent this app are 'from'"
+    - example: "joe@example.com"
+  MAINTAINER_EMAIL:
+    - description: "Email of the current app maintainer(s). Emails sent from development or staging environments will get sent here instead"
+    - example: "joe@example.com"
+  NODE_ENV:
+    - description: "App environment key for create react app to create the correct type of bundle"
+    - example: "development or test or staging or production"
+  PROD_URL:
+    - description: "production url"
+    - example: "https://osumbchallenges.herokuapp.com"
+  REACT_APP_SENTRY_CLIENT_DSN:
+    - description: "endpoint for the Sentry.io endpoint for client error tracking"
+    - example: "https://xxxx@sentry.io/12345"
+  REDIS_URL:
+    - description: "endpoint for redis instance"
+    - example: "redis://localhost:6379"
+  RESQUE_PASSWORD:
+    - description: "password to get into the resque UI"
+    - example: "some super secure password"
+  SECRET:
+    - description: "Shhhhhhh. Don't tell anyone"
+    - example: "sOm3___random!!!gArbagE***"
+  SENDGRID_USERNAME:
+    - description: "Username for the sendgrid account"
+    - example: "username"
+  SENDGRID_PASSWORD:
+    - description: "Password for the sendgrid account"
+    - example: "some super secure password"
+  SENTRY_SERVER_DSN:
+    - description: "endpoint for the Sentry.io endpoint for server error tracking"
+    - example: "https://xxxx@sentry.io/12345"
+  STAGING_URL:
+    - description: "staging url"
+    - example: "https://osumbchallengesdev.herokuapp.com"
+
+# These environment variables aren't necessary for the production app, but are necessary for local development
+development:
+  CLIENT_PORT:
+    - description: "Port where the client side assets will be served in local development"
+    - example: 5000
+  SERVER_PORT:
+    - description: "Port where the server will serve requests in local development"
+    - example: 3001
+  REACT_APP_SERVER_PORT:
+    - description: "Create react app specific variable"
+    - example: 3001
