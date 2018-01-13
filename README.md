@@ -65,8 +65,12 @@ bundle install
 Every web app needs a database! You can run one locally with `docker-compose up -d`
 
 ### Environment variables
-Rails will yell at you if you don't have a `.env` file available, so add one! You can find the available
-variables in `.env.example`
+Rails will yell at you if you don't have a `.env` file available, so add one!
+The required keys are listed in `config/envvars.yml`. The format of your `.env` file should be:
+
+```
+ENVIRONMENT_VARIABLE_KEY=environment_variable_value
+```
 
 ## Start the app
 You should be good to go with dependencies and everything. To start app locally, just run
