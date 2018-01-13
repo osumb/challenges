@@ -129,15 +129,23 @@ the Heroku git remotes.
 
 For the interested, this app needs two `package.json` files. The one located at `./package.json` is for Heroku to notice that this app does indeed require Node. The one in `client/package.json` is where all the information for our React app lives. The outer file has instructions for client side code building that Heroku needs for a deploy.
 
+## Deploying
+
+To deploy to either environment, simply run `bin/deploy <app>`, where `<app>` is either `osumbchallenges` or `osumbchallengesdev`.
+*Note: The app names need to match the heroku git remotes, or this script will break*
+
+You can optionally deploy a branch to staging or production (staging for testing, production for emergencies).
+Example: If I wanted to deploy my branch `alex-cool-new-feature` to staging for testing, I'd run:
+
+```bash
+bin/deploy osumbchallengesdev alex-cool-new-feature
+```
+
 ## Staging vs Production
 ### Staging
 The staging instance is used to test new features, specifically ones that have made it into PRs.
 There is no staging branch.
 To test, just do a manual deploy to the staging instance.
-The staging url is still
-[https://osumbchallengesdev.herokuapp.com](https://osumbchallengesdev.herokuapp.com)
 
 ### Production
-When code gets merged into master, it triggers a deploy to [prod](https://osumbchallenges.herokuapp.com).
 The master branch is protected from force pushes and PR's must pass [CI](https://travis-ci.org/) in order to get merged.
-**AGAIN... merges into master get AUTOMATICALLY DEPLOYED TO PROD** so be careful when merging to master!
