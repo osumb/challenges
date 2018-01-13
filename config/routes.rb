@@ -51,6 +51,7 @@ Rails.application.routes.draw do
     get 'testing/exception', to: 'testing#exception'
   end
 
+  get 'robots.txt', to: 'index#robots'
   get '*path', to: 'index#index'
   root to: 'index#index'
 end
