@@ -1,0 +1,44 @@
+#!/bin/sh
+
+# bin/deploy: Takes to agruments. The first is required, the second is optional
+# First argument: app name to deploy, either osumbchallenges or osumbchallengesdev
+# Second argument: origin remote branch name to deploy. This will mostly be used to test stuff on staging. Note: The branch must be pushed to github before deploying
+
+# ====================
+# == Verify Envvars ==
+# ====================
+echo "==> Verifying environment variables required in config/envvars.yml matches the environment being deployed"
+
+./bin/verify_envvars $1
+
+if [[ $? -ne 0 ]]; then
+  echo "==> Deploy failed. Please make sure the required environment variables are set"
+  exit 1
+fi;
+
+echo "==> Done!"
+
+# ====================
+# == Verify Remote  ==
+# ====================
+if ! git remote show $1 &> /dev/null; then
+  echo "==> Git remote doesn't exist. To add, run 'git remote add ${1} https://git.heroku.com/${1}.git'"
+  exit 1
+fi;
+
+BRANCH_TO_DEPLOY=$2
+if [ -z "$BRANCH_TO_DEPLOY" ]; then
+  BRANCH_TO_DEPLOY="master"
+fi;
+
+GIT_DIFF=`git diff origin/${BRANCH_TO_DEPLOY}..${1}/master`
+
+if [ -z "$GIT_DIFF" ]; then
+  echo "==> ${1}/master already matches origin/${BRANCH_TO_DEPLOY}. No deploy is necessary"
+  exit 0
+fi;
+
+# ====================
+# ==     Deploy     ==
+# ====================
+git push --force $1 origin/${BRANCH_TO_DEPLOY}:master
