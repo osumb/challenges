@@ -1,0 +1,73 @@
+#!/usr/bin/env ruby
+
+require 'English'
+require 'YAML'
+
+def is_dev?(app)
+  app == 'development' || app == 'dev'
+end
+
+app = ARGV[0]
+
+if app.nil?
+  puts 'USAGE: verify_envvars <heroku-app>'
+  exit 1
+end
+
+config_regex = nil
+config_lines = []
+
+if is_dev?(app)
+  config_lines = File.read(File.expand_path(".env")).lines
+  config_regex = /(\w+)=/
+else
+  config_lines = `heroku config --app #{app}`.lines
+  exit 1 unless $CHILD_STATUS.success?
+  config_regex = /(\w+):/
+end
+
+config_keys = config_lines.map do |line|
+  line.slice(config_regex, 1)
+end.compact
+
+envvars = YAML.safe_load(File.open(File.expand_path("./config/envvars.yml")))
+
+required_keys = envvars['required'].keys
+development_keys = envvars['development'].keys
+heroku_keys = envvars['heroku'].keys
+all_keys = envvars.keys.reduce([]) do |prev, key|
+  prev + envvars[key].keys
+end
+
+config_keys = config_keys - heroku_keys # Remove keys that are set in Heroku, but aren't necessary to validate here
+
+missing_required = required_keys - config_keys
+missing_development = development_keys - config_keys
+
+extra_keys = config_keys - all_keys
+
+if missing_required.any?
+  puts "\nMissing required variables:"
+  missing_required.each do |var|
+    puts "   #{var}"
+  end
+end
+
+if extra_keys.any?
+  puts "\nExtra variables:"
+  extra_keys.each do |var|
+    puts "   #{var}"
+  end
+end
+
+if is_dev?(app) && missing_development.any?
+  puts "\nMissing development environment variables! You might encounter errors running the app locally without these set."
+  puts "\nMissing variables:"
+  missing_required.each do |var|
+    puts "   #{var}"
+  end
+end
+
+exit 1 if missing_required.any?
+
+exit 0

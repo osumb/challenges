@@ -1,0 +1,59 @@
+# These environment variables are necessary for any non local app to run
+required:
+  APPLICATION_URL:
+    - description: "URL of the application"
+    - example: "http://localhost:3000"
+  CHALLENGE_LIST_RECIPIENTS:
+    - description: "Comma separated list of people who should receive the challenge list email"
+    - example: "joe@example.com,dr.h@osu.example.com"
+  DISABLE_ROBOTS:
+    - description: "Whether or not to disable robot scrapers (Google search engine and such)"
+    - example: "true"
+  FROM_EMAIL:
+    - description: "The address all emails sent this app are 'from'"
+    - example: "joe@example.com"
+  MAINTAINER_EMAIL:
+    - description: "Email of the current app maintainer(s). Emails sent from development or staging environments will get sent here instead"
+    - example: "joe@example.com"
+  NODE_ENV:
+    - description: "App environment key for create react app to create the correct type of bundle"
+    - example: "development or test or staging or production"
+  REACT_APP_SENTRY_CLIENT_DSN:
+    - description: "endpoint for the Sentry.io endpoint for client error tracking"
+    - example: "https://xxxx@sentry.io/12345"
+  REDIS_URL:
+    - description: "endpoint for redis instance"
+    - example: "redis://localhost:6379"
+  RESQUE_PASSWORD:
+    - description: "password to get into the resque UI"
+    - example: "some super secure password"
+  SECRET:
+    - description: "Shhhhhhh. Don't tell anyone"
+    - example: "sOm3___random!!!gArbagE***"
+  SENDGRID_USERNAME:
+    - description: "Username for the sendgrid account"
+    - example: "username"
+  SENDGRID_PASSWORD:
+    - description: "Password for the sendgrid account"
+    - example: "some super secure password"
+  SENTRY_SERVER_DSN:
+    - description: "endpoint for the Sentry.io endpoint for server error tracking"
+    - example: "https://xxxx@sentry.io/12345"
+
+# These environment variables aren't necessary for the production app, but are necessary for local development
+development:
+  REACT_APP_SERVER_PORT:
+    - description: "Create react app specific variable"
+    - example: 3001
+
+# These environment variables are necessary for Heroku, but not needed to be used or set anywhere by the app
+heroku:
+  DATABASE_URL:
+    - description: "Database url that Heroku handles. We don't need one for dev"
+    - example: "Don't need one. Heroku sets this"
+  NODE_MODULES_CACHE:
+    - description: "Cache node modules when running `npm install`"
+    - example: "true or false"
+  RAILS_ENV:
+    - description: "Sets the rails environment"
+    - example: "staging"

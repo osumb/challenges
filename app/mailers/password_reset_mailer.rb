@@ -18,9 +18,6 @@ class PasswordResetMailer < ApplicationMailer
   end
 
   def url_for_env(prr_id)
-    route = "/password_reset_requests/#{prr_id}"
-    return "#{ENV['PROD_URL']}#{route}" if Rails.env.production?
-    return "#{ENV['STAGING_URL']}#{route}" if Rails.env.staging? # rubocop:disable Rails/UnknownEnv
-    "http://localhost:#{ENV['CLIENT_PORT']}#{route}"
+    "#{ENV['APPLICATION_URL']}/password_reset_requests/#{prr_id}"
   end
 end

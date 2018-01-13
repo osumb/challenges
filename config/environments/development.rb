@@ -46,5 +46,5 @@ Rails.application.configure do
   # routes, locales, etc. This feature depends on the listen gem.
   config.file_watcher = ActiveSupport::EventedFileUpdateChecker
 
-  config.action_mailer.asset_host = "http://localhost:#{ENV['SERVER_PORT']}"
+  config.action_mailer.asset_host = "http://localhost:#{ENV['REACT_APP_SERVER_PORT']}"
 end
