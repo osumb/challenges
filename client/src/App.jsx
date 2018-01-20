@@ -9,22 +9,23 @@ import {
 
 import './App.css';
 import { auth } from './utils';
-import ChallengeEvaluations from './scenes/challenge/evaluations';
-import ChallengeSelect from './scenes/performance/challenge_select';
-import CompletedResults from './scenes/results/completed';
-import CreatePerformance from './scenes/performance/create';
-import Login from './scenes/login';
-import Navbar from './components/navbar';
-import NotFound from './components/not_found';
-import Profile from './scenes/user/profile';
-import PasswordResetRequest from './scenes/password_reset/request';
-import PasswordResetReset from './scenes/password_reset/reset';
-import PerformanceIndex from './scenes/performance/index';
-import ProfileAdmin from './scenes/user/profile_admin';
-import Roster from './scenes/user/roster';
-import Search from './scenes/user/search';
-import Upload from './scenes/user/upload';
-import UserCreate from './scenes/user/create';
+import asyncComponent from './components/async';
+const ChallengeEvaluations = asyncComponent(() => import('./scenes/challenge/evaluations'));
+const ChallengeSelect = asyncComponent(() => import('./scenes/performance/challenge_select'));
+const CompletedResults = asyncComponent(() => import('./scenes/results/completed'));
+const CreatePerformance = asyncComponent(() => import('./scenes/performance/create'));
+const Login = asyncComponent(() => import('./scenes/login'));
+const Navbar = asyncComponent(() => import('./components/navbar'));
+const NotFound = asyncComponent(() => import('./components/not_found'));
+const Profile = asyncComponent(() => import('./scenes/user/profile'));
+const PasswordResetRequest = asyncComponent(() => import('./scenes/password_reset/request'));
+const PasswordResetReset = asyncComponent(() => import('./scenes/password_reset/reset'));
+const PerformanceIndex = asyncComponent(() => import('./scenes/performance/index'));
+const ProfileAdmin = asyncComponent(() => import('./scenes/user/profile_admin'));
+const Roster = asyncComponent(() => import('./scenes/user/roster'));
+const Search = asyncComponent(() => import('./scenes/user/search'));
+const Upload = asyncComponent(() => import('./scenes/user/upload'));
+const UserCreate = asyncComponent(() => import('./scenes/user/create'));
 
 const handleLogout = push => {
   auth.logout();
