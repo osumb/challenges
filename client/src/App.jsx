@@ -10,18 +10,34 @@ import {
 import './App.css';
 import { auth } from './utils';
 import asyncComponent from './components/async';
-const ChallengeEvaluations = asyncComponent(() => import('./scenes/challenge/evaluations'));
-const ChallengeSelect = asyncComponent(() => import('./scenes/performance/challenge_select'));
-const CompletedResults = asyncComponent(() => import('./scenes/results/completed'));
-const CreatePerformance = asyncComponent(() => import('./scenes/performance/create'));
+const ChallengeEvaluations = asyncComponent(() =>
+  import('./scenes/challenge/evaluations')
+);
+const ChallengeSelect = asyncComponent(() =>
+  import('./scenes/performance/challenge_select')
+);
+const CompletedResults = asyncComponent(() =>
+  import('./scenes/results/completed')
+);
+const CreatePerformance = asyncComponent(() =>
+  import('./scenes/performance/create')
+);
 const Login = asyncComponent(() => import('./scenes/login'));
 const Navbar = asyncComponent(() => import('./components/navbar'));
 const NotFound = asyncComponent(() => import('./components/not_found'));
 const Profile = asyncComponent(() => import('./scenes/user/profile'));
-const PasswordResetRequest = asyncComponent(() => import('./scenes/password_reset/request'));
-const PasswordResetReset = asyncComponent(() => import('./scenes/password_reset/reset'));
-const PerformanceIndex = asyncComponent(() => import('./scenes/performance/index'));
-const ProfileAdmin = asyncComponent(() => import('./scenes/user/profile_admin'));
+const PasswordResetRequest = asyncComponent(() =>
+  import('./scenes/password_reset/request')
+);
+const PasswordResetReset = asyncComponent(() =>
+  import('./scenes/password_reset/reset')
+);
+const PerformanceIndex = asyncComponent(() =>
+  import('./scenes/performance/index')
+);
+const ProfileAdmin = asyncComponent(() =>
+  import('./scenes/user/profile_admin')
+);
 const Roster = asyncComponent(() => import('./scenes/user/roster'));
 const Search = asyncComponent(() => import('./scenes/user/search'));
 const Upload = asyncComponent(() => import('./scenes/user/upload'));
@@ -32,35 +48,43 @@ const handleLogout = push => {
   push('/');
 };
 
-const PublicRoute = ({ component, ...rest }) =>
+const PublicRoute = ({ component, ...rest }) => (
   <Route
     {...rest}
     render={props =>
-      !auth.isAuthenticated()
-        ? React.createElement(component, props)
-        : <Redirect
+      !auth.isAuthenticated() ? (
+        React.createElement(component, props)
+      ) : (
+        <Redirect
           to={{
             pathname: '/',
             state: { from: props.location }
           }}
-        />}
-  />;
+        />
+      )
+    }
+  />
+);
 
-const PrivateRoute = ({ component, ...rest }) =>
+const PrivateRoute = ({ component, ...rest }) => (
   <Route
     {...rest}
     render={props =>
-      auth.isAuthenticated() && auth.canUserAccess(rest.path)
-        ? React.createElement(component, props)
-        : <Redirect
+      auth.isAuthenticated() && auth.canUserAccess(rest.path) ? (
+        React.createElement(component, props)
+      ) : (
+        <Redirect
           to={{
             pathname: '/login',
             state: { from: props.location }
           }}
-        />}
-  />;
+        />
+      )
+    }
+  />
+);
 
-const App = () =>
+const App = () => (
   <Router>
     <div id="App">
       <Navbar onLogout={handleLogout} />
@@ -112,6 +136,7 @@ const App = () =>
         </Switch>
       </div>
     </div>
-  </Router>;
+  </Router>
+);
 
 export default App;

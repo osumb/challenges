@@ -19,8 +19,9 @@ const postSaveComments = challenge =>
     {
       user_challenges: reduceUserChallengesToIdAndField(challenge, 'comments')
     },
-    `Comments were not able to be saved for ${challenge.spot.row}${challenge
-      .spot.file}'s challenge`
+    `Comments were not able to be saved for ${challenge.spot.row}${
+      challenge.spot.file
+    }'s challenge`
   );
 const putSaveComments = challenge =>
   api.put(
@@ -28,22 +29,25 @@ const putSaveComments = challenge =>
     {
       user_challenges: reduceUserChallengesToIdAndField(challenge, 'comments')
     },
-    `Comments were not able to be saved for ${challenge.spot.row}${challenge
-      .spot.file}'s challenge`
+    `Comments were not able to be saved for ${challenge.spot.row}${
+      challenge.spot.file
+    }'s challenge`
   );
 const postSavePlaces = challenge =>
   api.post(
     '/user_challenges/places',
     { user_challenges: reduceUserChallengesToIdAndField(challenge, 'place') },
-    `Places were not able to be saved for ${challenge.spot.row}${challenge.spot
-      .file}'s challenge`
+    `Places were not able to be saved for ${challenge.spot.row}${
+      challenge.spot.file
+    }'s challenge`
   );
 const putSubmitEvaluation = challenge =>
   api.put(
     `/challenges/${challenge.id}/submit_evaluation`,
     {},
-    `${challenge.spot.row}${challenge.spot
-      .file}'s challenge was not able to be submitted for approval`
+    `${challenge.spot.row}${
+      challenge.spot.file
+    }'s challenge was not able to be submitted for approval`
   );
 
 export default {

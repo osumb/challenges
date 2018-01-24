@@ -55,11 +55,9 @@ export default class ListDropdown extends React.PureComponent {
   render() {
     const { separatorMargin: margin, separatorPadding: padding } = this.props;
     const { open } = this.state;
-    const children = React.Children.map(this.props.children, c =>
-      <ListDropdownItem>
-        {c}
-      </ListDropdownItem>
-    );
+    const children = React.Children.map(this.props.children, c => (
+      <ListDropdownItem>{c}</ListDropdownItem>
+    ));
 
     return (
       <ul className="mdc-list">
@@ -71,9 +69,11 @@ export default class ListDropdown extends React.PureComponent {
         >
           {(this.props.header || '').charAt(0).toUpperCase() +
             (this.props.header || '').slice(1)}
-          {open
-            ? <img src={ArrowUp} alt="Arrow Up" />
-            : <img src={ArrowDown} alt="Arrow Down" />}
+          {open ? (
+            <img src={ArrowUp} alt="Arrow Up" />
+          ) : (
+            <img src={ArrowDown} alt="Arrow Down" />
+          )}
         </li>
         <ListDropdownSeparator margin={margin} padding={padding} />
         <AnimationContainer show={open} itemCount={children.length}>

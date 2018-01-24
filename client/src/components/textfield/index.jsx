@@ -68,10 +68,9 @@ export default class TextField extends React.PureComponent {
           placeholder={this.props.placeholder || ''}
           value={this.props.value}
         />
-        {this.props.hint &&
-          <span className="mdc-textfield__label">
-            {this.props.hint}
-          </span>}
+        {this.props.hint && (
+          <span className="mdc-textfield__label">{this.props.hint}</span>
+        )}
       </label>
     );
   }

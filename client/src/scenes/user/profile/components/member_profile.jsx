@@ -22,37 +22,42 @@ const Container = styled.div`
   margin-top: 4px;
 `;
 
-const MemberProfile = props =>
+const MemberProfile = props => (
   <Container>
     <UserHeader {...pick(props.user, UserHeader.props)} />
     <PerformanceWindow {...props.nextPerformance} />
-    {props.canChallenge &&
+    {props.canChallenge && (
       <Typography category="title">
         You still need to make a challenge!
-      </Typography>}
-    {props.currentChallenge &&
+      </Typography>
+    )}
+    {props.currentChallenge && (
       <CurrentChallenge
         {...props.currentChallenge}
         performanceName={props.nextPerformance.name}
-      />}
-    {props.currentDisciplineAction &&
-      <CurrentDisciplineAction {...props.currentDisciplineAction} />}
+      />
+    )}
+    {props.currentDisciplineAction && (
+      <CurrentDisciplineAction {...props.currentDisciplineAction} />
+    )}
     {props.challenges &&
-      props.challenges.length > 0 &&
-      <Container>
-        <Typography category="display" number={1}>
-          Past Challenge Results
-        </Typography>
-        {props.challenges.map(({ id, ...rest }) =>
-          <Challenge
-            key={id}
-            performanceName={rest.performance.name}
-            spot={rest.spot}
-            userChallenge={rest.userChallenges[0]}
-          />
-        )}
-      </Container>}
-  </Container>;
+      props.challenges.length > 0 && (
+        <Container>
+          <Typography category="display" number={1}>
+            Past Challenge Results
+          </Typography>
+          {props.challenges.map(({ id, ...rest }) => (
+            <Challenge
+              key={id}
+              performanceName={rest.performance.name}
+              spot={rest.spot}
+              userChallenge={rest.userChallenges[0]}
+            />
+          ))}
+        </Container>
+      )}
+  </Container>
+);
 
 MemberProfile.propTypes = {
   canChallenge: PropTypes.bool.isRequired,

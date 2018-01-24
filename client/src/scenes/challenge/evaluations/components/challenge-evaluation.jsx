@@ -89,7 +89,7 @@ class ChallengeEvaluation extends React.Component {
             flexDirection={isPortraitIPad ? 'column' : 'row'}
             flexWrap="wrap"
           >
-            {Object.values(challenge.userChallenges).map(userChallenge =>
+            {Object.values(challenge.userChallenges).map(userChallenge => (
               <FlexChild flex="1" key={userChallenge.id}>
                 <UserChallengeEvaluation
                   comments={userChallenge.comments}
@@ -102,7 +102,7 @@ class ChallengeEvaluation extends React.Component {
                   userCount={challenge.users.length}
                 />
               </FlexChild>
-            )}
+            ))}
           </FlexContainer>
         </FlexChild>
       </FlexContainer>
@@ -113,7 +113,8 @@ class ChallengeEvaluation extends React.Component {
     return (
       <Media query={{ maxWidth: screenSizes.portraitIPad.width }}>
         {isPortraitIPad =>
-          this.renderEvaluations(isPortraitIPad, this.props.challenge)}
+          this.renderEvaluations(isPortraitIPad, this.props.challenge)
+        }
       </Media>
     );
   }

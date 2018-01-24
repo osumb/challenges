@@ -28,7 +28,8 @@
         ],
         "react/jsx-indent-props": "off",
         "react/no-multi-comp": "off",
-        "import/no-unresolved": "off"
+        "import/no-unresolved": "off",
+        "react/jsx-filename-extension": [1,  { "extensions": [".js", ".jsx"] }]
     },
     "env": {
         "browser": true,
@@ -38,9 +39,20 @@
     "globals": {
         "it": true
     },
+    "parserOptions": {
+        "sourceType": "module",
+        "ecmaFeatures": {
+          "allowImportExportEverywhere": true,
+          "experimentalObjectRestSpread": true,
+          "jsx": true
+        }
+    },
     "extends": [
-        "@btmills/eslint-config-btmills/es6",
-        "@btmills/eslint-config-btmills/react",
         "prettier"
-    ]
+    ],
+    "plugins": [
+      "react",
+      "import"
+    ],
+    "parser": "babel-eslint"
 }

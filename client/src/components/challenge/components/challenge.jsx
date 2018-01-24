@@ -50,15 +50,18 @@ export default function Challenge({
           }}
         >
           <Typography category="display" number={1}>
-            {spot.row}{spot.file}
+            {spot.row}
+            {spot.file}
           </Typography>
           <div>
-            {leftButtonText &&
-              <Button onClick={onLeftButtonClick}>{leftButtonText}</Button>}
-            {rightButtonText &&
+            {leftButtonText && (
+              <Button onClick={onLeftButtonClick}>{leftButtonText}</Button>
+            )}
+            {rightButtonText && (
               <Button onClick={onRightButtonClick} style={{ marginLeft: 4 }}>
                 {rightButtonText}
-              </Button>}
+              </Button>
+            )}
           </div>
         </FlexContainer>
         <FlexContainer
@@ -69,7 +72,7 @@ export default function Challenge({
             width: '100%'
           }}
         >
-          {userChallenges.map(uc =>
+          {userChallenges.map(uc => (
             <UCContainer key={uc.id}>
               <UserChallenge
                 {...uc}
@@ -78,7 +81,7 @@ export default function Challenge({
                 hideName={hideName}
               />
             </UCContainer>
-          )}
+          ))}
         </FlexContainer>
       </FlexContainer>
     </Elevation>

@@ -11,7 +11,9 @@ const Container = styled.div`
   justify-content: space-between;
   flex-wrap: wrap;
 `;
-const EditInput = styled.input`width: 100px;`;
+const EditInput = styled.input`
+  width: 100px;
+`;
 
 export default class EditText extends React.PureComponent {
   static get propTypes() {

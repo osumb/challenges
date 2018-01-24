@@ -162,7 +162,7 @@ class Evaluations extends React.Component {
       <FlexContainer style={{ opacity: requesting ? '0.5' : '1' }}>
         <FlexChild flex="0">
           <SideNav>
-            {sortedChallenges.map(challenge =>
+            {sortedChallenges.map(challenge => (
               <SideNavItem
                 active={currentChallengeId === challenge.id}
                 key={challenge.id}
@@ -172,13 +172,13 @@ class Evaluations extends React.Component {
                   .join(' vs. ')}
                 title={`${challenge.spot.row}${challenge.spot.file}`}
               />
-            )}
+            ))}
           </SideNav>
         </FlexChild>
         <FlexChild flex="1">
           <FlexContainer alignItems="center">
             <FlexChild flex="1" margin="auto">
-              {currentChallengeId &&
+              {currentChallengeId && (
                 <Evaluation
                   challenge={currentChallenge}
                   handleSaveCommentsAndPlaces={this.saveCommentsAndPlaces(
@@ -189,9 +189,11 @@ class Evaluations extends React.Component {
                   )}
                   onCommentsChange={this.onCommentsChange(currentChallenge.id)}
                   onPlacePick={this.onPlacePick(currentChallenge.id)}
-                />}
-              {!currentChallengeId &&
-                <p>Looks like you don't have any challenges to evaluate!</p>}
+                />
+              )}
+              {!currentChallengeId && (
+                <p>Looks like you don't have any challenges to evaluate!</p>
+              )}
             </FlexChild>
           </FlexContainer>
         </FlexChild>

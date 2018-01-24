@@ -104,11 +104,7 @@ export default class Roster extends React.PureComponent {
   }
 
   renderOriginalSpot(props) {
-    return (
-      <span>
-        {props.value}
-      </span>
-    );
+    return <span>{props.value}</span>;
   }
 
   render() {

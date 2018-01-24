@@ -34,24 +34,27 @@ const Navbar = ({ onLogout, history }) => {
     <div>
       <Media query={{ minWidth: portraitIPad.width - 1 }}>
         {matches =>
-          matches
-            ? <HeaderDiv>
-                <ToolBar
-                  iconElementRight={
-                    <Image src={ScriptOhioWhite} alt="ScriptOhioWhite.png" />
-                  }
-                  title="&nbsp;OSUMB Challenge Manager"
-                />
-                <DesktopNav
-                  onLogout={handleLogout}
-                  user={pick(user, DesktopNav.props)}
-                />
-              </HeaderDiv>
-            : <MobileNav
+          matches ? (
+            <HeaderDiv>
+              <ToolBar
+                iconElementRight={
+                  <Image src={ScriptOhioWhite} alt="ScriptOhioWhite.png" />
+                }
+                title="&nbsp;OSUMB Challenge Manager"
+              />
+              <DesktopNav
                 onLogout={handleLogout}
-                push={history.push}
-                user={pick(user, MobileNav.props)}
-              />}
+                user={pick(user, DesktopNav.props)}
+              />
+            </HeaderDiv>
+          ) : (
+            <MobileNav
+              onLogout={handleLogout}
+              push={history.push}
+              user={pick(user, MobileNav.props)}
+            />
+          )
+        }
       </Media>
       <ErrorBanner />
     </div>

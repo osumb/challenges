@@ -143,7 +143,7 @@ class CompletedResults extends React.Component {
       <FlexContainer>
         <FlexChild flex="0">
           <SideNav>
-            {sortedPerformances.map(performance =>
+            {sortedPerformances.map(performance => (
               <SideNavItem
                 active={currentPerformanceId === performance.id}
                 key={performance.id}
@@ -152,13 +152,13 @@ class CompletedResults extends React.Component {
                   new Date(performance.date)
                 ).format(formatString)}`}
               />
-            )}
+            ))}
           </SideNav>
         </FlexChild>
         <FlexChild flex="1">
           <FlexContainer flexDirection="column">
             <FlexContainer justifyContent="center" flexWrap="wrap">
-              {currentChallenges.map(({ id, ...rest }) =>
+              {currentChallenges.map(({ id, ...rest }) => (
                 <Challenge
                   key={id}
                   id={id}
@@ -169,26 +169,29 @@ class CompletedResults extends React.Component {
                   onLeftButtonClick={this.handleSaveComments(id)}
                   style={{ margin: 10 }}
                 />
-              )}
+              ))}
             </FlexContainer>
-            {failure &&
+            {failure && (
               <Snackbar
                 message="There was a problem saving the comments..."
                 show={failure}
                 onDisappear={this.handleDisappear}
-              />}
-            {requesting &&
+              />
+            )}
+            {requesting && (
               <Snackbar
                 message="Saving Comments"
                 show={requesting}
                 onDisappear={this.handleDisappear}
-              />}
-            {success &&
+              />
+            )}
+            {success && (
               <Snackbar
                 message="Saved Comments"
                 show={success}
                 onDisappear={this.handleDisappear}
-              />}
+              />
+            )}
           </FlexContainer>
         </FlexChild>
       </FlexContainer>

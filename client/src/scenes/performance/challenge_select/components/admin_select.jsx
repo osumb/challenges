@@ -81,8 +81,9 @@ export default class AdminSelect extends React.PureComponent {
       selectedUserBuckId,
       usersWhoCanChallenge
     } = state;
-    const selectedUser = (usersWhoCanChallenge || [])
-      .find(({ buckId }) => buckId === selectedUserBuckId);
+    const selectedUser = (usersWhoCanChallenge || []).find(
+      ({ buckId }) => buckId === selectedUserBuckId
+    );
 
     if (
       usersWhoCanChallenge.length <= 0 ||
@@ -134,21 +135,24 @@ export default class AdminSelect extends React.PureComponent {
     return (
       <FlexContainer justifyContent="center">
         <FlexChild flex={1} padding="0 10px 0 0" textAlign="center">
-          {usersWhoCanChallenge === null
-            ? <Typography category="headline">
-                Loading users who are elligible to challenge...
-              </Typography>
-            : <UsersCanChallenge
-                onSelect={this.handleUserSelect}
-                selectedUserBuckId={selectedUserBuckId}
-                users={usersWhoCanChallenge}
-              />}
+          {usersWhoCanChallenge === null ? (
+            <Typography category="headline">
+              Loading users who are elligible to challenge...
+            </Typography>
+          ) : (
+            <UsersCanChallenge
+              onSelect={this.handleUserSelect}
+              selectedUserBuckId={selectedUserBuckId}
+              users={usersWhoCanChallenge}
+            />
+          )}
         </FlexChild>
         {usersWhoCanChallenge !== null &&
-          usersWhoCanChallenge.length > 0 &&
-          <FlexChild flex={1} padding="0 10px">
-            {this.renderChallengeableUsers(this.state)}
-          </FlexChild>}
+          usersWhoCanChallenge.length > 0 && (
+            <FlexChild flex={1} padding="0 10px">
+              {this.renderChallengeableUsers(this.state)}
+            </FlexChild>
+          )}
         <Snackbar show={challengeCreated} message="Created Challenge" />
       </FlexContainer>
     );

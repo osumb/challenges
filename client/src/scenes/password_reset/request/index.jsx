@@ -24,7 +24,9 @@ const TextFieldContainer = styled.div`
   align-items: center;
   flex-direction: ${({ direction }) => direction};
 `;
-const TextFieldSpacer = styled.div`margin: 0 10px;`;
+const TextFieldSpacer = styled.div`
+  margin: 0 10px;
+`;
 
 export default class PasswordResetRequest extends React.PureComponent {
   constructor(props) {
@@ -112,17 +114,19 @@ export default class PasswordResetRequest extends React.PureComponent {
           Need A New Password?
         </Typography>
         <Typography category="title">Enter Your name.# and email</Typography>
-        {inputErrorMessage &&
+        {inputErrorMessage && (
           <Typography category="subheading" number={2}>
             **{inputErrorMessage}**
-          </Typography>}
-        {requestError &&
+          </Typography>
+        )}
+        {requestError && (
           <Typography category="title">
             Sorry. That name.# and email combination doesn't match. Please try
             again
-          </Typography>}
+          </Typography>
+        )}
         <Media query={{ minWidth: screenSizes.landscapeIPhone5.width }}>
-          {matches =>
+          {matches => (
             <TextFieldContainer direction={matches ? 'row' : 'column'}>
               <TextField
                 name="buckId"
@@ -141,7 +145,8 @@ export default class PasswordResetRequest extends React.PureComponent {
               <Button primary onClick={this.handleClick} disabled={requesting}>
                 Submit
               </Button>
-            </TextFieldContainer>}
+            </TextFieldContainer>
+          )}
         </Media>
         {requesting && <CircularProgress />}
       </Container>

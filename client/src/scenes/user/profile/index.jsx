@@ -19,16 +19,18 @@ const Profile = ({
   nextPerformance,
   user
 }) =>
-  helpers.isAdmin(user) || helpers.isDirector(user)
-    ? <AdminProfile nextPerformance={nextPerformance} user={user} />
-    : <MemberProfile
-        canChallenge={canChallenge}
-        challenges={challenges}
-        currentChallenge={currentChallenge}
-        currentDisciplineAction={currentDisciplineAction}
-        nextPerformance={nextPerformance}
-        user={user}
-      />;
+  helpers.isAdmin(user) || helpers.isDirector(user) ? (
+    <AdminProfile nextPerformance={nextPerformance} user={user} />
+  ) : (
+    <MemberProfile
+      canChallenge={canChallenge}
+      challenges={challenges}
+      currentChallenge={currentChallenge}
+      currentDisciplineAction={currentDisciplineAction}
+      nextPerformance={nextPerformance}
+      user={user}
+    />
+  );
 
 Profile.propTypes = {
   canChallenge: PropTypes.bool.isRequired,

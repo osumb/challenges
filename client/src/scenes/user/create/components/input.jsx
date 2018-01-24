@@ -12,9 +12,9 @@ const InputWrapper = styled.div`
   width: 90%;
 `;
 
-const Input = ({ inputs, onChange, style }) =>
+const Input = ({ inputs, onChange, style }) => (
   <InputWrapper>
-    {inputs.map(({ hint, name, value }) =>
+    {inputs.map(({ hint, name, value }) => (
       <TextField
         key={name}
         name={name}
@@ -23,8 +23,9 @@ const Input = ({ inputs, onChange, style }) =>
         value={value}
         labelStyle={style}
       />
-    )}
-  </InputWrapper>;
+    ))}
+  </InputWrapper>
+);
 
 Input.propTypes = {
   inputs: PropTypes.arrayOf(

@@ -1,10 +1,9 @@
 import React from 'react';
 
-const SideNav = ({ children }) =>
+const SideNav = ({ children }) => (
   <nav className="mdc-permanent-drawer mdc-typography">
-    <nav className="mdc-list">
-      {children}
-    </nav>
-  </nav>;
+    <nav className="mdc-list">{children}</nav>
+  </nav>
+);
 
 export default SideNav;

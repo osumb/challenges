@@ -14,7 +14,9 @@ import Checkbox from '../../../components/checkbox';
 import TextField from '../../../components/textfield';
 import Typography from '../../../components/typography';
 
-const Info = styled.div`margin-left: 10px;`;
+const Info = styled.div`
+  margin-left: 10px;
+`;
 
 export default class CreateDisciplineAction extends React.PureComponent {
   static get propTypes() {
@@ -124,14 +126,17 @@ export default class CreateDisciplineAction extends React.PureComponent {
           getRef={ref => {
             this.openSpot = ref;
           }}
-          label={`Check box if the spot ${user.currentSpot.row}${user
-            .currentSpot.file} opens as a result of the action`}
+          label={`Check box if the spot ${user.currentSpot.row}${
+            user.currentSpot.file
+          } opens as a result of the action`}
         />
         <Checkbox
           getRef={ref => {
             this.allowedToChallenge = ref;
           }}
-          label={`Check box if ${user.firstName} is allowed to challenge another spot`}
+          label={`Check box if ${
+            user.firstName
+          } is allowed to challenge another spot`}
         />
         <Button primary onClick={this.handleCreateClick}>
           Create

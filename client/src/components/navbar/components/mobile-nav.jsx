@@ -34,7 +34,7 @@ const HeaderInput = styled.input`
   margin-right: 2px;
   border: 1px solid ${lightGray};
   padding: 4px;
-  transition: all 0.10s ease-in-out;
+  transition: all 0.1s ease-in-out;
   opacity: ${({ visible }) => (visible ? 1 : 0)};
 
   &:focus {
@@ -129,7 +129,7 @@ export default class MobileNav extends PureComponent {
           minWidth: portraitIPad.width - 1,
           maxWidth: portraitIPad.width
         }}
-        render={() =>
+        render={() => (
           <SearchHeader>
             <form onSubmit={this.handleSearchSubmit}>
               <HeaderInput
@@ -145,7 +145,8 @@ export default class MobileNav extends PureComponent {
                 alt="Search Icon"
               />
             </Button>
-          </SearchHeader>}
+          </SearchHeader>
+        )}
       />
     );
   }
@@ -159,11 +160,11 @@ export default class MobileNav extends PureComponent {
     const linkDropDowns = visibleMainRoutes.map(key => {
       const dropdownChildren = mainRoutes[key].links
         .filter(link => canUserSeeLink(link, user))
-        .map(route =>
+        .map(route => (
           <span key={route.path} data-route={route.path}>
             &nbsp;&nbsp;&nbsp;&nbsp;{route.name}
           </span>
-        );
+        ));
 
       return (
         <ListDropdown
@@ -182,11 +183,11 @@ export default class MobileNav extends PureComponent {
         <ToolBar
           className="MobileNav"
           iconElementLeft={
-            !isEmptyObject(user)
-              ? <Button onClick={this.handleOpen}>
-                  <img src={ListIcon} alt="List Icon" />
-                </Button>
-              : null
+            !isEmptyObject(user) ? (
+              <Button onClick={this.handleOpen}>
+                <img src={ListIcon} alt="List Icon" />
+              </Button>
+            ) : null
           }
           iconElementRight={
             helpers.isAdmin(user) ? this.renderSearchHeader() : null
@@ -194,7 +195,7 @@ export default class MobileNav extends PureComponent {
           altTitle="&nbsp;Challenges&nbsp;"
           title="&nbsp;OSUMB Challenges&nbsp;"
         />
-        {!isEmptyObject(user) &&
+        {!isEmptyObject(user) && (
           <Drawer
             header="Challenges"
             onClick={this.handleDrawerClick}
@@ -211,7 +212,8 @@ export default class MobileNav extends PureComponent {
             <ListDropdownItem>
               <span data-route="/logout">Logout</span>
             </ListDropdownItem>
-          </Drawer>}
+          </Drawer>
+        )}
       </Container>
     );
   }

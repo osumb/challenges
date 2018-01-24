@@ -29,7 +29,9 @@ const TextFieldContainer = styled.div`
   justify-content: flex-start;
   flex-direction: ${({ direction }) => direction};
 `;
-const TextFieldSpacer = styled.div`margin: 20px;`;
+const TextFieldSpacer = styled.div`
+  margin: 20px;
+`;
 
 class PasswordResetReset extends React.PureComponent {
   static get propTypes() {
@@ -121,12 +123,13 @@ class PasswordResetReset extends React.PureComponent {
         <Typography category="display" number={1}>
           Reset Your Password
         </Typography>
-        {inputErrorMessage &&
+        {inputErrorMessage && (
           <Typography category="subheading" number={2}>
             **{inputErrorMessage}**
-          </Typography>}
+          </Typography>
+        )}
         <Media query={{ minWidth: screenSizes.landscapeIPhone5.width }}>
-          {matches =>
+          {matches => (
             <TextFieldContainer direction={matches ? 'row' : 'column'}>
               <TextField
                 name="password"
@@ -145,7 +148,8 @@ class PasswordResetReset extends React.PureComponent {
               <Button primary onClick={this.handleClick} disabled={requesting}>
                 Reset Password
               </Button>
-            </TextFieldContainer>}
+            </TextFieldContainer>
+          )}
         </Media>
         {requesting && <CircularProgress />}
       </Container>

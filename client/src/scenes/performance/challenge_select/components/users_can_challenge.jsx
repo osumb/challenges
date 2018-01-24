@@ -69,7 +69,7 @@ export default class UsersCanChallenge extends React.PureComponent {
           />
           <ListContainer>
             <List>
-              {filteredUsers.map(user =>
+              {filteredUsers.map(user => (
                 <UserContainer
                   key={user.buckId}
                   onClick={onSelect.bind(null, user)}
@@ -85,7 +85,7 @@ export default class UsersCanChallenge extends React.PureComponent {
                     </Typography>
                   </ListItem>
                 </UserContainer>
-              )}
+              ))}
             </List>
           </ListContainer>
         </div>

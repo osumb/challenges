@@ -5,9 +5,10 @@ import errorEmitter from './error-emitter';
 import headersHelpers from './headers';
 
 const { getToken, refreshToken } = auth;
-const baseRoute = process.env.NODE_ENV === 'development'
-  ? `http://localhost:${process.env.REACT_APP_SERVER_PORT}`
-  : '';
+const baseRoute =
+  process.env.NODE_ENV === 'development'
+    ? `http://localhost:${process.env.REACT_APP_SERVER_PORT}`
+    : '';
 
 const defaultErrorMessage = () =>
   "Sorry! Something wen't wrong. We're aware of and working on the issue";

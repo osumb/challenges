@@ -95,24 +95,31 @@ export default class ConfirmStage extends React.Component {
             Are you sure you want to add {user.firstName} {user.lastName}?
           </Typography>
           <Typography category="subheading" number={2}>
-            {user.firstName}'s contact information will be: {user.buckId}/{user.email}
+            {user.firstName}'s contact information will be: {user.buckId}/{
+              user.email
+            }
           </Typography>
           <Typography category="subheading" number={2}>
             {user.firstName}'s role will be: {user.role}
           </Typography>
           <Typography category="subheading" number={2}>
-            {user.firstName}'s instrument/part will be: {user.instrument}/{user.part}
+            {user.firstName}'s instrument/part will be: {user.instrument}/{
+              user.part
+            }
           </Typography>
-          {userHelpers.isPerformerRole(user.role) &&
+          {userHelpers.isPerformerRole(user.role) && (
             <Typography category="subheading" number={2}>
               {user.firstName}'s spot will be: {spotHelpers.toString(user.spot)}
-            </Typography>}
-          {userToReplace !== null &&
+            </Typography>
+          )}
+          {userToReplace !== null && (
             <Typography category="subheading" number={2}>
               Doing so will deactivate {userToReplace.firstName}{' '}
-              {userToReplace.lastName}<br />
+              {userToReplace.lastName}
+              <br />
               who is currently {spotHelpers.toString(userToReplace.currentSpot)}
-            </Typography>}
+            </Typography>
+          )}
         </div>
       </Confirm>
     );
@@ -129,10 +136,6 @@ export default class ConfirmStage extends React.Component {
       );
     }
 
-    return (
-      <Container>
-        {this.renderUser()}
-      </Container>
-    );
+    return <Container>{this.renderUser()}</Container>;
   }
 }

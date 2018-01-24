@@ -38,12 +38,13 @@ export default function UserChallenge({
       alignItems="flex-start"
       style={{ ...style }}
     >
-      {!hideName &&
+      {!hideName && (
         <Wrapper>
           <Typography category="headline">
             {user.firstName} {user.lastName}
           </Typography>
-        </Wrapper>}
+        </Wrapper>
+      )}
       <Place>
         <img
           alt={place === 1 ? 'Winner' : 'Loser'}
@@ -52,17 +53,23 @@ export default function UserChallenge({
         />
         <Typography category="title">Place: {place}</Typography>
       </Place>
-      <Wrapper><Typography category="headline">Comments:</Typography></Wrapper>
       <Wrapper>
-        {!hasEditableComments &&
-          <Typography category="subheading" number={2}>{comments}</Typography>}
-        {hasEditableComments &&
+        <Typography category="headline">Comments:</Typography>
+      </Wrapper>
+      <Wrapper>
+        {!hasEditableComments && (
+          <Typography category="subheading" number={2}>
+            {comments}
+          </Typography>
+        )}
+        {hasEditableComments && (
           <textarea
             defaultValue={comments}
             onChange={onCommentEdit}
             rows="10"
             style={{ width: '100%' }}
-          />}
+          />
+        )}
       </Wrapper>
     </FlexContainer>
   );

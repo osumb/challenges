@@ -25,8 +25,8 @@ const DoneChallenge = ({
     <Typography category="title">
       {targetUser.firstName} challenged for spot {spot.row}
       {spot.file} for {performance.name} and came in&nbsp;
-      {userChallengeHelpers.rankingFromPlace(place)}. It was a{' '}
-      {challengeType} challenge
+      {userChallengeHelpers.rankingFromPlace(place)}. It was a {challengeType}{' '}
+      challenge
     </Typography>
   );
 };

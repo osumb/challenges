@@ -14,7 +14,9 @@ const ButtonContainer = styled.div`
   justify-content: flex-start;
   margin-top: 5px;
 `;
-const ButtonSpacer = styled.div`margin: 0 10px;`;
+const ButtonSpacer = styled.div`
+  margin: 0 10px;
+`;
 
 export default class Confirm extends React.PureComponent {
   static get propTypes() {
