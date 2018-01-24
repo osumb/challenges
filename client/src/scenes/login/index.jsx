@@ -111,12 +111,13 @@ export default class Login extends React.PureComponent {
 
     return (
       <Container requesting={requesting}>
-        {this.state.failed &&
+        {this.state.failed && (
           <Typography category="display" number={1}>
             Sorry, the username or password is incorrect
-          </Typography>}
+          </Typography>
+        )}
         <Media query={{ minWidth: screenSizes.landscapeIPhone5.width }}>
-          {matches =>
+          {matches => (
             <LoginInputs
               className="Login-inputs"
               flexDirection={matches ? 'row' : 'column'}
@@ -144,7 +145,8 @@ export default class Login extends React.PureComponent {
                 </Button>
               </LoginInput>
               {requesting && <CircularProgress />}
-            </LoginInputs>}
+            </LoginInputs>
+          )}
         </Media>
         <Link to="/password_reset_requests/new">Need A New Password?</Link>
       </Container>

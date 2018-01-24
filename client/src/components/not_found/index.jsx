@@ -10,11 +10,12 @@ const Container = styled.div`
   flex-direction: column;
 `;
 
-const NotFound = () =>
+const NotFound = () => (
   <Container>
     <img src={image} alt="404.png" />
     <h2>Not Found</h2>
     <Link to="/">Get me outta here!</Link>
-  </Container>;
+  </Container>
+);
 
 export default NotFound;

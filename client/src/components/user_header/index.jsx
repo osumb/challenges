@@ -36,20 +36,24 @@ const SpotCircle = styled.div`
   width: 100px;
   margin-right: 4px;
 `;
-const SpotText = styled.h3`align-self: center;`;
+const SpotText = styled.h3`
+  align-self: center;
+`;
 
-const UserHeader = userProps =>
+const UserHeader = userProps => (
   <Container>
-    {helpers.isAdmin(userProps) || helpers.isDirector(userProps)
-      ? <AdminTag>Admin</AdminTag>
-      : <SpotCircle>
-          <SpotText>{`${userProps.currentSpot.row}${userProps.currentSpot
-            .file}`}</SpotText>
-        </SpotCircle>}
-    <NameHeader>
-      {`${userProps.firstName} ${userProps.lastName}`}
-    </NameHeader>
-  </Container>;
+    {helpers.isAdmin(userProps) || helpers.isDirector(userProps) ? (
+      <AdminTag>Admin</AdminTag>
+    ) : (
+      <SpotCircle>
+        <SpotText>{`${userProps.currentSpot.row}${
+          userProps.currentSpot.file
+        }`}</SpotText>
+      </SpotCircle>
+    )}
+    <NameHeader>{`${userProps.firstName} ${userProps.lastName}`}</NameHeader>
+  </Container>
+);
 
 UserHeader.propTypes = pick(userPropTypes, [
   'firstName',

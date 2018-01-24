@@ -2,8 +2,4 @@
 
 # bin/js_format: Format all .js and .jsx files with prettier
 
-# format all *.js files
-find ./client/src/** -name '*.js' | xargs prettier --single-quote --write
-
-# format all *.jsx files
-find ./client/src/** -name '*.jsx' | xargs prettier --single-quote --write
+(cd client && yarn prettier)

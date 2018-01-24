@@ -90,17 +90,18 @@ class Profile extends React.PureComponent {
           justifyContent="space-between"
           width="95%"
         >
-          {(showCreateDisciplineAction || disciplineActions.length > 0) &&
+          {(showCreateDisciplineAction || disciplineActions.length > 0) && (
             <FlexChild flex="1" minWidth="350px" margin="10px">
               <Elevation>
-                {showCreateDisciplineAction &&
+                {showCreateDisciplineAction && (
                   <FlexChild padding="10px">
                     <CreateDisciplineAction
                       user={user}
                       onCreate={this.handleDACreate}
                     />
-                  </FlexChild>}
-                {disciplineActions.map(da =>
+                  </FlexChild>
+                )}
+                {disciplineActions.map(da => (
                   <div key={da.id}>
                     <PastDisciplineAction
                       {...da}
@@ -109,13 +110,14 @@ class Profile extends React.PureComponent {
                       onDelete={this.handleDADelete}
                     />
                   </div>
-                )}
+                ))}
               </Elevation>
-            </FlexChild>}
-          {(Boolean(currentChallenge) || pastChallenges.length > 0) &&
+            </FlexChild>
+          )}
+          {(Boolean(currentChallenge) || pastChallenges.length > 0) && (
             <FlexChild flex="1" minWidth="350px" margin="10px">
               <Elevation>
-                {currentChallenge &&
+                {currentChallenge && (
                   <FlexChild padding="10px">
                     <CurrentChallengeAdmin
                       {...currentChallenge}
@@ -123,15 +125,17 @@ class Profile extends React.PureComponent {
                       onDelete={this.handleCurrentChallengeDelete}
                       targetUserBuckId={user.buckId}
                     />
-                  </FlexChild>}
-                {pastChallenges.map(c =>
+                  </FlexChild>
+                )}
+                {pastChallenges.map(c => (
                   <FlexContainer key={c.id} padding="10px">
                     <DoneChallenge {...c} targetUserBuckId={user.buckId} />
                     <ListDropdownSeparator />
                   </FlexContainer>
-                )}
+                ))}
               </Elevation>
-            </FlexChild>}
+            </FlexChild>
+          )}
         </FlexContainer>
       </FlexContainer>
     );

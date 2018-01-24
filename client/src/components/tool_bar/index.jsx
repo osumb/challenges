@@ -23,24 +23,27 @@ export default function ToolBar({
 }) {
   return (
     <Container className="mdc-toolbar mdc-toolbar--fixed challenges-toolbar">
-      {iconElementLeft &&
+      {iconElementLeft && (
         <section className="mdc-toolbar__section mdc-toolbar__section--align-start">
           {iconElementLeft}
-        </section>}
+        </section>
+      )}
       <Media query={{ maxWidth: screenSizes.portraitIPhone6Plus.width }}>
-        {matches =>
+        {matches => (
           <Typography
             className="mdc-toolbar__title"
             category="display"
             number={1}
           >
             {matches ? altTitle : title}
-          </Typography>}
+          </Typography>
+        )}
       </Media>
-      {iconElementRight &&
+      {iconElementRight && (
         <section className="mdc-toolbar__section mdc-toolbar__section--align-end">
           {iconElementRight}
-        </section>}
+        </section>
+      )}
     </Container>
   );
 }

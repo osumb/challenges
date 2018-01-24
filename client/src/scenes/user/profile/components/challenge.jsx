@@ -30,7 +30,8 @@ export default function Challenge({ performanceName, spot, userChallenge }) {
           </Typography>
           <div>&nbsp;&nbsp;&nbsp;&nbsp;</div>
           <Typography category="display" number={1}>
-            {spot.row}{spot.file}
+            {spot.row}
+            {spot.file}
           </Typography>
         </Header>
         <UserChallenge

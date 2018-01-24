@@ -125,9 +125,9 @@ class Search extends React.PureComponent {
             query={getSearchQueryFromQueryString(this.props.location.search)}
             requesting={requesting}
           >
-            {searchResults.map(({ buckId, ...rest }) =>
+            {searchResults.map(({ buckId, ...rest }) => (
               <SearchResultListItem key={buckId} buckId={buckId} {...rest} />
-            )}
+            ))}
           </SearchResultList>
         </Results>
         {requesting && <CircularProgress />}

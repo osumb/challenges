@@ -18,8 +18,12 @@ import TriChallengeableUser from './tri_challengeable_user';
 import Typography from '../../../../components/typography';
 import Select from '../../../../components/select';
 
-const ButtonWrapper = styled.div`margin: 10px;`;
-const ErrorText = styled.div`color: red;`;
+const ButtonWrapper = styled.div`
+  margin: 10px;
+`;
+const ErrorText = styled.div`
+  color: red;
+`;
 
 export default class ChallengeSelect extends React.PureComponent {
   static get propTypes() {
@@ -56,8 +60,9 @@ export default class ChallengeSelect extends React.PureComponent {
 
   handleChallengeCreate(spot) {
     const spotStr = `${spot.row}${spot.file}`;
-    const s = `Successfully challenged ${spotStr} for the ${this.props
-      .performance.name}!`;
+    const s = `Successfully challenged ${spotStr} for the ${
+      this.props.performance.name
+    }!`;
 
     this.setState({
       errorMessage: null,
@@ -160,12 +165,13 @@ export default class ChallengeSelect extends React.PureComponent {
         alignItems="center"
         justifyContent={justifyContent}
       >
-        {errorMessage &&
+        {errorMessage && (
           <ErrorText>
             <Typography category={typographyCategory} number={typographyNumber}>
               **{errorMessage}**
             </Typography>
-          </ErrorText>}
+          </ErrorText>
+        )}
         <Typography category={typographyCategory} number={typographyNumber}>
           Please make a challenge for the {performance.name}
         </Typography>

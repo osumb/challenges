@@ -19,7 +19,7 @@ const UserChallengeEvaluation = ({
   place,
   userChallenge,
   userCount
-}) =>
+}) => (
   <Elevation>
     <FlexContainer flexDirection="column">
       <FlexChild flex="0">
@@ -46,7 +46,8 @@ const UserChallengeEvaluation = ({
         />
       </FlexChild>
     </FlexContainer>
-  </Elevation>;
+  </Elevation>
+);
 
 UserChallengeEvaluation.propTypes = {
   comments: PropTypes.string,

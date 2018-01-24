@@ -8,10 +8,11 @@ const Image = styled.img`
   width: 130px;
 `;
 
-const Header = () =>
+const Header = () => (
   <ToolBar
     iconElementRight={<Image src="/images/script-ohio-white.png" />}
     title="OSUMB Challenge Manager"
-  />;
+  />
+);
 
 export default Header;

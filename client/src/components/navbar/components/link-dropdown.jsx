@@ -26,7 +26,7 @@ const DropdownContainer = styled.div`
 `;
 const LinkWrapper = styled.div`
   padding: 15px;
-  border-bottom: 1px solid rgba(0, 0, 0, .12);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.12);
 `;
 
 export default class LinkDropdown extends PureComponent {
@@ -116,7 +116,7 @@ export default class LinkDropdown extends PureComponent {
       >
         {displayName}
         <Dropdown open={this.state.open}>
-          {links.map(({ name, path }) =>
+          {links.map(({ name, path }) => (
             <span key={path}>
               <LinkWrapper>
                 <Link to={path} style={{ color: 'black' }}>
@@ -124,7 +124,7 @@ export default class LinkDropdown extends PureComponent {
                 </Link>
               </LinkWrapper>
             </span>
-          )}
+          ))}
         </Dropdown>
       </Container>
     );

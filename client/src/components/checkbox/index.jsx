@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import './index.scss';
 
-const Checkbox = ({ disabled, label, getRef }) =>
+const Checkbox = ({ disabled, label, getRef }) => (
   <div className="mdc-form-field">
     <div className="mdc-checkbox mdc-theme--challenges">
       <input
@@ -23,11 +23,9 @@ const Checkbox = ({ disabled, label, getRef }) =>
         </svg>
       </div>
     </div>
-    {label &&
-      <label>
-        {label}
-      </label>}
-  </div>;
+    {label && <label>{label}</label>}
+  </div>
+);
 
 Checkbox.propTypes = {
   disabled: PropTypes.bool,

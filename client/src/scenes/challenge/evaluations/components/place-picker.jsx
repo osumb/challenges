@@ -20,8 +20,8 @@ const Chip = styled.p`
     font-weight: bold;
     opacity: 1;
   `} ${({ active }) =>
-  !active &&
-  `
+      !active &&
+      `
     background-color: white;
     font-weight: lighter;
     opacity: 0.75;
@@ -30,16 +30,17 @@ const Chip = styled.p`
 
 const placePickerOnClick = (onClick, place) => () => onClick(place);
 
-const PlacePicker = ({ numberOfPlaces, onPlacePick, place }) =>
+const PlacePicker = ({ numberOfPlaces, onPlacePick, place }) => (
   <FlexContainer flexDirection="row">
-    {[...Array(numberOfPlaces).keys()].map(p => p + 1).map(p =>
+    {[...Array(numberOfPlaces).keys()].map(p => p + 1).map(p => (
       <FlexChild key={p} flex="0">
         <Chip active={place === p} onClick={placePickerOnClick(onPlacePick, p)}>
           {p}
         </Chip>
       </FlexChild>
-    )}
-  </FlexContainer>;
+    ))}
+  </FlexContainer>
+);
 
 PlacePicker.propTypes = {
   numberOfPlaces: PropTypes.number.isRequired,

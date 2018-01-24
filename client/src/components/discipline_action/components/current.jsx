@@ -18,18 +18,16 @@ export default function CurrentDisciplineAction({
   reason
 }) {
   const permission = allowedToChallenge ? 'are' : "aren't";
-  const performanceStr = `You ${permission} allowed to challenge for the ${performance.name}`;
+  const performanceStr = `You ${permission} allowed to challenge for the ${
+    performance.name
+  }`;
   const reasonStr = `Reason: ${reason}`;
 
   return (
     <Elevation>
       <Container>
-        <Typography category="headline">
-          {performanceStr}
-        </Typography>
-        <Typography category="headline">
-          {reasonStr}
-        </Typography>
+        <Typography category="headline">{performanceStr}</Typography>
+        <Typography category="headline">{reasonStr}</Typography>
       </Container>
     </Elevation>
   );

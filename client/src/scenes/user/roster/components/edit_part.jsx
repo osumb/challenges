@@ -65,11 +65,13 @@ export default class EditPart extends React.PureComponent {
               this.partsSelect = ref;
             }}
           >
-            {userHelpers.partsForInstrument(this.props.row.instrument).map(p =>
-              <option className="mcd-list-item" key={p}>
-                {p}
-              </option>
-            )}
+            {userHelpers
+              .partsForInstrument(this.props.row.instrument)
+              .map(p => (
+                <option className="mcd-list-item" key={p}>
+                  {p}
+                </option>
+              ))}
           </Select>
           <Container>
             <EditButton

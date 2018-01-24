@@ -58,7 +58,7 @@ export default class DesktopNav extends PureComponent {
               Home
             </Link>
           </LinkWrapper>
-          {visibleRoutes.map(key =>
+          {visibleRoutes.map(key => (
             <LinkDropdown
               displayName={mainRoutes[key].displayName}
               key={key}
@@ -66,10 +66,11 @@ export default class DesktopNav extends PureComponent {
                 canUserSeeLink(link, user)
               )}
             />
-          )}
+          ))}
         </LeftContainer>
-        {!isEmptyObject(user) &&
-          <LinkWrapper onClick={onLogout}>Logout</LinkWrapper>}
+        {!isEmptyObject(user) && (
+          <LinkWrapper onClick={onLogout}>Logout</LinkWrapper>
+        )}
       </Container>
     );
   }

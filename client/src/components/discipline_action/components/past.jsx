@@ -46,10 +46,11 @@ export default class PastDisciplineAction extends React.PureComponent {
           For the {performance.name}, {user.firstName} was disciplined for{' '}
           {reason}
         </Typography>
-        {showDelete &&
+        {showDelete && (
           <Button onClick={this.handleDeleteClick} primary>
             Delete
-          </Button>}
+          </Button>
+        )}
       </div>
     );
   }

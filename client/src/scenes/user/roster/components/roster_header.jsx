@@ -20,7 +20,9 @@ const Container = styled.div`
   text-align: center;
   justify-content: center;
 `;
-const Download = styled.img`margin-left: 10px;`;
+const Download = styled.img`
+  margin-left: 10px;
+`;
 
 const handleDownLoadClick = users => () => {
   const csv = usersToCsv(users);

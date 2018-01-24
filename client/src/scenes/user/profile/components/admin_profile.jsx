@@ -37,12 +37,13 @@ const Container = styled.div`
   justify-content: center;
 `;
 
-const AdminProfile = props =>
+const AdminProfile = props => (
   <Container>
     <UserHeader {...pick(props.user, UserHeader.props)} />
     <PerformanceWindow {...props.nextPerformance} />
     {adminText}
-  </Container>;
+  </Container>
+);
 
 AdminProfile.propTypes = {
   nextPerformance: PropTypes.shape(performancePropTypes.performance),

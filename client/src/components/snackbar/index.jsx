@@ -66,9 +66,7 @@ export default class Snackbar extends React.PureComponent {
           this.snackbar = snackbar;
         }}
       >
-        <div className="mdc-snackbar__text">
-          {this.props.message}
-        </div>
+        <div className="mdc-snackbar__text">{this.props.message}</div>
         <div className="mdc-snackbar__action-button mdc-snackbar__action-wrapper" />
       </div>
     );
