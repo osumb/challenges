@@ -26,6 +26,7 @@
     "react": "~16.2.0",
     "react-datetime": "~2.11.1",
     "react-dom": "~16.2.0",
+    "react-loadable": "~5.3.1",
     "react-media": "~1.6.0",
     "react-modal": "~3.1.7",
     "react-router-dom": "~4.2.0",

@@ -1,29 +1,25 @@
 import React, { Component } from 'react';
+import Loadable from 'react-loadable';
 
-export default function asyncComponent(importComponent) {
-  class AsyncComponent extends Component {
-    constructor(props) {
-      super(props);
+import { errorEmitter } from '../../utils';
 
-      this.state = {
-        component: null
-      };
-    }
-
-    async componentDidMount() {
-      const { default: component } = await importComponent();
-
-      this.setState({
-        component: component
-      });
-    }
-
-    render() {
-      const C = this.state.component;
-
-      return C ? <C {...this.props} /> : null;
-    }
+const Loading = function({ isLoading, error }) {
+  if (isLoading) {
+    return null;
   }
 
-  return AsyncComponent;
+  if (error) {
+    errorEmitter.dispatch(
+      'Sorry! There was trouble loading the page. Please refresh.'
+    );
+  }
+
+  return null;
+};
+
+export default function asyncComponent(importComponent) {
+  return Loadable({
+    loader: importComponent,
+    loading: Loading
+  });
 }
