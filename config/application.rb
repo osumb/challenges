@@ -1,4 +1,3 @@
-# frozen_string_literal: true
 require_relative 'boot'
 
 require "rails"
@@ -37,5 +36,7 @@ module Challenges
     config.action_view.logger = nil
 
     config.active_job.queue_adapter = :resque
+
+    config.action_mailer.perform_deliveries = ENV["SEND_EMAILS"] == "true"
   end
 end

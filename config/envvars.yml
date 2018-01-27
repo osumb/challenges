@@ -9,6 +9,9 @@ required:
   DISABLE_ROBOTS:
     - description: "Whether or not to disable robot scrapers (Google search engine and such)"
     - example: "true"
+  EMAIL_STRATEGY:
+    - description: "Whether to actually send emails"
+    - example: "real or fake"
   FROM_EMAIL:
     - description: "The address all emails sent this app are 'from'"
     - example: "joe@example.com"
@@ -36,6 +39,9 @@ required:
   SENDGRID_PASSWORD:
     - description: "Password for the sendgrid account"
     - example: "some super secure password"
+  SEND_EMAILS:
+    - description: "Whether to actually send emails or not"
+    - example: "true or false"
   SENTRY_SERVER_DSN:
     - description: "endpoint for the Sentry.io endpoint for server error tracking"
     - example: "https://xxxx@sentry.io/12345"
@@ -50,6 +56,18 @@ development:
 heroku:
   DATABASE_URL:
     - description: "Database url that Heroku handles. We don't need one for dev"
+    - example: "Don't need one. Heroku sets this"
+  HEROKU_APP_ID:
+    - example: "Don't need one. Heroku sets this"
+  HEROKU_APP_NAME:
+    - example: "Don't need one. Heroku sets this"
+  HEROKU_RELEASE_CREATED_AT:
+    - example: "Don't need one. Heroku sets this"
+  HEROKU_RELEASE_VERSION:
+    - example: "Don't need one. Heroku sets this"
+  HEROKU_SLUG_COMMIT:
+    - example: "Don't need one. Heroku sets this"
+  HEROKU_SLUG_DESCRIPTION:
     - example: "Don't need one. Heroku sets this"
   NODE_MODULES_CACHE:
     - description: "Cache node modules when running `npm install`"
