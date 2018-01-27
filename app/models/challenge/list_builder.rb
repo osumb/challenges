@@ -6,7 +6,7 @@ class Challenge
       @performance = Performance.find(performance_id)
       @challenges = @performance.challenges
       @discipline_actions = @performance.discipline_actions
-      @date = Time.zone.now.strftime('%m-%d-%Y') # rubocop:disable Style/FormatStringToken
+      @date = Time.zone.now.strftime('%m-%d-%Y')
       @workbook = RubyXL::Workbook.new
       @worksheet = @workbook[0]
       @worksheet.sheet_name = "Challenge List #{@date}"
