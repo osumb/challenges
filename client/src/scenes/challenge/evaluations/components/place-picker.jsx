@@ -20,7 +20,7 @@ const Chip = styled.p`
     font-weight: bold;
     opacity: 1;
   `} ${({ active }) =>
-      !active &&
+  !active &&
       `
     background-color: white;
     font-weight: lighter;

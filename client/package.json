@@ -39,7 +39,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "eslint . —ext js,jsx",
+    "test": "eslint . --ext js,jsx",
     "eject": "react-scripts eject",
     "prettier": "find ./src/** -name '*.js' | xargs prettier --single-quote --write && find ./src/** -name '*.jsx' | xargs prettier --single-quote --write"
   },
