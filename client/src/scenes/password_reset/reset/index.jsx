@@ -71,7 +71,7 @@ class PasswordResetReset extends React.PureComponent {
       if (!password) {
         inputErrorMessage = 'Please enter a password';
       } else {
-        inputErrorMessage = "Passwords don't match";
+        inputErrorMessage = 'Passwords don\'t match';
       }
 
       this.setState({ inputErrorMessage });

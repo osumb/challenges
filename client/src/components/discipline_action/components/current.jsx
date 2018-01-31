@@ -17,7 +17,7 @@ export default function CurrentDisciplineAction({
   performance,
   reason
 }) {
-  const permission = allowedToChallenge ? 'are' : "aren't";
+  const permission = allowedToChallenge ? 'are' : 'aren\'t';
   const performanceStr = `You ${permission} allowed to challenge for the ${
     performance.name
   }`;
