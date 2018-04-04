@@ -1,4 +1,4 @@
-class DisciplineActionsController < ApplicationController
+class DisciplineActionsController < ApiController
   before_action :authenticate_user
   before_action :ensure_admin!
   before_action :ensure_performance_is_not_expired!

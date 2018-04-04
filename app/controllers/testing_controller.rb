@@ -1,4 +1,4 @@
-class TestingController < ApplicationController
+class TestingController < ApiController
   before_action :authenticate_user
   before_action :ensure_admin!
 
