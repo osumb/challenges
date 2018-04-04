@@ -1,4 +1,4 @@
-class UserChallengesController < ApplicationController
+class UserChallengesController < ApiController
   before_action :authenticate_user
   before_action :ensure_challenge_exists!, only: [:create]
   before_action :ensure_user_exists!, only: [:create]

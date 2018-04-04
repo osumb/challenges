@@ -1,4 +1,4 @@
-class PerformancesController < ApplicationController
+class PerformancesController < ApiController
   before_action :authenticate_user
   before_action :ensure_admin!, except: [:challengeable_users]
   before_action :ensure_performance_not_stale!, only: %i[update destroy]

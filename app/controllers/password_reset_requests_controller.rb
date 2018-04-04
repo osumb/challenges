@@ -1,4 +1,4 @@
-class PasswordResetRequestsController < ApplicationController
+class PasswordResetRequestsController < ApiController
   # rubocop:disable Metrics/MethodLength
   def create
     @user = User.find_by buck_id: params[:buck_id]&.downcase

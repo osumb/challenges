@@ -1,4 +1,4 @@
-class ApplicationController < ActionController::API
+class ApiController < ActionController::API
   include Knock::Authenticable
 
   before_action :set_raven_context

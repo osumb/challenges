@@ -1,4 +1,4 @@
-class ChallengesController < ApplicationController
+class ChallengesController < ApiController
   before_action :authenticate_user
   before_action :ensure_not_challenging_alternate!, only: [:create]
   before_action :ensure_performance_is_current_and_open!, only: [:create]
