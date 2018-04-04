@@ -1,7 +1,7 @@
 # rubocop:disable Style/FileName
 source 'https://rubygems.org'
 
-ruby '2.4.0'
+ruby '2.5.0'
 
 gem 'bcrypt', '~> 3.1.7'
 gem 'jbuilder', '~> 2.5'
