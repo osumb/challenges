@@ -45,8 +45,8 @@ class Challenge
       discipline_actions.map { |da| discipline_action_to_list_row(da) }
     end
 
-    def discipline_action_to_list_row(da)
-      [da.user.current_spot.to_s, da.user.full_name, da.reason]
+    def discipline_action_to_list_row(discipline_action)
+      [discipline_action.user.current_spot.to_s, discipline_action.user.full_name, discipline_action.reason]
     end
 
     def challenges_to_list_items

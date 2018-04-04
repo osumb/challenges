@@ -25,9 +25,9 @@ class UsersController < ApplicationController
     @user = UserService.swap_in_new_user(user: @user) if should_swap_in_new_user
     if @user.valid?
       PasswordResetRequestService.send_for_new_user(user: @user)
-      render 'users/new', status: 201
+      render 'users/new', status: :created
     else
-      render json: { resource: 'user', errors: @user.errors }, status: 409
+      render json: { resource: 'user', errors: @user.errors }, status: :conflict
     end
   end
 
@@ -36,10 +36,10 @@ class UsersController < ApplicationController
     part = User.parts[params[:part]]
     @user.part = part
 
-    if @user.update_attributes update_params
-      render :show, status: 200
+    if @user.update update_params
+      render :show, status: :ok
     else
-      render json: { resource: 'user', errors: user.errors }, status: 409
+      render json: { resource: 'user', errors: user.errors }, status: :conflict
     end
   end
 
@@ -75,7 +75,7 @@ class UsersController < ApplicationController
       if user.save(validate: false) && target_user.save(validate: false)
         head 204
       else
-        render json: { resource: 'user', errors: [user.errors, target_user.errors] }, status: 409
+        render json: { resource: 'user', errors: [user.errors, target_user.errors] }, status: :conflict
       end
     end
   end
@@ -91,7 +91,7 @@ class UsersController < ApplicationController
     if errors.none?
       head 204
     else
-      render json: { resource: 'user', errors: errors }, status: 409
+      render json: { resource: 'user', errors: errors }, status: :conflict
     end
   end
 
@@ -133,7 +133,6 @@ class UsersController < ApplicationController
     return unless invalid_prr || invalid_password || invalid_user_id
     head 403
   end
-  # rubocop:enable Metrics/CyclomaticComplexity
 
   def ensure_new_part_exists!
     return if params['part'].nil?

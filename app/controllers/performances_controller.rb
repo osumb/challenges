@@ -8,9 +8,9 @@ class PerformancesController < ApplicationController
     @performance = Performance.new create_params
     if @performance.save
       QueueNewPerformanceEmailsJob.perform_later(performance_id: @performance.id)
-      render :show, status: 201
+      render :show, status: :created
     else
-      render json: { resource: 'performance', errors: @performance.errors }, status: 409
+      render json: { resource: 'performance', errors: @performance.errors }, status: :conflict
     end
   end
 
@@ -24,11 +24,11 @@ class PerformancesController < ApplicationController
 
   def update
     @performance = Performance.find params[:id]
-    @performance.update_attributes update_params
+    @performance.update update_params
     if @performance.save
-      render :show, status: 200
+      render :show, status: :ok
     else
-      render json: { resource: 'performance', errors: @performance.errors }, status: 409
+      render json: { resource: 'performance', errors: @performance.errors }, status: :conflict
     end
   end
 
@@ -37,7 +37,7 @@ class PerformancesController < ApplicationController
     if @performance.destroy
       head 204
     else
-      render json: { resource: 'performance', errors: @performance.errors }, status: 409
+      render json: { resource: 'performance', errors: @performance.errors }, status: :conflict
     end
   end
 
@@ -86,7 +86,7 @@ class PerformancesController < ApplicationController
     return unless p.stale?
     render json: {
       resource: 'performance', errors: [performance: 'Performance can\'t be updated because the window is closed']
-    }, status: 403
+    }, status: :forbidden
   end
 
   def parse_challengeable_users(result)
@@ -136,7 +136,7 @@ class PerformancesController < ApplicationController
           discipline actions made for the #{performance.name} so it can't be deleted"
         }
       ]
-    }, status: 403
+    }, status: :forbidden
   end
   # rubocop:enable Metrics/MethodLength
 end

@@ -3,28 +3,17 @@ source 'https://rubygems.org'
 
 ruby '2.4.0'
 
-# Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '~> 5.0.1'
-# Use postgresql as the database for Active Record
-gem 'pg', '~> 0.18'
-# Use Puma as the app server
-gem 'puma', '~> 3.0'
-# Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
-gem 'jbuilder', '~> 2.5'
-# Use ActiveModel has_secure_password
 gem 'bcrypt', '~> 3.1.7'
-# Parse xlsx files for data seeding and mass user upload
-gem 'rubyXL', '~> 3.3'
-# JWT auth library for user authentication
-gem 'knock', '~> 2.1', '>= 2.1.1'
-# JWT encode/decode lib
+gem 'jbuilder', '~> 2.5'
 gem 'jwt', '~>1.5.6'
-# Job processing
+gem 'knock', '~> 2.1', '>= 2.1.1'
+gem 'pg', '~> 0.18'
+gem 'puma', '~> 3.0'
+gem 'rails', '~> 5.1.6'
 gem 'resque', '~>1.27.4'
 gem 'resque-heroku-signals'
-# Error Tracking
+gem 'rubyXL', '~> 3.3'
 gem 'sentry-raven'
-
 gem 'tzinfo-data', '~> 1.2017', '>= 1.2017.2'
 
 group :development, :test do

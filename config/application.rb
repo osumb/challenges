@@ -1,4 +1,5 @@
-require_relative 'boot'
+require_relative "boot"
+require_relative "../app/middleware/new_token_middleware"
 
 require "rails"
 # Pick the frameworks you want:
@@ -31,7 +32,7 @@ module Challenges
       g.test_framework  :rspec
     end
 
-    config.middleware.use "NewTokenMiddleware"
+    config.middleware.use NewTokenMiddleware
 
     config.action_view.logger = nil
 

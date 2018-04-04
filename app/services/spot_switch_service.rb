@@ -34,9 +34,9 @@ class SpotSwitchService
     return if winner.current_spot == challenge.spot
     User.transaction do
       s = winner.current_spot
-      winner.update_attributes!(current_spot: nil)
-      loser.update_attributes!(current_spot: s)
-      winner.update_attributes!(current_spot: challenge.spot)
+      winner.update!(current_spot: nil)
+      loser.update!(current_spot: s)
+      winner.update!(current_spot: challenge.spot)
     end
   end
 
@@ -46,9 +46,9 @@ class SpotSwitchService
     user_who_had_spot = User.find_by(current_spot: challenge.spot)
     User.transaction do
       winner_spot = winner.current_spot
-      user_who_had_spot.update_attributes!(current_spot: nil)
-      winner.update_attributes!(current_spot: challenge.spot)
-      user_who_had_spot.update_attributes!(current_spot: winner_spot)
+      user_who_had_spot.update!(current_spot: nil)
+      winner.update!(current_spot: challenge.spot)
+      user_who_had_spot.update!(current_spot: winner_spot)
     end
   end
 
@@ -64,13 +64,13 @@ class SpotSwitchService
     return if first_place.current_spot.file < second_place.current_spot.file && second_place.current_spot.file < last_place.current_spot.file
     spots = [first_place.current_spot, second_place.current_spot, last_place.current_spot].sort { |a, b| a.file - b.file }
 
-    first_place.update_attributes!(current_spot: nil)
-    second_place.update_attributes!(current_spot: nil)
-    last_place.update_attributes!(current_spot: nil)
+    first_place.update!(current_spot: nil)
+    second_place.update!(current_spot: nil)
+    last_place.update!(current_spot: nil)
 
-    first_place.update_attributes!(current_spot: spots.first)
-    second_place.update_attributes!(current_spot: spots[1])
-    last_place.update_attributes!(current_spot: spots.last)
+    first_place.update!(current_spot: spots.first)
+    second_place.update!(current_spot: spots[1])
+    last_place.update!(current_spot: spots.last)
   end
   # rubocop:enable Metrics/MethodLength, Metrics/LineLength
 
@@ -87,5 +87,5 @@ class SpotSwitchService
       0
     end
   end
-  # rubocop:enable Metrics/LineLength, Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
+  # rubocop:enable Metrics/LineLength, Metrics/PerceivedComplexity
 end
