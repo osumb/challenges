@@ -144,7 +144,7 @@ class User < ApplicationRecord
     return if instrument_sousaphone? && valid_sousaphone_part(User.parts[part])
     errors.add(:admin, "with instrument #{instrument} can't have part #{part}")
   end
-  # rubocop:enable Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
+  # rubocop:enable Metrics/PerceivedComplexity
 
   def downcase_email
     email.try(:downcase!)

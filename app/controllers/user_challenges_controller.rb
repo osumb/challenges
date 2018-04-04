@@ -12,9 +12,9 @@ class UserChallengesController < ApplicationController
     @user_challenge = UserChallenge.new(user: challenger, challenge: challenge, spot: challenger.current_spot)
 
     if @user_challenge.save
-      render 'user_challenges/show', status: 201
+      render 'user_challenges/show', status: :created
     else
-      render json: { resource: 'user_challenge', errors: @user_challenge.errors }, status: 409
+      render json: { resource: 'user_challenge', errors: @user_challenge.errors }, status: :conflict
     end
   end
 
@@ -78,18 +78,18 @@ class UserChallengesController < ApplicationController
 
   def ensure_challenge_exists!
     return if Challenge.exists? id: params[:challenge_id]
-    render json: { resource: 'user_challenge', errors: [challenge: 'challenge doesn\'t exist'] }, status: 403
+    render json: { resource: 'user_challenge', errors: [challenge: 'challenge doesn\'t exist'] }, status: :forbidden
   end
 
   def ensure_user_exists!
     return if User.exists? buck_id: params[:challenger_buck_id]&.downcase
-    render json: { resource: 'user_challenge', errors: [user: 'user doesn\'t exist'] }, status: 403
+    render json: { resource: 'user_challenge', errors: [user: 'user doesn\'t exist'] }, status: :forbidden
   end
 
   def ensure_challenge_not_full!
     challenge = Challenge.includes(:users).find_by id: params[:challenge_id]
     return unless challenge.full?
-    render json: { resource: 'user_challenge', errors: [challenge: 'challenge is already full'] }, status: 403
+    render json: { resource: 'user_challenge', errors: [challenge: 'challenge is already full'] }, status: :forbidden
   end
 
   def ensure_correct_user_for_delete!
@@ -98,7 +98,10 @@ class UserChallengesController < ApplicationController
     user_challenge = UserChallenge.includes(:user).find_by id: params[:id]
     challenge = user_challenge.challenge
     return if UserChallenge.can_user_remove_self_from_challenge? user, challenge, user_challenge
-    render json: { resource: 'user_challenge', errors: [user: 'doesn\'t have access to that challenge'] }, status: 403
+    render json: {
+      resource: 'user_challenge',
+      errors: [user: 'doesn\'t have access to that challenge']
+    }, status: :forbidden
   end
 
   def ensure_user_can_evaluate!
