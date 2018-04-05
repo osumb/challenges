@@ -3,6 +3,7 @@ source 'https://rubygems.org'
 
 ruby '2.5.0'
 
+gem 'autoprefixer-rails', '8.2.0'
 gem 'bcrypt', '~> 3.1.7'
 gem 'jbuilder', '~> 2.5'
 gem 'jwt', '~>1.5.6'
