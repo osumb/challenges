@@ -26,7 +26,7 @@ module Challenges
     # Only loads a smaller set of middleware suitable for API only apps.
     # Middleware like session, flash, cookies can be added back manually.
     # Skip views, helpers and assets when generating a new resource.
-    config.api_only = true
+    config.api_only = false
 
     config.generators do |g|
       g.test_framework  :rspec
@@ -39,5 +39,8 @@ module Challenges
     config.active_job.queue_adapter = :resque
 
     config.action_mailer.perform_deliveries = ENV["SEND_EMAILS"] == "true"
+
+    config.assets.compile = true
+    config.assets.precompile = ["*.js", "*.css"]
   end
 end
