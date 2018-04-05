@@ -1,10 +1,5 @@
-#App {
+body {
   height: 100%;
   width: 100%;
-}
-
-#App-container {
-  height: 100%;
-  margin-top: 15px;
-  padding: 0 10px;
+  display: flex;
 }
