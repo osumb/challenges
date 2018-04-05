@@ -4,6 +4,9 @@ Rails.application.routes.draw do
   require 'resque/server'
   mount Resque::Server, at: '/jobs'
 
+  get 'application_template', to: 'index#application_template'
+  get 'robots.txt', to: 'index#robots'
+
   scope :api do
     post 'user_token' => 'user_token#create'
 
@@ -51,7 +54,6 @@ Rails.application.routes.draw do
     get 'testing/exception', to: 'testing#exception'
   end
 
-  get 'robots.txt', to: 'index#robots'
-  get '*path', to: 'index#index'
   root to: 'index#index'
+  get '*path', to: 'index#index'
 end

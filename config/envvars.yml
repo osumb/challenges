@@ -33,12 +33,12 @@ required:
   SECRET:
     - description: "Shhhhhhh. Don't tell anyone"
     - example: "sOm3___random!!!gArbagE***"
-  SENDGRID_USERNAME:
-    - description: "Username for the sendgrid account"
-    - example: "username"
   SENDGRID_PASSWORD:
     - description: "Password for the sendgrid account"
     - example: "some super secure password"
+  SENDGRID_USERNAME:
+    - description: "Username for the sendgrid account"
+    - example: "username"
   SEND_EMAILS:
     - description: "Whether to actually send emails or not"
     - example: "true or false"

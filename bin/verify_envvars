@@ -3,11 +3,16 @@
 require 'English'
 require 'YAML'
 
+APP_ABBREV_TO_NAME = {
+  staging: "osumbchallengesdev",
+  production: "osumbchallenges"
+}.freeze
+
 def is_dev?(app)
   app == 'development' || app == 'dev'
 end
 
-app = ARGV[0]
+app = APP_ABBREV_TO_NAME[ARGV[0].to_sym]
 
 if app.nil?
   puts 'USAGE: verify_envvars <heroku-app>'

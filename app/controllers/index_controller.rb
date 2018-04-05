@@ -12,4 +12,6 @@ class IndexController < ApplicationController
                   end
     render file: robots_file
   end
+
+  def application_template; end
 end
