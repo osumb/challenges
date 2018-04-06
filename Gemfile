@@ -16,6 +16,7 @@ gem 'resque-heroku-signals'
 gem 'rubyXL', '~> 3.3'
 gem 'sentry-raven'
 gem 'tzinfo-data', '~> 1.2017', '>= 1.2017.2'
+gem 'uglifier'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
