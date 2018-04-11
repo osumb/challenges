@@ -1,3 +1,8 @@
+/*
+*= require mdc.min.css
+*= require_tree .
+*/
+
 body {
   height: 100%;
   width: 100%;

@@ -23,5 +23,7 @@ module Challenges
     config.active_job.queue_adapter = :resque
 
     config.action_mailer.perform_deliveries = ENV["SEND_EMAILS"] == "true"
+
+    config.assets.paths << Rails.root.join("vendor", "assets", "*")
   end
 end
