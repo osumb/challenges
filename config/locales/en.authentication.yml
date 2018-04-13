@@ -1,0 +1,3 @@
+en:
+  authentication:
+    failed_login: "Sorry! That name.# and password combination is incorrect"
