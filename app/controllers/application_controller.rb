@@ -11,7 +11,7 @@ class ApplicationController < ActionController::Base
 
   def current_user
     if session[:buck_id]
-      @current_user ||= User.find_by(buck_id: session[:buck_id]) if session[:buck_id]
+      @current_user ||= User.find_by(buck_id: session[:buck_id])
     else
       @current_user = nil
     end
