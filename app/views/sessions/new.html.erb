@@ -1,0 +1,9 @@
+<div>Login Page</div>
+<%= form_with url: '/sessions' do |form| %>
+  <%= form.text_field :buck_id, placeholder: 'name.#' %>
+  <%= form.password_field :password, placeholder: '********' %>
+  <%= form.submit "Log In" %>
+<% end %>
+<% if flash[:error] %>
+  <p><%= flash[:error] %></p>
+<% end %>

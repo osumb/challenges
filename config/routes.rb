@@ -5,6 +5,12 @@ Rails.application.routes.draw do
   mount Resque::Server, at: '/jobs'
 
   get 'application_template', to: 'index#application_template'
+  get 'login', to: 'sessions#new'
+  get 'logged_in', to: 'sessions#show'
+
+  resources :sessions, only: [:create]
+  delete 'sessions/destroy', to: 'sessions#destroy'
+
   get 'robots.txt', to: 'index#robots'
 
   scope :api do
