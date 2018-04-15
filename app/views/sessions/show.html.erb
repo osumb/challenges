@@ -1,5 +1,5 @@
 <div>Logged In!</div>
 <p><%= @current_user.buck_id %></p>
-<%= form_with url: '/sessions/destroy', method: :delete do |form| %>
+<%= form_with url: '/sessions/destroy', method: :delete, builder: MaterialDesignFormBuilder do |form| %>
   <%= form.submit "Log Out" %>
 <% end %>
