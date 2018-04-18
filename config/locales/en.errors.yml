@@ -1,0 +1,3 @@
+en:
+  errors:
+    unexpected_value: "Unexpected %{variable_name} `%{value}`"

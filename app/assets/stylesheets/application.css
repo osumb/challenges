@@ -3,11 +3,16 @@
 *= require_tree .
 */
 
-body {
+html, body {
   height: 100%;
-  width: 100%;
   margin: 0;
   padding: 0;
+  font-family: sans-serif;
+  width: 100%;
+}
+
+body {
+  overflow-x: hidden;
   display: flex;
   flex-direction: column;
 
@@ -26,4 +31,43 @@ body {
   --screen-sizes-portrait-height-IPadPro: 1366px;
   --screen-sizes-portrait-width-IPad: 768px;
   --screen-sizes-portrait-width-IPadPro: 1024px;
+}
+
+a {
+  text-decoration: none;
+  color: black;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+input[type=submit] {
+  color: white !important;
+}
+
+.challenges-app-container-row {
+  display: flex;
+  flex-direction: row;
+  height: 100%;
+  width: 100%;
+  justify-content: center;
+  padding: 8px;
+}
+
+.challenges-app-container-column {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+  align-items: center;
+  padding: 8px;
+}
+
+.challenges-button-primary {
+  background-color: var(--colors-primary-gray);
+}
+
+.challenges-button-secondary {
+  background-color: var(--colors-secondary-gray);
 }

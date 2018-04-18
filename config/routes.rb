@@ -9,7 +9,7 @@ Rails.application.routes.draw do
   get 'logged_in', to: 'sessions#show'
 
   resources :sessions, only: [:create]
-  delete 'sessions/destroy', to: 'sessions#destroy'
+  get 'logout', to: 'sessions#destroy'
 
   get 'robots.txt', to: 'index#robots'
 

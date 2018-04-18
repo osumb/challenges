@@ -25,5 +25,9 @@ module Challenges
     config.action_mailer.perform_deliveries = ENV["SEND_EMAILS"] == "true"
 
     config.assets.paths << Rails.root.join("vendor", "assets", "*")
+
+    config.autoload_paths << Rails.root.join("app", "views", "helpers", "*")
+
+    config.action_controller.include_all_helpers = true
   end
 end

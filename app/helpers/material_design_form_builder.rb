@@ -23,7 +23,7 @@ class MaterialDesignFormBuilder < ActionView::Helpers::FormBuilder
   def text_layout(method, options) # rubocop:disable Metrics/MethodLength
     label_text = options.fetch(:label, method.to_s.humanize)
     label_options = options.fetch(:label_options, {}).merge(
-      class: ['mdc-textfield', 'mdc-textfield--upgraded', 'challenges-js__form_label']
+      class: ['mdc-textfield', 'mdc-textfield--upgraded', 'challenges--js__form_label']
     )
     input_defaults = { class: 'mdc-textfield__input' }
     input_options = input_defaults.merge(options.fetch(:input_options, {}))
