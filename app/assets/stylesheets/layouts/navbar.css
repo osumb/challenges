@@ -1,0 +1,45 @@
+.challenges-navbar {
+  display: flex;
+  flex-wrap: nowrap;
+  background-color: var(--colors-light-gray);
+  min-height: 48px;
+}
+
+.challenges-navbar-left-container {
+  display: flex;
+  flex: 1;
+  flex-wrap: nowrap;
+}
+
+.challenges-navbar-link-container {
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+  position: relative;
+}
+
+.challenges-navbar-link-container:hover {
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.challenges-navbar-link-dropdown {
+  position: absolute;
+  padding: 0;
+  background-color: white;
+  box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 6px, rgba(0, 0, 0, 0.12) 0px 1px 4px;
+  z-index: 1;
+  transition: all 0.25s ease-in-out;
+  overflow-y: hidden;
+  top: 100%;
+  max-height: 0px;
+}
+
+.challenges-navbar-link-dropdown-visible {
+  max-height: 200px;
+}
+
+.challenges-navbar-link-dropdown-item {
+  padding: 12px;
+  border-bottom: 1px solid var(--colors-light-gray);
+}

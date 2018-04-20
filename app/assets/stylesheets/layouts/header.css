@@ -1,0 +1,13 @@
+.challenges-toolbar {
+  background-color: var(--colors-secondary-gray) !important;
+  border-bottom: 6px solid var(--colors-primary-red) !important;
+  padding: 40px 0 !important;
+  position: relative !important;
+  z-index: 0 !important;
+}
+
+.challenges-toolbar--header {
+  height: 60px;
+  padding: 5px 5px 5px 0;
+  width: 130px;
+}

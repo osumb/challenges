@@ -1,5 +1,14 @@
 # rubocop:disable Metrics/ClassLength
 class User < ApplicationRecord
+  module Roles
+    ALL = [
+      ADMIN = 'admin'.freeze,
+      DIRECTOR = 'director'.freeze,
+      MEMBER = 'member'.freeze,
+      SQUAD_LEADER = 'squad_leader'.freeze
+    ].freeze
+  end
+
   self.primary_key = 'buck_id'
 
   scope :performers, -> { where(role: %i[member squad_leader], active: true) }

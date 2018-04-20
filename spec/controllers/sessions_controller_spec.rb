@@ -96,24 +96,24 @@ RSpec.describe SessionsController do
     end
   end
 
-  describe 'DELETE destroy' do
+  describe 'GET destroy' do
     context 'authenticated' do
       include_context 'with authentication'
 
       it 'clears the current session' do
-        delete :destroy
+        get :destroy
         expect(controller.session[:buck_id]).to be_nil
       end
 
       it 'redirects to /login' do
-        delete :destroy
+        get :destroy
         expect(response).to redirect_to('/login')
       end
     end
 
     context 'not authenticated' do
       it 'redirects to /login' do
-        delete :destroy
+        get :destroy
         expect(response).to redirect_to('/login')
       end
     end

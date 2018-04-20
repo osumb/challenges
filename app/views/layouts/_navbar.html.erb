@@ -1,0 +1,23 @@
+<div class="challenges-navbar">
+  <div class="challenges-navbar-left-container">
+    <div class="challenges-navbar-link-container">
+      <%= link_to "Home", root_path %>
+    </div>
+    <% Router.route_groups_for_user(@current_user).each do |route_group| %>
+      <% next if route_group[:routes].empty? %>
+      <div class="challenges-navbar-link-container challenges--js-navbar-link">
+        <%= route_group[:display_name] %>
+        <div class="challenges-navbar-link-dropdown">
+          <% route_group[:routes].each do |route| %>
+            <div class="challenges-navbar-link-dropdown-item"><%= link_to route[:name], route[:path] %></div>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+  <% if @current_user %>
+    <div class="challenges-navbar-link-container">
+      <%= link_to "Log Out", '/logout' %>
+    </div>
+  <% end %>
+</div>

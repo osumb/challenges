@@ -12,6 +12,8 @@
     <noscript>
       You need to enable JavaScript to run this app.
     </noscript>
+    <%= render "layouts/header" %>
+    <%= render "layouts/navbar" %>
     <%= yield %>
   </body>
   <%= javascript_include_tag "application", "data-turbolinks-track" => "reload" %>
