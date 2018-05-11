@@ -1,4 +1,6 @@
 class ApplicationController < ActionController::Base
+  helper_method :current_user
+
   def ensure_authenticated!
     return if current_user
     redirect_to '/login'
