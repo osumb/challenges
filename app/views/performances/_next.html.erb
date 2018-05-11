@@ -1,0 +1,14 @@
+<% if PerformanceHelper.next_performance.nil? %>
+  <div class="mdc-typography--title">There is no upcoming performance in the system</div>
+<% else %>
+  <% if PerformanceHelper.next_performance.window_open? %>
+    <div class="mdc-typography--display1"><%= PerformanceHelper.next_performance.name %> challenges are now open!</div>
+    <div class="mdc-typography--title">The window closes at <%= PerformanceHelper.next_performance.window_close.strftime("%b %d %I:%M %p") %></div>
+  <% else %>
+    <div class="mdc-typography--title">
+      Challenge signups for <%= PerformanceHelper.next_performance.name %> open at&nbsp;
+      <%= PerformanceHelper.next_performance.window_open.strftime("%b %d %I:%M %p") %> and close at&nbsp;
+      <%= PerformanceHelper.next_performance.window_close.strftime("%b %d %I:%M %p") %>
+    </div>
+  <% end %>
+<% end %>
