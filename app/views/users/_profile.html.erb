@@ -1,0 +1,9 @@
+<div class="challenges-app-container-column">
+  <%= render "users/user_header" %>
+  <%= render "performances/next" %>
+  <% if current_user.performer? %>
+    <div>Performer profile not implemented yet</div>
+  <% else %>
+    <%= render "users/admin_profile" %>
+  <% end %>
+</div>
