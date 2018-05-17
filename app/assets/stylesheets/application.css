@@ -55,7 +55,6 @@ input[type=submit] {
 .challenges-app-container-row {
   display: flex;
   flex-direction: row;
-  height: 100%;
   width: 100%;
   justify-content: center;
 }
@@ -63,7 +62,6 @@ input[type=submit] {
 .challenges-app-container-column {
   display: flex;
   flex-direction: column;
-  height: 100%;
   width: 100%;
   align-items: center;
 }

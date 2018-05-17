@@ -4,7 +4,7 @@
     <%= form.password_field :password %>
     <%= form.submit 'Log In' %>
   <% end %>
-  <% if flash[:error] %>
-    <p><%= flash[:error] %></p>
-  <% end %>
 </div>
+<% if flash[:error] %>
+  <div class='mcd-typography--title challenges-sessions-flash'><%= flash[:error] %></div>
+<% end %>

@@ -2,6 +2,8 @@ require 'rails_helper'
 
 describe AuthenticationService do
   describe '.authenticate_user' do
+    let(:session) { {} }
+
     context 'correct buck_id and password' do
       let(:password) { 'password' }
       let(:user) { create(:user, password: password) }
@@ -13,9 +15,15 @@ describe AuthenticationService do
       end
 
       it 'returns the user' do
-        result = described_class.authenticate_user(params)
+        result = described_class.authenticate_user(params, session)
 
         expect(result).to eq(user)
+      end
+
+      it 'sets the session :buck_id' do
+        described_class.authenticate_user(params, session)
+
+        expect(session[:buck_id]).to eq(user.buck_id)
       end
     end
 
@@ -30,7 +38,7 @@ describe AuthenticationService do
       end
 
       it 'returns something falsey' do
-        result = described_class.authenticate_user(params)
+        result = described_class.authenticate_user(params, session)
 
         expect(result).to be_falsey
       end
@@ -47,7 +55,7 @@ describe AuthenticationService do
       end
 
       it 'returns something falsey' do
-        result = described_class.authenticate_user(params)
+        result = described_class.authenticate_user(params, session)
 
         expect(result).to be_falsey
       end
@@ -64,10 +72,22 @@ describe AuthenticationService do
       end
 
       it 'returns something falsey' do
-        result = described_class.authenticate_user(params)
+        result = described_class.authenticate_user(params, session)
 
         expect(result).to be_falsey
       end
+    end
+  end
+
+  describe '.log_out_user' do
+    let(:session) do
+      { buck_id: 'fake_buck_id' }
+    end
+
+    it 'sets the session :buck_id to nil' do
+      described_class.log_out_user(session)
+
+      expect(session[:buck_id]).to be_nil
     end
   end
 end
