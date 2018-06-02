@@ -10,7 +10,7 @@ FactoryBot.define do
     password_digest password_digest
     sequence(:buck_id) { |n| "buckeye.#{n}" }
     instrument User.instruments[:trumpet]
-    part User.parts[:solo]
+    part User.parts[:first]
     role User.roles[:member]
     password_updated Time.zone.now
     association :current_spot, factory: :spot, row: :a, file: 2

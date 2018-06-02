@@ -1,0 +1,22 @@
+.challenges-create-challenge-no-performance {
+  text-align: center;
+}
+
+.challenges-admin-create-challenge {
+  display: flex;
+}
+
+.challenges-admin-create-challenge--child {
+  flex: 1;
+}
+
+.challenges-admin-create-challenge-users {
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.challenges-admin-create-challenge-list-container {
+  display: flex;
+  overflow: scroll;
+}

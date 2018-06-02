@@ -1,0 +1,10 @@
+<% if @result.challenge_options.length <= 0 %>
+  <div class="mdc-typography--display1"><%= I18n.t!("client_messages.challenges.new.cannot_challenge") %></div>
+<% else %>
+  <%= render(
+    "challenges/challenge_select",
+    challenge_options: @result.challenge_options,
+    title: "Please make a challenge for the #{@result.next_performance.name}",
+    user: @result.user
+  ) %>
+<% end %>

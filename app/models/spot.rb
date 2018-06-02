@@ -56,6 +56,10 @@ class Spot < ApplicationRecord
     end
     # rubocop:enable Metrics/MethodLength, Style/IndentationConsistency
 
+    def get_row_from_database_value(db_value)
+      Spot.rows.find { |_key, value| db_value == value }.first
+    end
+
     private
 
     def valid_a_x_row_instrument_part(instrument, part)

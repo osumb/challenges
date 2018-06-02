@@ -1,3 +1,11 @@
-<div>
-  Create a challenge!
-</div>
+<% if @result.next_performance.nil? %>
+  <div class="mdc-typography--display1 challenges-create-challenge-no-performance">
+    <%= I18n.t!("client_messages.challenges.new.no_performance") %>
+  </div>
+<% else %>
+  <% if current_user.admin? %>
+    <%= render "challenges/admin_create_challenge" %>
+  <% else %>
+    <%= render "challenges/member_create_challenge" %>
+  <% end %>
+<% end %>

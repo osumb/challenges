@@ -13,8 +13,6 @@ html, body {
 
 body {
   overflow-x: hidden;
-  display: flex;
-  flex-direction: column;
 
   /* Colors */
   --colors-light-gray: #e0e0e0;
@@ -47,9 +45,12 @@ input[type=submit] {
 }
 
 .challenges-app {
-  height: 100%;
+  height: calc(100% - 146px); /* body - (header + navbar + margin-top) */
   margin-top: 12px;
   padding: 0 8px;
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
 }
 
 .challenges-app-container-row {

@@ -1,0 +1,31 @@
+<% if @result.users_who_can_challenge.empty? %>
+  <div>No one else needs to make a challenge</div>
+<% else %>
+  <div class="challenges-admin-create-challenge">
+    <div class="challenges-admin-create-challenge--child challenges-admin-create-challenge-users">
+      <div class="mdc-typography--title">
+        Select someone to make a challenge for them
+      </div>
+      <div class="challenges-admin-create-challenge-list-container">
+        <ul class="mdc-list">
+          <% @result.users_who_can_challenge.each do |user| %>
+            <li class="mdc-list-item mcd-typography--subheading2">
+              <%= link_to("#{user.full_name} #{user.current_spot}", controller: "challenges", action: "new", params: { user_buck_id: user.buck_id }) %>
+            </li>
+          <% end %>
+          <%=%>
+        </ul>
+      </div>
+    </div>
+    <div class="challenges-admin-create-challenge--child">
+      <% unless @result.challenge_options.empty? %>
+        <%= render(
+          "challenges/challenge_select",
+          challenge_options: @result.challenge_options,
+          title: "Who is #{@result.user.full_name} challenging for the #{@result.next_performance.name}?",
+          user: @result.user
+        ) %>
+      <% end %>
+    </div>
+  </div>
+<% end %>
