@@ -7,20 +7,19 @@ class SessionsController < ApplicationController
   def show; end
 
   def create
-    user = AuthenticationService.authenticate_user(create_params)
+    user = AuthenticationService.authenticate_user(create_params, session)
 
     if user
-      session[:buck_id] = user.buck_id
       flash[:error] = nil
       redirect_to '/logged_in'
     else
       flash.now[:error] = I18n.t!('authentication.failed_login')
-      render 'new'
+      render 'new', status: :unauthorized
     end
   end
 
   def destroy
-    session[:buck_id] = nil
+    AuthenticationService.log_out_user(session)
     redirect_to '/login'
   end
 

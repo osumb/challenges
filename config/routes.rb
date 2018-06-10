@@ -9,11 +9,13 @@ Rails.application.routes.draw do
   get 'logged_in', to: 'sessions#show'
 
   resources :sessions, only: [:create]
+  resources :challenges, only: [:new, :create]
+
   get 'logout', to: 'sessions#destroy'
 
   get 'robots.txt', to: 'index#robots'
 
-  scope :api do
+  namespace :api do
     post 'user_token' => 'user_token#create'
 
     get 'users/can_challenge', to: 'users#can_challenge'

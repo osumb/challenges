@@ -1,0 +1,15 @@
+<% if flash[:error] %>
+  <div class="mdc-typography--display1"><%= flash[:error] %></div>
+<% end %>
+<% if @result.challenge_options.length <= 0 && flash[:message].nil? %>
+  <div class="mdc-typography--display1 challenges-center-text"><%= I18n.t!("client_messages.challenges.new.cannot_challenge") %></div>
+<% elsif @result.challenge_options.length <= 0 %>
+  <div class="mdc-typography--display1 challenges-center-text"><%= flash[:message] %></div>
+<% else %>
+  <%= render(
+    "challenges/challenge_select",
+    challenge_options: @result.challenge_options,
+    title: "Please make a challenge for the #{@result.next_performance.name}",
+    user: @result.user
+  ) %>
+<% end %>

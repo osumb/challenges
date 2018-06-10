@@ -1,115 +1,82 @@
-class ChallengesController < ApiController
-  before_action :authenticate_user
-  before_action :ensure_not_challenging_alternate!, only: [:create]
-  before_action :ensure_performance_is_current_and_open!, only: [:create]
-  before_action :ensure_user_can_submit_for_approval!, only: [:submit_evaluation]
-  before_action :ensure_user_has_not_already_made_challenge!, only: [:create]
-  before_action :ensure_user_is_challenging_correct_instrument_and_part!, only: [:create]
-  before_action :ensure_spot_has_not_been_challenged!, only: [:create]
+class ChallengesController < ApplicationController
+  before_action :ensure_authenticated!
+  before_action :ensure_correct_create_params!, only: [:create]
+  before_action :ensure_user_can_make_challenge!, only: [:create]
+  before_action :log_challenge_creation_attempt, only: [:create]
 
-  # rubocop:disable Metrics/MethodLength, Metrics/LineLength
-  def create
-    performance = Performance.next
-    spot = Spot.find_by(row: Spot.rows[params[:spot][:row].downcase], file: params[:spot][:file])
-    @challenge = Challenge::Bylder.perform(challenger, performance, spot)
-    Rails.logger.info "CHALLENGE_LOG: #{current_user.full_name} attempted to challenge the #{spot&.to_s} spot"
+  def new
+    @result = if current_user.admin?
+                AdminChallengeService.find_options_for_user(user_buck_id: params[:user_buck_id])
+              else
+                ChallengeOptionsService.find_for_user(user: current_user)
+              end
+  end
 
-    if @challenge.save
-      Rails.logger.info "CHALLENGE_LOG: #{current_user.full_name} successfully challenged the #{spot&.to_s} spot"
-      send_challenge_success_email
-      render :show, status: :created
+  def create # rubocop:disable Metrics/MethodLength
+    spot = Spot.find_by(row: create_params['spot']['row'], file: create_params['spot']['file'])
+    challenger = current_user.admin? ? User.find(create_params['challenger_buck_id']) : current_user
+    result = ChallengeCreationService.create_challenge(challenger: challenger, performance: Performance.next, spot: spot) # rubocop:disable Metrics/LineLength
+
+    if result.success?
+      log_challenge_creation_success(spot)
+      send_challenge_success_email(challenger, result.challenge)
+      redirect_to('/challenges/new', flash: { message: I18n.t!('client_messages.challenges.create.success') })
     else
-      Rails.logger.info "CHALLENGE_LOG: #{current_user.full_name} couldn't challenge #{spot&.to_s}. Errors: #{@challenge.errors}"
-      render json: { resource: 'challenge', errors: @challenge.errors }, status: :conflict
-    end
-  end
-  # rubocop:enable Metrics/MethodLength, Metrics/LineLength
-
-  def for_evaluation
-    @challenges = Challenge.evaluable(current_user)
-    @challenges = @challenges.select { |c| c.performance.stale? }
-    render :index, status: :ok
-  end
-
-  def completed
-    @challenges = Challenge.joins(
-      'INNER JOIN spots ON challenges.spot_id = spots.id'
-    ).order('spots.row, spots.file').completed(current_user)
-
-    render :for_evaluation_or_update, status: :ok
-  end
-
-  def submit_evaluation
-    challenge = Challenge.find(params[:id])
-
-    if challenge.update(stage: :done)
-      CheckOtherChallengesDoneJob.perform_later(challenge_id: challenge.id)
-      head :no_content
-    else
-      render json: { resource: 'challenge', errors: challenge.errors }, status: :conflict
+      log_challenge_creation_error(spot, result.errors)
+      redirect_to('/challenges/new', flash: { error: I18n.t!('client_messages.challenges.create.error') })
     end
   end
 
   private
 
-  def send_challenge_success_email
+  def ensure_correct_create_params!
+    return if current_user.admin?
+
+    challenger_buck_id = create_params['challenger_buck_id']
+    return if challenger_buck_id == current_user.buck_id
+    redirect_to(
+      '/challenges/new',
+      flash: { error: I18n.t!('client_messages.challenges.create.unauthorized', buck_id: challenger_buck_id) }
+    )
+  end
+
+  def ensure_user_can_make_challenge!
+    challenger = current_user.admin? ? User.find(create_params['challenger_buck_id']) : current_user
+    return if challenger.can_challenge_for_performance?(Performance.next)
+    head :bad_request
+  end
+
+  def log_challenge_creation_attempt
+    Rails.logger.info(
+      I18n.t!('logging.challenge.create.attempt', name: current_user.full_name, params: params['challenge-select'])
+    )
+  end
+
+  def log_challenge_creation_success(spot)
+    Rails.logger.info(
+      I18n.t!('logging.challenge.create.success', name: current_user.full_name, spot: spot)
+    )
+  end
+
+  def log_challenge_creation_error(spot, errors)
+    Rails.logger.info(
+      I18n.t!('logging.challenge.create.error', name: current_user.full_name, spot: spot, errors: errors)
+    )
+  end
+
+  def send_challenge_success_email(challenger, challenge)
     EmailJob.perform_later(
       klass: 'ChallengeSuccessMailer',
       method: 'challenge_success_email',
       args: {
-        challenge_id: @challenge.id,
-        initiator_buck_id: current_user.buck_id,
-        email: challenger.email
+        challenge_id: challenge.id,
+        email: challenger.email,
+        initiator_buck_id: current_user.buck_id
       }
     )
   end
 
-  def ensure_not_challenging_alternate!
-    return if params[:spot][:file] < 13
-    render json: { resource: 'challenge', errors: [challenge: 'can\'t challenge alternate'] }, status: :forbidden
-  end
-
-  def ensure_performance_is_current_and_open!
-    next_performance = Performance.next
-    return if next_performance&.window_open?
-    render json: { resource: 'challenge', errors: [performance: 'window not open'] }, status: :forbidden
-  end
-
-  def ensure_user_has_not_already_made_challenge!
-    user = current_user
-    p = Performance.next
-    challenges = user.challenges
-    return unless challenges.any? { |c| c.performance.id == p.id }
-    render json: { resouce: 'challenge', errors: [user: 'can\'t make more than one challenge'] }, status: :forbidden
-  end
-
-  def ensure_user_is_challenging_correct_instrument_and_part!
-    spot = Spot.find_by(row: Spot.rows[params[:spot][:row].downcase], file: params[:spot][:file])
-    challengee = User.find_by current_spot: spot
-    return if challenger.instrument == challengee.instrument && challenger.part == challengee.part
-    render(
-      json: {
-        resource: 'challenge',
-        errors: [user: 'can\'t challenge someone of a different instrument or part']
-      },
-      status: :forbidden
-    )
-  end
-
-  def ensure_spot_has_not_been_challenged!
-    spot = Spot.find_by(row: Spot.rows[params[:spot][:row].downcase], file: params[:spot][:file])
-    performance = Performance.next
-    challenge = Challenge.find_by(spot: spot, performance: performance)
-    return if challenge.nil?
-    return if challenge.open_spot_challenge_type? && challenge.users.length < 2
-    render json: { resource: 'challenge', errors: [spot: 'spot has already been challenged'] }, status: :forbidden
-  end
-
-  def ensure_user_can_submit_for_approval!
-    return if Challenge.evaluable(current_user).where(id: params[:id]).exists?
-    render json: {
-      resource: 'challenge',
-      errors: [challenge: 'not authenticated to submit challenge for approval']
-    }, status: :unauthorized
+  def create_params
+    JSON.parse(params.require('challenge-select'))
   end
 end

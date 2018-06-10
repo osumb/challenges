@@ -1,0 +1,16 @@
+.challenges-challenge-select {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.challenges-challenge-select-dropdown {
+  margin: 16px 0 8px 0;
+}
+
+.challenges-challenge-select-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}

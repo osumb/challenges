@@ -1,0 +1,7 @@
+en:
+  logging:
+    challenge:
+      create:
+        attempt: "CHALLENGE_LOG: %{name} attempted to create a challenge with params: %{params}"
+        success: "CHALLENGE_LOG: %{name} successfully challenged the %{spot} spot"
+        error: "CHALLENGE_LOG: %{name} couldn't challenge %{spot}. Errors: %{errors}"

@@ -1,0 +1,10 @@
+en:
+  client_messages:
+    challenges:
+      new:
+        cannot_challenge: "Sorry! You're unable to make a challenge at this time"
+        no_performance: "There is currently no performance for which you can currently make a challenge"
+      create:
+        error: "Couldn't create challenge at this time. Please refresh and try again"
+        success: "Challenge successfully created"
+        unauthorized: "You're not authorized to create a challenge for user with id %{buck_id}"
