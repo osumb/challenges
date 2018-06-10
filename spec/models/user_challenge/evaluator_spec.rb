@@ -1,4 +1,3 @@
-# rubocop:disable Lint/AmbiguousBlockAssociation
 require 'rails_helper'
 
 describe UserChallenge::Evaluator, type: :model do
@@ -104,4 +103,3 @@ describe UserChallenge::Evaluator, type: :model do
     end
   end
 end
-# rubocop:enable Lint/AmbiguousBlockAssociation

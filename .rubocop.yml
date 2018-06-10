@@ -12,6 +12,8 @@ AllCops:
     - 'node_modules/**/*'
     - 'lib/seed/**/*'
 
+Lint/AmbiguousBlockAssociation:
+    Enabled: false
 Rails:
   Enabled: true
 

@@ -41,7 +41,7 @@ RSpec.describe ChallengesController do
         let!(:current_user) { create(:user, :trumpet, :solo, :spot_a14) }
 
         it 'doesn\'t create a new challenge' do
-          expect { request }.not_to change { Challenge.count } # rubocop:disable Lint/AmbiguousBlockAssociation
+          expect { request }.not_to change { Challenge.count }
         end
 
         it 'redirects to /challenges/new' do
@@ -59,7 +59,7 @@ RSpec.describe ChallengesController do
         before { Performance.delete_all }
 
         it 'doesn\'t create a new challenge' do
-          expect { request }.not_to change { Challenge.count } # rubocop:disable Lint/AmbiguousBlockAssociation
+          expect { request }.not_to change { Challenge.count }
         end
 
         it 'returns a :bad_request' do
@@ -75,7 +75,7 @@ RSpec.describe ChallengesController do
         end
 
         it 'doesn\'t create a new challenge' do
-          expect { request }.not_to change { Challenge.count } # rubocop:disable Lint/AmbiguousBlockAssociation
+          expect { request }.not_to change { Challenge.count }
         end
 
         it 'returns a :bad_request' do
@@ -95,7 +95,7 @@ RSpec.describe ChallengesController do
         end
 
         it 'doesn\'t create a new challenge' do
-          expect { request }.not_to change { Challenge.count } # rubocop:disable Lint/AmbiguousBlockAssociation
+          expect { request }.not_to change { Challenge.count }
         end
 
         it 'returns a :bad_request' do
