@@ -12,16 +12,17 @@ module Api
     def create
       performance = Performance.next
       spot = Spot.find_by(row: Spot.rows[params[:spot][:row].downcase], file: params[:spot][:file])
-      @challenge = Challenge::Bylder.perform(challenger, performance, spot)
+      result = ChallengeCreationService.create_challenge(challenger: challenger, performance: performance, spot: spot)
+      @challenge = result.challenge
       Rails.logger.info "CHALLENGE_LOG: #{current_user.full_name} attempted to challenge the #{spot&.to_s} spot"
 
-      if @challenge.save
+      if result.success?
         Rails.logger.info "CHALLENGE_LOG: #{current_user.full_name} successfully challenged the #{spot&.to_s} spot"
         send_challenge_success_email
         render :show, status: :created
       else
-        Rails.logger.info "CHALLENGE_LOG: #{current_user.full_name} couldn't challenge #{spot&.to_s}. Errors: #{@challenge.errors}"
-        render json: { resource: 'challenge', errors: @challenge.errors }, status: :conflict
+        Rails.logger.info "CHALLENGE_LOG: #{current_user.full_name} couldn't challenge #{spot&.to_s}. Errors: #{result.errors}"
+        render json: { resource: 'challenge', errors: result.errors }, status: :conflict
       end
     end
     # rubocop:enable Metrics/MethodLength, Metrics/LineLength

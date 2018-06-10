@@ -102,7 +102,11 @@ describe ChallengeOptionsService do
             instrument: user.instrument,
             current_spot: Spot.new(row: user.current_spot.row, file: 14)
           )
-          Challenge::Bylder.perform(user_who_already_challenged, performance, challengeable_user_2.current_spot).save
+          ChallengeCreationService.create_challenge(
+            challenger: user_who_already_challenged,
+            performance: performance,
+            spot: challengeable_user_2.current_spot
+          )
         end
 
         it 'reports the fact that challengeable_user_2 has been challegned', :aggregate_failures do

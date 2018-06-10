@@ -87,7 +87,11 @@ describe SpotSwitchService do
         let!(:spot_for_open_spot_winner) { open_spot_challenge.spot }
         let!(:spot_for_open_spot_loser) { open_spot_loser.current_spot }
         let!(:normal_challenge) do
-          challenge = Challenge::Bylder.perform(user_of_open_challenge_spot, open_spot_challenge.performance, normal_challenge_spot)
+          challenge = ChallengeCreationService.create_challenge(
+            challenger: user_of_open_challenge_spot,
+            performance: open_spot_challenge.performance,
+            spot: normal_challenge_spot
+          ).challenge
           challenge.update(stage: :done)
           challenge
         end
