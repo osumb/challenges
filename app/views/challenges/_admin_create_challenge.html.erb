@@ -1,3 +1,6 @@
+<% if flash[:message] || flash[:error] %>
+  <div class="mdc-typography--display1 challenges-center-text"><%= flash[:message] || flash[:error] %></div>
+<% end %>
 <% if @result.users_who_can_challenge.empty? %>
   <div>No one else needs to make a challenge</div>
 <% else %>
