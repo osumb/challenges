@@ -1,79 +1,53 @@
 require 'rails_helper'
 
 RSpec.describe SessionsController do
+  let(:current_user) { create(:user) }
+
   describe 'GET new' do
-    context 'authenticated' do
-      include_context 'with authentication'
+    let(:request) { get :new }
+    let(:expected_authenticated_response) { redirect_to('/logged_in') }
+    let(:expected_unauthenticated_response) { render_template('new') }
 
-      it 'redirects to /logged_in' do
-        get :new
-        expect(response).to redirect_to('/logged_in')
-      end
-    end
-
-    context 'not authenticated' do
-      it 'renders new' do
-        get :new
-        expect(response).to render_template('new')
-      end
-    end
+    it_behaves_like 'controller_authentication'
   end
 
   describe 'GET show' do
-    context 'authenticated' do
-      include_context 'with authentication'
+    let(:request) { get :show }
+    let(:expected_authenticated_response) { render_template('show') }
+    let(:expected_unauthenticated_response) { redirect_to('/login') }
 
-      it 'renders show' do
-        get :show
-        expect(response).to render_template('show')
-      end
-    end
-
-    context 'not authenticated' do
-      it 'redirects to /login' do
-        get :show
-        expect(response).to redirect_to('/login')
-      end
-    end
+    it_behaves_like 'controller_authentication'
   end
 
   describe 'POST create' do
-    context 'authenticated' do
-      include_context 'with authentication'
-
-      it 'redirects to /logged_in' do
-        get :new
-        expect(response).to redirect_to('/logged_in')
-      end
+    let(:password) { 'password' }
+    let(:user) { create(:admin_user, password: password) }
+    let(:params) do
+      {
+        buck_id: user.buck_id,
+        password: password
+      }
     end
+    let(:request) { post :create, params: params }
+    let(:expected_authenticated_response) { redirect_to('/logged_in') }
+    let(:expected_unauthenticated_response) { redirect_to('/logged_in') }
+
+    it_behaves_like 'controller_authentication'
 
     context 'not authenticated' do
       context 'with correct credentials' do
-        let(:password) { 'password' }
-        let(:user) { create(:user, password: password) }
-        let(:params) do
-          {
-            buck_id: user.buck_id,
-            password: password
-          }
-        end
-
         it 'redirects to /logged_in' do
-          post :create, params: params
-
+          request
           expect(response).to redirect_to('/logged_in')
         end
 
         it 'sets the session\'s buck_id' do
-          post :create, params: params
-
+          request
           expect(controller.session[:buck_id]).to eq(user.buck_id)
         end
       end
 
       context 'with incorrect credentials' do
-        let(:password) { 'password' }
-        let(:user) { create(:user, password: password) }
         let(:params) do
           {
             buck_id: user.buck_id,
@@ -82,14 +56,12 @@ RSpec.describe SessionsController do
         end
 
         it 'renders new again' do
-          post :create, params: params
-
+          request
           expect(response).to render_template('new')
         end
 
         it 'does not set the session\'s buck_id' do
-          post :create, params: params
-
+          request
           expect(controller.session[:buck_id]).to be_nil
         end
       end
@@ -97,24 +69,16 @@ RSpec.describe SessionsController do
   end
 
   describe 'GET destroy' do
+    let(:request) { get :destroy }
+    let(:expected_authenticated_response) { redirect_to('/logged_in') }
+    let(:expected_unauthenticated_response) { redirect_to('/login') }
+
     context 'authenticated' do
       include_context 'with authentication'
 
       it 'clears the current session' do
         get :destroy
         expect(controller.session[:buck_id]).to be_nil
-      end
-
-      it 'redirects to /login' do
-        get :destroy
-        expect(response).to redirect_to('/login')
-      end
-    end
-
-    context 'not authenticated' do
-      it 'redirects to /login' do
-        get :destroy
-        expect(response).to redirect_to('/login')
       end
     end
   end

@@ -1,6 +1,6 @@
 <div class="challenges-challenge-select">
   <div class="mdc-typography--headline"><%= title %></div>
-  <form method="POST" action="/challenges/create" class="challenges-challenge-select-form">
+  <form method="POST" action="/challenges" class="challenges-challenge-select-form">
     <select class="mdc-select challenges-challenge-select-dropdown" name="challenge-select">
       <% challenge_options.each.with_index do |option, index| %>
         <% option_value = { spot: { row: option[:row], file: option[:file] }, challenger_buck_id: user.buck_id }.to_json %>
