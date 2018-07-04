@@ -2,7 +2,7 @@
   <%= render "users/user_header" %>
   <%= render "performances/next" %>
   <% if current_user.performer? %>
-    <div>Performer profile not implemented yet</div>
+    <%= render "users/performer_profile" %>
   <% else %>
     <%= render "users/admin_profile" %>
   <% end %>

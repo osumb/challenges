@@ -1,0 +1,12 @@
+<div class="mdc-elevation--z1 challenges-current-challenge">
+  <div class="mdc-typography--headline">
+    You're challenging spot <%= challenge.spot.to_s %> for the <%= challenge.performance.name %>
+  </div>
+  <%= form_for(@current_user_challenge, method: :delete, confirm: 'Are you sure?') do |form| %>
+    <%= form.submit(
+      'Delete Challenge',
+      class: 'challenges-button-primary challenges-current-challenge-confirm-button mdc-button',
+      data: { confirm: I18n.t!('client_messages.challenges.confirm_delete') }
+    )%>
+  <% end %>
+</div>

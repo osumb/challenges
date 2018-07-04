@@ -1,0 +1,13 @@
+<div class="mdc-elevation--z1 challenges-discipline-action">
+  <div class="mdc-typography--headline">
+    <% if discipline_action.allowed_to_challenge %>
+      You are
+    <% else %>
+      You aren't
+    <% end %>
+    allowed to challenge for the <%= discipline_action.performance.name %>
+  </div>
+  <div class="mdc-typography--headline">
+    Reason: <%= discipline_action.reason %>
+  </div>
+</div>

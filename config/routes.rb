@@ -8,8 +8,9 @@ Rails.application.routes.draw do
   get 'login', to: 'sessions#new'
   get 'logged_in', to: 'sessions#show'
 
-  resources :sessions, only: [:create]
   resources :challenges, only: [:new, :create]
+  resources :sessions, only: [:create]
+  resources :user_challenges, only: [:destroy]
 
   get 'logout', to: 'sessions#destroy'
 

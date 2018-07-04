@@ -1,0 +1,15 @@
+.challenges-challenge {
+  margin-top: 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 8px;
+  border-radius: 8px;
+}
+
+.challenges-challenge-title-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}

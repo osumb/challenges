@@ -69,6 +69,7 @@ input[type=submit] {
 
 .challenges-button-primary {
   background-color: var(--colors-primary-gray);
+  color: white;
 }
 
 .challenges-button-secondary {

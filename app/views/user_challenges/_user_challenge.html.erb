@@ -1,0 +1,22 @@
+<div class="challenges-user-challenge">
+  <% if show_name %>
+    <div class="challenges-user-challenge-text-wrapper">
+      <div class="mdc-typography--headline">
+        <%= user_challenge.user.full_name %>
+      </div>
+    </div>
+  <% end %>
+  <div class="challenges-user-challenge-text-wrapper">
+    <div class="mdc-typography--title">
+      <%= user_challenge.place.titleize %> place
+    </div>
+  </div>
+  <div class="challenges-user-challenge-text-wrapper">
+    <div class="mdc-typography--headline">Comments:</div>
+  </div>
+  <div class="challenges-user-challenge-text-wrapper">
+    <div class="mdc-typography--subheading2">
+      <%= user_challenge.comments %>
+    </div>
+  </div>
+</div>
