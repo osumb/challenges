@@ -19,4 +19,8 @@ class UserChallenge < ApplicationRecord
     return false if user.alternate?
     user.current_spot == challenge.spot
   end
+
+  def winner?
+    place == 'first'
+  end
 end
