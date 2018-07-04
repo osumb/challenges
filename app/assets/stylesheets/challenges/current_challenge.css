@@ -1,0 +1,11 @@
+.challenges-current-challenge {
+  border-radius: 8px;
+  padding: 4px 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.challenges-current-challenge-confirm-button {
+  margin: 8px;
+}

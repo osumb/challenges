@@ -1,0 +1,20 @@
+<div class="mdc-elevation--z1 challenges-challenge">
+  <div class="challenges-challenge-title-container">
+    <div class="mdc-typography--display1">
+      <%= challenge.performance.name %>
+    </div>
+    &nbsp; &nbsp;
+    <div class="mdc-typography--display1">
+      <%= challenge.spot %>
+    </div>
+  </div>
+  <% if for_user %>
+    <% challenge.user_challenges.select { |uc| uc.user_buck_id == for_user&.buck_id }.first.tap do |user_challenge| %>
+      <%= render "user_challenges/user_challenge", user_challenge: user_challenge, show_name: false %>
+    <% end %>
+  <% else %>
+    <% challenge.user_challenges.each do |user_challenge| %>
+      <%= render "user_challenges/user_challenge", user_challenge: user_challenge, show_name: true %>
+    <% end %>
+  <% end %>
+</div>

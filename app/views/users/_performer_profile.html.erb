@@ -1,0 +1,20 @@
+<div class="challenges-performer-profile">
+  <% if @current_challenge.nil? %>
+    <% if current_user.can_challenge_for_performance?(@performance) %>
+      <div class="mdc-typography--title">
+        <%= I18n.t!('client_messages.profile.needs_to_create_challenge') %>
+      </div>
+    <% end %>
+  <% else %>
+    <%= render "challenges/current_challenge", challenge: @current_challenge %>
+  <% end %>
+  <% if @current_discipline_action.present? %>
+    <%= render "discipline_actions/discipline_action", discipline_action: @current_discipline_action %>
+  <% end %>
+  <% unless @challenges.empty? %>
+    <div class="mdc-typography--display1">Past Challenge Results</div>
+  <% end %>
+  <% @challenges.each do |challenge| %>
+    <%= render "challenges/challenge", challenge: challenge, for_user: @current_user %>
+  <% end %>
+</div>

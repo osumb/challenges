@@ -1,0 +1,9 @@
+.challenges-user-challenge {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.challenges-user-challenge-text-wrapper {
+  margin: 8px 0;
+}

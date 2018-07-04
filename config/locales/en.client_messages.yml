@@ -8,3 +8,6 @@ en:
         error: "Couldn't create challenge at this time. Please refresh and try again"
         success: "Challenge successfully created"
         unauthorized: "You're not authorized to create a challenge for user with id %{buck_id}"
+      confirm_delete: "Are you sure you want to delete this challenge?"
+    profile:
+      needs_to_create_challenge: "You still need to make a challenge!"
