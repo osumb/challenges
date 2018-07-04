@@ -40,7 +40,7 @@ describe ChallengeCreationService do
         end
 
         it 'adds a second challenger to the challenge' do
-          expect { result }.not_to change { Challenge.count } # rubocop:disable Lint/AmbiguousBlockAssociation
+          expect { result }.not_to change { Challenge.count }
 
           challenge.reload
           expect(challenge.valid?).to be(true)

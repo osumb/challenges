@@ -131,4 +131,104 @@ describe ChallengeService do
       end
     end
   end
+
+  describe '.remove_user_from_challenge' do
+    context 'open spot challenge' do
+      context 'that is full' do
+        let(:challenge) { create(:full_open_spot_challenge) }
+        let!(:user_challenge) { challenge.user_challenges.first }
+
+        it 'destroys the user challenge' do
+          expect do
+            described_class.remove_user_from_challenge(
+              challenge_id: challenge.id,
+              user_buck_id: user_challenge.user_buck_id
+            )
+          end.to change { UserChallenge.count }
+        end
+
+        it 'doesn\'t destroy the associated challenge' do
+          expect do
+            described_class.remove_user_from_challenge(
+              challenge_id: challenge.id,
+              user_buck_id: user_challenge.user_buck_id
+            )
+          end.not_to change { Challenge.count }
+        end
+
+        it 'returns a success' do
+          result = described_class.remove_user_from_challenge(
+            challenge_id: challenge.id,
+            user_buck_id: user_challenge.user_buck_id
+          )
+
+          expect(result.success?).to be(true)
+        end
+      end
+
+      context 'that isn\'t full' do
+        let(:challenge) { create(:open_spot_challenge) }
+        let!(:user_challenge) { challenge.user_challenges.first }
+
+        it 'destroys the user challenge' do
+          expect do
+            described_class.remove_user_from_challenge(
+              challenge_id: challenge.id,
+              user_buck_id: user_challenge.user_buck_id
+            )
+          end.to change { UserChallenge.count }.by(-1)
+        end
+
+        it 'destroys the associated challenge' do
+          expect do
+            described_class.remove_user_from_challenge(
+              challenge_id: challenge.id,
+              user_buck_id: user_challenge.user_buck_id
+            )
+          end.to change { Challenge.count }.by(-1)
+        end
+
+        it 'returns a success' do
+          result = described_class.remove_user_from_challenge(
+            challenge_id: challenge.id,
+            user_buck_id: user_challenge.user_buck_id
+          )
+
+          expect(result.success?).to be(true)
+        end
+      end
+    end
+
+    context 'non open spot challenge' do
+      let(:challenge) { create(:normal_challenge) }
+      let!(:user_challenge) { challenge.user_challenges.first }
+
+      it 'destroys all user challenges' do
+        expect do
+          described_class.remove_user_from_challenge(
+            challenge_id: challenge.id,
+            user_buck_id: user_challenge.user_buck_id
+          )
+        end.to change { UserChallenge.count }.by(-2)
+      end
+
+      it 'destroys the associated challenge' do
+        expect do
+          described_class.remove_user_from_challenge(
+            challenge_id: challenge.id,
+            user_buck_id: user_challenge.user_buck_id
+          )
+        end.to change { Challenge.count }.by(-1)
+      end
+
+      it 'returns a success' do
+        result = described_class.remove_user_from_challenge(
+          challenge_id: challenge.id,
+          user_buck_id: user_challenge.user_buck_id
+        )
+
+        expect(result.success?).to be(true)
+      end
+    end
+  end
 end

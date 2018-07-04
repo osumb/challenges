@@ -1,4 +1,3 @@
-# rubocop:disable Lint/AmbiguousBlockAssociation
 require 'rails_helper'
 
 # The purpose of this file is to test the following controller actions associated with UserChallenge objects:
@@ -316,4 +315,3 @@ describe 'User Challenges', type: :request do
     end
   end
 end
-# rubocop:enable Lint/AmbiguousBlockAssociation

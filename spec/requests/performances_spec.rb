@@ -1,4 +1,3 @@
-# rubocop:disable Lint/AmbiguousBlockAssociation
 require 'rails_helper'
 
 describe 'Performances', type: :request do

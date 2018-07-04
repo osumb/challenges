@@ -20,8 +20,8 @@ module Api
     end
 
     def destroy
-      destroyer = UserChallenge::Destroyer.new(id: params[:id])
-      result = destroyer.destroy
+      user_challenge = UserChallenge.find(params[:id])
+      result = ChallengeService.remove_user_from_challenge(challenge_id: user_challenge.challenge_id, user_buck_id: user_challenge.user_buck_id) # rubocop:disable Metrics/LineLength
 
       if result.success?
         head :no_content
