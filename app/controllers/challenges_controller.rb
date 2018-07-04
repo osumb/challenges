@@ -15,7 +15,11 @@ class ChallengesController < ApplicationController
   def create # rubocop:disable Metrics/MethodLength
     spot = Spot.find_by(row: create_params['spot']['row'], file: create_params['spot']['file'])
     challenger = current_user.admin? ? User.find(create_params['challenger_buck_id']) : current_user
-    result = ChallengeCreationService.create_challenge(challenger: challenger, performance: Performance.next, spot: spot) # rubocop:disable Metrics/LineLength
+    result = ChallengeCreationService.create_challenge(
+      challenger: challenger,
+      performance: Performance.next,
+      spot: spot
+    )
 
     if result.success?
       log_challenge_creation_success(spot)
@@ -25,6 +29,12 @@ class ChallengesController < ApplicationController
       log_challenge_creation_error(spot, result.errors)
       redirect_to('/challenges/new', flash: { error: I18n.t!('client_messages.challenges.create.error') })
     end
+  end
+
+  def evaluate
+    @challenges = Challenge.evaluable(current_user).select { |c| c.performance.stale? }.sort_by { |c| c.spot.to_s }
+    @visible_challenge = @challenges.find { |c| c.id == params['visible_challenge'].to_i }
+    @visible_challenge ||= @challenges.min_by { |c| c.spot.to_s } # rubocop:disable Naming/MemoizedInstanceVariableName
   end
 
   private

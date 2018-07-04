@@ -164,4 +164,65 @@ RSpec.describe ChallengesController do
       end
     end
   end
+
+  describe 'GET evaluate' do
+    let!(:current_user) { create(:admin_user) }
+    let(:performance) { create(:stale_performance) }
+    let(:request) { get :evaluate }
+    let(:expected_authenticated_response) { render_template('evaluate') }
+    let(:expected_unauthenticated_response) { redirect_to('/login') }
+    let!(:first_challenge) { create(:normal_challenge, performance: performance) }
+    let!(:second_challenge) { create(:tri_challenge, performance: performance) }
+
+    it_behaves_like 'controller_authentication'
+
+    context 'when authenticated' do
+      include_context 'with authentication'
+
+      it 'uses Challenge.evaluable to get the proper challenges' do
+        expect(Challenge).to receive(:evaluable).with(current_user).and_call_original
+
+        request
+      end
+
+      it 'sets the @challenges variable', :aggregate_failures do
+        request
+
+        expect(assigns(:challenges)).to be_an_instance_of(Array)
+        expect(assigns(:challenges).length).to eq(2)
+      end
+
+      it 'sets the @visible_challenge instance variable to the first available challenge sorted by spot' do
+        request
+
+        expect(assigns(:visible_challenge)).to eq(first_challenge)
+      end
+
+      context 'when no challenge has a stale performance' do
+        let(:performance) { create(:performance) }
+
+        it 'sets @challenges to an empty array' do
+          request
+
+          expect(assigns(:challenges)).to eq([])
+        end
+      end
+
+      context 'when passed the visible_challenge_id query param' do
+        context 'but the challenge doesn\'t exist' do
+          it 'sets the instance variable @visible_challenge to the first challenge sorted by spot' do
+            get :evaluate, params: { visible_challenge: '10000000000000' }
+
+            expect(assigns(:visible_challenge)).to eq(first_challenge)
+          end
+        end
+
+        it 'sets the instance variable visible_challenge according to the query param' do
+          get :evaluate, params: { visible_challenge: first_challenge.id }
+
+          expect(assigns(:visible_challenge)).to eq(first_challenge)
+        end
+      end
+    end
+  end
 end
