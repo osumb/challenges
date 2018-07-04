@@ -109,7 +109,8 @@ class User < ApplicationRecord
 
   def can_alternate_challenge_for_performance?(performance)
     return false if challenges.select { |c| c.performance.id == performance.id }.length.positive?
-    discipline_actions.select { |d| d.performance&.id == performance.id }.length <= 0
+    return true if discipline_actions.select { |d| d.performance.id == performance.id }.length <= 0
+    discipline_actions.select { |d| d.performance.id == performance.id }.first&.allowed_to_challenge
   end
 
   def can_member_challenge_for_performance?(performance)
