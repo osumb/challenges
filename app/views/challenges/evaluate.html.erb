@@ -1,0 +1,38 @@
+<div class="challenges-challenges-evaluate">
+  <% if @challenges.empty? %>
+    <div class="mdc-typography--display1 challenges-challenges-evaluate-empty">
+      <%= I18n.t!("client_messages.challenges.evaluate.empty") %>
+    </div>
+  <% else %>
+    <nav class="mdc-permanent-drawer mcd-typography">
+      <nav class="mdc-list">
+        <% @challenges.each do |challenge| %>
+          <% class_name = "challenges-challenges-evaluate-list-item mdc-list-item challenges--js__challenge_eval_anchor" %>
+          <% class_name += " mdc-permanent-drawer--selected" if challenge == @visible_challenge %>
+          <%= link_to("/challenges/evaluate?visible_challenge=#{challenge.id}", class: class_name, data: { challenge_id: challenge.id}) do %>
+            <i class="material-icons mdc-list-item__start-detail" >
+              <%= challenge.spot %>
+            </i>
+            <%= challenge.users.map(&:first_name).join(" vs. ") %>
+          <% end %>
+        <% end %>
+      </nav>
+    </nav>
+    <%= render "challenges/evaluation", challenge: @visible_challenge %>
+  <% end %>
+</div>
+
+<script>
+  const navClickHandler = (challengeId) => (_event) => {
+    const saveButton = document.getElementById('challenges--js__challenge_eval_save_button');
+    const redirectIdInput = document.getElementById('challenges--js__challenge_eval_redirect_id');
+
+    redirectIdInput.value = challengeId;
+    saveButton.click();
+
+    return false;
+  };
+  const navLinks = Array.from(document.getElementsByClassName('challenges--js__challenge_eval_anchor'));
+
+  navLinks.forEach((link) => link.onclick = navClickHandler(link.dataset.challengeId));
+</script>

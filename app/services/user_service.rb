@@ -27,7 +27,7 @@ module UserService
       return true if user.valid?
       error_messages = user.errors.messages
       return false if error_messages.keys.length > 2
-      error_messages.keys.include?(:current_spot_id) && error_messages.keys.include?(:original_spot_id)
+      error_messages.key?(:current_spot_id) && error_messages.key?(:original_spot_id)
     end
 
     private

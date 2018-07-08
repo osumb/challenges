@@ -1,4 +1,4 @@
-class Challenge < ApplicationRecord
+class Challenge < ApplicationRecord # rubocop:disable Metrics/ClassLength
   # enums
   enum stage: {
     needs_comments: 0,
@@ -8,6 +8,7 @@ class Challenge < ApplicationRecord
 
   # associations
   has_many :user_challenges, dependent: :destroy
+  accepts_nested_attributes_for :user_challenges
   has_many :users, through: :user_challenges, inverse_of: :challenges
   belongs_to :spot
   belongs_to :performance
@@ -66,6 +67,20 @@ class Challenge < ApplicationRecord
     return true if open_spot_challenge_type? && users.length >= 1
     return true if tri_challenge_type? && users.length == 3
     false
+  end
+
+  def required_user_challenge_places # rubocop:disable Metrics/PerceivedComplexity, Metrics/MethodLength
+    if normal_challenge_type?
+      UserChallenge.places.slice(:first, :second).values
+    elsif open_spot_challenge_type? && !full?
+      UserChallenge.places.slice(:first).values
+    elsif open_spot_challenge_type? && full?
+      UserChallenge.places.slice(:first, :second).values
+    elsif tri_challenge_type?
+      UserChallenge.places.slice(:first, :second, :third).values
+    else
+      raise I18n.t!('errors.unexpected_value', variable_name: 'challenge_type', value: type)
+    end
   end
 
   # rows that are allowed to have a tri challenge associated with it

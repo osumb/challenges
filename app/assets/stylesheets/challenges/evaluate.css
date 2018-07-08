@@ -1,0 +1,64 @@
+.challenges-challenges-evaluate {
+  text-align: center;
+  display: flex;
+  flex-direction: row;
+}
+
+.challenges-challenges-evaluate-list-item {
+  cursor: pointer;
+}
+
+.challenges-challenge-evaluation {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.challenges-challenge-evaluation-buttons-container {
+  display: flex;
+  justify-content: space-between;
+  margin: 0 0 8px 0;
+}
+
+.challenges-challenge-evaluation-user-challenges-container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.challenges-challenge-evaluation-user-challenge-container {
+  flex: 1;
+  border-radius: 8px;
+  display: flex;
+  padding: 8px;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.challenges-challenge-evaluation-user-challenge-text-container {
+  flex: 0
+}
+
+.challenges-challenge-evaluation-user-challenge-text-container--big {
+  flex: 4;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 100%;
+}
+
+.challenges-challenge-evaluation-comments {
+  width: 100%;
+  min-height: 150px;
+  border-radius: 4px;
+}
+
+.challenges-challenge-evaluation-fieldset {
+  border: none;
+}
+
+.challenges-challenges-evaluate-empty {
+  display: flex;
+  flex: 1;
+  justify-content: center;
+}

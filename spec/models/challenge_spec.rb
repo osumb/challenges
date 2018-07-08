@@ -193,6 +193,40 @@ describe Challenge, type: :model do
         end
       end
     end
+
+    describe '#required_user_challenge_places' do
+      context 'normal challenge' do
+        subject(:challenge) { build(:normal_challenge) }
+
+        it 'returns the correct UserChallenge places' do
+          expect(challenge.required_user_challenge_places).to eq([UserChallenge.places[:first], UserChallenge.places[:second]])
+        end
+      end
+
+      context 'non full open spot challenge' do
+        subject(:challenge) { build(:open_spot_challenge) }
+
+        it 'returns the correct UserChallenge places' do
+          expect(challenge.required_user_challenge_places).to eq([UserChallenge.places[:first]])
+        end
+      end
+
+      context 'full open spot challenge' do
+        subject(:challenge) { build(:full_open_spot_challenge) }
+
+        it 'returns the correct UserChallenge places' do
+          expect(challenge.required_user_challenge_places).to eq([UserChallenge.places[:first], UserChallenge.places[:second]])
+        end
+      end
+
+      context 'tri challenge' do
+        subject(:challenge) { build(:tri_challenge) }
+
+        it 'returns the correct UserChallenge places' do
+          expect(challenge.required_user_challenge_places).to eq([UserChallenge.places[:first], UserChallenge.places[:second], UserChallenge.places[:third]])
+        end
+      end
+    end
   end
 
   describe '.viewable_by_user' do
