@@ -269,6 +269,8 @@ RSpec.describe ChallengesController do
 
         expect(user_challenges.first.comments).to eq('Comments for the first user challenge')
         expect(user_challenges.second.comments).to eq('Comments for the second user challenge')
+        expect(user_challenges.first.place).to eq('first')
+        expect(user_challenges.second.place).to eq('second')
       end
 
       it 'redirects back with a flash message', :aggregate_failures do
@@ -287,6 +289,24 @@ RSpec.describe ChallengesController do
           expect(response).to have_http_status(:redirect)
           expect(flash[:error]).to eq('Please make sure all of the following places are selected: [1, 2]. Missing: [1]')
         end
+
+        it 'saves the comments', :aggregate_failures do
+          put :update, params: params
+
+          user_challenges.each(&:reload)
+
+          expect(user_challenges.first.comments).to eq('Comments for the first user challenge')
+          expect(user_challenges.second.comments).to eq('Comments for the second user challenge')
+        end
+
+        it 'doesn\'t save the places', :aggregate_failures do
+          put :update, params: params
+
+          user_challenges.each(&:reload)
+
+          expect(user_challenges.first.place).to be_nil
+          expect(user_challenges.second.place).to be_nil
+        end
       end
 
       context 'But not all required places are submitted' do
@@ -297,6 +317,24 @@ RSpec.describe ChallengesController do
 
           expect(response).to have_http_status(:redirect)
           expect(flash[:error]).to eq('Please make sure all of the following places are selected: [1, 2]. Missing: [2]')
+        end
+
+        it 'saves the comments', :aggregate_failures do
+          put :update, params: params
+
+          user_challenges.each(&:reload)
+
+          expect(user_challenges.first.comments).to eq('Comments for the first user challenge')
+          expect(user_challenges.second.comments).to eq('Comments for the second user challenge')
+        end
+
+        it 'doesn\'t save the places', :aggregate_failures do
+          put :update, params: params
+
+          user_challenges.each(&:reload)
+
+          expect(user_challenges.first.place).to be_nil
+          expect(user_challenges.second.place).to be_nil
         end
       end
 
@@ -321,6 +359,8 @@ RSpec.describe ChallengesController do
 
           expect(user_challenges.first.comments).to eq('Comments for the first user challenge')
           expect(user_challenges.second.comments).to eq('Comments for the second user challenge')
+          expect(user_challenges.first.place).to eq('first')
+          expect(user_challenges.second.place).to eq('second')
         end
 
         it 'moves the challenge to :done' do

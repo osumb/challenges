@@ -8,12 +8,12 @@ RSpec.describe UserChallengeService do
       [
         {
           'comments' => 'Comments for the first user_challenge',
-          'place' => UserChallenge.places['first'].to_s,
+          'place' => UserChallenge.places['first'],
           'id' => user_challenges.first.id
         },
         {
           'comments' => 'Comments for the second user_challenge',
-          'place' => UserChallenge.places['second'].to_s,
+          'place' => UserChallenge.places['second'],
           'id' => user_challenges.second.id
         }
       ]

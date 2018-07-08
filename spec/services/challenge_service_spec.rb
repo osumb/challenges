@@ -254,4 +254,103 @@ describe ChallengeService do
       end
     end
   end
+
+  describe '.update' do
+    let(:challenge) { create(:normal_challenge) }
+    let(:user_challenges) { challenge.user_challenges }
+    let(:first_user_challenge_place) { UserChallenge.places[:first] }
+    let(:second_user_challenge_place) { UserChallenge.places[:second] }
+    let(:user_challenge_param_hashes) do
+      [
+        {
+          'id' => user_challenges.first.id,
+          'comments' => 'First user challenge comments',
+          'place' => first_user_challenge_place
+        },
+        {
+          'id' => user_challenges.second.id,
+          'comments' => 'Second user challenge comments',
+          'place' => second_user_challenge_place
+        }
+      ]
+    end
+
+    it 'updates the user challenge comments', :aggregate_failures do
+      described_class.update(challenge_id: challenge.id, user_challenge_param_hashes: user_challenge_param_hashes)
+
+      user_challenges.each(&:reload)
+
+      expect(user_challenges.first.comments).to eq('First user challenge comments')
+      expect(user_challenges.second.comments).to eq('Second user challenge comments')
+    end
+
+    it 'updates the user challenge places', :aggregate_failures do
+      described_class.update(challenge_id: challenge.id, user_challenge_param_hashes: user_challenge_param_hashes)
+
+      user_challenges.each(&:reload)
+
+      expect(user_challenges.first.place).to eq('first')
+      expect(user_challenges.second.place).to eq('second')
+    end
+
+    context 'but places are all messed up' do
+      context 'because both user challenges have first place' do
+        let(:first_user_challenge_place) { UserChallenge.places[:first] }
+        let(:second_user_challenge_place) { UserChallenge.places[:first] }
+
+        it 'updates the user challenge comments', :aggregate_failures do
+          described_class.update(challenge_id: challenge.id, user_challenge_param_hashes: user_challenge_param_hashes)
+
+          user_challenges.each(&:reload)
+
+          expect(user_challenges.first.comments).to eq('First user challenge comments')
+          expect(user_challenges.second.comments).to eq('Second user challenge comments')
+        end
+
+        it 'doesn\'t update the user challenge places', :aggregate_failures do
+          described_class.update(challenge_id: challenge.id, user_challenge_param_hashes: user_challenge_param_hashes)
+
+          user_challenges.each(&:reload)
+
+          expect(user_challenges.first.place).to be_nil
+          expect(user_challenges.second.place).to be_nil
+        end
+
+        it 'returns the appropriate error message' do
+          result = described_class.update(challenge_id: challenge.id, user_challenge_param_hashes: user_challenge_param_hashes)
+
+          expect(result.errors).to eq('Please make sure all of the following places are selected: [1, 2]. Missing: [2]')
+        end
+      end
+
+      context 'because one of the user challenges is third place' do
+        let(:first_user_challenge_place) { UserChallenge.places[:first] }
+        let(:second_user_challenge_place) { UserChallenge.places[:third] }
+
+        it 'updates the user challenge comments', :aggregate_failures do
+          described_class.update(challenge_id: challenge.id, user_challenge_param_hashes: user_challenge_param_hashes)
+
+          user_challenges.each(&:reload)
+
+          expect(user_challenges.first.comments).to eq('First user challenge comments')
+          expect(user_challenges.second.comments).to eq('Second user challenge comments')
+        end
+
+        it 'doesn\'t update the user challenge places', :aggregate_failures do
+          described_class.update(challenge_id: challenge.id, user_challenge_param_hashes: user_challenge_param_hashes)
+
+          user_challenges.each(&:reload)
+
+          expect(user_challenges.first.place).to be_nil
+          expect(user_challenges.second.place).to be_nil
+        end
+
+        it 'returns the appropriate error message' do
+          result = described_class.update(challenge_id: challenge.id, user_challenge_param_hashes: user_challenge_param_hashes)
+
+          expect(result.errors).to eq('Please make sure all of the following places are selected: [1, 2]. Missing: [2]')
+        end
+      end
+    end
+  end
 end

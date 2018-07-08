@@ -1,10 +1,9 @@
-class ChallengesController < ApplicationController # rubocop:disable Metrics/ClassLength
+class ChallengesController < ApplicationController
   before_action :ensure_authenticated!
   before_action :ensure_correct_create_params!, only: [:create]
   before_action :ensure_user_can_make_challenge!, only: [:create]
   before_action :log_challenge_creation_attempt, only: [:create]
   before_action :ensure_correct_update_type!, only: [:update]
-  before_action :ensure_places_are_valid!, only: [:update]
 
   def new
     @result = if current_user.admin?
@@ -33,28 +32,28 @@ class ChallengesController < ApplicationController # rubocop:disable Metrics/Cla
     end
   end
 
-  def update # rubocop:disable Metrics/MethodLength, Metrics/PerceivedComplexity
-    result = UserChallengeService.update(user_challenge_hashes: update_params.map(&:to_h))
+  def update # rubocop:disable Metrics/MethodLength
+    result = ChallengeService.update(challenge_id: params['id'], user_challenge_param_hashes: update_params.map(&:to_h))
 
-    if result.success? && params['update_type'] == 'Save' && params['redirect_id'].present?
-      redirect_to(
-        "/challenges/evaluate?visible_challenge=#{params['redirect_id']}",
-        flash: { message: I18n.t!('client_messages.challenges.evaluate.save') }
-      )
-    elsif result.success? && params['update_type'] == 'Save'
-      redirect_back(
-        flash: { message: I18n.t!('client_messages.challenges.evaluate.save') },
-        fallback_location: '/challenges/evaluate'
-      )
-    elsif result.success? && params['update_type'] == 'Submit'
-      ChallengeService.move_to_next_stage(challenge_id: params['id'])
-      CheckOtherChallengesDoneJob.perform_later(challenge_id: params['id'])
-      redirect_to('/challenges/evaluate', flash: { message: I18n.t!('client_messages.challenges.evaluate.success') })
-    else
+    if result.errors
       redirect_back(
         flash: { error: result.errors },
         fallback_location: '/challenges/evaluate'
       )
+    elsif params['update_type'] == 'Save' && params['redirect_id'].present?
+      redirect_to(
+        "/challenges/evaluate?visible_challenge=#{params['redirect_id']}",
+        flash: { message: I18n.t!('client_messages.challenges.evaluate.save') }
+      )
+    elsif params['update_type'] == 'Save'
+      redirect_back(
+        flash: { message: I18n.t!('client_messages.challenges.evaluate.save') },
+        fallback_location: '/challenges/evaluate'
+      )
+    elsif params['update_type'] == 'Submit'
+      ChallengeService.move_to_next_stage(challenge_id: params['id'])
+      CheckOtherChallengesDoneJob.perform_later(challenge_id: params['id'])
+      redirect_to('/challenges/evaluate', flash: { message: I18n.t!('client_messages.challenges.evaluate.success') })
     end
   end
 
@@ -96,20 +95,6 @@ class ChallengesController < ApplicationController # rubocop:disable Metrics/Cla
   def ensure_correct_update_type!
     return if %w[Save Submit].include?(params['update_type'])
     raise I18n.t!('errors.challenges.update.invalid_update_type', update_type: params['update_type'])
-  end
-
-  def ensure_places_are_valid! # rubocop:disable Metrics/MethodLength
-    challenge = Challenge.find(params['id'])
-    submitted_places = update_params.map { |param| param['place'] }.uniq.sort.map(&:to_i)
-    required_places = challenge.required_user_challenge_places.sort
-    return if submitted_places == required_places
-    missing_places = required_places - submitted_places
-    flash_message = I18n.t!(
-      'client_messages.challenges.evaluate.invalid_user_challenge_places',
-      places: required_places,
-      missing: missing_places
-    )
-    redirect_back(flash: { error: flash_message }, fallback_location: '/challenges/evaluate')
   end
 
   def log_challenge_creation_attempt

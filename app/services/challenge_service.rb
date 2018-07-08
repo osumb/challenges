@@ -39,7 +39,55 @@ class ChallengeService
       challenge.update!(stage: :done)
     end
 
+    def update(challenge_id:, user_challenge_param_hashes:)
+      challenge = Challenge.find(challenge_id)
+      has_required_places = _param_hash_required_user_challenge_places?(challenge, user_challenge_param_hashes)
+      user_challenge_update_params = _map_user_challenge_update_params(user_challenge_param_hashes, has_required_places)
+      result = UserChallengeService.update(user_challenge_hashes: user_challenge_update_params)
+      OpenStruct.new(
+        success?: result.success?,
+        errors: _error_message_for_update(result, challenge, user_challenge_param_hashes)
+      )
+    end
+
     private
+
+    def _map_user_challenge_update_params(user_challenge_param_hashes, has_required_places)
+      user_challenge_param_hashes.map do |hash|
+        if has_required_places
+          hash['place'] = hash['place'].to_i
+          hash
+        else
+          hash.except('place')
+        end
+      end
+    end
+
+    def _param_hash_required_user_challenge_places?(challenge, user_challenge_param_hashes)
+      _missing_places(challenge, user_challenge_param_hashes).empty?
+    end
+
+    def _error_message_for_update(user_challenge_update_result, challenge, user_challenge_param_hashes)
+      return user_challenge_update_result.errors if user_challenge_update_result.errors
+      return nil if _param_hash_required_user_challenge_places?(challenge, user_challenge_param_hashes)
+      I18n.t!(
+        'client_messages.challenges.evaluate.invalid_user_challenge_places',
+        places: _required_places(challenge),
+        missing: _missing_places(challenge, user_challenge_param_hashes)
+      )
+    end
+
+    def _required_places(challenge)
+      challenge.required_user_challenge_places.sort
+    end
+
+    def _submitted_places(user_challenge_param_hashes)
+      user_challenge_param_hashes.map { |param| param['place'] }.uniq.sort.map(&:to_i)
+    end
+
+    def _missing_places(challenge, user_challenge_param_hashes)
+      _required_places(challenge) - _submitted_places(user_challenge_param_hashes)
+    end
 
     def _remove_user_from_open_spot_challenge(user_challenge, challenge)
       UserChallenge.transaction do
