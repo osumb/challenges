@@ -1,0 +1,57 @@
+<div class="challenges-challenge-evaluation">
+  <% if flash[:message] %>
+    <div class="mdc-typography--title"><%= flash[:message] %></div>
+  <% end %>
+  <% if flash[:error] %>
+    <div class="mdc-typography--title"><%= flash[:error] %></div>
+  <% end %>
+  <%= form_for(challenge) do |form| %>
+    <div class="challenges-challenge-evaluation-buttons-container">
+      <input
+         class="mdc-button mdc-button-primary challenges-button-secondary"
+         id="challenges--js__challenge_eval_save_button"
+         name="update_type"
+         type="submit"
+         value="Save"
+       />
+      <input
+         class="mdc-button mdc-button-primary challenges-button-secondary"
+         name="update_type"
+         type="submit"
+         value="Submit"
+         data-confirm="Are you sure you want to submit this?"
+       />
+      <input type="hidden" id="challenges--js__challenge_eval_redirect_id" name="redirect_id" value="" />
+    </div>
+    <div class="challenges-challenge-evaluation-user-challenges-container">
+      <%= form.fields_for(:user_challenges) do |user_challenge_form| %>
+        <div class="challenges-challenge-evaluation-user-challenge-container mdc-elevation--z1">
+          <div class="challenges-challenge-evaluation-user-challenge-text-container">
+            <div class="mdc-typography--title">
+              <%= user_challenge_form.object.user.full_name %>
+            </div>
+          </div>
+          <div class="challenges-challenge-evaluation-user-challenge-text-container">
+            <div class="mdc-typography--subheading2">Place:</div>
+            <fieldset class="challenges-challenge-evaluation-fieldset">
+              <% challenge.required_user_challenge_places.each.with_index do |place, index| %>
+                <% user_challenge = user_challenge_form.object %>
+                <% id = "#{user_challenge.id}-#{place}"%>
+                <% name = user_challenge.id %>
+                <% button_selected = user_challenge.place.nil? ? index == challenge.user_challenges.index(user_challenge) : place == UserChallenge.places[user_challenge_form.object.place] %>
+                <div>
+                  <%= user_challenge_form.radio_button(:place, place, checked: button_selected) %>
+                  <label for=<%= id %>><%= place %></label>
+                </div>
+              <% end %>
+            </fieldset>
+          </div>
+          <div class="challenges-challenge-evaluation-user-challenge-text-container--big">
+            <div class="mdc-typography--subheading2">Comments:</div>
+            <%= user_challenge_form.text_area :comments, class: "challenges-challenge-evaluation-comments" %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
+</div>
