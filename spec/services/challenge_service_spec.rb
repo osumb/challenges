@@ -231,4 +231,27 @@ describe ChallengeService do
       end
     end
   end
+
+  describe '.move_to_next_stage' do
+    let(:stage) { :needs_comments }
+    subject(:challenge) { create(:normal_challenge, stage: stage) }
+
+    context 'when the challenge is in the :needs_comments stage' do
+      it 'moves the challenge to :done' do
+        described_class.move_to_next_stage(challenge_id: challenge.id)
+
+        expect(challenge.reload.done_stage?).to be(true)
+      end
+    end
+
+    context 'when the challenge is in the :done stage' do
+      let(:stage) { :done }
+
+      it 'raises an exception because :done is the last stage' do
+        expect do
+          described_class.move_to_next_stage(challenge_id: challenge.id)
+        end.to raise_error(described_class::ChallengeAlreadyDoneError)
+      end
+    end
+  end
 end

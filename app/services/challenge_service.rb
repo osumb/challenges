@@ -1,4 +1,6 @@
 class ChallengeService
+  ChallengeAlreadyDoneError = Class.new(StandardError)
+
   class << self
     def check_other_challenges_are_done(challenge_id:) # rubocop:disable Metrics/MethodLength
       challenge = Challenge.includes(:users).find(challenge_id)
@@ -29,6 +31,12 @@ class ChallengeService
         challenge.destroy
       end
       OpenStruct.new(success?: true)
+    end
+
+    def move_to_next_stage(challenge_id:)
+      challenge = Challenge.find(challenge_id)
+      raise ChallengeAlreadyDoneError if challenge.done_stage?
+      challenge.update!(stage: :done)
     end
 
     private

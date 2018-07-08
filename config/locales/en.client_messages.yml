@@ -9,5 +9,10 @@ en:
         success: "Challenge successfully created"
         unauthorized: "You're not authorized to create a challenge for user with id %{buck_id}"
       confirm_delete: "Are you sure you want to delete this challenge?"
+      evaluate:
+        empty: "There are no challenges for you to evaluate"
+        success: "Successfully submitted challenge!"
+        save: "Successfully saved challenge!"
+        invalid_user_challenge_places: "Please make sure all of the following places are selected: %{places}. Missing: %{missing}"
     profile:
       needs_to_create_challenge: "You still need to make a challenge!"

@@ -225,4 +225,123 @@ RSpec.describe ChallengesController do
       end
     end
   end
+
+  describe 'PUT update' do
+    let!(:challenge) { create(:normal_challenge) }
+    let(:current_user) { create(:admin_user) }
+    let(:user_challenges) { challenge.user_challenges }
+    let(:update_type) { 'Save' }
+    let(:first_user_challenge_place) { UserChallenge.places[:first] }
+    let(:second_user_challenge_place) { UserChallenge.places[:second] }
+    let(:params) do
+      {
+        'challenge' => {
+          'user_challenges_attributes' => {
+            '0' => {
+              'id' => user_challenges.first.id,
+              'comments' => 'Comments for the first user challenge',
+              'place' => first_user_challenge_place
+            },
+            '1' => {
+              'id' => user_challenges.second.id,
+              'comments' => 'Comments for the second user challenge',
+              'place' => second_user_challenge_place
+            }
+          }
+        },
+        'id' => challenge.id,
+        'update_type' => update_type
+      }
+    end
+    let(:request) { put :update, params: params }
+    let(:expected_authenticated_response) { have_http_status(:redirect) }
+    let(:expected_unauthenticated_response) { redirect_to('/login') }
+
+    it_behaves_like 'controller_authentication'
+
+    context 'authenticated' do
+      include_context 'with authentication'
+
+      it 'updates the user challenges', :aggregate_failures do
+        put :update, params: params
+
+        user_challenges.each(&:reload)
+
+        expect(user_challenges.first.comments).to eq('Comments for the first user challenge')
+        expect(user_challenges.second.comments).to eq('Comments for the second user challenge')
+      end
+
+      it 'redirects back with a flash message', :aggregate_failures do
+        request
+
+        expect(response).to have_http_status(:redirect)
+        expect(flash[:message]).to eq('Successfully saved challenge!')
+      end
+
+      context 'But the places aren\'t submitted' do
+        let(:first_user_challenge_place) { nil }
+
+        it 'redirects back with a flash error', :aggregate_failures do
+          request
+
+          expect(response).to have_http_status(:redirect)
+          expect(flash[:error]).to eq('Please make sure all of the following places are selected: [1, 2]. Missing: [1]')
+        end
+      end
+
+      context 'But not all required places are submitted' do
+        let(:second_user_challenge_place) { UserChallenge.places[:third] }
+
+        it 'redirects back with a flash error', :aggregate_failures do
+          request
+
+          expect(response).to have_http_status(:redirect)
+          expect(flash[:error]).to eq('Please make sure all of the following places are selected: [1, 2]. Missing: [2]')
+        end
+      end
+
+      context 'Redirect id' do
+        let(:new_params) { params.merge('redirect_id' => 1000) }
+
+        it 'redirects to the id specified with a flash message', :aggregate_failures do
+          put :update, params: new_params
+
+          expect(response).to redirect_to('/challenges/evaluate?visible_challenge=1000')
+          expect(flash[:message]).to eq('Successfully saved challenge!')
+        end
+      end
+
+      context 'Submit' do
+        let(:update_type) { 'Submit' }
+
+        it 'updates the user challenges', :aggregate_failures do
+          put :update, params: params
+
+          user_challenges.each(&:reload)
+
+          expect(user_challenges.first.comments).to eq('Comments for the first user challenge')
+          expect(user_challenges.second.comments).to eq('Comments for the second user challenge')
+        end
+
+        it 'moves the challenge to :done' do
+          put :update, params: params
+
+          expect(challenge.reload.done_stage?).to be(true)
+        end
+
+        it 'calls the CheckOtherChallengesDoneJob' do
+          expect(CheckOtherChallengesDoneJob).to receive(:perform_later).and_call_original
+
+          put :update, params: params
+        end
+
+        it 'redirects to the base evaluation route with flash message', :aggregate_failures do
+          request
+
+          expect(response).to redirect_to('/challenges/evaluate')
+          expect(flash[:message]).to eq('Successfully submitted challenge!')
+        end
+      end
+    end
+  end
 end
