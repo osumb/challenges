@@ -1,9 +1,10 @@
-class ChallengesController < ApplicationController
+class ChallengesController < ApplicationController # rubocop:disable Metrics/ClassLength
   before_action :ensure_authenticated!
   before_action :ensure_correct_create_params!, only: [:create]
   before_action :ensure_user_can_make_challenge!, only: [:create]
   before_action :log_challenge_creation_attempt, only: [:create]
   before_action :ensure_correct_update_type!, only: [:update]
+  before_action :ensure_not_normal_performer!, only: %i[completed update]
 
   def new
     @result = if current_user.admin?
@@ -63,6 +64,16 @@ class ChallengesController < ApplicationController
     @visible_challenge ||= @challenges.min_by { |c| c.spot.to_s } # rubocop:disable Naming/MemoizedInstanceVariableName
   end
 
+  def completed
+    @performance = if params['performance_id'].present?
+                     Performance.find(params['performance_id'])
+                   else
+                     Performance.order(date: :desc).first
+                   end
+    @challenges = Challenge.completed(current_user).where(performance: @performance).order('spots.row, spots.file')
+    @performances = Performance.order(date: :desc).all
+  end
+
   private
 
   # Look at the spec for this file to see how the params are coming in
@@ -95,6 +106,11 @@ class ChallengesController < ApplicationController
   def ensure_correct_update_type!
     return if %w[Save Submit].include?(params['update_type'])
     raise I18n.t!('errors.challenges.update.invalid_update_type', update_type: params['update_type'])
+  end
+
+  def ensure_not_normal_performer!
+    return unless current_user.member?
+    head :not_found
   end
 
   def log_challenge_creation_attempt

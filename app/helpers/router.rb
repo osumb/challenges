@@ -25,7 +25,7 @@ module Router
 
   def self._results_routes(role)
     routes = []
-    routes << { name: 'Completed', path: '/results/completed' } unless role == User::Roles::MEMBER
+    routes << { name: 'Completed', path: '/challenges/completed' } unless role == User::Roles::MEMBER
 
     _route_group('Results', routes)
   end

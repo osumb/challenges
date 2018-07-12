@@ -280,6 +280,16 @@ RSpec.describe ChallengesController do
         expect(flash[:message]).to eq('Successfully saved challenge!')
       end
 
+      context 'but the user isn\'t an admin, director, or squad leader' do
+        let!(:current_user) { create(:user) }
+
+        it 'returns a :not_found' do
+          request
+
+          expect(response).to have_http_status(:not_found)
+        end
+      end
+
       context 'But the places aren\'t submitted' do
         let(:first_user_challenge_place) { nil }
 
@@ -380,6 +390,104 @@ RSpec.describe ChallengesController do
 
           expect(response).to redirect_to('/challenges/evaluate')
           expect(flash[:message]).to eq('Successfully submitted challenge!')
+        end
+      end
+    end
+  end
+
+  describe 'GET completed' do
+    let(:request) { get :completed }
+    let(:expected_authenticated_response) { render_template(:completed) }
+    let(:expected_unauthenticated_response) { redirect_to('/login') }
+    let(:current_user) { create(:admin_user) }
+    let!(:first_performance) { create(:performance, date: Time.zone.local(2018, 7, 7)) }
+    let!(:second_performance) { create(:performance, date: Time.zone.local(2018, 7, 8)) }
+    let!(:first_performance_completed_challenge) { create(:normal_challenge, performance: first_performance, stage: :done) }
+    let!(:first_performance_needs_comments_challenge) do
+      create(
+        :normal_challenge,
+        performance: first_performance,
+        stage: :needs_comments,
+        spot: create(:spot, row: :r, file: 7),
+        users: [create(:user, :spot_r13, :mellophone, :first), create(:user, :spot_r14, :mellophone, :first)]
+      )
+    end
+    let!(:second_performance_completed_challenge) { create(:tri_challenge, performance: second_performance, stage: :done) }
+    let!(:second_performance_needs_comments_challenge) do
+      spot_under_challenge = create(:spot, row: :j, file: 7)
+      create(
+        :tri_challenge,
+        performance: second_performance,
+        stage: :needs_comments,
+        spot: spot_under_challenge,
+        users: [
+          create(:user, :spot_j14, :percussion, :tenor),
+          create(:user, :spot_j18, :percussion, :tenor),
+          create(:user, :percussion, :tenor, current_spot: spot_under_challenge)
+        ]
+      )
+    end
+
+    it_behaves_like 'controller_authentication'
+
+    context 'when authenticated' do
+      include_context 'with authentication'
+
+      it 'sets @performance to the performance with the most recent date' do
+        request
+
+        expect(assigns(:performance)).to eq(second_performance)
+      end
+
+      it 'sets @challenges to all completed challenges for the performance with the most recent date', :aggregate_failures do
+        request
+
+        expect(assigns(:challenges)).to include(second_performance_completed_challenge)
+        expect(assigns(:challenges)).not_to include(second_performance_needs_comments_challenge)
+        expect(assigns(:challenges)).not_to include(first_performance_needs_comments_challenge)
+        expect(assigns(:challenges)).not_to include(first_performance_completed_challenge)
+      end
+
+      it 'sets @performances to all performances sorted by date descending', :aggregate_failures do
+        request
+
+        expect(assigns(:performances).length).to eq(2)
+        expect(assigns(:performances).all).to eq([second_performance, first_performance])
+      end
+
+      context 'and the param performance_id is passed' do
+        let(:request) { get :completed, params: { performance_id: first_performance.id } }
+
+        it 'sets @performance to the performance with the id passed as a param' do
+          request
+
+          expect(assigns(:performance)).to eq(first_performance)
+        end
+
+        it 'sets @challenges to all completed challenges for the performance with id passed', :aggregate_failures do
+          request
+
+          expect(assigns(:challenges)).to include(first_performance_completed_challenge)
+          expect(assigns(:challenges)).not_to include(first_performance_needs_comments_challenge)
+          expect(assigns(:challenges)).not_to include(second_performance_needs_comments_challenge)
+          expect(assigns(:challenges)).not_to include(second_performance_completed_challenge)
+        end
+
+        it 'sets @performances to all performances sorted by date descending', :aggregate_failures do
+          request
+
+          expect(assigns(:performances).length).to eq(2)
+          expect(assigns(:performances).all).to eq([second_performance, first_performance])
+        end
+      end
+
+      context 'but the user isn\'t an admin, director, or squad leader' do
+        let!(:current_user) { create(:user) }
+
+        it 'returns a :not_found' do
+          request
+
+          expect(response).to have_http_status(:not_found)
         end
       end
     end

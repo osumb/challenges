@@ -1,0 +1,31 @@
+<%= form_for(challenge) do |form| %>
+  <div class="challenges-challenges-completed-challenge-container mdc-elevation--z1">
+    <div class="challenges-challenges-completed-challenge-header">
+      <div class="mdc-typography--display1"><%= challenge.spot %></div>
+      <input
+        class="mdc-button mdc-button-primary challenges-button-secondary"
+        name="update_type"
+        type="submit"
+        value="Save"
+        data-confirm="Are you sure you want to update these comments?"
+      />
+    </div>
+    <div class="challenges-challenges-completed-user-challenges-container">
+        <%= form.fields_for(:user_challenges) do |user_challenge_form| %>
+          <div class="challenges-challenges-completed-user-challenge-container">
+            <% user_challenge = user_challenge_form.object %>
+            <div class="challenges-challenges-completed-user-challenge-text-container">
+              <div class="mdc-typography--headline"><%= user_challenge.user.full_name %></div>
+            </div>
+            <div class="challenges-challenges-completed-user-challenge-text-container">
+              <div class="mdc-typography--title">Place: <%= user_challenge.place %></div>
+            </div>
+            <div class="challenges-challenges-completed-user-challenge-comments-container">
+              <div class="mdc-typography--title">Comments:</div>
+              <%= user_challenge_form.text_area :comments, class: "challenges-challenges-completed-user-challenge-comments" %>
+            </div>
+          </div>
+        <% end %>
+    </div>
+  </div>
+<% end %>

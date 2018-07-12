@@ -1,0 +1,26 @@
+<div class="challenges-challenges-completed">
+  <nav class="mdc-permanent-drawer mcd-typograhpy">
+    <nav class="mdc-list challenges-challenges-completed-list">
+      <% @performances.each do |performance| %>
+        <% class_name = "challenges-challenges-completed-list-item mdc-list-item" %>
+        <% class_name += " mdc-permanent-drawer--selected" if performance == @performance %>
+        <%= link_to("/challenges/completed?performance_id=#{performance.id}", class: class_name) do %>
+          <i class="material-icons mdc-list-item__start-detail challenges-challenges-completed-list-item">
+            <%= performance.name %>&nbsp;
+            <%= performance.date.strftime("%m/%d/%Y") %>
+          </i>
+        <% end %>
+      <% end %>
+    </nav>
+  </nav>
+  <div class="challenges-challenges-completed-content-container">
+    <div class="mdc-typography--display2">
+      Completed challenges for the <%= @performance.name %>
+    </div>
+    <div class="challenges-challenges-completed-challenges-container">
+      <% @challenges.each do |challenge| %>
+        <%= render "challenges/completed", challenge: challenge %>
+      <% end %>
+    </div>
+  </div>
+</div>

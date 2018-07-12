@@ -6,6 +6,7 @@ FactoryBot.define do
         uc.spot = uc.user.current_spot
       end
     end
+    stage :needs_comments
   end
 
   factory :open_spot_challenge, parent: :challenge do

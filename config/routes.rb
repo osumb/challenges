@@ -11,6 +11,7 @@ Rails.application.routes.draw do
   resources :challenges, only: [:new, :create, :update] do
     collection do
       get :evaluate
+      get :completed
     end
   end
 

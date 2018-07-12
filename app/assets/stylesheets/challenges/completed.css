@@ -1,0 +1,75 @@
+.challenges-challenges-completed {
+  text-align: center;
+  display: flex;
+  flex-direction: row;
+  flex: 1;
+}
+
+.challenges-challenges-completed-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.challenges-challenges-completed-list-item {
+  flex: 1;
+  text-align: center;
+  margin: 4px 0;
+}
+
+.challenges-challenges-completed-content-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.challenges-challenges-completed-challenges-container {
+  margin-top: 8px;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.challenges-challenges-completed-challenge-container {
+  margin: 4px;
+  border-bottom-left-radius: 8px;
+  border-bottom-right-radius: 8px;
+}
+
+.challenges-challenges-completed-challenge-header {
+  background-color: var(--colors-light-gray);
+  padding: 8px;
+  display: flex;
+  max-width: 600px;
+  justify-content: space-between;
+}
+
+.challenges-challenges-completed-user-challenges-container {
+  padding: 8px;
+  display: flex;
+}
+
+.challenges-challenges-completed-user-challenge-container {
+  flex: 1;
+  padding: 4px;
+  display: flex;
+  flex-direction: column;
+}
+
+.challenges-challenges-completed-user-challenge-container:not(:first-child) {
+  border-left: 1px solid var(--colors-light-gray);
+}
+
+.challenges-challenges-completed-user-challenge-text-container {
+  flex: 1;
+  text-align: left;
+}
+
+.challenges-challenges-completed-user-challenge-comments-container {
+  flex: 2;
+  text-align: left;
+}
+
+.challenges-challenges-completed-user-challenge-comments {
+  width: 98%;
+  min-height: 100px;
+  resize: none;
+}
