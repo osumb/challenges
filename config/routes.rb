@@ -15,6 +15,7 @@ Rails.application.routes.draw do
     end
   end
 
+  resources :performances, only: [:create, :new]
   resources :sessions, only: [:create]
   resources :user_challenges, only: [:destroy]
 
