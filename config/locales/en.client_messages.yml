@@ -14,5 +14,8 @@ en:
         success: "Successfully submitted challenge!"
         save: "Successfully saved challenge!"
         invalid_user_challenge_places: "Please make sure all of the following places are selected: %{places}. Missing: %{missing}"
+    performances:
+      create:
+        success: "Performance created successfully!"
     profile:
       needs_to_create_challenge: "You still need to make a challenge!"

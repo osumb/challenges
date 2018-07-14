@@ -1,0 +1,27 @@
+.challenges-performances-new {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.challenges-performances-new > div, form {
+  margin: 8px 0;
+}
+
+.challenges-performance-form {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  border: 1px solid var(--colors-secondary-gray);
+  border-radius: 4px;
+  padding: 16px;
+}
+
+.challenges-performance-form-input {
+  border: 1px solid #efefef;
+  border-radius: 3px;
+  font-size: 16px;
+  height: 2em;
+  width: 16em;
+  margin: 4px 0;
+}
