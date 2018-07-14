@@ -8,9 +8,11 @@ RSpec.describe PerformancesController do
     let(:date) { Time.zone.today + 10.days }
     let(:window_close) { Time.zone.today + 3.hours }
     let(:window_open) { Time.zone.today }
+    let(:timezone) { 'UTC' }
 
     let(:params) do
       {
+        timezone: timezone,
         performance: {
           name: name,
           date: date,
