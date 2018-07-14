@@ -22,10 +22,9 @@
 
 <script>
   document.addEventListener('DOMContentLoaded', () => {
-    const options = { format: 'm/d/y H:i' };
     document.getElementById('challenges--js__performance_form_timezone').value = jstz.determine().name();
-    jQuery('#challenges--js__performance_form_date').datetimepicker(options);
-    jQuery('#challenges--js__performance_form_window_open').datetimepicker(options);
-    jQuery('#challenges--js__performance_form_window_close').datetimepicker(options);
+    jQuery('#challenges--js__performance_form_date').datetimepicker();
+    jQuery('#challenges--js__performance_form_window_open').datetimepicker();
+    jQuery('#challenges--js__performance_form_window_close').datetimepicker();
   });
 </script>
