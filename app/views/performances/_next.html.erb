@@ -4,12 +4,12 @@
 <% else %>
   <% if next_performance.window_open? %>
     <div class="mdc-typography--display1"><%= next_performance.name %> challenges are now open!</div>
-    <div class="mdc-typography--title">The window closes at <%= next_performance.window_close.strftime("%b %d %I:%M %p") %></div>
+    <div class="mdc-typography--title">The window closes at <%= local_time(next_performance.window_close, "%b %d %I:%M %p") %></div>
   <% else %>
     <div class="mdc-typography--title">
       Challenge signups for <%= next_performance.name %> open at&nbsp;
-      <%= next_performance.window_open.strftime("%b %d %I:%M %p") %> and close at&nbsp;
-      <%= next_performance.window_close.strftime("%b %d %I:%M %p") %>
+      <%= local_time(next_performance.window_open, "%b %d %I:%M %p") %> and close at&nbsp;
+      <%= local_time(next_performance.window_close, "%b %d %I:%M %p") %>
     </div>
   <% end %>
 <% end %>
