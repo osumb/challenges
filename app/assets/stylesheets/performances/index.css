@@ -1,0 +1,40 @@
+.challenges-performances-index {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.challenges-performances-index-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.challenges-performance-index-form {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  border: 1px solid var(--colors-secondary-gray);
+  border-radius: 4px;
+  padding: 16px;
+  margin: 16px;
+}
+
+.challenges--js_performance_hidden_value {
+  display: none;
+}
+
+.challenges-performances-index-button-container {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.challenges-performance-index-delete {
+  color: white;
+}
+
+.challenges-performance-index-list {
+  align-self: center;
+}

@@ -17,5 +17,12 @@ en:
     performances:
       create:
         success: "Performance created successfully!"
+      update:
+        success: "Performance updated successfully!"
+      destroy:
+        confirm: "Are you sure you want to delete this performance?"
+        success: "Performance deleted successfully!"
+      email_challenge_list:
+        success: "Challenge list emailed successfully!"
     profile:
       needs_to_create_challenge: "You still need to make a challenge!"

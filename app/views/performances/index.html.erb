@@ -1,0 +1,62 @@
+<div class="challenges-performances-index">
+  <div class="mdc-typography--display2">Update Performance</div>
+  <% if flash[:message] %>
+    <div class="mdc-typography--headline"><%= flash[:message] %></div>
+  <% end %>
+  <% if flash[:errors] %>
+    <div class="mdc-typography--headline"><%= flash[:errors] %></div>
+  <% end %>
+  <div class="challenges-performances-index-container">
+    <% @performances.each do |performance| %>
+      <div class="challenges-performance-index-form">
+        <%= form_for(performance, builder: MaterialDesignFormBuilder, method: "PUT") do |form| %>
+          <div class="mdc-typography--title">Performance Name</div>
+          <input
+             class="challenges-performance-form-input"
+             placeholder="Name"
+             name="performance[name]"
+             value=<%= performance.name %>
+           />
+          <div class="mdc-typography--title">Date of performance</div>
+          <div class="challenges--js_performance_hidden_value"><%= local_time(performance.date, "%Y/%m/%d %H:%M") %></div>
+          <input class="challenges-performance-form-input challenges--js__performance_form_datetime" name="performance[date]" id="challenges--js__performance_form_date" />
+          <div class="mdc-typography--title">Challenge Window Open</div>
+          <div class="challenges--js_performance_hidden_value"><%= local_time(performance.window_open, "%Y/%m/%d %H:%M") %></div>
+          <input class="challenges-performance-form-input challenges--js__performance_form_datetime" name="performance[window_open]" id="challenges--js__performance_form_window_open" />
+          <div class="mdc-typography--title">Challenge Window Close</div>
+          <div class="challenges--js_performance_hidden_value"><%= local_time(performance.window_close, "%Y/%m/%d %H:%M") %></div>
+          <input class="challenges-performance-form-input challenges--js__performance_form_datetime" name="performance[window_close]" id="challenges--js__performance_form_window_close" />
+          <input type="hidden" name="timezone" class="challenges--js__performance_form_timezone" />
+          <div class="challenges-performances-index-button-container">
+            <%= form.submit "Update" %>
+            <%= link_to(
+              "Delete",
+              "/performances/#{performance.id}",
+              method: :delete,
+              class: "mdc-button mdc-button-primary challenges-button-secondary challenges-performance-index-delete",
+              data: { confirm: I18n.t!("client_messages.performances.destroy.confirm") }
+            ) %>
+          </div>
+        <% end %>
+        <form class="challenges-performance-index-list" action=<%= "/performances/#{performance.id}/email_challenge_list" %> method="GET">
+          <input type="submit" class="mdc-button mdc-button-primary challenges-button-secondary" value="Email Challenge List" />
+        </form>
+      </div>
+    <% end %>
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    Array.from(document.getElementsByClassName('challenges--js_performance_hidden_value')).forEach((e) => {
+      const datetime = e.firstElementChild.innerHTML;
+      e.nextElementSibling.value = datetime;
+    });
+    Array.from(document.getElementsByClassName('challenges--js__performance_form_timezone')).forEach((e) => {
+      e.value = jstz.determine().name();
+    });
+    Array.from(document.getElementsByClassName('challenges--js__performance_form_datetime')).forEach((e) => {
+      jQuery(e).datetimepicker();
+    });
+  });
+</script>
