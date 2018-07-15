@@ -18,13 +18,13 @@
              value=<%= performance.name %>
            />
           <div class="mdc-typography--title">Date of performance</div>
-          <div class="challenges--js_performance_hidden_value"><%= local_time(performance.date, "%Y/%m/%d %I:%M") %></div>
+          <div class="challenges--js_performance_hidden_value"><%= local_time(performance.date, "%Y/%m/%d %H:%M") %></div>
           <input class="challenges-performance-form-input challenges--js__performance_form_datetime" name="performance[date]" id="challenges--js__performance_form_date" />
           <div class="mdc-typography--title">Challenge Window Open</div>
-          <div class="challenges--js_performance_hidden_value"><%= local_time(performance.window_open, "%Y/%m/%d %I:%M") %></div>
+          <div class="challenges--js_performance_hidden_value"><%= local_time(performance.window_open, "%Y/%m/%d %H:%M") %></div>
           <input class="challenges-performance-form-input challenges--js__performance_form_datetime" name="performance[window_open]" id="challenges--js__performance_form_window_open" />
           <div class="mdc-typography--title">Challenge Window Close</div>
-          <div class="challenges--js_performance_hidden_value"><%= local_time(performance.window_close, "%Y/%m/%d %I:%M") %></div>
+          <div class="challenges--js_performance_hidden_value"><%= local_time(performance.window_close, "%Y/%m/%d %H:%M") %></div>
           <input class="challenges-performance-form-input challenges--js__performance_form_datetime" name="performance[window_close]" id="challenges--js__performance_form_window_close" />
           <input type="hidden" name="timezone" class="challenges--js__performance_form_timezone" />
           <div class="challenges-performances-index-button-container">
