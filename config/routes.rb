@@ -20,6 +20,11 @@ Rails.application.routes.draw do
 
   resources :sessions, only: [:create]
   resources :user_challenges, only: [:destroy]
+  resources :users do
+    collection do
+      get :search
+    end
+  end
 
   get 'logout', to: 'sessions#destroy'
 
