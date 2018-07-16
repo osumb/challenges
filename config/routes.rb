@@ -20,7 +20,7 @@ Rails.application.routes.draw do
 
   resources :sessions, only: [:create]
   resources :user_challenges, only: [:destroy]
-  resources :users do
+  resources :users, only: [:show], constraints: { id: /[a-zA-Z]+(?:-[a-zA-Z]+)?\.[0-9]+/ } do
     collection do
       get :search
     end

@@ -15,4 +15,13 @@ class UsersController < ApplicationController
                []
              end
   end
+
+  def show
+    @user = User.includes(:challenges, :discipline_actions).find(params[:id])
+    @performance = Performance.next
+    @current_challenge = @user.challenges.where(performance: @performance).first
+    @past_challenges = @user.challenges.where.not(performance: @performance)
+    @current_discipline_action = @user.discipline_actions.where(performance: @performance).first
+    @past_discipline_actions = @user.discipline_actions.where.not(performance: @performance)
+  end
 end
