@@ -1,0 +1,40 @@
+.challenges-users-search {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 80%;
+  margin: 0 auto;
+}
+
+.challenges-users-search-field {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  margin-top: 20px;
+}
+
+.challenges-users-search-bar {
+  flex: 1;
+  margin-right: 8px;
+}
+
+.challenges-users-search-users {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.challenges-users-search-user-list {
+  margin-top: 24px;
+  display: flex;
+  flex-direction: column;
+}
+
+.challenges-users-search-user {
+  display: flex;
+  align-items: center;
+  text-decoration: underline;
+  min-height: 50px;
+}

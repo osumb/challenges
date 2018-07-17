@@ -1,1 +1,24 @@
-<div></div>
+<div class="challenges-users-search">
+  <form class="challenges-users-search-field" action="/users/search" method="GET">
+    <input name="query" value="<%= params[:query] %>" class="mdc-textfield mdc-textfield--upgraded challenges-users-search-bar" placeholder="Search for a user" autofocus />
+    <input type="submit" value="Search" class="mdc-button mdc-button-primary challenges-button-secondary" />
+  </form>
+  <div class="challenges-users-search-users">
+    <% if @users.empty? && !params[:query].nil? %>
+      <div class="mdc-typography--title">
+        <%= I18n.t!("client_messages.users.search.empty", query: params[:query]) %>
+      </div>
+    <% elsif !params[:query].nil? %>
+      <div class="challenges-users-search-user-list">
+        <% @users.each do |user| %>
+          <div class="challenges-users-search-user">
+            <%= SvgHelper.render("ic_perm_identity_black_36px.svg") %>
+            <a href="<%= "/users/#{user.buck_id}" %>">
+              <%= user.full_name %>
+            </a>
+          </div>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+</div>

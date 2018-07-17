@@ -43,7 +43,7 @@ module Router
   def self._user_routes(role)
     routes = []
     if role == User::Roles::ADMIN
-      routes << { name: 'Search', path: '/search' }
+      routes << { name: 'Search', path: '/users/search' }
       routes << { name: 'Roster', path: '/users' }
       routes << { name: 'Upload', path: '/users/upload' }
       routes << { name: 'Create', path: '/users/new' }
