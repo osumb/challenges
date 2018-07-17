@@ -53,6 +53,17 @@ RSpec.describe UsersController do
             expect(assigns(:users)).to eq([user])
           end
         end
+
+        context 'but the query string is empty' do
+          let!(:user) { create(:user) }
+          let(:query) { '' }
+
+          it 'returns an empty list' do
+            request
+
+            expect(assigns(:users)).to be_empty
+          end
+        end
       end
 
       context 'but a search wasn\'t made' do
