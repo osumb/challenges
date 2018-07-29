@@ -14,6 +14,15 @@ en:
         success: "Successfully submitted challenge!"
         save: "Successfully saved challenge!"
         invalid_user_challenge_places: "Please make sure all of the following places are selected: %{places}. Missing: %{missing}"
+    discipline_actions:
+      create:
+        checkbox_allowed_to_challenge: "Check box if %{name} is allowed to challenge another spot"
+        checkbox_open_spot: "Check box if the spot %{spot} opens as a result of the action"
+        stale_performance: "Performance window can't be closed"
+        success: "Discipline action created successfully!"
+      destroy:
+        success: "Discipline action deleted successfully!"
+        spot_challenged: "%{name}'s spot has already been challenged. Please remove that challenge before deleting this discipline action"
     performances:
       create:
         success: "Performance created successfully!"
