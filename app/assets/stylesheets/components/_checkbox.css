@@ -1,0 +1,16 @@
+.mdc-theme--challenges .mdc-checkbox__native-control:checked:not(:disabled) ~ .mdc-checkbox__background,
+.mdc-theme--challenges .mdc-checkbox__native-control:indeterminate:not(:disabled) ~ .mdc-checkbox__background {
+  background-color: #b3b3b3;
+  border-color: #b3b3b3;
+}
+
+.mdc-theme--challenges .mdc-checkbox__background::before {
+  background-color: #b3b3b3;
+}
+.mdc-theme--challenges .mdc-checkbox__checkmark__path {
+  stroke: white !important;
+}
+
+.mdc-theme--challenges .mdc-checkbox__mixedmark {
+  background-color: #b3b3b3;
+}
