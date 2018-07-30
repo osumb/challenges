@@ -1,0 +1,23 @@
+<div class="challenges-discipline-action-create">
+  <div class="mdc-typography--title">Create Discipline Action</div>
+  <div class="mdc-typography--body2">Member: <%= user.full_name %></div>
+  <div class="mdc-typography--body2">Performance: <%= performance.name %></div>
+  <%= form_for :discipline_action, { builder: MaterialDesignFormBuilder, url: "/discipline_actions", html: { class: "challenges-discipline-action-create-form" } } do |f| %>
+    <%= f.text_field :reason, placeholder: "Reason for this action", class: "challenges-discipline-action-create-input" %>
+    <%= render(
+          "components/checkbox",
+          label: I18n.t!("client_messages.discipline_actions.create.checkbox_open_spot", spot: user.current_spot),
+          name: "discipline_action[open_spot]"
+        )
+    %>
+    <%= render(
+          "components/checkbox",
+          label: I18n.t!("client_messages.discipline_actions.create.checkbox_allowed_to_challenge", name: user.first_name),
+          name: "discipline_action[allowed_to_challenge]"
+        )
+    %>
+    <input type="hidden" name="discipline_action[performance_id]" value="<%= performance.id %>" />
+    <input type="hidden" name="discipline_action[user_buck_id]" value="<%= user.buck_id %>" />
+    <%= f.submit "Create" %>
+  <% end %>
+</div>

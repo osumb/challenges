@@ -20,8 +20,8 @@ class UsersController < ApplicationController
     @user = User.includes(:challenges, :discipline_actions).find(params[:id])
     @performance = Performance.next
     @current_challenge = @user.challenges.where(performance: @performance).first
-    @past_challenges = @user.challenges.where.not(performance: @performance)
+    @past_challenges = @user.challenges.where.not(performance: @performance).order(id: :asc)
     @current_discipline_action = @user.discipline_actions.where(performance: @performance).first
-    @past_discipline_actions = @user.discipline_actions.where.not(performance: @performance)
+    @past_discipline_actions = @user.discipline_actions.where.not(performance: @performance).order(id: :asc)
   end
 end

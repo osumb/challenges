@@ -1,0 +1,14 @@
+.challenges-discipline-action-create {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.challenges-discipline-action-create-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.challenges-discipline-action-create-input {
+  min-width: 175px;
+}

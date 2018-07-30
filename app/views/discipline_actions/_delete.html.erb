@@ -1,0 +1,8 @@
+<div>
+  <div class="mdc-typography--title">
+    For the <%= discipline_action.performance.name %>, <%= discipline_action.user.first_name %> was disciplined for <%= discipline_action.reason %>
+  </div>
+  <%= form_for(discipline_action, method: :delete, builder: MaterialDesignFormBuilder) do |form| %>
+    <%= form.submit "Delete" %>
+  <% end %>
+</div>

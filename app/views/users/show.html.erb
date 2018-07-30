@@ -1,1 +1,30 @@
-<div></div>
+<div class="challenges-users-show">
+  <%= render "users/user_header", user: @user %>
+  <% if flash[:message] %>
+    <div><%= flash[:message] %></div>
+  <% end %>
+  <% if flash[:errors] %>
+    <div><%= flash[:errors] %></div>
+  <% end %>
+  <div>This is where the spot switch confirmation will go</div>
+  <div class="challenges-users-show-info">
+    <div class="challenges-users-show-info-column mdc-elevation--z1">
+      <% if @performance.present? && @current_discipline_action.nil? %>
+        <%= render "discipline_actions/create", user: @user, performance: @performance %>
+      <% elsif @performance.present? && @current_discipline_action.present? %>
+        <%= render "discipline_actions/delete", discipline_action: @current_discipline_action %>
+      <% end %>
+      <% @past_discipline_actions.each do |discipline_action| %>
+        <%= render "discipline_actions/discipline_action_for_admin", discipline_action: discipline_action %>
+      <% end %>
+    </div>
+    <div class="challenges-users-show-info-column">
+      <% if @current_challenge.present? %>
+        <%= render "challenges/current_challenge", challenge: @current_challenge, name: @user.first_name, user_challenge: @current_challenge.user_challenges.select { |uc| uc.user_buck_id == @user.buck_id } %>
+      <% end %>
+      <% @past_challenges.each do |challenge| %>
+        <%= render "challenges/challenge", challenge: challenge, for_user: @user %>
+      <% end %>
+    </div>
+  </div>
+</div>
