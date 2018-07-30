@@ -18,8 +18,13 @@
         <%= render "discipline_actions/discipline_action_for_admin", discipline_action: discipline_action %>
       <% end %>
     </div>
-    <div class="challenges-users-show-info-column mdc-elevation--z1">
-      Challenges
+    <div class="challenges-users-show-info-column">
+      <% if @current_challenge.present? %>
+        <%= render "challenges/current_challenge", challenge: @current_challenge, name: @user.first_name, user_challenge: @current_challenge.user_challenges.select { |uc| uc.user_buck_id == @user.buck_id } %>
+      <% end %>
+      <% @past_challenges.each do |challenge| %>
+        <%= render "challenges/challenge", challenge: challenge, for_user: @user %>
+      <% end %>
     </div>
   </div>
 </div>

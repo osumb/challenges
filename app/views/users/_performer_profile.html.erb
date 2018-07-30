@@ -6,7 +6,7 @@
       </div>
     <% end %>
   <% else %>
-    <%= render "challenges/current_challenge", challenge: @current_challenge %>
+    <%= render "challenges/current_challenge", challenge: @current_challenge, user_challenge: @current_user_challenge %>
   <% end %>
   <% if @current_discipline_action.present? %>
     <%= render "discipline_actions/discipline_action", discipline_action: @current_discipline_action %>
