@@ -180,7 +180,8 @@ RSpec.describe UsersController do
                 user,
                 create(:user, current_spot: create(:spot, row: user.current_spot.row, file: user.current_spot.file + 1))
               ],
-              performance: performance
+              performance: performance,
+              stage: :done
             )
           end
 
@@ -194,6 +195,19 @@ RSpec.describe UsersController do
             request
 
             expect(assigns(:past_challenges)).to eq([challenge])
+          end
+
+          context 'but none of them are in the done stage' do
+            before do
+              challenge.stage = :needs_comments
+              challenge.save!
+            end
+
+            it 'sets an empty list for past_challenges' do
+              request
+
+              expect(assigns(:past_challenges)).to be_empty
+            end
           end
         end
 
