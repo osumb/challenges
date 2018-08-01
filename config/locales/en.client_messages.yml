@@ -38,3 +38,5 @@ en:
     users:
       search:
         empty: "No results found for '%{query}'"
+      update:
+        success: "Successfully updated user"

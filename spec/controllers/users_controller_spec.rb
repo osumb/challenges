@@ -239,4 +239,55 @@ RSpec.describe UsersController do
       end
     end
   end
+
+  describe 'PUT udpate' do
+    let(:current_user) { create(:admin_user) }
+    let(:request) { put :update, params: params }
+    let(:expected_authenticated_response) { have_http_status(:redirect) }
+    let(:expected_unauthenticated_response) { redirect_to('/login') }
+    let!(:user) { create(:user, part: 'efer') }
+    let(:part) { 'first' }
+    let(:params) do
+      {
+        id: user.buck_id,
+        user: {
+          part: part
+        }
+      }
+    end
+
+    it_behaves_like 'controller_authentication'
+
+    context 'when authenticated' do
+      include_context 'with authentication'
+
+      it 'updates the user' do
+        request
+
+        expect(user.reload.part).to eq('first')
+      end
+
+      context 'but the part is invalid' do
+        let(:part) { 'snare' }
+
+        it 'doesn\'t update the user' do
+          original_part = user.part
+
+          request
+
+          expect(user.reload.part).to eq(original_part)
+        end
+      end
+
+      context 'but the current user is not an admin' do
+        let(:current_user) { user }
+
+        it 'returns a :not_found' do
+          request
+
+          expect(response).to have_http_status(:not_found)
+        end
+      end
+    end
+  end
 end

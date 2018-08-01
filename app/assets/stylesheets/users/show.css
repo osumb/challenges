@@ -5,6 +5,28 @@
   height: 100%;
 }
 
+.challenges-users-show-edit {
+  display: flex;
+  width: 100%;
+}
+
+.challenges-users-show-edit-part-select {
+  margin: 0 8px 0 16px;
+}
+
+.challenges-users-show-edit-part {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+}
+
+.chalelnges-users-show-edit-spot {
+  display: flex;
+  justify-content: center;
+  flex: 1;
+}
+
 .challenges-users-show-info {
   display: flex;
   width: 100%;

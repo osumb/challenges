@@ -6,7 +6,25 @@
   <% if flash[:errors] %>
     <div><%= flash[:errors] %></div>
   <% end %>
-  <div>This is where the spot switch confirmation will go</div>
+  <div class="challenges-users-show-edit">
+    <div class="challenges-users-show-edit-part">
+      <div class="mdc-typography--title">Current part: <%= @user.part %></div>
+      <form method="POST" action=<%= "/users/#{@user.buck_id}" %>>
+        <select class="mdc-select challenges-users-show-edit-part-select" name="user[part]">
+          <%= @user.available_parts.each do |part| %>
+            <option value=<%= part %>><%= part.titleize %></option>
+          <% end %>
+        </select>
+        <input class="mdc-button mdc-button-primary challenges-button-secondary" type="submit" value="Change Part" />
+        <input type="hidden" name="_method" value="put" />
+      </form>
+    </div>
+    <div class="chalelnges-users-show-edit-spot">
+      <form method="GET" action=<%= "/users/#{@user.buck_id}" %>>
+        <input class="mdc-button mdc-button-primary challenges-button-secondary" type="submit" value="Change Spot" />
+      </form>
+    </div>
+  </div>
   <div class="challenges-users-show-info">
     <div class="challenges-users-show-info-column mdc-elevation--z1">
       <div class="challenges-users-show-discipline-actions-title mdc-typography--title">Manage Discipline Actions</div>
