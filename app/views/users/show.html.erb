@@ -20,9 +20,21 @@
       </form>
     </div>
     <div class="chalelnges-users-show-edit-spot">
-      <form method="GET" action=<%= "/users/#{@user.buck_id}" %>>
-        <input class="mdc-button mdc-button-primary challenges-button-secondary" type="submit" value="Change Spot" />
-      </form>
+      <% if @show_switch_submit_button %>
+         <form method="POST" action=<%= "/users/#{@user.buck_id}/switch_spot" %>>
+          <div><%= flash[:switch_message] %></div>
+          <input class="mdc-button mdc-button-primary challenges-button-secondary" type="submit" value="Switch Spot" />
+          <input type="hidden" name="spot" value="<%= params[:switch_spot] %>" />
+        </form>
+      <% else %>
+        <% if flash[:switch_error] %>
+          <div><%= flash[:switch_error] %></div>
+        <% end %>
+        <form method="GET" action=<%= "/users/#{@user.buck_id}" %>>
+          <input class="mdc-textfield mdc-textfield--upgraded challenges--js__form_label" name="switch_spot" />
+          <input class="mdc-button mdc-button-primary challenges-button-secondary" type="submit" value="Change Spot" />
+        </form>
+      <% end %>
     </div>
   </div>
   <div class="challenges-users-show-info">

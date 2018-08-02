@@ -24,6 +24,7 @@
 .chalelnges-users-show-edit-spot {
   display: flex;
   justify-content: center;
+  align-items: center;
   flex: 1;
 }
 
