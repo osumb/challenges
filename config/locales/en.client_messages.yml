@@ -38,5 +38,11 @@ en:
     users:
       search:
         empty: "No results found for '%{query}'"
+      show:
+        spot_switch_malformed: "Spot '%{spot}' isn't a spot"
+        spot_switch_message: "%{spot} currently belongs to %{name}. Are you sure you want to make this switch?"
+        spot_switch_invalid: "%{name} can't have spot %{spot}"
+      switch_spot:
+        success: "Spot successfully switched!"
       update:
         success: "Successfully updated user"
