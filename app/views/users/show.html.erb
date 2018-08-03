@@ -6,7 +6,37 @@
   <% if flash[:errors] %>
     <div><%= flash[:errors] %></div>
   <% end %>
-  <div>This is where the spot switch confirmation will go</div>
+  <div class="challenges-users-show-edit">
+    <div class="challenges-users-show-edit-part">
+      <div class="mdc-typography--title">Current part: <%= @user.part %></div>
+      <form method="POST" action=<%= "/users/#{@user.buck_id}" %>>
+        <select class="mdc-select challenges-users-show-edit-part-select" name="user[part]">
+          <%= @user.available_parts.each do |part| %>
+            <option value=<%= part %>><%= part.titleize %></option>
+          <% end %>
+        </select>
+        <input class="mdc-button mdc-button-primary challenges-button-secondary" type="submit" value="Change Part" />
+        <input type="hidden" name="_method" value="put" />
+      </form>
+    </div>
+    <div class="chalelnges-users-show-edit-spot">
+      <% if @show_switch_submit_button %>
+         <form method="POST" action=<%= "/users/#{@user.buck_id}/switch_spot" %>>
+          <div><%= flash[:switch_message] %></div>
+          <input class="mdc-button mdc-button-primary challenges-button-secondary" type="submit" value="Switch Spot" />
+          <input type="hidden" name="spot" value="<%= params[:switch_spot] %>" />
+        </form>
+      <% else %>
+        <% if flash[:switch_error] %>
+          <div><%= flash[:switch_error] %></div>
+        <% end %>
+        <form method="GET" action=<%= "/users/#{@user.buck_id}" %>>
+          <input class="mdc-textfield mdc-textfield--upgraded challenges--js__form_label" name="switch_spot" />
+          <input class="mdc-button mdc-button-primary challenges-button-secondary" type="submit" value="Change Spot" />
+        </form>
+      <% end %>
+    </div>
+  </div>
   <div class="challenges-users-show-info">
     <div class="challenges-users-show-info-column mdc-elevation--z1">
       <div class="challenges-users-show-discipline-actions-title mdc-typography--title">Manage Discipline Actions</div>

@@ -23,4 +23,11 @@ class ApplicationController < ActionController::Base
       @current_user = nil
     end
   end
+
+  def send_back(flash = {}, fallback = nil)
+    redirect_back(
+      fallback_location: fallback.nil? ? '/logged_in' : fallback,
+      flash: flash
+    )
+  end
 end

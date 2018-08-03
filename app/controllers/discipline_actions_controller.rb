@@ -46,10 +46,6 @@ class DisciplineActionsController < ApplicationController
     send_back(errors: I18n.t!('client_messages.discipline_actions.destroy.spot_challenged', name: user.first_name))
   end
 
-  def send_back(flash)
-    redirect_back(fallback_location: '/logged_in', flash: flash)
-  end
-
   def create_params # rubocop:disable Metrics/MethodLength
     p = params.require(:discipline_action).permit(
       :allowed_to_challenge,

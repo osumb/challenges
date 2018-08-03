@@ -105,6 +105,10 @@ class User < ApplicationRecord
     "#{first_name} #{last_name}"
   end
 
+  def available_parts
+    User.parts.each_pair.select { |_, value| send("valid_#{instrument}_part".to_sym, value) }.map(&:first)
+  end
+
   private
 
   def can_alternate_challenge_for_performance?(performance)

@@ -1,6 +1,18 @@
 class UsersController < ApplicationController
   before_action :ensure_authenticated!
   before_action :ensure_admin!
+  before_action :ensure_switch_spot_exists!, only: [:switch_spot]
+
+  def update
+    user = User.find(params[:id])
+    user.update(update_params)
+    flash = if user.save
+              { message: I18n.t!('client_messages.users.update.success') }
+            else
+              { errors:  user.errors.full_messages.join(',') }
+            end
+    send_back(flash)
+  end
 
   def search # rubocop:disable Metrics/MethodLength
     @users = if params[:query] && params[:query] != ''
@@ -16,6 +28,7 @@ class UsersController < ApplicationController
              end
   end
 
+  # rubocop:disable Metrics/MethodLength
   def show
     @user = User.includes(:challenges, :discipline_actions).find(params[:id])
     @performance = Performance.next
@@ -23,5 +36,53 @@ class UsersController < ApplicationController
     @past_challenges = @user.challenges.done.where.not(performance: @performance).order(id: :desc)
     @current_discipline_action = @user.discipline_actions.where(performance: @performance).first
     @past_discipline_actions = @user.discipline_actions.where.not(performance: @performance).order(id: :desc)
+    if params[:switch_spot]
+      flash_hash = get_spot_switch_flash(params[:switch_spot], @user)
+      flash.now[flash_hash.keys.first.to_sym] = flash_hash.values.first
+      @show_switch_submit_button = flash_hash[:switch_message].present?
+    else
+      @show_switch_submit_button = false
+    end
+  end
+
+  def switch_spot
+    user = User.find(params[:id])
+    spot = SpotService.find(query: params[:spot])
+    other_user = spot.current_user
+    result = UserService.switch_spots(first_user: user, second_user: other_user)
+    flash_hash = if result.success?
+                   { message: I18n.t!('client_messages.users.switch_spot.success') }
+                 else
+                   { errors: result.errors }
+                 end
+    redirect_to("/users/#{user.buck_id}", flash: flash_hash)
+  end
+
+  private
+
+  # rubocop:disable Metrics/LineLength
+  def get_spot_switch_flash(switch_spot, user)
+    spot = SpotService.find(query: switch_spot)
+    return { switch_error: I18n.t!('client_messages.users.show.spot_switch_malformed', spot: switch_spot) } if spot.nil?
+    row = Spot.rows[spot.row]
+    instrument = User.instruments[user.instrument]
+    part = User.parts[user.part]
+    if !Spot.valid_instrument_part_for_row(row, instrument, part)
+      { switch_error: I18n.t!('client_messages.users.show.spot_switch_invalid', name: user.first_name, spot: switch_spot) }
+    else
+      other_user = spot.current_user
+      { switch_message: I18n.t!('client_messages.users.show.spot_switch_message', name: other_user.full_name, spot: switch_spot) }
+    end
+  end
+  # rubocop:enable Metrics/MethodLength, Metrics/LineLength
+
+  def update_params
+    params.require(:user).permit(:part)
+  end
+
+  def ensure_switch_spot_exists!
+    spot = SpotService.find(query: params[:spot])
+    return if spot.present?
+    head :not_found
   end
 end

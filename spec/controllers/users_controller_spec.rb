@@ -89,7 +89,8 @@ RSpec.describe UsersController do
   describe 'GET show' do
     let(:current_user) { create(:admin_user) }
     let(:user) { create(:user) }
-    let(:request) { get :show, params: { id: user.buck_id } }
+    let(:switch_spot) { nil }
+    let(:request) { get :show, params: { id: user.buck_id, switch_spot: switch_spot } }
     let(:expected_authenticated_response) { render_template(:show) }
     let(:expected_unauthenticated_response) { redirect_to('/login') }
 
@@ -110,6 +111,12 @@ RSpec.describe UsersController do
         get :show, params: { id: user.buck_id }
 
         expect(assigns(:user)).to eq(user)
+      end
+
+      it 'assigns @show_switch_submit_button to be false' do
+        request
+
+        expect(assigns(:show_switch_submit_button)).to be(false)
       end
 
       context 'and there is an upcoming performance' do
@@ -225,6 +232,161 @@ RSpec.describe UsersController do
 
             expect(assigns(:past_discipline_actions)).to eq([discipline_action])
           end
+        end
+      end
+
+      context 'and the param switch_spot is passed' do
+        let!(:spot) { create(:spot, row: :a, file: 5) }
+        let(:switch_spot) { spot.to_s }
+        let!(:other_user) { create(:user, current_spot: spot) }
+
+        context 'and the spot is invalid' do
+          let(:switch_spot) { 'invalid spot' }
+
+          it 'flashes an error' do
+            request
+
+            expect(flash[:switch_error]).to eq("Spot '#{switch_spot}' isn't a spot")
+          end
+
+          it 'assigns @show_switch_submit_button to be false' do
+            request
+
+            expect(assigns(:show_switch_submit_button)).to be(false)
+          end
+        end
+
+        context 'but the user can\'t have that spot' do
+          let(:switch_spot) { create(:spot, row: :q, file: 3).to_s }
+
+          it 'flashes an error' do
+            request
+
+            expect(flash[:switch_error]).to eq("#{user.first_name} can't have spot #{switch_spot}")
+          end
+
+          it 'assigns @show_switch_submit_button to be false' do
+            request
+
+            expect(assigns(:show_switch_submit_button)).to be(false)
+          end
+        end
+
+        it 'flashes a message' do
+          request
+
+          expect(flash[:switch_message]).to eq("#{switch_spot} currently belongs to #{other_user.full_name}. Are you sure you want to make this switch?")
+        end
+
+        it 'assigns @show_switch_submit_button to be true' do
+          request
+
+          expect(assigns(:show_switch_submit_button)).to be(true)
+        end
+      end
+
+      context 'but the current user is not an admin' do
+        let(:current_user) { user }
+
+        it 'returns a :not_found' do
+          request
+
+          expect(response).to have_http_status(:not_found)
+        end
+      end
+    end
+  end
+
+  describe 'PUT update' do
+    let(:current_user) { create(:admin_user) }
+    let(:request) { put :update, params: params }
+    let(:expected_authenticated_response) { have_http_status(:redirect) }
+    let(:expected_unauthenticated_response) { redirect_to('/login') }
+    let!(:user) { create(:user, part: 'efer') }
+    let(:part) { 'first' }
+    let(:params) do
+      {
+        id: user.buck_id,
+        user: {
+          part: part
+        }
+      }
+    end
+
+    it_behaves_like 'controller_authentication'
+
+    context 'when authenticated' do
+      include_context 'with authentication'
+
+      it 'updates the user' do
+        request
+
+        expect(user.reload.part).to eq('first')
+      end
+
+      context 'but the part is invalid' do
+        let(:part) { 'snare' }
+
+        it 'doesn\'t update the user' do
+          original_part = user.part
+
+          request
+
+          expect(user.reload.part).to eq(original_part)
+        end
+      end
+
+      context 'but the current user is not an admin' do
+        let(:current_user) { user }
+
+        it 'returns a :not_found' do
+          request
+
+          expect(response).to have_http_status(:not_found)
+        end
+      end
+    end
+  end
+
+  describe 'POST switch_spot' do
+    let(:current_user) { create(:admin_user) }
+    let!(:user) { create(:user, :trumpet, :solo) }
+    let!(:target_user) { create(:user, :trumpet, :solo, :spot_a4) }
+    let(:request) { put :switch_spot, params: params }
+    let(:expected_authenticated_response) { redirect_to("/users/#{user.buck_id}") }
+    let(:expected_unauthenticated_response) { redirect_to('/login') }
+    let(:spot) { target_user.current_spot.to_s }
+    let(:params) do
+      {
+        id: user.buck_id,
+        spot: spot
+      }
+    end
+
+    it_behaves_like 'controller_authentication'
+
+    context 'with authentication' do
+      include_context 'with authentication'
+
+      it 'successfully switches two user\'s spots', :aggregate_failures do
+        request
+
+        old_user_spot = user.current_spot
+        target_spot = target_user.current_spot
+        user.reload
+        target_user.reload
+
+        expect(user.current_spot).to eq(target_spot)
+        expect(target_user.current_spot).to eq(old_user_spot)
+      end
+
+      context 'but the spot doesn\'t exist' do
+        let(:spot) { 'a15' }
+
+        it 'returns a :not_found' do
+          request
+
+          expect(response).to have_http_status(:not_found)
         end
       end
 
