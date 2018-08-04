@@ -27,6 +27,9 @@ en:
       create:
         not_found: "That combination of name.# and password doesn't exist in the system"
         success: "Success! An email has been sent to %{email} with instructions"
+      show:
+        expired: "This token is expired. Please make another one"
+        used: "This token has already been used. Please make another one"
     performances:
       create:
         success: "Performance created successfully!"

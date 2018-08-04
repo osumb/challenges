@@ -1,6 +1,8 @@
 class PasswordResetRequestsController < ApplicationController
   before_action :ensure_user_exist!, only: [:create]
   before_action :ensure_email_matches!, only: [:create]
+  before_action :ensure_request_is_not_used!, only: %i[show reset]
+  before_action :ensure_request_is_not_expired!, only: %i[show reset]
 
   def new; end
 
@@ -22,6 +24,12 @@ class PasswordResetRequestsController < ApplicationController
     end
   end
 
+  def show
+    @password_reset_request = PasswordResetRequest.find(params[:id])
+  end
+
+  def reset; end
+
   private
 
   def ensure_user_exist!
@@ -36,5 +44,17 @@ class PasswordResetRequestsController < ApplicationController
     user = User.find(buck_id)
     return if email.casecmp(user.email).zero?
     send_back(errors: I18n.t!('client_messages.password_reset_requests.create.not_found', buck_id: buck_id))
+  end
+
+  def ensure_request_is_not_used!
+    req = PasswordResetRequest.find(params[:id])
+    return unless req.used?
+    flash.now[:errors] = I18n.t!('client_messages.password_reset_requests.show.used')
+  end
+
+  def ensure_request_is_not_expired!
+    req = PasswordResetRequest.find(params[:id])
+    return unless req.expired?
+    flash.now[:errors] = I18n.t!('client_messages.password_reset_requests.show.expired')
   end
 end

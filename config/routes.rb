@@ -17,7 +17,7 @@ Rails.application.routes.draw do
   end
 
   resources :discipline_actions, only: [:create, :destroy]
-  resources :password_reset_requests, only: [:create, :new]
+  resources :password_reset_requests, only: [:create, :new, :show]
   resources :performances, only: [:create, :new, :index, :update, :destroy]
   get 'performances/:id/email_challenge_list', to: 'performances#email_challenge_list'
 

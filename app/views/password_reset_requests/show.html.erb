@@ -1,0 +1,16 @@
+<div class="challenges-password-reset-requests-show">
+  <div class="mdc-typography--display1">Reset Your Password</div>
+  <% if flash[:message] %>
+    <div class="mdc-typography--body2"><%= flash[:message] %></div>
+  <% end %>
+  <% if flash[:errors] %>
+    <div class="mdc-typography--body2"><%= flash[:errors] %></div>
+  <% end %>
+  <% unless @password_reset_request.used || @password_reset_request.expired? %>
+    <%= form_with(url: "/password_reset_requests/#{params[:id]}/reset", builder: MaterialDesignFormBuilder) do |form| %>
+      <input class="mdc-textfield__input" type="password" name="password" placeholder="password" />
+      <input class="mdc-textfield__input" type="password" name="password_confirmation" placeholder="password confirmation" />
+      <%= form.submit "Reset Password" %>
+    <% end %>
+  <% end %>
+</div>

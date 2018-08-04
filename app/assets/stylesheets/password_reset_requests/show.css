@@ -1,0 +1,5 @@
+.challenges-password-reset-requests-show {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}

@@ -59,4 +59,41 @@ RSpec.describe PasswordResetRequestsController do
       end
     end
   end
+
+  describe 'GET show' do
+    let!(:password_reset_request) { create(:password_reset_request) }
+    let(:request) { get :show, params: { id: password_reset_request.id } }
+
+    it 'renders the show template' do
+      request
+
+      expect(response).to render_template(:show)
+    end
+
+    it 'sets @password_reset_request' do
+      request
+
+      expect(assigns(:password_reset_request)).to eq(password_reset_request)
+    end
+
+    context 'when the request is used' do
+      let(:password_reset_request) { create(:password_reset_request, :used) }
+
+      it 'sets a flash error' do
+        request
+
+        expect(flash[:errors]).to eq('This token has already been used. Please make another one')
+      end
+    end
+
+    context 'when the request is expired' do
+      let(:password_reset_request) { create(:password_reset_request, :expired) }
+
+      it 'sets a flash error' do
+        request
+
+        expect(flash[:errors]).to eq('This token is expired. Please make another one')
+      end
+    end
+  end
 end
