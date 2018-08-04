@@ -5,6 +5,7 @@
     <%= form.submit 'Log In' %>
   <% end %>
 </div>
+<div class="challenges-password-reset"><a href="/password_reset_requests/new">Need A New Password?</a></div>
 <% if flash[:error] %>
   <div class='mcd-typography--title challenges-sessions-flash'><%= flash[:error] %></div>
 <% end %>

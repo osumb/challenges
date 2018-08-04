@@ -23,6 +23,10 @@ en:
       destroy:
         success: "Discipline action deleted successfully!"
         spot_challenged: "%{name}'s spot has already been challenged. Please remove that challenge before deleting this discipline action"
+    password_reset_requests:
+      create:
+        not_found: "That combination of name.# and password doesn't exist in the system"
+        success: "Success! An email has been sent to %{email} with instructions"
     performances:
       create:
         success: "Performance created successfully!"

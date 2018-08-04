@@ -1,0 +1,15 @@
+<div class="challenges-password-reset-requests-new">
+  <div class="mdc-typography--display1">Need A New Password?</div>
+  <div class="mdc-typography--title">Enter your name.# and email</div>
+  <% if flash[:message] %>
+    <div class="mdc-typography--body2"><%= flash[:message] %></div>
+  <% end %>
+  <% if flash[:errors] %>
+    <div class="mdc-typography--body2"><%= flash[:errors] %></div>
+  <% end %>
+  <%= form_with(url: "/password_reset_requests", builder: MaterialDesignFormBuilder) do |form| %>
+    <%= form.text_field :buck_id, label: "name.#" %>
+    <%= form.text_field :email, label: "email" %>
+    <%= form.submit "Submit" %>
+  <% end %>
+</div>
