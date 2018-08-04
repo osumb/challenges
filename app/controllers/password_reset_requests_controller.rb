@@ -13,15 +13,15 @@ class PasswordResetRequestsController < ApplicationController
     if request.save
       EmailJob.perform_later(
         klass: PasswordResetMailer.to_s,
-        method: 'password_reset_email',
+        method: "password_reset_email",
         args: {
           user_buck_id: user.buck_id,
           password_reset_request_id: request.id
         }
       )
-      send_back(message: I18n.t!('client_messages.password_reset_requests.create.success', email: user.email))
+      send_back(message: I18n.t!("client_messages.password_reset_requests.create.success", email: user.email))
     else
-      send_back(errors: request.errors.full_messages.join(','))
+      send_back(errors: request.errors.full_messages.join(","))
     end
   end
 
@@ -34,9 +34,9 @@ class PasswordResetRequestsController < ApplicationController
     errors = PasswordService.reset_password(password_reset_request_id: params[:id], password_digest: encrypted_password)
 
     flash_hash = if errors.none?
-                   { message: I18n.t!('client_messages.password_reset_requests.reset.success') }
+                   { message: I18n.t!("client_messages.password_reset_requests.reset.success") }
                  else
-                   { errors: errors.full_messages.join(', ') }
+                   { errors: errors.full_messages.join(", ") }
                  end
     send_back(flash_hash)
   end
@@ -46,7 +46,7 @@ class PasswordResetRequestsController < ApplicationController
   def ensure_user_exist!
     buck_id = params[:buck_id]
     return if User.find_by(buck_id: buck_id.downcase).present?
-    send_back(errors: I18n.t!('client_messages.password_reset_requests.create.not_found', buck_id: buck_id))
+    send_back(errors: I18n.t!("client_messages.password_reset_requests.create.not_found", buck_id: buck_id))
   end
 
   def ensure_email_matches!
@@ -54,23 +54,23 @@ class PasswordResetRequestsController < ApplicationController
     email = params[:email]
     user = User.find(buck_id)
     return if email.casecmp(user.email).zero?
-    send_back(errors: I18n.t!('client_messages.password_reset_requests.create.not_found', buck_id: buck_id))
+    send_back(errors: I18n.t!("client_messages.password_reset_requests.create.not_found", buck_id: buck_id))
   end
 
   def ensure_passwords_match!
     return if params[:password] == params[:password_confirmation]
-    send_back(errors: I18n.t!('client_messages.password_reset_requests.reset.passwords_do_not_match'))
+    send_back(errors: I18n.t!("client_messages.password_reset_requests.reset.passwords_do_not_match"))
   end
 
   def ensure_request_is_not_used!
     req = PasswordResetRequest.find(params[:id])
     return unless req.used?
-    flash.now[:errors] = I18n.t!('client_messages.password_reset_requests.show.used')
+    flash.now[:errors] = I18n.t!("client_messages.password_reset_requests.show.used")
   end
 
   def ensure_request_is_not_expired!
     req = PasswordResetRequest.find(params[:id])
     return unless req.expired?
-    flash.now[:errors] = I18n.t!('client_messages.password_reset_requests.show.expired')
+    flash.now[:errors] = I18n.t!("client_messages.password_reset_requests.show.expired")
   end
 end
