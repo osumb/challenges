@@ -3,6 +3,7 @@ class PasswordResetRequestsController < ApplicationController
   before_action :ensure_email_matches!, only: [:create]
   before_action :ensure_request_is_not_used!, only: %i[show reset]
   before_action :ensure_request_is_not_expired!, only: %i[show reset]
+  before_action :ensure_passwords_match!, only: [:reset]
 
   def new; end
 
@@ -28,7 +29,17 @@ class PasswordResetRequestsController < ApplicationController
     @password_reset_request = PasswordResetRequest.find(params[:id])
   end
 
-  def reset; end
+  def reset
+    encrypted_password = PasswordService.encrypt_password(password: params[:password])
+    errors = PasswordService.reset_password(password_reset_request_id: params[:id], password_digest: encrypted_password)
+
+    flash_hash = if errors.none?
+                   { message: I18n.t!('client_messages.password_reset_requests.reset.success') }
+                 else
+                   { errors: errors.full_messages.join(', ') }
+                 end
+    send_back(flash_hash)
+  end
 
   private
 
@@ -44,6 +55,11 @@ class PasswordResetRequestsController < ApplicationController
     user = User.find(buck_id)
     return if email.casecmp(user.email).zero?
     send_back(errors: I18n.t!('client_messages.password_reset_requests.create.not_found', buck_id: buck_id))
+  end
+
+  def ensure_passwords_match!
+    return if params[:password] == params[:password_confirmation]
+    send_back(errors: I18n.t!('client_messages.password_reset_requests.reset.passwords_do_not_match'))
   end
 
   def ensure_request_is_not_used!

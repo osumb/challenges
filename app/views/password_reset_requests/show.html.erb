@@ -3,7 +3,7 @@
   <% if flash[:message] %>
     <div class="mdc-typography--body2"><%= flash[:message] %></div>
   <% end %>
-  <% if flash[:errors] %>
+  <% if flash[:errors] && !flash[:message] %>
     <div class="mdc-typography--body2"><%= flash[:errors] %></div>
   <% end %>
   <% unless @password_reset_request.used || @password_reset_request.expired? %>

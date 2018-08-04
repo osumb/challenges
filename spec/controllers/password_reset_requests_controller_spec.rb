@@ -96,4 +96,64 @@ RSpec.describe PasswordResetRequestsController do
       end
     end
   end
+
+  describe 'POST reset' do
+    let!(:password_reset_request) { create(:password_reset_request) }
+    let(:request) { post :reset, params: params }
+    let(:password) { 'souper secure passw0rd' }
+    let(:password_confirmation) { 'souper secure passw0rd' }
+    let(:params) do
+      {
+        id: password_reset_request.id,
+        password: password,
+        password_confirmation: password_confirmation
+      }
+    end
+
+    it 'resets the user\'s password' do
+      request
+
+      user = password_reset_request.user
+
+      expect(BCrypt::Password.new(user.reload.password_digest)).to eq(password)
+    end
+
+    context 'but the password confirmation doesn\'t match' do
+      let(:password_confirmation) { 'ope' }
+
+      it 'doesn\'t update the user\'s password' do
+        request
+
+        user = password_reset_request.user
+
+        expect(BCrypt::Password.new(user.reload.password_digest)).not_to eq(password)
+      end
+
+      it 'returns a flash error' do
+        request
+
+        expect(flash[:errors]).to eq('Make sure the passwords match')
+      end
+    end
+
+    context 'when the request is used' do
+      let(:password_reset_request) { create(:password_reset_request, :used) }
+
+      it 'sets a flash error' do
+        request
+
+        expect(flash[:errors]).to eq('This token has already been used. Please make another one')
+      end
+    end
+
+    context 'when the request is expired' do
+      let(:password_reset_request) { create(:password_reset_request, :expired) }
+
+      it 'sets a flash error' do
+        request
+
+        expect(flash[:errors]).to eq('This token is expired. Please make another one')
+      end
+    end
+  end
 end
