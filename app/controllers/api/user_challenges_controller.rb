@@ -13,9 +13,9 @@ module Api
       @user_challenge = UserChallenge.new(user: challenger, challenge: challenge, spot: challenger.current_spot)
 
       if @user_challenge.save
-        render '/api/user_challenges/show', status: :created
+        render "/api/user_challenges/show", status: :created
       else
-        render json: { resource: 'user_challenge', errors: @user_challenge.errors }, status: :conflict
+        render json: { resource: "user_challenge", errors: @user_challenge.errors }, status: :conflict
       end
     end
 
@@ -27,7 +27,7 @@ module Api
         head :no_content
       else
         render json: {
-          resource: 'user_challenge',
+          resource: "user_challenge",
           errors: [user_challenge: result.errors.first]
         }, status: :unprocessable_entity
       end
@@ -41,7 +41,7 @@ module Api
         head :no_content
       else
         render json: {
-          resource: 'user_challenge',
+          resource: "user_challenge",
           errors: [user_challenge: result.errors.first]
         }, status: :unprocessable_entity
       end
@@ -55,7 +55,7 @@ module Api
         head :no_content
       else
         render json: {
-          resource: 'user_challenge',
+          resource: "user_challenge",
           errors: [user_challenge: result.errors.first]
         }, status: :unprocessable_entity
       end
@@ -69,7 +69,7 @@ module Api
         head :no_content
       else
         render json: {
-          resource: 'user_challenge',
+          resource: "user_challenge",
           errors: [user_challenge: result.errors.first]
         }, status: :unprocessable_entity
       end
@@ -79,18 +79,18 @@ module Api
 
     def ensure_challenge_exists!
       return if Challenge.exists? id: params[:challenge_id]
-      render json: { resource: 'user_challenge', errors: [challenge: 'challenge doesn\'t exist'] }, status: :forbidden
+      render json: { resource: "user_challenge", errors: [challenge: "challenge doesn't exist"] }, status: :forbidden
     end
 
     def ensure_user_exists!
       return if User.exists? buck_id: params[:challenger_buck_id]&.downcase
-      render json: { resource: 'user_challenge', errors: [user: 'user doesn\'t exist'] }, status: :forbidden
+      render json: { resource: "user_challenge", errors: [user: "user doesn't exist"] }, status: :forbidden
     end
 
     def ensure_challenge_not_full!
       challenge = Challenge.includes(:users).find_by id: params[:challenge_id]
       return unless challenge.full?
-      render json: { resource: 'user_challenge', errors: [challenge: 'challenge is already full'] }, status: :forbidden
+      render json: { resource: "user_challenge", errors: [challenge: "challenge is already full"] }, status: :forbidden
     end
 
     def ensure_correct_user_for_delete!
@@ -100,8 +100,8 @@ module Api
       challenge = user_challenge.challenge
       return if UserChallenge.can_user_remove_self_from_challenge? user, challenge, user_challenge
       render json: {
-        resource: 'user_challenge',
-        errors: [user: 'doesn\'t have access to that challenge']
+        resource: "user_challenge",
+        errors: [user: "doesn't have access to that challenge"]
       }, status: :forbidden
     end
 
@@ -109,8 +109,8 @@ module Api
       evaluable_ids = Challenge.evaluable(current_user).flat_map { |c| c.user_challenges.ids }
       return if params[:user_challenges].all? { |uc| evaluable_ids.include?(uc[:id]) }
       render json: {
-        resource: 'user_challenge',
-        errors: [user: 'doesn\'t have permission to update that challenge']
+        resource: "user_challenge",
+        errors: [user: "doesn't have permission to update that challenge"]
       }, status: :unauthorized
     end
 
@@ -118,8 +118,8 @@ module Api
       updatable_ids = Challenge.completed(current_user).flat_map { |c| c.user_challenges.ids }
       return if params[:user_challenges].all? { |uc| updatable_ids.include?(uc[:id]) }
       render json: {
-        resource: 'user_challenge',
-        errors: [user: 'doesn\'t have permission to update that challenge']
+        resource: "user_challenge",
+        errors: [user: "doesn't have permission to update that challenge"]
       }, status: :unauthorized
     end
   end

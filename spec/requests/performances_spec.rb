@@ -1,13 +1,13 @@
-require 'rails_helper'
+require "rails_helper"
 
-describe 'Performances', type: :request do
-  let(:endpoint) { '/api/performances/' }
+describe "Performances", type: :request do
+  let(:endpoint) { "/api/performances/" }
   let(:admin) { create(:admin_user) }
   let(:user) { create(:user) }
   let(:performance_params) do
     {
       performance: {
-        name: 'Best name ever',
+        name: "Best name ever",
         window_open: Time.zone.now,
         window_close: Time.zone.now + 3.hours,
         date: Time.zone.now + 1.week
@@ -15,9 +15,9 @@ describe 'Performances', type: :request do
     }
   end
 
-  describe 'POST /api/performances/' do
-    context 'when the user is an admin' do
-      it 'successfully creates a performance' do
+  describe "POST /api/performances/" do
+    context "when the user is an admin" do
+      it "successfully creates a performance" do
         expect {
           post endpoint, params: performance_params.to_json, headers: authenticated_header(admin)
         }.to change { Performance.count }.by(1)
@@ -25,14 +25,14 @@ describe 'Performances', type: :request do
         expect(response).to have_http_status(201)
       end
 
-      it 'calls the queue new performance emails job' do
+      it "calls the queue new performance emails job" do
         expect(QueueNewPerformanceEmailsJob).to receive(:perform_later)
 
         post endpoint, params: performance_params.to_json, headers: authenticated_header(admin)
       end
 
-      context 'but the params are bad' do
-        it 'is invalid without a name' do
+      context "but the params are bad" do
+        it "is invalid without a name" do
           performance_params[:performance].except!(:name)
 
           expect {
@@ -42,7 +42,7 @@ describe 'Performances', type: :request do
           expect(response).to have_http_status(409)
         end
 
-        it 'is invalid without a date' do
+        it "is invalid without a date" do
           performance_params[:performance].except!(:date)
 
           expect {
@@ -52,7 +52,7 @@ describe 'Performances', type: :request do
           expect(response).to have_http_status(409)
         end
 
-        it 'is invalid without a window_close' do
+        it "is invalid without a window_close" do
           performance_params[:performance].except!(:window_close)
 
           expect {
@@ -62,7 +62,7 @@ describe 'Performances', type: :request do
           expect(response).to have_http_status(409)
         end
 
-        it 'is invalid without a window_open' do
+        it "is invalid without a window_open" do
           performance_params[:performance].except!(:window_open)
 
           expect {
@@ -72,7 +72,7 @@ describe 'Performances', type: :request do
           expect(response).to have_http_status(409)
         end
 
-        it 'is invalid with window_close < window_open' do
+        it "is invalid with window_close < window_open" do
           params = performance_params.deep_dup
           params[:performance][:window_open] = performance_params[:performance][:window_close]
           params[:performance][:window_close] = performance_params[:performance][:window_open]
@@ -86,8 +86,8 @@ describe 'Performances', type: :request do
       end
     end
 
-    context 'when the user is an not admin' do
-      it 'does not create a performance' do
+    context "when the user is an not admin" do
+      it "does not create a performance" do
         expect {
           post endpoint, params: performance_params.to_json, headers: authenticated_header(user)
         }.not_to change { Performance.count }
@@ -97,7 +97,7 @@ describe 'Performances', type: :request do
     end
   end
 
-  describe 'GET /api/performances' do
+  describe "GET /api/performances" do
     let!(:performance) { create(:performance) }
     let(:performance_shape) do
       {
@@ -109,19 +109,19 @@ describe 'Performances', type: :request do
       }
     end
 
-    context 'when an admin makes a request' do
-      it 'returns an array of performances' do
+    context "when an admin makes a request" do
+      it "returns an array of performances" do
         get endpoint, headers: authenticated_header(admin)
 
         body = JSON.parse(response.body)
 
-        expect(body['performances']).to be_instance_of(Array)
-        expect(body['performances'].first).to be_shape_of(performance_shape)
+        expect(body["performances"]).to be_instance_of(Array)
+        expect(body["performances"].first).to be_shape_of(performance_shape)
       end
     end
 
-    context 'when a non admin makes a request' do
-      it 'returns a 403' do
+    context "when a non admin makes a request" do
+      it "returns a 403" do
         get endpoint, headers: authenticated_header(user)
 
         expect(response).to have_http_status(403)
@@ -129,7 +129,7 @@ describe 'Performances', type: :request do
     end
   end
 
-  describe 'PUT /api/performances' do
+  describe "PUT /api/performances" do
     let!(:performance) { create(:performance) }
     let!(:params) do
       {
@@ -142,8 +142,8 @@ describe 'Performances', type: :request do
       }
     end
 
-    context 'requesting user is an admin' do
-      it 'updates the performance' do
+    context "requesting user is an admin" do
+      it "updates the performance" do
         put "#{endpoint}#{performance.id}", params: params.to_json, headers: authenticated_header(admin)
 
         performance.reload
@@ -155,8 +155,8 @@ describe 'Performances', type: :request do
         end
       end
 
-      context 'but the name is blank' do
-        it 'returns a 409' do
+      context "but the name is blank" do
+        it "returns a 409" do
           params[:performance][:name] = nil
           put "#{endpoint}#{performance.id}", params: params.to_json, headers: authenticated_header(admin)
 
@@ -164,8 +164,8 @@ describe 'Performances', type: :request do
         end
       end
 
-      context 'but the date is blank' do
-        it 'returns a 409' do
+      context "but the date is blank" do
+        it "returns a 409" do
           params[:performance][:date] = nil
           put "#{endpoint}#{performance.id}", params: params.to_json, headers: authenticated_header(admin)
 
@@ -173,8 +173,8 @@ describe 'Performances', type: :request do
         end
       end
 
-      context 'but the window_open is blank' do
-        it 'returns a 409' do
+      context "but the window_open is blank" do
+        it "returns a 409" do
           params[:performance][:window_open] = nil
           put "#{endpoint}#{performance.id}", params: params.to_json, headers: authenticated_header(admin)
 
@@ -182,8 +182,8 @@ describe 'Performances', type: :request do
         end
       end
 
-      context 'but the window_close is blank' do
-        it 'returns a 409' do
+      context "but the window_close is blank" do
+        it "returns a 409" do
           params[:performance][:window_close] = nil
           put "#{endpoint}#{performance.id}", params: params.to_json, headers: authenticated_header(admin)
 
@@ -191,8 +191,8 @@ describe 'Performances', type: :request do
         end
       end
 
-      context 'but the window_open > window_close is blank' do
-        it 'returns a 409' do
+      context "but the window_open > window_close is blank" do
+        it "returns a 409" do
           params[:performance][:window_open] = Time.zone.now + 10.days
           params[:performance][:window_close] = Time.zone.now
           put "#{endpoint}#{performance.id}", params: params.to_json, headers: authenticated_header(admin)
@@ -201,9 +201,9 @@ describe 'Performances', type: :request do
         end
       end
 
-      context 'but the performance window has alredy closed' do
+      context "but the performance window has alredy closed" do
         let!(:performance) { create(:stale_performance) }
-        it 'returns a 403' do
+        it "returns a 403" do
           put "#{endpoint}#{performance.id}", params: params.to_json, headers: authenticated_header(admin)
 
           expect(response).to have_http_status(403)
@@ -211,8 +211,8 @@ describe 'Performances', type: :request do
       end
     end
 
-    context 'requesting user is not an admin' do
-      it 'returns a 403' do
+    context "requesting user is not an admin" do
+      it "returns a 403" do
         put "#{endpoint}#{performance.id}", params: params.to_json, headers: authenticated_header(user)
 
         expect(response).to have_http_status(403)
@@ -220,11 +220,11 @@ describe 'Performances', type: :request do
     end
   end
 
-  describe 'DELETE /api/performances' do
+  describe "DELETE /api/performances" do
     let!(:performance) { create(:performance) }
 
-    context 'and nothing is associated with the performance' do
-      it 'sucessfully deletes the challenge' do
+    context "and nothing is associated with the performance" do
+      it "sucessfully deletes the challenge" do
         expect {
           delete "#{endpoint}#{performance.id}", headers: authenticated_header(admin)
         }.to change { Performance.count }.by(-1)
@@ -233,10 +233,10 @@ describe 'Performances', type: :request do
       end
     end
 
-    context 'but the performance window has already closed' do
+    context "but the performance window has already closed" do
       let!(:performance) { create(:stale_performance) }
 
-      it 'returns a 403' do
+      it "returns a 403" do
         expect {
           delete "#{endpoint}#{performance.id}", headers: authenticated_header(admin)
         }.to_not change { Performance.count }
@@ -245,10 +245,10 @@ describe 'Performances', type: :request do
       end
     end
 
-    context 'but the performance has challenges already associated with it' do
+    context "but the performance has challenges already associated with it" do
       let!(:challenge) { create(:normal_challenge, performance: performance) }
 
-      it 'returns a 403' do
+      it "returns a 403" do
         expect {
           delete "#{endpoint}#{performance.id}", headers: authenticated_header(admin)
         }.to_not change { Performance.count }
@@ -257,10 +257,10 @@ describe 'Performances', type: :request do
       end
     end
 
-    context 'but the performance has a discipline action already associated with it' do
+    context "but the performance has a discipline action already associated with it" do
       let!(:dA) { create(:discipline_action, performance: performance) }
 
-      it 'returns a 403' do
+      it "returns a 403" do
         expect {
           delete "#{endpoint}#{performance.id}", headers: authenticated_header(admin)
         }.to_not change { Performance.count }
@@ -270,22 +270,22 @@ describe 'Performances', type: :request do
     end
   end
 
-  describe 'GET /:id/challenge_list' do
+  describe "GET /:id/challenge_list" do
     let(:performance) { create(:performance) }
 
-    context 'non admin user' do
-      it 'returns a 403' do
+    context "non admin user" do
+      it "returns a 403" do
         get "#{endpoint}/#{performance.id}/challenge_list", headers: authenticated_header(user)
 
         expect(response).to have_http_status(403)
       end
     end
 
-    context 'admin user' do
+    context "admin user" do
       before do
         allow(Rails.env).to receive(:test?).and_return(true)
       end
-      it 'emails the challenge list' do
+      it "emails the challenge list" do
         expect(ChallengeListMailer).to receive(:challenge_list_email).and_call_original
         get "#{endpoint}/#{performance.id}/challenge_list", headers: authenticated_header(admin)
 

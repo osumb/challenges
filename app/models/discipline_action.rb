@@ -1,6 +1,6 @@
 class DisciplineAction < ApplicationRecord
   # associations
-  belongs_to :user, foreign_key: 'user_buck_id'
+  belongs_to :user, foreign_key: "user_buck_id"
   belongs_to :performance
 
   # validations

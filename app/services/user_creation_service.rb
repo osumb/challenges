@@ -23,7 +23,7 @@ module UserCreationService
     end
 
     def _insert_new_performer(user_params) # rubocop:disable Metrics/MethodLength
-      spot = SpotService.find(query: user_params[:spot] || '')
+      spot = SpotService.find(query: user_params[:spot] || "")
       return _failure(nil, "Spot #{user_params[:spot].inspect} doesn't exist") if spot.nil?
       new_user = User.new(_create_params(user_params))
       return _failure(new_user) unless _user_only_has_spot_errors(new_user)
@@ -58,7 +58,7 @@ module UserCreationService
     end
 
     def _failure(user, errors = nil)
-      error_message = errors || user.errors.full_messages.join(', ')
+      error_message = errors || user.errors.full_messages.join(", ")
       OpenStruct.new(success?: false, user: nil, errors: error_message)
     end
   end

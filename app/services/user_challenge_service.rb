@@ -1,7 +1,7 @@
 class UserChallengeService
   class << self
     def update(user_challenge_hashes:)
-      user_challenges = user_challenge_hashes.map { |hash| UserChallenge.find(hash['id']) }
+      user_challenges = user_challenge_hashes.map { |hash| UserChallenge.find(hash["id"]) }
 
       UserChallenge.transaction do
         user_challenges.each.with_index do |user_challenge, index|

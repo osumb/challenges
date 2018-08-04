@@ -26,9 +26,9 @@ module Api
       @user = UserService.swap_in_new_user(user: @user) if should_swap_in_new_user
       if @user.valid?
         PasswordResetRequestService.send_for_new_user(user: @user)
-        render 'api/users/new', status: :created
+        render "api/users/new", status: :created
       else
-        render json: { resource: 'user', errors: @user.errors }, status: :conflict
+        render json: { resource: "user", errors: @user.errors }, status: :conflict
       end
     end
 
@@ -40,7 +40,7 @@ module Api
       if @user.update update_params
         render :show, status: :ok
       else
-        render json: { resource: 'user', errors: user.errors }, status: :conflict
+        render json: { resource: "user", errors: user.errors }, status: :conflict
       end
     end
 
@@ -52,8 +52,8 @@ module Api
     # rubocop:disable Metrics/LineLength
     def search
       q = params[:query].downcase
-      names = q.split ' '
-      @users = User.performers.where('lower(first_name) LIKE ? OR lower(last_name) LIKE ?', "%#{names.first}%", "%#{names.last}%")
+      names = q.split " "
+      @users = User.performers.where("lower(first_name) LIKE ? OR lower(last_name) LIKE ?", "%#{names.first}%", "%#{names.last}%")
     end
     # rubocop:enable Metrics/LineLength
 
@@ -76,7 +76,7 @@ module Api
         if user.save(validate: false) && target_user.save(validate: false)
           head 204
         else
-          render json: { resource: 'user', errors: [user.errors, target_user.errors] }, status: :conflict
+          render json: { resource: "user", errors: [user.errors, target_user.errors] }, status: :conflict
         end
       end
     end
@@ -92,7 +92,7 @@ module Api
       if errors.none?
         head 204
       else
-        render json: { resource: 'user', errors: errors }, status: :conflict
+        render json: { resource: "user", errors: errors }, status: :conflict
       end
     end
 
@@ -136,8 +136,8 @@ module Api
     end
 
     def ensure_new_part_exists!
-      return if params['part'].nil?
-      return unless User.parts[params['part']].nil?
+      return if params["part"].nil?
+      return unless User.parts[params["part"]].nil?
       head 409
     end
 
@@ -154,7 +154,7 @@ module Api
       Rails.logger.info buck_id.inspect
       return if User.where(buck_id: buck_id).count.zero?
       render json: {
-        resource: 'user',
+        resource: "user",
         errors: [user: "id: #{buck_id} is already taken"]
       }, status: :unauthorized
     end

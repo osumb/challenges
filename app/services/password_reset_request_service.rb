@@ -4,8 +4,8 @@ module PasswordResetRequestService
     PasswordResetRequest.create(user: user).tap do |password_reset_request|
       if password_reset_request.valid?
         EmailJob.perform_later(
-          klass: 'PasswordResetMailer',
-          method: 'user_creation_email',
+          klass: "PasswordResetMailer",
+          method: "user_creation_email",
           args: {
             user_buck_id: user.buck_id,
             password_reset_request_id: password_reset_request.id

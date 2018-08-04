@@ -22,7 +22,7 @@ module Api
         render :show, status: :created
       else
         Rails.logger.info "CHALLENGE_LOG: #{current_user.full_name} couldn't challenge #{spot&.to_s}. Errors: #{result.errors}"
-        render json: { resource: 'challenge', errors: result.errors }, status: :conflict
+        render json: { resource: "challenge", errors: result.errors }, status: :conflict
       end
     end
     # rubocop:enable Metrics/MethodLength, Metrics/LineLength
@@ -35,8 +35,8 @@ module Api
 
     def completed
       @challenges = Challenge.joins(
-        'INNER JOIN spots ON challenges.spot_id = spots.id'
-      ).order('spots.row, spots.file').completed(current_user)
+        "INNER JOIN spots ON challenges.spot_id = spots.id"
+      ).order("spots.row, spots.file").completed(current_user)
 
       render :for_evaluation_or_update, status: :ok
     end
@@ -48,7 +48,7 @@ module Api
         CheckOtherChallengesDoneJob.perform_later(challenge_id: challenge.id)
         head :no_content
       else
-        render json: { resource: 'challenge', errors: challenge.errors }, status: :conflict
+        render json: { resource: "challenge", errors: challenge.errors }, status: :conflict
       end
     end
 
@@ -56,8 +56,8 @@ module Api
 
     def send_challenge_success_email
       EmailJob.perform_later(
-        klass: 'ChallengeSuccessMailer',
-        method: 'challenge_success_email',
+        klass: "ChallengeSuccessMailer",
+        method: "challenge_success_email",
         args: {
           challenge_id: @challenge.id,
           initiator_buck_id: current_user.buck_id,
@@ -68,13 +68,13 @@ module Api
 
     def ensure_not_challenging_alternate!
       return if params[:spot][:file] < 13
-      render json: { resource: 'challenge', errors: [challenge: 'can\'t challenge alternate'] }, status: :forbidden
+      render json: { resource: "challenge", errors: [challenge: "can't challenge alternate"] }, status: :forbidden
     end
 
     def ensure_performance_is_current_and_open!
       next_performance = Performance.next
       return if next_performance&.window_open?
-      render json: { resource: 'challenge', errors: [performance: 'window not open'] }, status: :forbidden
+      render json: { resource: "challenge", errors: [performance: "window not open"] }, status: :forbidden
     end
 
     def ensure_user_has_not_already_made_challenge!
@@ -82,7 +82,7 @@ module Api
       p = Performance.next
       challenges = user.challenges
       return unless challenges.any? { |c| c.performance.id == p.id }
-      render json: { resouce: 'challenge', errors: [user: 'can\'t make more than one challenge'] }, status: :forbidden
+      render json: { resouce: "challenge", errors: [user: "can't make more than one challenge"] }, status: :forbidden
     end
 
     def ensure_user_is_challenging_correct_instrument_and_part!
@@ -91,8 +91,8 @@ module Api
       return if challenger.instrument == challengee.instrument && challenger.part == challengee.part
       render(
         json: {
-          resource: 'challenge',
-          errors: [user: 'can\'t challenge someone of a different instrument or part']
+          resource: "challenge",
+          errors: [user: "can't challenge someone of a different instrument or part"]
         },
         status: :forbidden
       )
@@ -104,14 +104,14 @@ module Api
       challenge = Challenge.find_by(spot: spot, performance: performance)
       return if challenge.nil?
       return if challenge.open_spot_challenge_type? && challenge.users.length < 2
-      render json: { resource: 'challenge', errors: [spot: 'spot has already been challenged'] }, status: :forbidden
+      render json: { resource: "challenge", errors: [spot: "spot has already been challenged"] }, status: :forbidden
     end
 
     def ensure_user_can_submit_for_approval!
       return if Challenge.evaluable(current_user).where(id: params[:id]).exists?
       render json: {
-        resource: 'challenge',
-        errors: [challenge: 'not authenticated to submit challenge for approval']
+        resource: "challenge",
+        errors: [challenge: "not authenticated to submit challenge for approval"]
       }, status: :unauthorized
     end
   end

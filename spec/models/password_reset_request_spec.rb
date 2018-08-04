@@ -1,10 +1,10 @@
-require 'rails_helper'
+require "rails_helper"
 
 describe PasswordResetRequest, type: :model do
-  context 'when it has been used' do
+  context "when it has been used" do
     let(:prr) { create(:used_password_reset_request) }
 
-    it 'cannot be reused' do
+    it "cannot be reused" do
       prr.used = false
 
       prr.valid?

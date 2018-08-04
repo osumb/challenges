@@ -1,11 +1,11 @@
-require 'rails_helper'
+require "rails_helper"
 
 describe AuthenticationService do
-  describe '.authenticate_user' do
+  describe ".authenticate_user" do
     let(:session) { {} }
 
-    context 'correct buck_id and password' do
-      let(:password) { 'password' }
+    context "correct buck_id and password" do
+      let(:password) { "password" }
       let(:user) { create(:user, password: password) }
       let(:params) do
         {
@@ -14,22 +14,22 @@ describe AuthenticationService do
         }
       end
 
-      it 'returns the user' do
+      it "returns the user" do
         result = described_class.authenticate_user(params, session)
 
         expect(result).to eq(user)
       end
 
-      it 'sets the session :buck_id' do
+      it "sets the session :buck_id" do
         described_class.authenticate_user(params, session)
 
         expect(session[:buck_id]).to eq(user.buck_id)
       end
     end
 
-    context 'correct buck_id and incorrect password' do
-      let(:password) { 'password' }
-      let(:user) { create(:user, password: password + 'whoops!') }
+    context "correct buck_id and incorrect password" do
+      let(:password) { "password" }
+      let(:user) { create(:user, password: password + "whoops!") }
       let(:params) do
         {
           buck_id: user.buck_id,
@@ -37,41 +37,41 @@ describe AuthenticationService do
         }
       end
 
-      it 'returns something falsey' do
+      it "returns something falsey" do
         result = described_class.authenticate_user(params, session)
 
         expect(result).to be_falsey
       end
     end
 
-    context 'incorrect buck_id and correct password' do
-      let(:password) { 'password' }
+    context "incorrect buck_id and correct password" do
+      let(:password) { "password" }
       let(:user) { create(:user, password: password) }
       let(:params) do
         {
-          buck_id: user.buck_id + 'whoops!',
+          buck_id: user.buck_id + "whoops!",
           password: password
         }
       end
 
-      it 'returns something falsey' do
+      it "returns something falsey" do
         result = described_class.authenticate_user(params, session)
 
         expect(result).to be_falsey
       end
     end
 
-    context 'incorrect buck_id and password' do
-      let(:password) { 'password' }
+    context "incorrect buck_id and password" do
+      let(:password) { "password" }
       let(:user) { create(:user, password: password) }
       let(:params) do
         {
-          buck_id: user.buck_id + 'whoops!',
-          password: password + 'whoops!'
+          buck_id: user.buck_id + "whoops!",
+          password: password + "whoops!"
         }
       end
 
-      it 'returns something falsey' do
+      it "returns something falsey" do
         result = described_class.authenticate_user(params, session)
 
         expect(result).to be_falsey
@@ -79,12 +79,12 @@ describe AuthenticationService do
     end
   end
 
-  describe '.log_out_user' do
+  describe ".log_out_user" do
     let(:session) do
-      { buck_id: 'fake_buck_id' }
+      { buck_id: "fake_buck_id" }
     end
 
-    it 'sets the session :buck_id to nil' do
+    it "sets the session :buck_id to nil" do
       described_class.log_out_user(session)
 
       expect(session[:buck_id]).to be_nil

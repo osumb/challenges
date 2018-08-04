@@ -13,7 +13,7 @@ module Api
         render :create, status: :created
         _send_email
       else
-        render json: { resource: 'PasswordResetRequest', errors: @prr.errors }, status: :conflict
+        render json: { resource: "PasswordResetRequest", errors: @prr.errors }, status: :conflict
       end
     end
     # rubocop:enable Metrics/MethodLength
@@ -27,7 +27,7 @@ module Api
     def _send_email
       EmailJob.perform_later(
         klass: PasswordResetMailer.to_s,
-        method: 'password_reset_email',
+        method: "password_reset_email",
         args: {
           user_buck_id: @user.buck_id,
           password_reset_request_id: @prr.id

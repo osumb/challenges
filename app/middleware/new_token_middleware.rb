@@ -1,5 +1,5 @@
-require 'date'
-require 'jwt'
+require "date"
+require "jwt"
 
 class NewTokenMiddleware
   def initialize(app)

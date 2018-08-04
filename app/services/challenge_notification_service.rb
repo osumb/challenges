@@ -12,8 +12,8 @@ class ChallengeNotificationService
 
     def _email_user(performance_id, user)
       EmailJob.perform_later(
-        klass: 'ChallengeResultMailer',
-        method: 'completed_email',
+        klass: "ChallengeResultMailer",
+        method: "completed_email",
         args: {
           performance_id: performance_id,
           email: user.email

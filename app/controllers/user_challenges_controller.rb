@@ -10,7 +10,7 @@ class UserChallengesController < ApplicationController
     )
 
     if result.success?
-      redirect_back fallback_location: '/logged_in'
+      redirect_back fallback_location: "/logged_in"
     else
       head :bad_request
     end

@@ -1,6 +1,6 @@
 # rubocop:disable Rails/Blank, Style/InverseMethods, Metrics/ClassLength
-require 'rubyXL'
-require 'securerandom'
+require "rubyXL"
+require "securerandom"
 
 class User
   class Loader
@@ -17,13 +17,13 @@ class User
     ROLE = 6
 
     DEFAULT_PARTS = {
-      'any' => 'any',
-      'trumpet' => 'first',
-      'mellophone' => 'first',
-      'trombone' => 'first',
-      'baritone' => 'first',
-      'percussion' => 'snare',
-      'sousaphone' => 'first'
+      "any" => "any",
+      "trumpet" => "first",
+      "mellophone" => "first",
+      "trombone" => "first",
+      "baritone" => "first",
+      "percussion" => "snare",
+      "sousaphone" => "first"
     }.freeze
 
     def initialize(file:)
@@ -68,7 +68,7 @@ class User
     def create_spot_from_row(row)
       spot_value = row[SPOT]&.value
       return nil unless spot_value.present?
-      normalized_spot_value = spot_value.gsub(/\s+/, '')
+      normalized_spot_value = spot_value.gsub(/\s+/, "")
       Spot.create!(row: normalized_spot_value[0].downcase, file: normalized_spot_value[1..2].to_i)
     end
 
@@ -97,33 +97,33 @@ class User
     end
 
     def get_first_name_for_user(buck_id, row)
-      first_name = row[FULL_NAME]&.value&.split(' ')&.[](0)
-      errors.add(buck_id, 'must have a first name') unless first_name.present?
+      first_name = row[FULL_NAME]&.value&.split(" ")&.[](0)
+      errors.add(buck_id, "must have a first name") unless first_name.present?
       first_name
     end
 
     def get_last_name_for_user(buck_id, row)
-      last_name = row[FULL_NAME]&.value&.split(' ')&.[](1)
-      errors.add(buck_id, 'must have a last name') unless last_name.present?
+      last_name = row[FULL_NAME]&.value&.split(" ")&.[](1)
+      errors.add(buck_id, "must have a last name") unless last_name.present?
       last_name
     end
 
     def get_instrument_for_user(buck_id, row)
       instrument = User.instruments[row[INSTRUMENT]&.value&.downcase]
-      errors.add(buck_id, 'must have an instrument') unless instrument.present?
+      errors.add(buck_id, "must have an instrument") unless instrument.present?
       instrument
     end
 
     def get_part_for_user(buck_id, row)
       part = User.parts[part_value_to_database_value(row[PART]&.value)]
       part = DEFAULT_PARTS[row[INSTRUMENT]&.value&.downcase] unless part.present?
-      errors.add(buck_id, 'must have a part') unless part.present?
+      errors.add(buck_id, "must have a part") unless part.present?
       part
     end
 
     def get_role_for_user(_buck_id, row)
       role = User.roles[role_value_to_database_value(row[ROLE]&.value)]
-      role || 'member'
+      role || "member"
     end
 
     def get_email_for_user(buck_id, row)
@@ -135,21 +135,21 @@ class User
       if part&.to_i&.to_s == part&.to_s
         convert_part_number_to_string(part)
       else
-        part&.downcase&.split(' ')&.[](0)
+        part&.downcase&.split(" ")&.[](0)
       end
     end
 
     def convert_part_number_to_string(part)
       case part&.to_i
       when 1
-        'first'
+        "first"
       when 2
-        'second'
+        "second"
       end
     end
 
     def role_value_to_database_value(role)
-      role&.downcase&.gsub(' ', '_')
+      role&.downcase&.gsub(" ", "_")
     end
   end
 end

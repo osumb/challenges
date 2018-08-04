@@ -1,7 +1,7 @@
-require 'rails_helper'
+require "rails_helper"
 
 describe SpotSwitchService do
-  describe '.queue_switches' do
+  describe ".queue_switches" do
     let(:performance) { create(:performance) }
     let(:challenges) do
       [
@@ -10,7 +10,7 @@ describe SpotSwitchService do
       ]
     end
 
-    it 'queues up jobs' do
+    it "queues up jobs" do
       expect(SwitchSpotForChallengeJob).to receive(:perform_later)
         .with(challenge_id: challenges.first.id)
         .and_return(true)
@@ -22,8 +22,8 @@ describe SpotSwitchService do
     end
   end
 
-  describe '.switch_spots_for_challenge' do
-    context 'Normal Challenge' do
+  describe ".switch_spots_for_challenge" do
+    context "Normal Challenge" do
       let!(:challenge) { create(:normal_challenge, stage: :done) }
       let!(:winner) { challenge.users.select(&:alternate?).first }
       let!(:loser) { challenge.users.reject(&:alternate?).first }
@@ -39,7 +39,7 @@ describe SpotSwitchService do
         end
       end
 
-      it 'switches spots such that the winner has the challenge spot' do
+      it "switches spots such that the winner has the challenge spot" do
         described_class.switch_spots_for_challenge(challenge_id: challenge.id)
 
         winner.reload
@@ -49,8 +49,8 @@ describe SpotSwitchService do
       end
     end
 
-    context 'Open Spot Challenge' do
-      context 'user of open spot is not challenging' do
+    context "Open Spot Challenge" do
+      context "user of open spot is not challenging" do
         let!(:challenge) { create(:full_open_spot_challenge, stage: :done) }
         let!(:winner) { challenge.users.first }
         let!(:loser) { challenge.users.last }
@@ -65,7 +65,7 @@ describe SpotSwitchService do
           end
         end
 
-        it 'switches the users appropriately' do
+        it "switches the users appropriately" do
           described_class.switch_spots_for_challenge(challenge_id: challenge.id)
 
           winner.reload
@@ -77,7 +77,7 @@ describe SpotSwitchService do
         end
       end
 
-      context 'user of open spot is challenging' do
+      context "user of open spot is challenging" do
         let!(:open_spot_challenge) { create(:full_open_spot_challenge, stage: :done) }
         let!(:normal_challenge_spot) { create(:spot, row: :a, file: 11) }
         let!(:open_spot_winner) { open_spot_challenge.users.first }
@@ -96,7 +96,7 @@ describe SpotSwitchService do
           challenge
         end
 
-        context 'and that user loses' do
+        context "and that user loses" do
           let!(:spot_for_normal_winner) { normal_challenge_spot }
           let!(:spot_for_normal_loser) { open_spot_winner.current_spot }
 
@@ -114,7 +114,7 @@ describe SpotSwitchService do
             end
           end
 
-          it 'switches the spots appropriately' do
+          it "switches the spots appropriately" do
             described_class.switch_spots_for_challenge(challenge_id: open_spot_challenge.id)
 
             open_spot_winner.reload
@@ -129,7 +129,7 @@ describe SpotSwitchService do
           end
         end
 
-        context 'and that user wins' do
+        context "and that user wins" do
           let!(:spot_for_normal_winner) { open_spot_winner.current_spot }
           let!(:spot_for_normal_loser) { normal_challenge_spot }
 
@@ -147,7 +147,7 @@ describe SpotSwitchService do
             end
           end
 
-          it 'switches the spots appropriately' do
+          it "switches the spots appropriately" do
             described_class.switch_spots_for_challenge(challenge_id: open_spot_challenge.id)
             described_class.switch_spots_for_challenge(challenge_id: normal_challenge.id)
 
@@ -165,10 +165,10 @@ describe SpotSwitchService do
       end
     end
 
-    context 'Tri Challenge' do
+    context "Tri Challenge" do
       let(:challenge) { create(:tri_challenge, stage: :done) }
 
-      context 'the challenge places are in the order the members are already alternates' do
+      context "the challenge places are in the order the members are already alternates" do
         let(:first_place) { challenge.users.reject(&:alternate?).first }
         let(:second_place) { challenge.users.sort { |a, b| a.current_spot.file - b.current_spot.file }.select(&:alternate?).first }
         let(:third_place) { challenge.users.select { |u| u != first_place && u != second_place }.first }
@@ -182,7 +182,7 @@ describe SpotSwitchService do
           end
         end
 
-        it 'doesn\'t switch the spots at all' do
+        it "doesn't switch the spots at all" do
           described_class.switch_spots_for_challenge(challenge_id: challenge.id)
 
           first_place.reload
@@ -195,7 +195,7 @@ describe SpotSwitchService do
         end
       end
 
-      context 'the regular wins, but the alternate with the higher spot wins' do
+      context "the regular wins, but the alternate with the higher spot wins" do
         let!(:first_place) { challenge.users.reject(&:alternate?).first }
         let!(:second_place) { challenge.users.sort { |a, b| a.current_spot.file - b.current_spot.file }.select(&:alternate?).last }
         let!(:third_place) { challenge.users.select { |u| u != first_place && u != second_place }.first }
@@ -216,7 +216,7 @@ describe SpotSwitchService do
           end
         end
 
-        it 'switches the two alternate spots' do
+        it "switches the two alternate spots" do
           described_class.switch_spots_for_challenge(challenge_id: challenge.id)
 
           first_place.reload
@@ -229,7 +229,7 @@ describe SpotSwitchService do
         end
       end
 
-      context 'the lowest alternate wins and the regular comes in 3rd place' do
+      context "the lowest alternate wins and the regular comes in 3rd place" do
         let!(:first_place) { challenge.users.sort { |a, b| a.current_spot.file - b.current_spot.file }.select(&:alternate?).last }
         let!(:second_place) { challenge.users.sort { |a, b| a.current_spot.file - b.current_spot.file }.select(&:alternate?).first }
         let!(:third_place) { challenge.users.reject(&:alternate?).first }
@@ -250,7 +250,7 @@ describe SpotSwitchService do
           end
         end
 
-        it 'switches the regular and last alternate' do
+        it "switches the regular and last alternate" do
           described_class.switch_spots_for_challenge(challenge_id: challenge.id)
 
           first_place.reload
@@ -263,7 +263,7 @@ describe SpotSwitchService do
         end
       end
 
-      context 'the lowest alternate wins and the regular comes in second' do
+      context "the lowest alternate wins and the regular comes in second" do
         let!(:first_place) { challenge.users.sort { |a, b| a.current_spot.file - b.current_spot.file }.select(&:alternate?).last }
         let!(:second_place) { challenge.users.reject(&:alternate?).first }
         let!(:third_place) { challenge.users.sort { |a, b| a.current_spot.file - b.current_spot.file }.select(&:alternate?).first }
@@ -284,7 +284,7 @@ describe SpotSwitchService do
           end
         end
 
-        it 'switches everyone' do
+        it "switches everyone" do
           described_class.switch_spots_for_challenge(challenge_id: challenge.id)
 
           first_place.reload

@@ -1,11 +1,11 @@
-require 'bcrypt'
+require "bcrypt"
 
-password_digest = BCrypt::Password.create 'password'
+password_digest = BCrypt::Password.create "password"
 
 FactoryBot.define do
   factory :user do
-    first_name 'Brutus'
-    last_name 'Buckeye'
+    first_name "Brutus"
+    last_name "Buckeye"
     sequence(:email) { |n| "smith.#{n}@osu.edu" }
     password_digest password_digest
     sequence(:buck_id) { |n| "buckeye.#{n}" }

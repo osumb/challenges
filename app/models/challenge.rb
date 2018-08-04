@@ -79,7 +79,7 @@ class Challenge < ApplicationRecord # rubocop:disable Metrics/ClassLength
     elsif tri_challenge_type?
       UserChallenge.places.slice(:first, :second, :third).values
     else
-      raise I18n.t!('errors.unexpected_value', variable_name: 'challenge_type', value: type)
+      raise I18n.t!("errors.unexpected_value", variable_name: "challenge_type", value: type)
     end
   end
 
@@ -93,19 +93,19 @@ class Challenge < ApplicationRecord # rubocop:disable Metrics/ClassLength
   def valid_normal_challenge
     return if open_spot_challenge_type? || tri_challenge_type?
     return if users.length == 2
-    errors.add(:users, 'only two users are allowed in a normal challenge')
+    errors.add(:users, "only two users are allowed in a normal challenge")
   end
 
   def valid_open_spot_challenge
     return if normal_challenge_type? || tri_challenge_type?
     return if !users.empty? && users.length <= 2
-    errors.add(:users, 'no more than two users are allowed in an open spot challenge')
+    errors.add(:users, "no more than two users are allowed in an open spot challenge")
   end
 
   def valid_tri_challenge
     return if normal_challenge_type? || open_spot_challenge_type?
     return if users.length == 3
-    errors.add(:users, 'only three users are allowed in a tri challenge')
+    errors.add(:users, "only three users are allowed in a tri challenge")
   end
 
   def all_users_have_same_instrument_and_part
@@ -114,12 +114,12 @@ class Challenge < ApplicationRecord # rubocop:disable Metrics/ClassLength
     part = users[0].part
     users_filter = users.select { |user| user.instrument == instrument && user.part == part }
     return if users_filter.length == users.length
-    errors.add(:users, 'must all have the same instrument and part')
+    errors.add(:users, "must all have the same instrument and part")
   end
 
   def no_users_are_admin
     return if users.all? { |user| user.member? || user.squad_leader? }
-    errors.add(:users, 'must all be non admin or director')
+    errors.add(:users, "must all be non admin or director")
   end
 
   # rubocop:disable Metrics/PerceivedComplexity
@@ -128,20 +128,20 @@ class Challenge < ApplicationRecord # rubocop:disable Metrics/ClassLength
     user_one = users[0]
     return if user_one.buck_id != users[1]&.buck_id && (normal_challenge_type? || open_spot_challenge_type?)
     return if user_one.buck_id != users[1]&.buck_id && user_one.buck_id != users[2]&.buck_id && tri_challenge_type?
-    errors.add(:users, 'must be unique in a challenge')
+    errors.add(:users, "must be unique in a challenge")
   end
   # rubocop:enable Metrics/PerceivedComplexity
 
   def no_duplicate_challenged_spots
     challenges = Challenge.where(performance: performance)
     return unless challenges.select { |challenge| challenge.spot.id == spot&.id }.length > 1
-    errors.add(:challenge, 'must have unique spots for performance')
+    errors.add(:challenge, "must have unique spots for performance")
   end
 
   def correct_row_for_challenge_type
     if tri_challenge_type?
       return if Challenge.tri_challenge_rows.include? spot.row.to_sym
-      rows = Challenge.tri_challenge_rows.map(&:to_s).join(',')
+      rows = Challenge.tri_challenge_rows.map(&:to_s).join(",")
       errors.add(:challenge, "tri challenges can only involve the following rows: [#{rows}]")
     else
       return unless Challenge.tri_challenge_rows.include? spot.row

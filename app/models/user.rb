@@ -2,17 +2,17 @@
 class User < ApplicationRecord
   module Roles
     ALL = [
-      ADMIN = 'admin'.freeze,
-      DIRECTOR = 'director'.freeze,
-      MEMBER = 'member'.freeze,
-      SQUAD_LEADER = 'squad_leader'.freeze
+      ADMIN = "admin".freeze,
+      DIRECTOR = "director".freeze,
+      MEMBER = "member".freeze,
+      SQUAD_LEADER = "squad_leader".freeze
     ].freeze
   end
 
-  self.primary_key = 'buck_id'
+  self.primary_key = "buck_id"
 
   scope :performers, -> { where(role: %i[member squad_leader], active: true) }
-  scope :alternates, -> { joins(:current_spot).where('file > 12') }
+  scope :alternates, -> { joins(:current_spot).where("file > 12") }
   scope :active, -> { where(active: true) }
 
   # enums
@@ -21,25 +21,25 @@ class User < ApplicationRecord
   enum role: %i[admin director member squad_leader]
 
   # associations
-  belongs_to :current_spot, class_name: 'Spot', foreign_key: :current_spot_id, optional: true
-  belongs_to :original_spot, class_name: 'Spot', foreign_key: :original_spot_id, optional: true
-  has_many :user_challenges, foreign_key: 'user_buck_id', dependent: :destroy
+  belongs_to :current_spot, class_name: "Spot", foreign_key: :current_spot_id, optional: true
+  belongs_to :original_spot, class_name: "Spot", foreign_key: :original_spot_id, optional: true
+  has_many :user_challenges, foreign_key: "user_buck_id", dependent: :destroy
   has_many :challenges, through: :user_challenges
-  has_many :discipline_actions, foreign_key: 'user_buck_id', dependent: :destroy
-  has_many :password_reset_requests, foreign_key: 'user_buck_id', dependent: :destroy
+  has_many :discipline_actions, foreign_key: "user_buck_id", dependent: :destroy
+  has_many :password_reset_requests, foreign_key: "user_buck_id", dependent: :destroy
 
   # validations
   validates :first_name, presence: true
   validates :last_name, presence: true
   validates :email, presence: true, uniqueness: true, format: {
     with: /\A[^@\s]+@[^@\s]+\z/,
-    message: 'must be an email address'
+    message: "must be an email address"
   }
 
   validates :password_digest, presence: true
   validates :buck_id, presence: true, uniqueness: true, format: {
     with: /\A[a-z\-]+\.[1-9][0-9]*\z/,
-    message: 'must be a valid name.number'
+    message: "must be a valid name.number"
   }
   validates :instrument, presence: true
   validates :part, presence: true
@@ -62,7 +62,7 @@ class User < ApplicationRecord
   end
 
   def self.from_token_payload(payload)
-    find_by buck_id: payload['sub']
+    find_by buck_id: payload["sub"]
   end
 
   # rubocop:disable Metrics/MethodLength
@@ -126,14 +126,14 @@ class User < ApplicationRecord
   def performing_member_has_spot
     return if admin? || director?
     return unless current_spot.nil?
-    errors.add(:current_spot, 'can\'t be blank')
-    errors.add(:original_spot, 'can\'t be blank')
+    errors.add(:current_spot, "can't be blank")
+    errors.add(:original_spot, "can't be blank")
   end
 
   def admin_does_not_have_spot
     return if !admin? && !director?
     return if current_spot.nil?
-    errors.add(:role, 'admin or director can\'t have a spot')
+    errors.add(:role, "admin or director can't have a spot")
   end
 
   # rubocop:disable Metrics/LineLength

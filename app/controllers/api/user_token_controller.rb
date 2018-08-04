@@ -3,7 +3,7 @@ module Api
     private
 
     def entity_name
-      'User'
+      "User"
     end
   end
 end

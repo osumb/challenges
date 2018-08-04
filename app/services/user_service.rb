@@ -46,7 +46,7 @@ module UserService
         second_user.current_spot = first_spot
         return Result.success if first_user.save(validate: false) && second_user.save(validate: false)
 
-        errors = [first_user.errors.full_messages, second_user.errors.full_messages].flatten.join(',')
+        errors = [first_user.errors.full_messages, second_user.errors.full_messages].flatten.join(",")
         return Result.failure(errors: errors)
       end
     end

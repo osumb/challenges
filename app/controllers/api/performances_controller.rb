@@ -11,7 +11,7 @@ module Api
         QueueNewPerformanceEmailsJob.perform_later(performance_id: @performance.id)
         render :show, status: :created
       else
-        render json: { resource: 'performance', errors: @performance.errors }, status: :conflict
+        render json: { resource: "performance", errors: @performance.errors }, status: :conflict
       end
     end
 
@@ -29,7 +29,7 @@ module Api
       if @performance.save
         render :show, status: :ok
       else
-        render json: { resource: 'performance', errors: @performance.errors }, status: :conflict
+        render json: { resource: "performance", errors: @performance.errors }, status: :conflict
       end
     end
 
@@ -38,7 +38,7 @@ module Api
       if @performance.destroy
         head 204
       else
-        render json: { resource: 'performance', errors: @performance.errors }, status: :conflict
+        render json: { resource: "performance", errors: @performance.errors }, status: :conflict
       end
     end
 
@@ -72,7 +72,7 @@ module Api
       p = Performance.find(params[:id])
       return unless p.stale?
       render json: {
-        resource: 'performance', errors: [performance: 'Performance can\'t be updated because the window is closed']
+        resource: "performance", errors: [performance: "Performance can't be updated because the window is closed"]
       }, status: :forbidden
     end
 
@@ -80,7 +80,7 @@ module Api
       performance = Performance.includes(:challenges, :discipline_actions).find params[:id]
       return if performance.challenges.empty? && performance.discipline_actions.empty?
       render json: {
-        resource: 'performance',
+        resource: "performance",
         errors: [
           {
             performance: "There are already challenges or

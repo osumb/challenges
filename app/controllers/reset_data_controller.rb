@@ -9,9 +9,9 @@ class ResetDataController < ApplicationController
     Files::Uploader.remove_temporary_file(file)
 
     if loader.errors.none?
-      flash.now[:message] = I18n.t!('client_messages.reset_data.success')
+      flash.now[:message] = I18n.t!("client_messages.reset_data.success")
     else
-      flash.now[:errors] = loader.errors.messages.join(',')
+      flash.now[:errors] = loader.errors.messages.join(",")
     end
   end
 end

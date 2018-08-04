@@ -18,19 +18,19 @@ class UsersController < ApplicationController
     user = User.find(params[:id])
     user.update(update_params)
     flash = if user.save
-              { message: I18n.t!('client_messages.users.update.success') }
+              { message: I18n.t!("client_messages.users.update.success") }
             else
-              { errors:  user.errors.full_messages.join(',') }
+              { errors:  user.errors.full_messages.join(",") }
             end
     send_back(flash)
   end
 
   def search # rubocop:disable Metrics/MethodLength
-    @users = if params[:query] && params[:query] != ''
+    @users = if params[:query] && params[:query] != ""
                query = params[:query].downcase
-               names = query.split(' ')
+               names = query.split(" ")
                User.performers.where(
-                 'lower(first_name) LIKE ? OR lower(last_name) LIKE ?',
+                 "lower(first_name) LIKE ? OR lower(last_name) LIKE ?",
                  "%#{names.first}%",
                  "%#{names.last}%"
                )
@@ -62,7 +62,7 @@ class UsersController < ApplicationController
     other_user = spot.current_user
     result = UserService.switch_spots(first_user: user, second_user: other_user)
     flash_hash = if result.success?
-                   { message: I18n.t!('client_messages.users.switch_spot.success') }
+                   { message: I18n.t!("client_messages.users.switch_spot.success") }
                  else
                    { errors: result.errors }
                  end
@@ -78,7 +78,7 @@ class UsersController < ApplicationController
 
     flash_hash = if result.success?
                    PasswordResetRequestService.send_for_new_user(user: result.user)
-                   { message: I18n.t!('client_messages.users.create.success') }
+                   { message: I18n.t!("client_messages.users.create.success") }
                  else
                    { errors: result.errors }
                  end
@@ -90,15 +90,15 @@ class UsersController < ApplicationController
   # rubocop:disable Metrics/LineLength
   def get_spot_switch_flash(switch_spot, user)
     spot = SpotService.find(query: switch_spot)
-    return { switch_error: I18n.t!('client_messages.users.show.spot_switch_malformed', spot: switch_spot) } if spot.nil?
+    return { switch_error: I18n.t!("client_messages.users.show.spot_switch_malformed", spot: switch_spot) } if spot.nil?
     row = Spot.rows[spot.row]
     instrument = User.instruments[user.instrument]
     part = User.parts[user.part]
     if !Spot.valid_instrument_part_for_row(row, instrument, part)
-      { switch_error: I18n.t!('client_messages.users.show.spot_switch_invalid', name: user.first_name, spot: switch_spot) }
+      { switch_error: I18n.t!("client_messages.users.show.spot_switch_invalid", name: user.first_name, spot: switch_spot) }
     else
       other_user = spot.current_user
-      { switch_message: I18n.t!('client_messages.users.show.spot_switch_message', name: other_user.full_name, spot: switch_spot) }
+      { switch_message: I18n.t!("client_messages.users.show.spot_switch_message", name: other_user.full_name, spot: switch_spot) }
     end
   end
   # rubocop:enable Metrics/MethodLength, Metrics/LineLength

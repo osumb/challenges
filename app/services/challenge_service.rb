@@ -55,10 +55,10 @@ class ChallengeService
     def _map_user_challenge_update_params(user_challenge_param_hashes, has_required_places)
       user_challenge_param_hashes.map do |hash|
         if has_required_places
-          hash['place'] = hash['place'].to_i
+          hash["place"] = hash["place"].to_i
           hash
         else
-          hash.except('place')
+          hash.except("place")
         end
       end
     end
@@ -71,7 +71,7 @@ class ChallengeService
       return user_challenge_update_result.errors if user_challenge_update_result.errors
       return nil if _param_hash_required_user_challenge_places?(challenge, user_challenge_param_hashes)
       I18n.t!(
-        'client_messages.challenges.evaluate.invalid_user_challenge_places',
+        "client_messages.challenges.evaluate.invalid_user_challenge_places",
         places: _required_places(challenge),
         missing: _missing_places(challenge, user_challenge_param_hashes)
       )
@@ -82,7 +82,7 @@ class ChallengeService
     end
 
     def _submitted_places(user_challenge_param_hashes)
-      user_challenge_param_hashes.map { |param| param['place'] }.uniq.sort.map(&:to_i)
+      user_challenge_param_hashes.map { |param| param["place"] }.uniq.sort.map(&:to_i)
     end
 
     def _missing_places(challenge, user_challenge_param_hashes)

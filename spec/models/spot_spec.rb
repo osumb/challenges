@@ -1,7 +1,7 @@
-require 'rails_helper'
+require "rails_helper"
 
-shared_examples_for 'common row validations' do |row, instrument, parts|
-  it 'only allows the correct parts' do
+shared_examples_for "common row validations" do |row, instrument, parts|
+  it "only allows the correct parts" do
     select_user_parts(parts) do |_key, value|
       expect(Spot.valid_instrument_part_for_row(row, instrument, value)).to be(true)
     end
@@ -10,7 +10,7 @@ shared_examples_for 'common row validations' do |row, instrument, parts|
     end
   end
 
-  it 'does not allow other instruments' do
+  it "does not allow other instruments" do
     instruments = User.instruments.reject { |i| User.instruments[i] == instrument }
 
     instruments.each_value do |value|
@@ -24,128 +24,128 @@ describe Spot, type: :model do
   it { is_expected.to validate_presence_of(:row) }
   it { is_expected.to validate_presence_of(:file) }
 
-  describe '#to_s' do
+  describe "#to_s" do
     specify { expect(spot.to_s).to eq("#{spot.row.upcase}#{spot.file}") }
   end
 
-  describe 'validations' do
-    context 'a row' do
-      it_behaves_like 'common row validations',
+  describe "validations" do
+    context "a row" do
+      it_behaves_like "common row validations",
                       Spot.rows[:a],
                       User.instruments[:trumpet],
                       [User.parts[:efer], User.parts[:solo], User.parts[:first]]
     end
 
-    context 'x row' do
-      it_behaves_like 'common row validations',
+    context "x row" do
+      it_behaves_like "common row validations",
                       Spot.rows[:x],
                       User.instruments[:trumpet],
                       [User.parts[:efer], User.parts[:solo], User.parts[:first]]
     end
 
-    context 'b row' do
-      it_behaves_like 'common row validations',
+    context "b row" do
+      it_behaves_like "common row validations",
                       Spot.rows[:b],
                       User.instruments[:trumpet],
                       [User.parts[:first], User.parts[:second]]
     end
 
-    context 't row' do
-      it_behaves_like 'common row validations',
+    context "t row" do
+      it_behaves_like "common row validations",
                       Spot.rows[:t],
                       User.instruments[:trumpet],
                       [User.parts[:first], User.parts[:second]]
     end
 
-    context 'c row' do
-      it_behaves_like 'common row validations',
+    context "c row" do
+      it_behaves_like "common row validations",
                       Spot.rows[:c],
                       User.instruments[:trumpet],
                       [User.parts[:flugel]]
     end
 
-    context 'e row' do
-      it_behaves_like 'common row validations',
+    context "e row" do
+      it_behaves_like "common row validations",
                       Spot.rows[:e],
                       User.instruments[:mellophone],
                       [User.parts[:first], User.parts[:second]]
     end
 
-    context 'r row' do
-      it_behaves_like 'common row validations',
+    context "r row" do
+      it_behaves_like "common row validations",
                       Spot.rows[:r],
                       User.instruments[:mellophone],
                       [User.parts[:first], User.parts[:second]]
     end
 
-    context 'f row' do
-      it_behaves_like 'common row validations',
+    context "f row" do
+      it_behaves_like "common row validations",
                       Spot.rows[:f],
                       User.instruments[:trombone],
                       [User.parts[:first], User.parts[:second], User.parts[:bass]]
     end
 
-    context 'q row' do
-      it_behaves_like 'common row validations',
+    context "q row" do
+      it_behaves_like "common row validations",
                       Spot.rows[:q],
                       User.instruments[:trombone],
                       [User.parts[:first], User.parts[:second], User.parts[:bass]]
     end
 
-    context 'h row' do
-      it_behaves_like 'common row validations',
+    context "h row" do
+      it_behaves_like "common row validations",
                       Spot.rows[:h],
                       User.instruments[:baritone],
                       [User.parts[:first]]
     end
 
-    context 'm row' do
-      it_behaves_like 'common row validations',
+    context "m row" do
+      it_behaves_like "common row validations",
                       Spot.rows[:m],
                       User.instruments[:baritone],
                       [User.parts[:first]]
     end
 
-    context 'i row' do
-      it_behaves_like 'common row validations',
+    context "i row" do
+      it_behaves_like "common row validations",
                       Spot.rows[:i],
                       User.instruments[:percussion],
                       [User.parts[:snare]]
     end
 
-    context 'j row' do
-      it_behaves_like 'common row validations',
+    context "j row" do
+      it_behaves_like "common row validations",
                       Spot.rows[:j],
                       User.instruments[:percussion],
                       [User.parts[:bass], User.parts[:cymbals], User.parts[:tenor]]
     end
 
-    context 'k row' do
-      it_behaves_like 'common row validations',
+    context "k row" do
+      it_behaves_like "common row validations",
                       Spot.rows[:k],
                       User.instruments[:sousaphone],
                       [User.parts[:first]]
     end
 
-    context 'l row' do
-      it_behaves_like 'common row validations',
+    context "l row" do
+      it_behaves_like "common row validations",
                       Spot.rows[:l],
                       User.instruments[:sousaphone],
                       [User.parts[:first]]
     end
 
-    context 's row' do
-      it_behaves_like 'common row validations',
+    context "s row" do
+      it_behaves_like "common row validations",
                       Spot.rows[:s],
                       User.instruments[:trumpet],
                       [User.parts[:second], User.parts[:flugel]]
     end
   end
 
-  describe 'db validations' do
+  describe "db validations" do
     let!(:spot) { create(:spot) }
 
-    it 'prevents another spot to be created for the same row and file' do
+    it "prevents another spot to be created for the same row and file" do
       expect {
         Spot.create!(row: spot.row, file: spot.file)
       }.to raise_error(StandardError)
