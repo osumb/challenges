@@ -142,7 +142,7 @@ RSpec.describe PasswordResetRequestsController do
       it "sets a flash error" do
         request
 
-        expect(flash[:errors]).to eq("This token has already been used. Please make another one")
+        expect(flash[:errors]).to eq("This token can no longer be used")
       end
     end
 
@@ -152,7 +152,7 @@ RSpec.describe PasswordResetRequestsController do
       it "sets a flash error" do
         request
 
-        expect(flash[:errors]).to eq("This token is expired. Please make another one")
+        expect(flash[:errors]).to eq("This token can no longer be used")
       end
     end
   end

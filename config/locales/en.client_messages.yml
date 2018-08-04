@@ -28,6 +28,7 @@ en:
         not_found: "That combination of name.# and password doesn't exist in the system"
         success: "Success! An email has been sent to %{email} with instructions"
       reset:
+        invalid_token: "This token can no longer be used"
         passwords_do_not_match: "Make sure the passwords match"
         success: "Success! Your password has been reset"
       show:

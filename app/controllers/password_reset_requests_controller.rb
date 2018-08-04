@@ -29,7 +29,13 @@ class PasswordResetRequestsController < ApplicationController
     @password_reset_request = PasswordResetRequest.find(params[:id])
   end
 
-  def reset
+  def reset # rubocop:disable Metrics/MethodLength
+    request = PasswordResetRequest.find(params[:id])
+    if request.used? || request.expired?
+      send_back(errors: I18n.t!("client_messages.password_reset_requests.reset.invalid_token"))
+      return
+    end
+
     encrypted_password = PasswordService.encrypt_password(password: params[:password])
     errors = PasswordService.reset_password(password_reset_request_id: params[:id], password_digest: encrypted_password)
 
