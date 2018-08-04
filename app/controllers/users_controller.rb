@@ -3,6 +3,17 @@ class UsersController < ApplicationController
   before_action :ensure_admin!
   before_action :ensure_switch_spot_exists!, only: [:switch_spot]
 
+  def index
+    row = params[:row].downcase unless Spot.rows[params[:row]&.downcase].nil?
+    row ||= Spot.rows.keys.min
+
+    @users = Spot.includes(:current_user, :original_user)
+                 .where(row: row)
+                 .map(&:current_user)
+                 .select(&:performer?)
+                 .sort_by(&:current_spot)
+  end
+
   def update
     user = User.find(params[:id])
     user.update(update_params)

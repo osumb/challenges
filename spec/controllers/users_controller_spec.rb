@@ -1,6 +1,77 @@
 require 'rails_helper'
 
 RSpec.describe UsersController do
+  describe 'GET index' do
+    let(:current_user) { create(:admin_user) }
+    let(:request) { get :index, params: params }
+    let(:expected_authenticated_response) { render_template(:index) }
+    let(:expected_unauthenticated_response) { redirect_to('/login') }
+    let(:row) { nil }
+    let(:params) { { row: row } }
+    let!(:second_a_row_user) { create(:user, :spot_a2) }
+    let!(:first_a_row_user) { create(:user, :spot_a1) }
+    let!(:second_x_row_user) { create(:user, :spot_x2) }
+    let!(:first_x_row_user) { create(:user, :spot_x1) }
+
+    it_behaves_like 'controller_authentication'
+
+    context 'when authenticated' do
+      include_context 'with authentication'
+
+      it 'returns all the users in the first row', :aggregate_failures do
+        request
+
+        users = assigns(:users)
+
+        expect(users).to include(first_a_row_user)
+        expect(users).to include(second_a_row_user)
+        expect(users).not_to include(first_x_row_user)
+        expect(users).not_to include(second_x_row_user)
+      end
+
+      it 'returns all the users in the first row sorted by spot' do
+        request
+
+        users = assigns(:users)
+
+        expect(users).to eq([first_a_row_user, second_a_row_user])
+      end
+
+      context 'when passed a row' do
+        let(:row) { 'x' }
+
+        it 'returns all the users in that row' do
+          request
+
+          users = assigns(:users)
+
+          expect(users).to eq([first_x_row_user, second_x_row_user])
+        end
+
+        it 'returns all the users in the passed row', :aggregate_failures do
+          request
+
+          users = assigns(:users)
+
+          expect(users).not_to include(first_a_row_user)
+          expect(users).not_to include(second_a_row_user)
+          expect(users).to include(first_x_row_user)
+          expect(users).to include(second_x_row_user)
+        end
+      end
+
+      context 'but the current user is not an admin' do
+        let(:current_user) { first_a_row_user }
+
+        it 'returns a :not_found' do
+          request
+
+          expect(response).to have_http_status(:not_found)
+        end
+      end
+    end
+  end
+
   describe 'GET search' do
     let(:current_user) { create(:admin_user) }
     let(:request) { get :search }

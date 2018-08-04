@@ -1,0 +1,50 @@
+<div class="challenges-users-index">
+  <div class="challenges-users-index-header">
+    <div class="mdc-typography--display2">Member Roster</div>
+  </div>
+  <div class="challenges-users-index-table">
+    <div class="challenges-users-index-table-row">
+      <div class="challenges-users-index-table-cell challenges-users-index-table-cell-gray">Name</div>
+      <div class="challenges-users-index-table-cell challenges-users-index-table-cell-gray">Current Spot</div>
+      <div class="challenges-users-index-table-cell challenges-users-index-table-cell-gray">Original Spot</div>
+      <div class="challenges-users-index-table-cell challenges-users-index-table-cell-gray">Part</div>
+      <div class="challenges-users-index-table-cell challenges-users-index-table-cell-gray">Instrument</div>
+    </div>
+    <% @users.each.with_index do |user, index| %>
+      <div class="challenges-users-index-table-row">
+        <% color_class = "challenges-users-index-table-cell-gray" %>
+        <% if index.even? %>
+          <% color_class = "challenges-users-index-table-cell-white" %>
+        <% end %>
+        <div class="<%= "challenges-users-index-table-cell #{color_class}" %>">
+          <a href="/users/<%= user.buck_id %>"><%= user.full_name %></a>
+        </div>
+        <div class="<%= "challenges-users-index-table-cell #{color_class}" %>">
+          <%= user.current_spot %>
+        </div>
+        <div class="<%= "challenges-users-index-table-cell #{color_class}" %>">
+          <%= user.original_spot %>
+        </div>
+        <div class="<%= "challenges-users-index-table-cell #{color_class}" %>">
+          <%= user.instrument.titleize %>
+        </div>
+        <div class="<%= "challenges-users-index-table-cell #{color_class}" %>">
+          <%= user.part.titleize %>
+        </div>
+      </div>
+    <% end %>
+    <div class="challenges-users-index-table-row">
+      <% row_links = Spot.rows.keys.sort.map(&:upcase) %>
+      <% row_links.each do |row| %>
+        <% highlighted = params[:row].present? ? params[:row].upcase == row : row == row_links.first %>
+        <% color_class = "challenges-users-index-table-cell-white" %>
+        <% if highlighted %>
+          <% color_class = "challenges-users-index-table-cell-gray" %>
+        <% end %>
+        <div class="<%= "challenges-users-index-table-cell #{color_class}" %>">
+          <a href="/users?row=<%= row %>"><%= row %></a>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

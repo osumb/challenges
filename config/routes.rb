@@ -22,7 +22,7 @@ Rails.application.routes.draw do
 
   resources :sessions, only: [:create]
   resources :user_challenges, only: [:destroy]
-  resources :users, only: [:show, :update], constraints: { id: /[a-zA-Z]+(?:-[a-zA-Z]+)?\.[0-9]+/ } do
+  resources :users, only: [:index, :show, :update], constraints: { id: /[a-zA-Z]+(?:-[a-zA-Z]+)?\.[0-9]+/ } do
     member do
       post :switch_spot
     end
