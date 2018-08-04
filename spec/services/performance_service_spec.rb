@@ -1,20 +1,20 @@
-require 'rails_helper'
+require "rails_helper"
 
 describe PerformanceService do
-  describe '.create' do
-    let(:name) { 'Test Performance' }
-    let(:date) { 'Sat, 21 Jul 2018 12:00:00' }
-    let(:window_open) { 'Mon, 16 Jul 2018 13:00:00' }
-    let(:window_close) { 'Mon, 16 Jul 2018 16:14:00' }
-    let(:client_timezone) { 'America/New_York' }
+  describe ".create" do
+    let(:name) { "Test Performance" }
+    let(:date) { "Sat, 21 Jul 2018 12:00:00" }
+    let(:window_open) { "Mon, 16 Jul 2018 13:00:00" }
+    let(:window_close) { "Mon, 16 Jul 2018 16:14:00" }
+    let(:client_timezone) { "America/New_York" }
 
-    it 'creates the performance' do
+    it "creates the performance" do
       result = described_class.create(name: name, date: date, window_open: window_open, window_close: window_close, client_timezone: client_timezone)
 
       expect(result).to be_a(Performance)
     end
 
-    it 'converts the datetimes according to the client_timezone', :aggregate_failures do
+    it "converts the datetimes according to the client_timezone", :aggregate_failures do
       result = described_class.create(name: name, date: date, window_open: window_open, window_close: window_close, client_timezone: client_timezone)
 
       expected_date = Time.zone.parse(date)
@@ -35,58 +35,58 @@ describe PerformanceService do
       expect(result_window_close.month).to eq(expected_window_close.month)
     end
 
-    it 'saves the name correctly' do
+    it "saves the name correctly" do
       result = described_class.create(name: name, date: date, window_open: window_open, window_close: window_close, client_timezone: client_timezone)
 
       expect(result.name).to eq(name)
     end
 
-    context 'when the timezone is bad', :aggregate_failures do
-      it 'returns the error' do
-        result = described_class.create(name: name, date: date, window_open: window_open, window_close: window_close, client_timezone: 'not a timezone')
+    context "when the timezone is bad", :aggregate_failures do
+      it "returns the error" do
+        result = described_class.create(name: name, date: date, window_open: window_open, window_close: window_close, client_timezone: "not a timezone")
 
         expect(result.valid?).to be(false)
-        expect(result.errors.full_messages).to eq(['Invalid client timezone: not a timezone'])
+        expect(result.errors.full_messages).to eq(["Invalid client timezone: not a timezone"])
       end
     end
   end
 
-  describe '.queue_new_performance_emails' do
+  describe ".queue_new_performance_emails" do
     let(:performance) { create(:performance) }
     let(:normal_user) { create(:user, :squad_leader) }
     let(:alternate_user) { create(:user, :alternate) }
 
-    it 'emails the alternate' do
+    it "emails the alternate" do
       expect(EmailJob).to receive(:perform_later)
-        .with(klass: 'NewPerformanceMailer', method: 'new_performance_email', args: { performance_id: performance.id, email: alternate_user.email })
+        .with(klass: "NewPerformanceMailer", method: "new_performance_email", args: { performance_id: performance.id, email: alternate_user.email })
 
       described_class.queue_new_performance_emails(performance_id: performance.id)
     end
 
-    it 'doesn\'t email the normal user' do
+    it "doesn't email the normal user" do
       expect(EmailJob).not_to receive(:perform_later)
-        .with(klass: 'NewPerformanceMailer', method: 'new_performance_email', args: { performance_id: performance.id, email: normal_user.email })
+        .with(klass: "NewPerformanceMailer", method: "new_performance_email", args: { performance_id: performance.id, email: normal_user.email })
 
       described_class.queue_new_performance_emails(performance_id: performance.id)
     end
   end
 
-  describe '.update' do
-    let(:name) { 'Test Performance' }
-    let(:date) { 'Sat, 21 Jul 2018 12:00:00' }
-    let(:window_open) { 'Mon, 16 Jul 2018 13:00:00' }
-    let(:window_close) { 'Mon, 16 Jul 2018 16:14:00' }
-    let(:client_timezone) { 'America/New_York' }
+  describe ".update" do
+    let(:name) { "Test Performance" }
+    let(:date) { "Sat, 21 Jul 2018 12:00:00" }
+    let(:window_open) { "Mon, 16 Jul 2018 13:00:00" }
+    let(:window_close) { "Mon, 16 Jul 2018 16:14:00" }
+    let(:client_timezone) { "America/New_York" }
     let(:performance) { create(:performance) }
 
-    it 'returns the performance' do
+    it "returns the performance" do
       result = described_class.update(name: name, date: date, window_open: window_open, window_close: window_close, client_timezone: client_timezone, id: performance.id)
 
       expect(performance.reload).to eq(result)
       expect(result).to be_a(Performance)
     end
 
-    it 'converts the datetimes according to the client_timezone', :aggregate_failures do
+    it "converts the datetimes according to the client_timezone", :aggregate_failures do
       result = described_class.update(name: name, date: date, window_open: window_open, window_close: window_close, client_timezone: client_timezone, id: performance.id)
 
       expected_date = Time.zone.parse(date)
@@ -107,37 +107,37 @@ describe PerformanceService do
       expect(result_window_close.month).to eq(expected_window_close.month)
     end
 
-    it 'saves the name correctly' do
+    it "saves the name correctly" do
       result = described_class.update(name: name, date: date, window_open: window_open, window_close: window_close, client_timezone: client_timezone, id: performance.id)
 
       expect(result.name).to eq(name)
     end
 
-    context 'when the timezone is bad', :aggregate_failures do
-      it 'returns the error' do
-        result = described_class.update(name: name, date: date, window_open: window_open, window_close: window_close, client_timezone: 'not a timezone', id: performance.id)
+    context "when the timezone is bad", :aggregate_failures do
+      it "returns the error" do
+        result = described_class.update(name: name, date: date, window_open: window_open, window_close: window_close, client_timezone: "not a timezone", id: performance.id)
 
         expect(result.valid?).to be(false)
-        expect(result.errors.full_messages).to eq(['Invalid client timezone: not a timezone'])
+        expect(result.errors.full_messages).to eq(["Invalid client timezone: not a timezone"])
       end
     end
   end
 
-  describe '.queue_new_performance_emails' do
+  describe ".queue_new_performance_emails" do
     let(:performance) { create(:performance) }
     let(:normal_user) { create(:user, :squad_leader) }
     let(:alternate_user) { create(:user, :alternate) }
 
-    it 'emails the alternate' do
+    it "emails the alternate" do
       expect(EmailJob).to receive(:perform_later)
-        .with(klass: 'NewPerformanceMailer', method: 'new_performance_email', args: { performance_id: performance.id, email: alternate_user.email })
+        .with(klass: "NewPerformanceMailer", method: "new_performance_email", args: { performance_id: performance.id, email: alternate_user.email })
 
       described_class.queue_new_performance_emails(performance_id: performance.id)
     end
 
-    it 'doesn\'t email the normal user' do
+    it "doesn't email the normal user" do
       expect(EmailJob).not_to receive(:perform_later)
-        .with(klass: 'NewPerformanceMailer', method: 'new_performance_email', args: { performance_id: performance.id, email: normal_user.email })
+        .with(klass: "NewPerformanceMailer", method: "new_performance_email", args: { performance_id: performance.id, email: normal_user.email })
 
       described_class.queue_new_performance_emails(performance_id: performance.id)
     end

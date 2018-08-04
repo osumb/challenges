@@ -1,10 +1,10 @@
-require 'rails_helper'
+require "rails_helper"
 
 RSpec.describe DisciplineActionsController do
-  describe 'POST create' do
+  describe "POST create" do
     let(:current_user) { create(:admin_user) }
     let(:request) { post :create, params: params }
-    let(:reason) { 'Failed Music Check' }
+    let(:reason) { "Failed Music Check" }
     let(:user) { create(:user) }
     let(:allowed_to_challenge) { true }
     let(:open_spot) { true }
@@ -13,8 +13,8 @@ RSpec.describe DisciplineActionsController do
     let(:params) do
       {
         discipline_action: {
-          allowed_to_challenge: allowed_to_challenge ? 'on' : nil,
-          open_spot: open_spot ? 'on' : nil,
+          allowed_to_challenge: allowed_to_challenge ? "on" : nil,
+          open_spot: open_spot ? "on" : nil,
           performance_id: performance.id,
           reason: reason,
           user_buck_id: user.buck_id
@@ -22,24 +22,24 @@ RSpec.describe DisciplineActionsController do
       }
     end
     let(:expected_authenticated_response) { have_http_status(:redirect) }
-    let(:expected_unauthenticated_response) { redirect_to('/login') }
+    let(:expected_unauthenticated_response) { redirect_to("/login") }
 
-    it_behaves_like 'controller_authentication'
+    it_behaves_like "controller_authentication"
 
-    context 'when authenticated' do
-      include_context 'with authentication'
+    context "when authenticated" do
+      include_context "with authentication"
 
-      it 'creates a new discipline action' do
+      it "creates a new discipline action" do
         expect do
           request
         end.to change { DisciplineAction.count }.by(1)
       end
 
-      context 'but there are errors' do
-        context 'because the performance window is closed' do
+      context "but there are errors" do
+        context "because the performance window is closed" do
           let(:performance) { create(:stale_performance) }
 
-          it 'redirects with a flash message', :aggregate_errors do
+          it "redirects with a flash message", :aggregate_errors do
             expect do
               request
             end.not_to change { DisciplineAction.count }
@@ -49,10 +49,10 @@ RSpec.describe DisciplineActionsController do
         end
       end
 
-      context 'but the current user isn\'t an admin' do
+      context "but the current user isn't an admin" do
         let(:current_user) { user }
 
-        it 'returns a :not_found' do
+        it "returns a :not_found" do
           request
 
           expect(response).to have_http_status(:not_found)
@@ -61,29 +61,29 @@ RSpec.describe DisciplineActionsController do
     end
   end
 
-  describe 'DELETE destroy' do
+  describe "DELETE destroy" do
     let(:current_user) { create(:admin_user) }
     let(:request) { delete :destroy, params: params }
-    let(:reason) { 'Failed Music Check' }
+    let(:reason) { "Failed Music Check" }
     let(:user) { create(:user) }
     let!(:discipline_action) { create(:discipline_action, user: user) }
 
     let(:params) { { id: discipline_action.id } }
     let(:expected_authenticated_response) { have_http_status(:redirect) }
-    let(:expected_unauthenticated_response) { redirect_to('/login') }
+    let(:expected_unauthenticated_response) { redirect_to("/login") }
 
-    it_behaves_like 'controller_authentication'
+    it_behaves_like "controller_authentication"
 
-    context 'when authenticated' do
-      include_context 'with authentication'
+    context "when authenticated" do
+      include_context "with authentication"
 
-      it 'deletes the discipline action' do
+      it "deletes the discipline action" do
         expect do
           request
         end.to change { DisciplineAction.count }.by(-1)
       end
 
-      context 'but the user\'s spot has already been challenged' do
+      context "but the user's spot has already been challenged" do
         let!(:challenge) do
           create(
             :normal_challenge,
@@ -93,17 +93,17 @@ RSpec.describe DisciplineActionsController do
           )
         end
 
-        it 'does not delete the discipline action' do
+        it "does not delete the discipline action" do
           expect do
             request
           end.not_to change { DisciplineAction.count }
         end
       end
 
-      context 'but the current user isn\'t an admin' do
+      context "but the current user isn't an admin" do
         let(:current_user) { user }
 
-        it 'returns a :not_found' do
+        it "returns a :not_found" do
           request
 
           expect(response).to have_http_status(:not_found)

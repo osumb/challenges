@@ -20,16 +20,16 @@ class SessionsController < ApplicationController
 
     if user
       flash[:error] = nil
-      redirect_to '/logged_in'
+      redirect_to "/logged_in"
     else
-      flash.now[:error] = I18n.t!('authentication.failed_login')
-      render 'new', status: :unauthorized
+      flash.now[:error] = I18n.t!("authentication.failed_login")
+      render "new", status: :unauthorized
     end
   end
 
   def destroy
     AuthenticationService.log_out_user(session)
-    redirect_to '/login'
+    redirect_to "/login"
   end
 
   private

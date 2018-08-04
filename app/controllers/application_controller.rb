@@ -3,7 +3,7 @@ class ApplicationController < ActionController::Base
 
   def ensure_authenticated!
     return if current_user
-    redirect_to '/login'
+    redirect_to "/login"
   end
 
   def ensure_admin!
@@ -13,7 +13,7 @@ class ApplicationController < ActionController::Base
 
   def ensure_not_authenticated!
     return unless current_user
-    redirect_to '/logged_in'
+    redirect_to "/logged_in"
   end
 
   def current_user
@@ -26,7 +26,7 @@ class ApplicationController < ActionController::Base
 
   def send_back(flash = {}, fallback = nil)
     redirect_back(
-      fallback_location: fallback.nil? ? '/logged_in' : fallback,
+      fallback_location: fallback.nil? ? "/logged_in" : fallback,
       flash: flash
     )
   end

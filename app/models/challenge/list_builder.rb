@@ -1,4 +1,4 @@
-require 'rubyXL'
+require "rubyXL"
 
 class Challenge
   class ListBuilder
@@ -6,12 +6,12 @@ class Challenge
       @performance = Performance.find(performance_id)
       @challenges = @performance.challenges
       @discipline_actions = @performance.discipline_actions
-      @date = Time.zone.now.strftime('%m-%d-%Y')
+      @date = Time.zone.now.strftime("%m-%d-%Y")
       @workbook = RubyXL::Workbook.new
       @worksheet = @workbook[0]
       @worksheet.sheet_name = "Challenge List #{@date}"
       @worksheet.add_cell(0, 0, "OSUMB Challenges #{@date}")
-      @worksheet.add_cell(1, 0, 'Challenges')
+      @worksheet.add_cell(1, 0, "Challenges")
       @list_built = false
     end
 
@@ -23,7 +23,7 @@ class Challenge
         add_list_item_to_worksheet(i + 2, row)
       end
       add_list_item_to_worksheet(challenge_rows.length + 2, [])
-      add_list_item_to_worksheet(challenge_rows.length + 3, ['Open Spots/Automatic Alternates'])
+      add_list_item_to_worksheet(challenge_rows.length + 3, ["Open Spots/Automatic Alternates"])
       discipline_action_rows.each_with_index do |row, i|
         add_list_item_to_worksheet(2 + challenge_rows.length + 2 + i, row)
       end
@@ -61,7 +61,7 @@ class Challenge
       elsif challenge.tri_challenge_type?
         tri_challenge_to_list_item(challenge)
       else
-        Raise 'Unsupported challenge type'
+        Raise "Unsupported challenge type"
       end
     end
 
@@ -82,7 +82,7 @@ class Challenge
           challenger_spots: [uc.spot],
           challenger_names: [uc.user.full_name],
           challenged_spot: challenge.spot,
-          challenged_name: 'Open Spot'
+          challenged_name: "Open Spot"
         )
       end
     end
@@ -106,7 +106,7 @@ class Challenge
     end
 
     def tmp_dir
-      Rails.root.join('tmp', 'challenge_lists')
+      Rails.root.join("tmp", "challenge_lists")
     end
   end
 
@@ -125,8 +125,8 @@ class Challenge
     end
 
     def to_a
-      spot_string = @challenger_spots.map(&:to_s).join(', ')
-      name_string = @challenger_names.map(&:to_s).join(', ')
+      spot_string = @challenger_spots.map(&:to_s).join(", ")
+      name_string = @challenger_names.map(&:to_s).join(", ")
       [spot_string, name_string, @challenged_spot.to_s, @challenged_name]
     end
   end

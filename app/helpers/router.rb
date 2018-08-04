@@ -11,45 +11,45 @@ module Router
     when User::Roles::MEMBER, User::Roles::SQUAD_LEADER
       route_groups << _results_routes(user.role)
     else
-      raise I18n.t!('errors.unexpected_value', variable_name: 'role', value: user.role)
+      raise I18n.t!("errors.unexpected_value", variable_name: "role", value: user.role)
     end
     route_groups
   end
 
   def self._challenges_routes(role)
-    routes = [{ name: 'Make A Challenge', path: '/challenges/new' }]
-    routes << { name: 'Evaluate', path: '/challenges/evaluate' } unless role == User::Roles::MEMBER
+    routes = [{ name: "Make A Challenge", path: "/challenges/new" }]
+    routes << { name: "Evaluate", path: "/challenges/evaluate" } unless role == User::Roles::MEMBER
 
-    _route_group('Challenges', routes)
+    _route_group("Challenges", routes)
   end
 
   def self._results_routes(role)
     routes = []
-    routes << { name: 'Completed', path: '/challenges/completed' } unless role == User::Roles::MEMBER
+    routes << { name: "Completed", path: "/challenges/completed" } unless role == User::Roles::MEMBER
 
-    _route_group('Results', routes)
+    _route_group("Results", routes)
   end
 
   def self._performance_routes(role)
     routes = []
     if role == User::Roles::ADMIN
-      routes << { name: 'All', path: '/performances' }
-      routes << { name: 'Create', path: '/performances/new' }
+      routes << { name: "All", path: "/performances" }
+      routes << { name: "Create", path: "/performances/new" }
     end
 
-    _route_group('Performances', routes)
+    _route_group("Performances", routes)
   end
 
   def self._user_routes(role)
     routes = []
     if role == User::Roles::ADMIN
-      routes << { name: 'Search', path: '/users/search' }
-      routes << { name: 'Roster', path: '/users' }
-      routes << { name: 'Upload', path: '/users/upload' }
-      routes << { name: 'Create', path: '/users/new' }
+      routes << { name: "Search", path: "/users/search" }
+      routes << { name: "Roster", path: "/users" }
+      routes << { name: "Upload", path: "/users/upload" }
+      routes << { name: "Create", path: "/users/new" }
     end
 
-    _route_group('Users', routes)
+    _route_group("Users", routes)
   end
 
   def self._route_group(name, routes)

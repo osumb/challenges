@@ -58,15 +58,15 @@ class ChallengeOptionsService
 
   def _get_column_index_hash(raw_challengeable_user)
     {
-      buck_id: raw_challengeable_user.index('buck_id'),
-      challenge_id: raw_challengeable_user.index('challenge_id'),
-      challenge_type: raw_challengeable_user.index('challenge_type'),
-      file: raw_challengeable_user.index('file'),
-      first_name: raw_challengeable_user.index('first_name'),
-      last_name: raw_challengeable_user.index('last_name'),
-      members_in_challenge: raw_challengeable_user.index('members_in_challenge'),
-      open_spot: raw_challengeable_user.index('open_spot'),
-      row: raw_challengeable_user.index('row')
+      buck_id: raw_challengeable_user.index("buck_id"),
+      challenge_id: raw_challengeable_user.index("challenge_id"),
+      challenge_type: raw_challengeable_user.index("challenge_type"),
+      file: raw_challengeable_user.index("file"),
+      first_name: raw_challengeable_user.index("first_name"),
+      last_name: raw_challengeable_user.index("last_name"),
+      members_in_challenge: raw_challengeable_user.index("members_in_challenge"),
+      open_spot: raw_challengeable_user.index("open_spot"),
+      row: raw_challengeable_user.index("row")
     }
   end
 

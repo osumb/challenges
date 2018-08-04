@@ -1,4 +1,4 @@
-require 'rails_helper'
+require "rails_helper"
 
 describe Performance, type: :model do
   subject { build(:performance) }
@@ -11,17 +11,17 @@ describe Performance, type: :model do
   it { is_expected.to validate_presence_of(:window_close) }
   it { is_expected.to validate_uniqueness_of(:window_close) }
 
-  describe 'validations' do
+  describe "validations" do
     let(:performance) { build(:performance, window_open: window_open, window_close: window_close) }
 
-    context 'when window_open is earlier than window_close' do
+    context "when window_open is earlier than window_close" do
       let(:window_open) { Time.zone.now }
       let(:window_close) { Time.zone.now + 1.day }
 
       specify { expect(performance).to be_valid }
     end
 
-    context 'when window_open is earlier than window_close' do
+    context "when window_open is earlier than window_close" do
       let(:window_open) { Time.zone.now + 1.day }
       let(:window_close) { Time.zone.now }
 
@@ -29,17 +29,17 @@ describe Performance, type: :model do
     end
   end
 
-  describe '#window_open?' do
+  describe "#window_open?" do
     let(:performance) { build(:performance, window_open: window_open, window_close: window_close) }
 
-    context 'when the current time is within the window' do
+    context "when the current time is within the window" do
       let(:window_open) { Time.zone.now - 1.day }
       let(:window_close) { Time.zone.now + 1.day }
 
       specify { expect(performance.window_open?).to be(true) }
     end
 
-    context 'when the current time is not within the window' do
+    context "when the current time is not within the window" do
       let(:window_open) { Time.zone.now - 2.days }
       let(:window_close) { Time.zone.now - 1.day }
 

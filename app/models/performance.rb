@@ -12,7 +12,7 @@ class Performance < ApplicationRecord
   validate :window_open_before_window_close
 
   def self.next
-    where('now() < window_close').order(window_open: :asc).first
+    where("now() < window_close").order(window_open: :asc).first
   end
 
   def window_open?
@@ -33,6 +33,6 @@ class Performance < ApplicationRecord
   def window_open_before_window_close
     return if window_open.nil? || window_close.nil?
     return unless window_close < window_open
-    errors.add(:window_close, 'must be later than window_open')
+    errors.add(:window_close, "must be later than window_open")
   end
 end

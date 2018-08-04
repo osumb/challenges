@@ -1,3 +1,3 @@
 json.passwordResetRequest do
-  json.partial! 'api/password_reset_requests/password_reset_request', prr: @prr
+  json.partial! "api/password_reset_requests/password_reset_request", prr: @prr
 end

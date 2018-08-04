@@ -1,7 +1,7 @@
-require 'rails_helper'
+require "rails_helper"
 
-describe 'Password Reset Requests', type: :request do
-  let(:endpoint) { '/api/password_reset_requests/' }
+describe "Password Reset Requests", type: :request do
+  let(:endpoint) { "/api/password_reset_requests/" }
   let(:user) { create(:user) }
   let(:email) { user.email }
   let(:buck_id) { user.buck_id }
@@ -12,8 +12,8 @@ describe 'Password Reset Requests', type: :request do
     }
   end
 
-  describe 'POST /api/password_reset_requests/' do
-    it 'successfully creates a password change request' do
+  describe "POST /api/password_reset_requests/" do
+    it "successfully creates a password change request" do
       expect {
         post endpoint, params: reset_params.to_json, headers: unauthenticated_header
       }.to change { PasswordResetRequest.count }.by(1)
@@ -21,10 +21,10 @@ describe 'Password Reset Requests', type: :request do
       expect(response).to have_http_status(201)
     end
 
-    context 'when an incorrect email is provided' do
-      let(:email) { 'not_the_correct_email@very_wrong.incorrect' }
+    context "when an incorrect email is provided" do
+      let(:email) { "not_the_correct_email@very_wrong.incorrect" }
 
-      it 'returns a 403' do
+      it "returns a 403" do
         expect {
           post endpoint, params: reset_params.to_json, headers: unauthenticated_header
         }.not_to change { PasswordResetRequest.count }
@@ -33,10 +33,10 @@ describe 'Password Reset Requests', type: :request do
       end
     end
 
-    context 'when an uppercase buck_id is passed' do
+    context "when an uppercase buck_id is passed" do
       let(:reset_params) { super().merge(buck_id: buck_id.upcase) }
 
-      it 'still creates the request' do
+      it "still creates the request" do
         expect {
           post endpoint, params: reset_params.to_json, headers: unauthenticated_header
         }.to change { PasswordResetRequest.count }.by(1)

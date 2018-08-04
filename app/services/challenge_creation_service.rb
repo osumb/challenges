@@ -70,7 +70,7 @@ class ChallengeCreationService
       new_user = _associated_user_for_open_spot_challenge(spot, performance)
       users << [new_user] unless new_user.nil?
     else
-      raise I18n.t1!('errors.unexpected_value', variable_name: 'challenge type', value: type)
+      raise I18n.t1!("errors.unexpected_value", variable_name: "challenge type", value: type)
     end
     users.flatten
   end
@@ -81,8 +81,8 @@ class ChallengeCreationService
 
   def _associated_users_for_tri_challenge(challenger, spot)
     regular_user = spot.current_user
-    other_alternate = User.joins('LEFT OUTER JOIN spots on spots.id = users.current_spot_id').find_by(
-      'instrument = ? and part = ? and buck_id != ? and file > 12',
+    other_alternate = User.joins("LEFT OUTER JOIN spots on spots.id = users.current_spot_id").find_by(
+      "instrument = ? and part = ? and buck_id != ? and file > 12",
       User.instruments[challenger.instrument],
       User.parts[challenger.part],
       challenger.buck_id

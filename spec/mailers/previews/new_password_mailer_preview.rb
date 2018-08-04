@@ -3,7 +3,7 @@ class NewPasswordMailerPreview < ActionMailer::Preview
   def new_performance_email
     NewPerformanceMailer.new_performance_email(
       performance_id: Performance.first.id,
-      email: 'fake_email@example.com'
+      email: "fake_email@example.com"
     )
   end
 end

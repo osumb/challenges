@@ -5,6 +5,6 @@ class TestingController < ApiController
   TestingControllerError = Class.new(StandardError)
 
   def exception
-    raise TestingControllerError, 'Intentionally raising exception for testing purposes'
+    raise TestingControllerError, "Intentionally raising exception for testing purposes"
   end
 end

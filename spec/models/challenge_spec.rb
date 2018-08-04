@@ -1,4 +1,4 @@
-require 'rails_helper'
+require "rails_helper"
 
 describe Challenge, type: :model do
   it { is_expected.to have_many(:user_challenges) }
@@ -6,237 +6,237 @@ describe Challenge, type: :model do
   it { is_expected.to belong_to(:spot) }
   it { is_expected.to belong_to(:performance) }
 
-  describe 'validations' do
-    context 'normal challenge' do
+  describe "validations" do
+    context "normal challenge" do
       subject { build(:normal_challenge) }
 
-      it 'is invalid without 2 users' do
+      it "is invalid without 2 users" do
         subject.users = [subject.users.first] # remove a user
         subject.valid?
         expect(subject.errors.full_messages)
-          .to include('Users only two users are allowed in a normal challenge')
+          .to include("Users only two users are allowed in a normal challenge")
       end
 
-      it 'is valid with 2 users' do
+      it "is valid with 2 users" do
         subject.valid?
         expect(subject.errors.full_messages)
-          .not_to include('Users only two users are allowed in a normal challenge')
+          .not_to include("Users only two users are allowed in a normal challenge")
       end
 
-      it 'requires users in a challenge to have the same instrument and part' do
+      it "requires users in a challenge to have the same instrument and part" do
         subject.users = [build(:user, :trumpet, :solo), build(:user, :trumpet, :first, :spot_a3)]
         subject.valid?
         expect(subject.errors.full_messages)
-          .to include('Users must all have the same instrument and part')
+          .to include("Users must all have the same instrument and part")
       end
 
-      it 'requires users in a challenge to not be admins or directors' do
+      it "requires users in a challenge to not be admins or directors" do
         subject.users = [build(:admin_user), build(:user)]
 
         subject.valid?
         expect(subject.errors.full_messages)
-          .to include('Users must all be non admin or director')
+          .to include("Users must all be non admin or director")
       end
 
-      it 'requires users in a challenge to be unique' do
+      it "requires users in a challenge to be unique" do
         user = build(:user)
         subject.users = [user, user]
 
         subject.valid?
         expect(subject.errors.full_messages)
-          .to include('Users must be unique in a challenge')
+          .to include("Users must be unique in a challenge")
       end
     end
 
-    context 'open spot challenge' do
+    context "open spot challenge" do
       subject { build(:open_spot_challenge) }
 
-      it 'is invalid with no users' do
+      it "is invalid with no users" do
         subject.users = []
 
         subject.valid?
         expect(subject.errors.full_messages)
-          .to include('Users no more than two users are allowed in an open spot challenge')
+          .to include("Users no more than two users are allowed in an open spot challenge")
       end
 
-      it 'is valid with 2 users' do
+      it "is valid with 2 users" do
         subject.users = [build(:user), build(:user, :spot_a4)]
 
         subject.valid?
         expect(subject.errors.full_messages)
-          .not_to include('Users no more than two users are allowed in an open spot challenge')
+          .not_to include("Users no more than two users are allowed in an open spot challenge")
       end
     end
 
-    context 'tri challenge' do
+    context "tri challenge" do
       subject { build(:tri_challenge) }
 
-      it 'is invalid without 3 users' do
+      it "is invalid without 3 users" do
         subject.users = []
         subject.valid?
         expect(subject.errors.full_messages)
-          .to include('Users only three users are allowed in a tri challenge')
+          .to include("Users only three users are allowed in a tri challenge")
       end
 
-      it 'is valid with 3 users' do
+      it "is valid with 3 users" do
         subject.users = [build(:user), build(:user, :spot_j4), build(:user, :spot_j3)]
         subject.valid?
         expect(subject.errors.full_messages)
-          .not_to include('Users only three users are allowed in a tri challenge')
+          .not_to include("Users only three users are allowed in a tri challenge")
       end
 
-      it 'can\'t involve all rows' do
+      it "can't involve all rows" do
         invalid_rows = Spot.rows.reject { |row| Challenge.tri_challenge_rows.include? row.to_sym }
         invalid_rows.each_value do |row_value|
           subject.spot = build(:spot, row: row_value)
 
           subject.valid?
           expect(subject.errors.full_messages)
-            .to include('Challenge tri challenges can only involve the following rows: [j]')
+            .to include("Challenge tri challenges can only involve the following rows: [j]")
         end
       end
     end
 
-    describe '#full?' do
-      context 'when the challenge is normal' do
+    describe "#full?" do
+      context "when the challenge is normal" do
         subject { build(:normal_challenge) }
 
-        it 'is full with two users' do
+        it "is full with two users" do
           expect(subject.full?).to be(true)
         end
 
-        it 'is not full with less than two users' do
+        it "is not full with less than two users" do
           subject.users = []
           expect(subject.full?).to be(false)
         end
       end
 
-      context 'when the challenge is open spot' do
+      context "when the challenge is open spot" do
         subject { build(:open_spot_challenge) }
-        it 'is full with two users' do
+        it "is full with two users" do
           subject.users = [build(:user), build(:user, :spot_a5)]
 
           expect(subject.full?).to be(true)
         end
 
-        it 'is not full with less than two users' do
+        it "is not full with less than two users" do
           subject.users = [build(:user)]
           expect(subject.full?).to be(false)
         end
       end
 
-      context 'when the challenge is tri' do
+      context "when the challenge is tri" do
         subject { build(:tri_challenge) }
 
         let(:user) { build(:user) }
 
-        it 'is full with three users' do
+        it "is full with three users" do
           subject.users = [user, user, user]
 
           expect(subject.full?).to be(true)
         end
 
-        it 'is not full with less than three users' do
+        it "is not full with less than three users" do
           subject.users = []
           expect(subject.full?).to be(false)
         end
       end
     end
 
-    describe '#enough_users?' do
-      context 'when the challenge is normal' do
+    describe "#enough_users?" do
+      context "when the challenge is normal" do
         subject { build(:normal_challenge) }
 
-        it 'has enough with two users' do
+        it "has enough with two users" do
           expect(subject.enough_users?).to be(true)
         end
 
-        it 'doesn\'t have enough with less than two users' do
+        it "doesn't have enough with less than two users" do
           subject.users = []
           expect(subject.enough_users?).to be(false)
         end
       end
 
-      context 'when the challenge is open spot' do
+      context "when the challenge is open spot" do
         subject { build(:open_spot_challenge) }
-        it 'has enough with two users' do
+        it "has enough with two users" do
           subject.users = [build(:user), build(:user, :spot_a5)]
 
           expect(subject.enough_users?).to be(true)
         end
 
-        it 'has enough with less than two users' do
+        it "has enough with less than two users" do
           subject.users = [build(:user)]
           expect(subject.enough_users?).to be(true)
         end
 
-        it 'doesn\'t have enough with 0 users' do
+        it "doesn't have enough with 0 users" do
           subject.users = []
           expect(subject.enough_users?).to be(false)
         end
       end
 
-      context 'when the challenge is tri' do
+      context "when the challenge is tri" do
         subject { build(:tri_challenge) }
 
         let(:user) { build(:user) }
 
-        it 'has enough with three users' do
+        it "has enough with three users" do
           subject.users = [user, user, user]
 
           expect(subject.enough_users?).to be(true)
         end
 
-        it 'is not full with less than three users' do
+        it "is not full with less than three users" do
           subject.users = []
           expect(subject.enough_users?).to be(false)
         end
       end
     end
 
-    describe '#required_user_challenge_places' do
-      context 'normal challenge' do
+    describe "#required_user_challenge_places" do
+      context "normal challenge" do
         subject(:challenge) { build(:normal_challenge) }
 
-        it 'returns the correct UserChallenge places' do
+        it "returns the correct UserChallenge places" do
           expect(challenge.required_user_challenge_places).to eq([UserChallenge.places[:first], UserChallenge.places[:second]])
         end
       end
 
-      context 'non full open spot challenge' do
+      context "non full open spot challenge" do
         subject(:challenge) { build(:open_spot_challenge) }
 
-        it 'returns the correct UserChallenge places' do
+        it "returns the correct UserChallenge places" do
           expect(challenge.required_user_challenge_places).to eq([UserChallenge.places[:first]])
         end
       end
 
-      context 'full open spot challenge' do
+      context "full open spot challenge" do
         subject(:challenge) { build(:full_open_spot_challenge) }
 
-        it 'returns the correct UserChallenge places' do
+        it "returns the correct UserChallenge places" do
           expect(challenge.required_user_challenge_places).to eq([UserChallenge.places[:first], UserChallenge.places[:second]])
         end
       end
 
-      context 'tri challenge' do
+      context "tri challenge" do
         subject(:challenge) { build(:tri_challenge) }
 
-        it 'returns the correct UserChallenge places' do
+        it "returns the correct UserChallenge places" do
           expect(challenge.required_user_challenge_places).to eq([UserChallenge.places[:first], UserChallenge.places[:second], UserChallenge.places[:third]])
         end
       end
     end
   end
 
-  describe '.viewable_by_user' do
+  describe ".viewable_by_user" do
     let!(:challenge) { create(:normal_challenge, spot: create(:spot, row: :x, file: 1)) }
     let(:current_instrument) { challenge.users.first.instrument }
     let(:spot_in_challenge_row) { create(:spot, row: challenge.spot.row, file: 2) }
     let(:spot_in_first_user_row) { create(:spot, row: challenge.users.first.original_spot.row, file: 2) }
     let(:spot_in_last_user_row) { create(:spot, row: challenge.users.last.original_spot.row, file: 2) }
     let(:other_instrument) do
-      User.instruments.find { |key, _value| key != current_instrument && key != 'any' }.first.to_sym
+      User.instruments.find { |key, _value| key != current_instrument && key != "any" }.first.to_sym
     end
     let(:spot_in_other_row) do
       taken_spots = challenge.users.map { |user| user.current_spot.row }
@@ -244,43 +244,43 @@ describe Challenge, type: :model do
       create(:spot, row: row, file: 2)
     end
 
-    context 'when a member is evaluating' do
+    context "when a member is evaluating" do
       let(:user) { create(:user, :member) }
 
       specify { expect(described_class.viewable_by_user(user)).to be_empty }
     end
 
-    context 'when an admin is evaluating' do
+    context "when an admin is evaluating" do
       let(:user) { create(:user, :admin) }
 
       specify { expect(described_class.viewable_by_user(user)).to include(challenge) }
       specify { expect(described_class.viewable_by_user(user).count).to eq(1) }
     end
 
-    context 'when a director is evaluating' do
-      context 'and they have any instrument' do
+    context "when a director is evaluating" do
+      context "and they have any instrument" do
         let(:user) { create(:user, :director, instrument: :any) }
 
         specify { expect(described_class.viewable_by_user(user)).to include(challenge) }
         specify { expect(described_class.viewable_by_user(user).count).to eq(1) }
       end
 
-      context 'and they have the same instrument' do
+      context "and they have the same instrument" do
         let(:user) { create(:user, :director, instrument: current_instrument) }
 
         specify { expect(described_class.viewable_by_user(user)).to include(challenge) }
         specify { expect(described_class.viewable_by_user(user).count).to eq(1) }
       end
 
-      context 'and they do not have the same instrument' do
+      context "and they do not have the same instrument" do
         let(:user) { create(:user, :director, instrument: other_instrument, part: :first) }
 
         specify { expect(described_class.viewable_by_user(user)).to be_empty }
       end
     end
 
-    context 'when a squad leader is evaluating' do
-      context 'and they are in the row of the challenge' do
+    context "when a squad leader is evaluating" do
+      context "and they are in the row of the challenge" do
         let(:user) do
           create(:user, :squad_leader, instrument: current_instrument, current_spot: spot_in_challenge_row)
         end
@@ -289,7 +289,7 @@ describe Challenge, type: :model do
         specify { expect(described_class.viewable_by_user(user).count).to eq(1) }
       end
 
-      context 'and they are in the row of one of the participants' do
+      context "and they are in the row of one of the participants" do
         let(:user_1) do
           create(:user, :squad_leader, instrument: current_instrument, current_spot: spot_in_first_user_row, original_spot: spot_in_first_user_row)
         end
@@ -305,7 +305,7 @@ describe Challenge, type: :model do
         specify { expect(described_class.viewable_by_user(user_2).first.user_challenges.length).to eq(challenge.user_challenges.count) }
       end
 
-      context 'and they are in an entirely different row' do
+      context "and they are in an entirely different row" do
         let(:user) do
           create(:user, :squad_leader, instrument: :trumpet, part: :first, current_spot: spot_in_other_row)
         end
@@ -315,7 +315,7 @@ describe Challenge, type: :model do
     end
   end
 
-  describe '.evaluable' do
+  describe ".evaluable" do
     let(:user) { create(:user, :admin) }
     let!(:challenge_needs_comments) do
       create(:normal_challenge, spot: create(:spot, row: :x, file: 1), stage: :needs_comments)
@@ -338,21 +338,21 @@ describe Challenge, type: :model do
       allow(described_class).to receive(:viewable_by_user).with(user).and_return(described_class.all)
     end
 
-    it 'uses .viewable_by_user to scope the query' do
+    it "uses .viewable_by_user to scope the query" do
       described_class.evaluable(user)
       expect(described_class).to have_received(:viewable_by_user).exactly(1).times
     end
 
-    it 'only includes challenges that need comments' do
+    it "only includes challenges that need comments" do
       challenges = described_class.evaluable(user)
 
       challenges.each do |challenge|
-        expect(challenge.stage).to eq('needs_comments')
+        expect(challenge.stage).to eq("needs_comments")
       end
     end
   end
 
-  describe '.completed' do
+  describe ".completed" do
     let(:user) { create(:user, :admin) }
     let!(:challenge_needs_comments) do
       create(:normal_challenge, spot: create(:spot, row: :x, file: 1), stage: :needs_comments)
@@ -388,24 +388,24 @@ describe Challenge, type: :model do
       allow(described_class).to receive(:viewable_by_user).with(user).and_return(described_class.all)
     end
 
-    it 'uses .viewable_by_user to scope the query' do
+    it "uses .viewable_by_user to scope the query" do
       described_class.completed(user)
       expect(described_class).to have_received(:viewable_by_user).exactly(1).times
     end
 
-    it 'only includes challenges that do not need comments' do
+    it "only includes challenges that do not need comments" do
       challenges = described_class.completed(user)
 
       challenges.each do |challenge|
-        expect(challenge.stage).not_to eq('needs_comments')
+        expect(challenge.stage).not_to eq("needs_comments")
       end
     end
   end
 
-  describe 'invalid challenge' do
+  describe "invalid challenge" do
     let(:challenge) { create(:open_spot_challenge) }
 
-    it 'throws when a challenge is created with the same spot and performance as an existing one' do
+    it "throws when a challenge is created with the same spot and performance as an existing one" do
       expect {
         create(:open_spot_challenge, spot: challenge.spot, performance: challenge.performance)
       }.to raise_error(Exception)

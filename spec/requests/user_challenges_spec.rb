@@ -1,16 +1,16 @@
-require 'rails_helper'
+require "rails_helper"
 
 # The purpose of this file is to test the following controller actions associated with UserChallenge objects:
 #   Create - if a UserChallenge is created with an associated open spot challenge and conditions are valid, the user
 #            be added
 #   Delete - if a UserChallenge is deleted, test for whether the associated challenge should be deleted
 
-describe 'User Challenges', type: :request do
-  let(:endpoint) { '/api/user_challenges/' }
+describe "User Challenges", type: :request do
+  let(:endpoint) { "/api/user_challenges/" }
   let(:admin) { create(:admin_user) }
 
-  describe 'POST /api/user_challenges' do
-    context 'on an open spot challenge' do
+  describe "POST /api/user_challenges" do
+    context "on an open spot challenge" do
       let!(:challenge) { create(:open_spot_challenge) }
       let(:performance) { challenge.performance }
       let(:challenger) { challenge.users.first }
@@ -23,7 +23,7 @@ describe 'User Challenges', type: :request do
         )
       }
 
-      context 'and the requesting user is an admin' do
+      context "and the requesting user is an admin" do
         let(:params) do
           {
             challenger_buck_id: new_challenger.buck_id,
@@ -31,7 +31,7 @@ describe 'User Challenges', type: :request do
           }
         end
 
-        it 'successfully adds the new user to the challenge' do
+        it "successfully adds the new user to the challenge" do
           expect {
             post endpoint, params: params.to_json, headers: authenticated_header(admin)
           }.to change { challenge.reload.users.count }.by(1)
@@ -39,7 +39,7 @@ describe 'User Challenges', type: :request do
           expect(challenge.users).to include(new_challenger)
         end
 
-        context 'but the challenge is already full' do
+        context "but the challenge is already full" do
           let!(:challenge) { create(:full_open_spot_challenge) }
           let(:new_challenger) {
             instrument = challenge.users.first.instrument.to_sym
@@ -47,18 +47,18 @@ describe 'User Challenges', type: :request do
             create(:alternate_user, :spot_x13, instrument, part)
           }
 
-          it 'returns a 403' do
+          it "returns a 403" do
             expect {
               post endpoint, params: params.to_json, headers: authenticated_header(admin)
             }.not_to change { UserChallenge.count }
 
             expect(response).to have_http_status(403)
-            expect(JSON.parse(response.body)['errors'].join).to include('challenge is already full')
+            expect(JSON.parse(response.body)["errors"].join).to include("challenge is already full")
           end
         end
       end
 
-      context 'and the requesting user is not an admin' do
+      context "and the requesting user is not an admin" do
         let(:params) do
           {
             challenger_buck_id: new_challenger.buck_id,
@@ -66,7 +66,7 @@ describe 'User Challenges', type: :request do
           }
         end
 
-        it 'successfully adds the new challenge to the challenge' do
+        it "successfully adds the new challenge to the challenge" do
           expect {
             post endpoint, params: params.to_json, headers: authenticated_header(new_challenger)
           }.to change { challenge.reload.users.count }.by(1)
@@ -74,7 +74,7 @@ describe 'User Challenges', type: :request do
           expect(challenge.users).to include(new_challenger)
         end
 
-        context 'but the challenge is already full' do
+        context "but the challenge is already full" do
           let!(:challenge) { create(:full_open_spot_challenge) }
           let(:new_challenger) {
             instrument = challenge.users.first.instrument.to_sym
@@ -82,28 +82,28 @@ describe 'User Challenges', type: :request do
             create(:alternate_user, :spot_x13, instrument, part)
           }
 
-          it 'returns a 403' do
+          it "returns a 403" do
             expect {
               post endpoint, params: params.to_json, headers: authenticated_header(new_challenger)
             }.not_to change { UserChallenge.count }
 
             expect(response).to have_http_status(403)
-            expect(JSON.parse(response.body)['errors'].join).to include('challenge is already full')
+            expect(JSON.parse(response.body)["errors"].join).to include("challenge is already full")
           end
         end
       end
     end
   end
 
-  describe 'DELETE /api/user_challenges' do
-    context 'on a normal challenge' do
+  describe "DELETE /api/user_challenges" do
+    context "on a normal challenge" do
       let!(:challenge) { create(:normal_challenge) }
       let(:performance) { challenge.performance }
       let(:challenger) { challenge.users.select(&:alternate?).first }
       let(:challengee) { challenge.users.reject(&:alternate?).first }
 
-      context 'and the request isn\'t made by an admin' do
-        it 'destroys the challenge when the user leaves' do
+      context "and the request isn't made by an admin" do
+        it "destroys the challenge when the user leaves" do
           user_challenge_id = challenger.user_challenges.first.id
           expect {
             delete "#{endpoint}#{user_challenge_id}", headers: authenticated_header(challenger)
@@ -114,7 +114,7 @@ describe 'User Challenges', type: :request do
           expect(challengee.challenges.count).to be_zero
         end
 
-        it 'returns a 403 when the challengee tries to leave the challenge' do
+        it "returns a 403 when the challengee tries to leave the challenge" do
           user_challenge_id = challengee.user_challenges.first.id
           expect {
             delete "#{endpoint}#{user_challenge_id}", headers: authenticated_header(challengee)
@@ -124,8 +124,8 @@ describe 'User Challenges', type: :request do
         end
       end
 
-      context 'and the request is made by an admin' do
-        it 'destroys the challenge when the challenger\'s user_challenge is deleted' do
+      context "and the request is made by an admin" do
+        it "destroys the challenge when the challenger's user_challenge is deleted" do
           user_challenge_id = challenger.user_challenges.first.id
           expect {
             delete "#{endpoint}#{user_challenge_id}", headers: authenticated_header(admin)
@@ -136,7 +136,7 @@ describe 'User Challenges', type: :request do
           expect(challengee.challenges.count).to be_zero
         end
 
-        it 'destroys the challenge when the challengee\'s user_challenge is deleted' do
+        it "destroys the challenge when the challengee's user_challenge is deleted" do
           user_challenge_id = challengee.user_challenges.first.id
           expect {
             delete "#{endpoint}#{user_challenge_id}", headers: authenticated_header(admin)
@@ -149,14 +149,14 @@ describe 'User Challenges', type: :request do
       end
     end
 
-    context 'on a tri challenge' do
+    context "on a tri challenge" do
       let!(:challenge) { create(:tri_challenge) }
       let!(:first_challenger) { challenge.users.select(&:alternate?).first }
       let!(:second_challenger) { challenge.users.select(&:alternate?).last }
       let!(:challengee) { challenge.users.reject(&:alternate?).first }
 
-      context 'and the request isn\'t made by an admin' do
-        it 'destroys the challenge when the first challenger leaves' do
+      context "and the request isn't made by an admin" do
+        it "destroys the challenge when the first challenger leaves" do
           user_challenge_id = first_challenger.user_challenges.first.id
           expect {
             delete "#{endpoint}#{user_challenge_id}", headers: authenticated_header(first_challenger)
@@ -168,7 +168,7 @@ describe 'User Challenges', type: :request do
           expect(challengee.challenges.count).to be_zero
         end
 
-        it 'destroys the challenge when the second challenger leaves' do
+        it "destroys the challenge when the second challenger leaves" do
           user_challenge_id = second_challenger.user_challenges.first.id
           expect {
             delete "#{endpoint}#{user_challenge_id}", headers: authenticated_header(second_challenger)
@@ -180,7 +180,7 @@ describe 'User Challenges', type: :request do
           expect(challengee.challenges.count).to be_zero
         end
 
-        it 'returns a 403 when the challengee tries to leave the challenge' do
+        it "returns a 403 when the challengee tries to leave the challenge" do
           user_challenge_id = challengee.user_challenges.first.id
           expect {
             delete "#{endpoint}#{user_challenge_id}", headers: authenticated_header(challengee)
@@ -190,8 +190,8 @@ describe 'User Challenges', type: :request do
         end
       end
 
-      context 'and the request is made by an admin' do
-        it 'destroys the challenge when the first challenger\'s user_challenge is deleted' do
+      context "and the request is made by an admin" do
+        it "destroys the challenge when the first challenger's user_challenge is deleted" do
           user_challenge_id = first_challenger.user_challenges.first.id
           expect {
             delete "#{endpoint}#{user_challenge_id}", headers: authenticated_header(admin)
@@ -203,7 +203,7 @@ describe 'User Challenges', type: :request do
           expect(challengee.challenges.count).to be_zero
         end
 
-        it 'destroys the challenge when the second challenger\'s user_challenge is deleted' do
+        it "destroys the challenge when the second challenger's user_challenge is deleted" do
           user_challenge_id = second_challenger.user_challenges.first.id
           expect {
             delete "#{endpoint}#{user_challenge_id}", headers: authenticated_header(admin)
@@ -215,7 +215,7 @@ describe 'User Challenges', type: :request do
           expect(challengee.challenges.count).to be_zero
         end
 
-        it 'destroys the challenge when the challengee\'s user_challenge is deleted' do
+        it "destroys the challenge when the challengee's user_challenge is deleted" do
           user_challenge_id = challengee.user_challenges.first.id
           expect {
             delete "#{endpoint}#{user_challenge_id}", headers: authenticated_header(admin)
@@ -229,13 +229,13 @@ describe 'User Challenges', type: :request do
       end
     end
 
-    context 'on an open spot challenge' do
-      context 'that has only one challenger' do
+    context "on an open spot challenge" do
+      context "that has only one challenger" do
         let!(:challenge) { create(:open_spot_challenge) }
         let(:challenger) { challenge.users.first }
 
-        context 'and the requesting user isn\'t an admin' do
-          it 'destroys the challenge when the user leaves' do
+        context "and the requesting user isn't an admin" do
+          it "destroys the challenge when the user leaves" do
             user_challenge_id = challenger.user_challenges.first.id
             expect {
               delete "#{endpoint}#{user_challenge_id}", headers: authenticated_header(challenger)
@@ -246,8 +246,8 @@ describe 'User Challenges', type: :request do
           end
         end
 
-        context 'and the requesting user is an admin' do
-          it 'destroys the challenge when the user leaves' do
+        context "and the requesting user is an admin" do
+          it "destroys the challenge when the user leaves" do
             user_challenge_id = challenger.user_challenges.first.id
             expect {
               delete "#{endpoint}#{user_challenge_id}", headers: authenticated_header(admin)
@@ -259,13 +259,13 @@ describe 'User Challenges', type: :request do
         end
       end
 
-      context 'that has two challengers' do
+      context "that has two challengers" do
         let!(:challenge) { create(:full_open_spot_challenge) }
         let(:first_challenger) { challenge.users.first }
         let(:second_challenger) { challenge.users.last }
 
-        context 'and the requesting user isn\'t an admin' do
-          it 'doesn\'t destroy the challenge if the first challenger leaves' do
+        context "and the requesting user isn't an admin" do
+          it "doesn't destroy the challenge if the first challenger leaves" do
             user_challenge_id = first_challenger.user_challenges.first.id
             expect {
               delete "#{endpoint}#{user_challenge_id}", headers: authenticated_header(first_challenger)
@@ -276,7 +276,7 @@ describe 'User Challenges', type: :request do
             expect(first_challenger.challenges.count).to be_zero
           end
 
-          it 'doesn\'t destroy the challenge if the second challenger leaves' do
+          it "doesn't destroy the challenge if the second challenger leaves" do
             user_challenge_id = second_challenger.user_challenges.first.id
             expect {
               delete "#{endpoint}#{user_challenge_id}", headers: authenticated_header(second_challenger)
@@ -288,8 +288,8 @@ describe 'User Challenges', type: :request do
           end
         end
 
-        context 'and the requesting user is an admin' do
-          it 'doesn\'t destroy the challenge when the first challenger leaves' do
+        context "and the requesting user is an admin" do
+          it "doesn't destroy the challenge when the first challenger leaves" do
             user_challenge_id = first_challenger.user_challenges.first.id
             expect {
               delete "#{endpoint}#{user_challenge_id}", headers: authenticated_header(admin)
@@ -300,7 +300,7 @@ describe 'User Challenges', type: :request do
             expect(first_challenger.challenges.count).to be_zero
           end
 
-          it 'doesn\'t destroy the challenge when the second challenger leaves' do
+          it "doesn't destroy the challenge when the second challenger leaves" do
             user_challenge_id = second_challenger.user_challenges.first.id
             expect {
               delete "#{endpoint}#{user_challenge_id}", headers: authenticated_header(admin)

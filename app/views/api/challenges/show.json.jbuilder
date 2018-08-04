@@ -1,3 +1,3 @@
 json.challenge do
-  json.partial! 'api/challenges/challenge', challenge: @challenge
+  json.partial! "api/challenges/challenge", challenge: @challenge
 end

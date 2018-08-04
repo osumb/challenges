@@ -10,7 +10,7 @@ module Api
       if @da.save
         render :show, status: :created
       else
-        render json: { resource: 'discipline_action', errors: @da.errors }, status: :conflict
+        render json: { resource: "discipline_action", errors: @da.errors }, status: :conflict
       end
     end
 
@@ -34,7 +34,7 @@ module Api
       p = Performance.find_by id: params[:discipline_action][:performance_id]
       p = DisciplineAction.find_by(id: params[:id])&.performance if p.nil?
       return if !p.nil? && !p.stale?
-      render json: { resource: 'discipline_action', errors: [{ performance: 'can\'t be expired' }] }, status: :forbidden
+      render json: { resource: "discipline_action", errors: [{ performance: "can't be expired" }] }, status: :forbidden
     end
 
     # rubocop:disable Metrics/LineLength
@@ -46,7 +46,7 @@ module Api
       challenges = Challenge.where(performance: performance, spot: user_spot)
       return if challenges.empty?
       render json: {
-        resource: 'discipline_action',
+        resource: "discipline_action",
         errors: [{ discipline_action: "#{user.first_name} #{user.last_name}'s spot has already been challenged. Please remove that challenge before deleting this discipline action." }]
       }, status: :forbidden
     end
