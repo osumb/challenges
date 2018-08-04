@@ -1,0 +1,11 @@
+<% if flash[:message] %>
+  <div><%= flash[:message] %></div>
+<% end %>
+
+<% if flash[:errors] %>
+  <div><%= flash[:errors] %></div>
+<% end %>
+<%= form_with(url: "/reset_data", method: "POST", builder: MaterialDesignFormBuilder) do |form| %>
+  <%= form.file_field(:file) %>
+  <%= form.submit(:Submit, data: { confirm: "Are you sure you want to reload the entire roster? This action will completely reset the database" }) %>
+<% end %>

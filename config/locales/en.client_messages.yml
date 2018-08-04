@@ -35,6 +35,8 @@ en:
         success: "Challenge list emailed successfully!"
     profile:
       needs_to_create_challenge: "You still need to make a challenge!"
+    reset_data:
+      success: "Success! The entire database has been reset"
     users:
       search:
         empty: "No results found for '%{query}'"

@@ -69,6 +69,8 @@ class UsersController < ApplicationController
     redirect_to("/users/#{user.buck_id}", flash: flash_hash)
   end
 
+  def upload; end
+
   private
 
   # rubocop:disable Metrics/LineLength
