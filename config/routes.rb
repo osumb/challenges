@@ -7,6 +7,7 @@ Rails.application.routes.draw do
   get 'application_template', to: 'index#application_template'
   get 'login', to: 'sessions#new'
   get 'logged_in', to: 'sessions#show'
+  post 'reset_data', to: 'reset_data#reset_data'
 
   resources :challenges, only: [:new, :create, :update] do
     collection do
@@ -29,6 +30,7 @@ Rails.application.routes.draw do
 
     collection do
       get :search
+      get :upload
     end
   end
 

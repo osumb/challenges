@@ -472,4 +472,27 @@ RSpec.describe UsersController do
       end
     end
   end
+
+  describe 'GET upload' do
+    let(:current_user) { create(:admin_user) }
+    let(:request) { get :upload }
+    let(:expected_authenticated_response) { render_template(:upload) }
+    let(:expected_unauthenticated_response) { redirect_to('/login') }
+
+    it_behaves_like 'controller_authentication'
+
+    context 'when authenticated' do
+      include_context 'with authentication'
+
+      context 'but the current user is not an admin' do
+        let(:current_user) { create(:user) }
+
+        it 'returns a :not_found' do
+          request
+
+          expect(response).to have_http_status(:not_found)
+        end
+      end
+    end
+  end
 end
