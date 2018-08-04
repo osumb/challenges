@@ -495,4 +495,111 @@ RSpec.describe UsersController do
       end
     end
   end
+
+  describe 'GET new' do
+    let(:current_user) { create(:admin_user) }
+    let(:request) { get :new }
+    let(:expected_authenticated_response) { render_template(:new) }
+    let(:expected_unauthenticated_response) { redirect_to('/login') }
+
+    it_behaves_like 'controller_authentication'
+
+    context 'when authenticated' do
+      include_context 'with authentication'
+
+      context 'but the current user is not an admin' do
+        let(:current_user) { create(:user) }
+
+        it 'returns a :not_found' do
+          request
+
+          expect(response).to have_http_status(:not_found)
+        end
+      end
+    end
+  end
+
+  describe 'POST create' do
+    let(:current_user) { create(:admin_user) }
+    let(:first_name) { 'Brutus' }
+    let(:last_name) { 'Buckeye' }
+    let(:spot) { nil }
+    let(:buck_id) { 'buckeye.1000' }
+    let(:email) { 'buckeye.1000@osu.edu' }
+    let!(:original_user) { create(:user) }
+    let(:params) do
+      {
+        user: {
+          first_name: first_name,
+          last_name: last_name,
+          role: original_user.role,
+          instrument: original_user.instrument,
+          part: original_user.part,
+          spot: original_user.current_spot.to_s,
+          buck_id: buck_id,
+          email: email
+        }
+      }
+    end
+
+    let(:request) { post :create, params: params }
+    let(:expected_authenticated_response) { have_http_status(:redirect) }
+    let(:expected_unauthenticated_response) { redirect_to('/login') }
+
+    it_behaves_like 'controller_authentication'
+
+    context 'when authenticated' do
+      include_context 'with authentication'
+
+      it 'creates a new user' do
+        expect do
+          request
+        end.to change { User.count }.by(1)
+      end
+
+      it 'sends an email to the new user' do
+        expect(PasswordResetRequestService).to receive(:send_for_new_user)
+
+        request
+      end
+
+      it 'has a flash message' do
+        request
+
+        expect(flash[:message]).to eq('Successfully added new user!')
+      end
+
+      context 'but the params have errors' do
+        let(:first_name) { nil }
+
+        it 'doesn\'t create a new user' do
+          expect do
+            request
+          end.not_to change { User.count }
+        end
+
+        it 'doesn\'t send an email' do
+          expect(PasswordResetRequestService).not_to receive(:send_for_new_user)
+
+          request
+        end
+
+        it 'has a flash error' do
+          request
+
+          expect(flash[:errors]).not_to be_nil
+        end
+      end
+
+      context 'but the current user is not an admin' do
+        let(:current_user) { original_user }
+
+        it 'returns a :not_found' do
+          request
+
+          expect(response).to have_http_status(:not_found)
+        end
+      end
+    end
+  end
 end

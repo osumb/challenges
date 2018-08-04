@@ -1,0 +1,46 @@
+<div class="challenges-users-new">
+  <div class="mdc-typography--display2">Create User</div>
+  <% if flash[:message] %>
+    <div class="mdc-typography--title"><%= flash[:message] %></div>
+  <% end %>
+  <% if flash[:errors] %>
+    <div class="mdc-typography--title"><%= flash[:errors] %></div>
+  <% end %>
+  <%= form_for(
+        :user,
+        url: "/users",
+        builder: MaterialDesignFormBuilder,
+        data: { confirm: I18n.t!("client_messages.users.new.confirm") }
+      ) do |form| %>
+    <%= form.text_field :first_name %>
+    <%= form.text_field :last_name %>
+    <%= form.text_field :email %>
+    <%= form.text_field :buck_id, label: "name.#" %>
+    <%= form.text_field :spot %>
+    <div>
+      <label>Instrument</label>
+      <select class="mdc-select" name="user[instrument]">
+        <% User.instruments.keys.each do |instrument| %>
+          <option value=<%= instrument %>><%= instrument.titleize %></option>
+        <% end %>
+      </select>
+    </div>
+    <div>
+      <label>Part</label>
+      <select class="mdc-select" name="user[part]">
+        <% User.parts.keys.each do |part| %>
+          <option value=<%= part %>><%= part.titleize %></option>
+        <% end %>
+      </select>
+    </div>
+    <div>
+      <label>Role</label>
+      <select class="mdc-select" name="user[role]">
+        <% User.roles.keys.each do |role| %>
+          <option value=<%= role %>><%= role.titleize %></option>
+        <% end %>
+      </select>
+    </div>
+    <%= form.submit :create %>
+  <% end %>
+</div>

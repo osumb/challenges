@@ -38,6 +38,10 @@ en:
     reset_data:
       success: "Success! The entire database has been reset"
     users:
+      create:
+        success: "Successfully added new user!"
+      new:
+        confirm: "Are you sure you want to create this user? This user will replace the person who currently has this spot. This action is irreversible"
       search:
         empty: "No results found for '%{query}'"
       show:
