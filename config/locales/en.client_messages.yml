@@ -23,6 +23,17 @@ en:
       destroy:
         success: "Discipline action deleted successfully!"
         spot_challenged: "%{name}'s spot has already been challenged. Please remove that challenge before deleting this discipline action"
+    password_reset_requests:
+      create:
+        not_found: "That combination of name.# and password doesn't exist in the system"
+        success: "Success! An email has been sent to %{email} with instructions"
+      reset:
+        invalid_token: "This token can no longer be used"
+        passwords_do_not_match: "Make sure the passwords match"
+        success: "Success! Your password has been reset"
+      show:
+        expired: "This token is expired. Please make another one"
+        used: "This token has already been used. Please make another one"
     performances:
       create:
         success: "Performance created successfully!"

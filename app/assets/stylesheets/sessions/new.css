@@ -2,3 +2,11 @@
   text-align: center;
   margin-top: 8px;
 }
+
+.challenges-password-reset {
+  text-align: center;
+}
+
+.challenges-password-reset:hover {
+  cursor: hand;
+}
