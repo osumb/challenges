@@ -71,6 +71,20 @@ class UsersController < ApplicationController
 
   def upload; end
 
+  def new; end
+
+  def create
+    result = UserCreationService.create_user(params: create_params)
+
+    flash_hash = if result.success?
+                   PasswordResetRequestService.send_for_new_user(user: result.user)
+                   { message: I18n.t!('client_messages.users.create.success') }
+                 else
+                   { errors: result.errors }
+                 end
+    send_back(flash_hash)
+  end
+
   private
 
   # rubocop:disable Metrics/LineLength
@@ -88,6 +102,17 @@ class UsersController < ApplicationController
     end
   end
   # rubocop:enable Metrics/MethodLength, Metrics/LineLength
+
+  def create_params
+    params.require(:user).permit(:first_name,
+                                 :last_name,
+                                 :email,
+                                 :buck_id,
+                                 :instrument,
+                                 :part,
+                                 :role,
+                                 :spot)
+  end
 
   def update_params
     params.require(:user).permit(:part)
