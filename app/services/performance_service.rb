@@ -10,7 +10,7 @@ class PerformanceService
     )
   end
 
-  def self.update(id:, name:, date:, window_open:, window_close:, client_timezone:) # rubocop:disable Metrics/ParameterLists, Metric/LineLength
+  def self.update(id:, name:, date:, window_open:, window_close:, client_timezone:) # rubocop:disable Metrics/ParameterLists, Metrics/LineLength
     Time.use_zone(client_timezone) do
       p = Performance.find(id)
       p.update(name: name, date: date, window_close: window_close, window_open: window_open)

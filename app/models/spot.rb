@@ -29,7 +29,7 @@ class Spot < ApplicationRecord
   end
 
   class << self
-    # rubocop:disable Metrics/MethodLength, Style/IndentationConsistency
+    # rubocop:disable Metrics/MethodLength, Layout/IndentationConsistency
     def valid_instrument_part_for_row(row, instrument, part)
       case row
       when Spot.rows[:a], Spot.rows[:x]
@@ -54,7 +54,7 @@ class Spot < ApplicationRecord
         valid_s_row_instrument_part(instrument, part)
       end
     end
-    # rubocop:enable Metrics/MethodLength, Style/IndentationConsistency
+    # rubocop:enable Metrics/MethodLength, Layout/IndentationConsistency
 
     def get_row_from_database_value(db_value)
       Spot.rows.find { |_key, value| db_value == value }.first

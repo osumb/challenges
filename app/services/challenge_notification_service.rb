@@ -7,16 +7,18 @@ class ChallengeNotificationService
 
       raise ChallengeNotDoneError unless challenge.done_stage?
 
-      challenge.users.each do |user|
-        EmailJob.perform_later(
-          klass: 'ChallengeResultMailer',
-          method: 'completed_email',
-          args: {
-            performance_id: challenge.performance_id,
-            email: user.email
-          }
-        )
-      end
+      challenge.users.each { |user| _email_user(challenge.performance_id, user) }
+    end
+
+    def _email_user(performance_id, user)
+      EmailJob.perform_later(
+        klass: 'ChallengeResultMailer',
+        method: 'completed_email',
+        args: {
+          performance_id: performance_id,
+          email: user.email
+        }
+      )
     end
   end
 end
