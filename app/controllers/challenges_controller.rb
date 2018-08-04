@@ -54,6 +54,7 @@ class ChallengesController < ApplicationController # rubocop:disable Metrics/Cla
     elsif params['update_type'] == 'Submit'
       ChallengeService.move_to_next_stage(challenge_id: params['id'])
       CheckOtherChallengesDoneJob.perform_later(challenge_id: params['id'])
+      NotifyChallengeCompletionJob.perform_later(challenge_id: params['id'])
       redirect_to('/challenges/evaluate', flash: { message: I18n.t!('client_messages.challenges.evaluate.success') })
     end
   end

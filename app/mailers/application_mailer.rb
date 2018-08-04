@@ -7,4 +7,8 @@ class ApplicationMailer < ActionMailer::Base
   def _real_email_strategy?
     ENV['EMAIL_STRATEGY'] == 'real'
   end
+
+  def _url_for_env(path = '')
+    "#{ENV['APPLICATION_URL']}/#{path}"
+  end
 end

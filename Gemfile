@@ -1,7 +1,6 @@
-# rubocop:disable Style/FileName
 source 'https://rubygems.org'
 
-ruby File.read(File.dirname(__FILE__) + "/.ruby-version").strip
+ruby File.read(File.dirname(__FILE__) + '/.ruby-version').strip
 
 gem 'autoprefixer-rails', '8.2.0'
 gem 'bcrypt', '~> 3.1.7'
@@ -43,4 +42,3 @@ end
 group :test do
   gem 'database_cleaner', require: false
 end
-# rubocop:enable Style/FileName

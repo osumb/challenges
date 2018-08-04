@@ -1,8 +1,5 @@
 AllCops:
-  TargetRubyVersion: 2.4
-  Include:
-    - '**/Rakefile'
-    - '**/config.ru'
+  TargetRubyVersion: 2.5.1
   Exclude:
     - 'bin/**/*'
     - 'db/**/*'
