@@ -280,6 +280,18 @@ RSpec.describe ChallengesController do
         expect(flash[:message]).to eq('Successfully saved challenge!')
       end
 
+      it 'does not call the CheckOtherChallengesDoneJob' do
+        expect(CheckOtherChallengesDoneJob).not_to receive(:perform_later).and_call_original
+
+        request
+      end
+
+      it 'does not call the NotifyChallengeCompletionJob' do
+        expect(NotifyChallengeCompletionJob).not_to receive(:perform_later).and_call_original
+
+        request
+      end
+
       context 'but the user isn\'t an admin, director, or squad leader' do
         let!(:current_user) { create(:user) }
 
@@ -381,6 +393,12 @@ RSpec.describe ChallengesController do
 
         it 'calls the CheckOtherChallengesDoneJob' do
           expect(CheckOtherChallengesDoneJob).to receive(:perform_later).and_call_original
+
+          put :update, params: params
+        end
+
+        it 'calls the NotifyChallengeCompletionJob' do
+          expect(NotifyChallengeCompletionJob).to receive(:perform_later).and_call_original
 
           put :update, params: params
         end
