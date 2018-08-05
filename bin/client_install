@@ -1,6 +1,0 @@
-#!/bin/sh
-
-# bin/client_install: Install client side dependencies
-# NOTE: if you don't have yarn actually installed on your machine, you can run this through docker-compose
-
-(cd client && yarn install)

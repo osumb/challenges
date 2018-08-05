@@ -2,10 +2,6 @@
   "name": "osumbchallenges",
   "version": "1.0.0",
   "description": "Manage the challenge process for the Ohio State University Marching Band",
-  "scripts": {
-    "heroku-prebuild": "bin/client_install",
-    "heroku-postbuild": "bin/client_build"
-  },
   "engines": {
     "node": "9.1.0"
   }

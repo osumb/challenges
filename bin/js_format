@@ -1,5 +1,0 @@
-#!/bin/sh
-
-# bin/js_format: Format all .js and .jsx files with prettier
-
-(cd client && yarn prettier)
