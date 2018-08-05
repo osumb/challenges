@@ -8,6 +8,7 @@ Rails.application.routes.draw do
   get 'login', to: 'sessions#new'
   get '/', to: 'sessions#show'
   post 'reset_data', to: 'reset_data#reset_data'
+  get 'testing/exception', to: 'testing#exception'
 
   resources :challenges, only: [:new, :create, :update] do
     collection do
