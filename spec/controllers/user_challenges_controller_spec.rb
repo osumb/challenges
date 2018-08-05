@@ -5,7 +5,7 @@ RSpec.describe UserChallengesController do
     let!(:user_challenge) { create(:normal_challenge).user_challenges.first }
     let!(:current_user) { user_challenge.user }
     let(:request) { delete :destroy, params: { id: user_challenge.id } }
-    let(:expected_authenticated_response) { redirect_to("/logged_in") }
+    let(:expected_authenticated_response) { redirect_to("/") }
     let(:expected_unauthenticated_response) { redirect_to("/login") }
 
     it_behaves_like "controller_authentication"

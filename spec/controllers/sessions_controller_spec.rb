@@ -5,7 +5,7 @@ RSpec.describe SessionsController do
 
   describe "GET new" do
     let(:request) { get :new }
-    let(:expected_authenticated_response) { redirect_to("/logged_in") }
+    let(:expected_authenticated_response) { redirect_to("/") }
     let(:expected_unauthenticated_response) { render_template("new") }
 
     it_behaves_like "controller_authentication"
@@ -206,16 +206,16 @@ RSpec.describe SessionsController do
       }
     end
     let(:request) { post :create, params: params }
-    let(:expected_authenticated_response) { redirect_to("/logged_in") }
-    let(:expected_unauthenticated_response) { redirect_to("/logged_in") }
+    let(:expected_authenticated_response) { redirect_to("/") }
+    let(:expected_unauthenticated_response) { redirect_to("/") }
 
     it_behaves_like "controller_authentication"
 
     context "not authenticated" do
       context "with correct credentials" do
-        it "redirects to /logged_in" do
+        it "redirects to /" do
           request
-          expect(response).to redirect_to("/logged_in")
+          expect(response).to redirect_to("/")
         end
 
         it "sets the session's buck_id" do
@@ -247,7 +247,7 @@ RSpec.describe SessionsController do
 
   describe "GET destroy" do
     let(:request) { get :destroy }
-    let(:expected_authenticated_response) { redirect_to("/logged_in") }
+    let(:expected_authenticated_response) { redirect_to("/") }
     let(:expected_unauthenticated_response) { redirect_to("/login") }
 
     context "authenticated" do
