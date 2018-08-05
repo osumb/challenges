@@ -1,6 +1,8 @@
 class ApplicationController < ActionController::Base
   helper_method :current_user
 
+  before_action :set_raven_context
+
   def ensure_authenticated!
     return if current_user
     redirect_to "/login"
@@ -29,5 +31,10 @@ class ApplicationController < ActionController::Base
       fallback_location: fallback.nil? ? "/logged_in" : fallback,
       flash: flash
     )
+  end
+
+  def set_raven_context
+    Raven.user_context(user: current_user.attributes.except(:password_digest)) unless current_user.nil?
+    Raven.extra_context(params: params.to_unsafe_h, url: request.url)
   end
 end
