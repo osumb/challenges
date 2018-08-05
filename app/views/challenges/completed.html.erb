@@ -14,9 +14,15 @@
     </nav>
   </nav>
   <div class="challenges-challenges-completed-content-container">
-    <div class="mdc-typography--display2">
-      Completed challenges for the <%= @performance.name %>
-    </div>
+    <% if @performance %>
+      <div class="mdc-typography--display2">
+        Completed challenges for the <%= @performance.name %>
+      </div>
+    <% else %>
+      <div class="mdc-typograhpy--display2">
+        No performances have happened yet
+      </div>
+    <% end %>
     <div class="challenges-challenges-completed-challenges-container">
       <% @challenges.each do |challenge| %>
         <%= render "challenges/completed", challenge: challenge %>

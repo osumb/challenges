@@ -20,7 +20,7 @@ class SessionsController < ApplicationController
 
     if user
       flash[:error] = nil
-      redirect_to "/logged_in"
+      redirect_to "/"
     else
       flash.now[:error] = I18n.t!("authentication.failed_login")
       render "new", status: :unauthorized

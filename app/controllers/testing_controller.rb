@@ -1,5 +1,5 @@
-class TestingController < ApiController
-  before_action :authenticate_user
+class TestingController < ApplicationController
+  before_action :ensure_authenticated!
   before_action :ensure_admin!
 
   TestingControllerError = Class.new(StandardError)
