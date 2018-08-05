@@ -24,6 +24,8 @@ module Challenges
 
     config.action_mailer.perform_deliveries = ENV["SEND_EMAILS"] == "true"
 
+    config.action_mailer.asset_host = ENV["APPLICATION_URL"]
+
     config.assets.paths << Rails.root.join("vendor", "assets", "*")
 
     config.autoload_paths << Rails.root.join("app", "views", "helpers", "*")
