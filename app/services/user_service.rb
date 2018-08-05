@@ -7,18 +7,6 @@ module UserService
       user
     end
 
-    def swap_in_new_user(user:)
-      User.transaction do
-        if user.performer?
-          old_user = User.find_by(current_spot: user.current_spot)
-          deactivate_user(buck_id: old_user.buck_id) unless old_user.nil?
-        end
-        user.save
-      end
-
-      user
-    end
-
     def switch_spots(first_user:, second_user:) # rubocop:disable Metrics/MethodLength
       first_spot = first_user.current_spot
       first_row = Spot.rows[first_spot.row]
