@@ -1,8 +1,4 @@
 class IndexController < ApplicationController
-  def index
-    render file: Rails.root.join("public", "index.html")
-  end
-
   def robots
     file_root = Rails.root.join("app", "assets")
     robots_file = if ENV["DISABLE_ROBOTS"] == "true"

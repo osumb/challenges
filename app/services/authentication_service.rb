@@ -5,7 +5,7 @@ module AuthenticationService
       session[:buck_id] = user.buck_id
       user.authenticate(params[:password])
     else
-      fake_password_check(params[:password])
+      fake_password_check(params[:password] || " ")
     end
   end
 
