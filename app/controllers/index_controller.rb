@@ -4,7 +4,7 @@ class IndexController < ApplicationController
   end
 
   def robots
-    file_root = Rails.root.join("client", "public")
+    file_root = Rails.root.join("app", "assets")
     robots_file = if ENV["DISABLE_ROBOTS"] == "true"
                     file_root.join("robots.hide.txt")
                   else
