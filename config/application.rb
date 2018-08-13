@@ -1,6 +1,4 @@
 require_relative 'boot'
-require_relative '../app/middleware/new_token_middleware'
-
 require 'rails/all'
 
 # Require the gems listed in Gemfile, including any gems
@@ -15,8 +13,6 @@ module Challenges
     config.generators do |g|
       g.test_framework  :rspec
     end
-
-    config.middleware.use NewTokenMiddleware
 
     config.action_view.logger = nil
 

@@ -44,5 +44,4 @@ Rails.application.routes.draw do
   get 'robots.txt', to: 'index#robots'
 
   root to: 'index#index'
-  get '*path', to: 'index#index'
 end
