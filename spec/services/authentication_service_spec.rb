@@ -14,6 +14,21 @@ describe AuthenticationService do
         }
       end
 
+      context "and the username has a weird casing" do
+        let(:params) do
+          {
+            buck_id: user.buck_id.upcase,
+            password: password
+          }
+        end
+
+        it "returns the user" do
+          result = described_class.authenticate_user(params, session)
+
+          expect(result).to eq(user)
+        end
+      end
+
       it "returns the user" do
         result = described_class.authenticate_user(params, session)
 
@@ -75,6 +90,21 @@ describe AuthenticationService do
         result = described_class.authenticate_user(params, session)
 
         expect(result).to be_falsey
+      end
+    end
+
+    context "no password" do
+      let(:user) { create(:user, password: " ") }
+      let(:params) do
+        {
+          buck_id: user.buck_id + "whoops!"
+        }
+      end
+
+      it "doesn't error" do
+        expect do
+          described_class.authenticate_user(params, session)
+        end.not_to raise_error
       end
     end
   end
