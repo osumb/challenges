@@ -39,6 +39,30 @@ RSpec.describe PasswordResetRequestsController do
       expect(flash[:message]).to eq("Success! An email has been sent to #{user.email} with instructions")
     end
 
+    context "and the buck_id has a weird casing" do
+      let(:params) do
+        { buck_id: buck_id.upcase, email: email }
+      end
+
+      it "creates a password reset request" do
+        expect do
+          request
+        end.to change { PasswordResetRequest.count }.by(1)
+      end
+    end
+
+    context "but the email has a weird casing" do
+      let(:params) do
+        { buck_id: buck_id, email: email.upcase }
+      end
+
+      it "creates a password reset request" do
+        expect do
+          request
+        end.to change { PasswordResetRequest.count }.by(1)
+      end
+    end
+
     context "but the user doesn't exist" do
       let(:buck_id) { "blah" }
 

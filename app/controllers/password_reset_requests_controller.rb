@@ -8,7 +8,7 @@ class PasswordResetRequestsController < ApplicationController
   def new; end
 
   def create # rubocop:disable Metrics/MethodLength
-    user = User.find(params[:buck_id])
+    user = User.find(params[:buck_id].downcase)
     request = PasswordResetRequest.new(user: user)
     if request.save
       EmailJob.perform_later(
@@ -56,8 +56,8 @@ class PasswordResetRequestsController < ApplicationController
   end
 
   def ensure_email_matches!
-    buck_id = params[:buck_id]
-    email = params[:email]
+    buck_id = params[:buck_id]&.downcase
+    email = params[:email]&.downcase
     user = User.find(buck_id)
     return if email.casecmp(user.email).zero?
     send_back(errors: I18n.t!("client_messages.password_reset_requests.create.not_found", buck_id: buck_id))
