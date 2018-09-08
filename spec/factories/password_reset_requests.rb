@@ -1,19 +1,19 @@
 FactoryBot.define do
   factory :password_reset_request do
-    used false
-    expires Time.zone.now + 1.hour
+    used { false }
+    expires { Time.zone.now + 1.hour }
     user { User.first || FactoryBot.create(:user) }
 
     trait :used do
-      used true
+      used { true }
     end
 
     trait :unused do
-      used false
+      used { false }
     end
 
     trait :expired do
-      expires Time.zone.now - 1.hour
+      expires { Time.zone.now - 1.hour }
     end
 
     factory :used_password_reset_request, traits: [:used]
