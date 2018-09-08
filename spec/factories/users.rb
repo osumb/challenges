@@ -4,38 +4,38 @@ password_digest = BCrypt::Password.create "password"
 
 FactoryBot.define do
   factory :user do
-    first_name "Brutus"
-    last_name "Buckeye"
+    first_name { "Brutus" }
+    last_name { "Buckeye" }
     sequence(:email) { |n| "smith.#{n}@osu.edu" }
-    password_digest password_digest
+    password_digest { password_digest }
     sequence(:buck_id) { |n| "buckeye.#{n}" }
-    instrument User.instruments[:trumpet]
-    part User.parts[:first]
-    role User.roles[:member]
-    password_updated Time.zone.now
+    instrument { User.instruments[:trumpet] }
+    part { User.parts[:first] }
+    role { User.roles[:member] }
+    password_updated { Time.zone.now }
     association :current_spot, factory: :spot, row: :a, file: 2
     original_spot do
       current_spot
     end
-    active true
+    active { true }
 
     trait :director do
-      role User.roles[:director]
+      role { User.roles[:director] }
       association :current_spot, factory: :spot, strategy: :null
     end
 
     trait :admin do
-      role User.roles[:admin]
+      role { User.roles[:admin] }
       association :current_spot, factory: :spot, strategy: :null
     end
 
     trait :squad_leader do
-      role User.roles[:squad_leader]
+      role { User.roles[:squad_leader] }
       association :current_spot, factory: :spot, row: :a, file: 1
     end
 
     trait :member do
-      role User.roles[:member]
+      role { User.roles[:member] }
     end
 
     trait :alternate do
@@ -43,22 +43,22 @@ FactoryBot.define do
     end
 
     trait :active do
-      active true
+      active { true }
     end
 
     trait :inactive do
-      active false
+      active { false }
     end
 
     User.instruments.each do |name, value|
       trait name.to_sym do
-        instrument value
+        instrument { value }
       end
     end
 
     User.parts.each do |name, value|
       trait name.to_sym do
-        part value
+        part { value }
       end
     end
 

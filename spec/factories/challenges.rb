@@ -6,17 +6,17 @@ FactoryBot.define do
         uc.spot = uc.user.current_spot
       end
     end
-    stage :needs_comments
+    stage { :needs_comments }
   end
 
   factory :open_spot_challenge, parent: :challenge do
-    challenge_type :open_spot
+    challenge_type { :open_spot }
     spot { Spot.create(row: :a, file: 1) }
     users { [FactoryBot.create(:user, :spot_a13, :trumpet, :solo)] }
   end
 
   factory :full_open_spot_challenge, parent: :challenge do
-    challenge_type :open_spot
+    challenge_type { :open_spot }
     spot { Spot.create(row: :a, file: 1) }
     users {
       [
@@ -27,7 +27,7 @@ FactoryBot.define do
   end
 
   factory :normal_challenge, parent: :challenge do
-    challenge_type :normal
+    challenge_type { :normal }
     spot { Spot.create(row: :a, file: 1) }
     users {
       [
@@ -38,7 +38,7 @@ FactoryBot.define do
   end
 
   factory :tri_challenge, parent: :challenge do
-    challenge_type :tri
+    challenge_type { :tri }
     spot { FactoryBot.create(:spot, row: :j, file: 8) }
     users {
       [
