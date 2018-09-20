@@ -2,5 +2,7 @@ en:
   errors:
     unexpected_value: "Unexpected %{variable_name} `%{value}`"
     challenges:
+      create:
+        challenge_already_full: "Spot %{spot} is fully challenged"
       update:
         invalid_update_type: "Invalid update type %{update_type}"
