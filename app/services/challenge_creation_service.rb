@@ -1,4 +1,6 @@
 class ChallengeCreationService
+  ChallengeAlreadyFullError = Class.new(StandardError)
+
   def self.create_challenge(challenger:, performance:, spot:)
     new(challenger, performance, spot).perform
   end
@@ -15,6 +17,9 @@ class ChallengeCreationService
     users = _get_users_involved_in_challenge(@challenger, type, @spot, @performance)
     @challenge = _create_or_update(@performance, @spot, type, users)
     _result
+  rescue ChallengeAlreadyFullError
+    Rails.logger.info(I18n.t!("errors.challenges.create.failed_challenge_log", name: @challenger.full_name, spot: @spot.to_s)) # rubocop:disable Metrics/LineLength
+    _error([I18n.t!("errors.challenges.create.challenge_already_full", spot: @spot.to_s)])
   end
 
   private
@@ -28,8 +33,13 @@ class ChallengeCreationService
     )
   end
 
+  def _error(errors = ["Error creating challenge"])
+    OpenStruct.new(success?: false, errors: errors)
+  end
+
   def _create_or_update(performance, spot, type, users)
     challenge = Challenge.find_by(performance: performance, spot: spot)
+    raise ChallengeAlreadyFullError if challenge&.full?
     if challenge.nil?
       _create(performance, spot, type, users)
     else

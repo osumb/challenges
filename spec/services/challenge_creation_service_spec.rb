@@ -15,6 +15,32 @@ describe ChallengeCreationService do
         expect(result.success?).to be(true)
         expect(result.errors).to be_empty
       end
+
+      context "when the spot has already been challenged" do
+        let!(:new_challenger) { create(:user, :spot_a14, :trumpet, :solo) }
+
+        before(:each) { result }
+
+        it "doesn't create a new user_challenge object" do
+          expect do
+            described_class.create_challenge(
+              challenger: new_challenger,
+              performance: performance,
+              spot: spot
+            )
+          end.not_to change { UserChallenge.count }
+        end
+
+        it "returns an error" do
+          error_result = described_class.create_challenge(
+            challenger: new_challenger,
+            performance: performance,
+            spot: spot
+          )
+
+          expect(error_result.success?).to be(false)
+        end
+      end
     end
 
     context "Open Spot Challenge" do
@@ -46,6 +72,37 @@ describe ChallengeCreationService do
           expect(challenge.valid?).to be(true)
           expect(challenge.open_spot_challenge_type?).to be(true)
           expect(challenge.users.length).to eq(2)
+        end
+      end
+
+      context "when the challenge is already full" do
+        let!(:second_challenger) { create(:user, :spot_a14, :trumpet, :solo) }
+        let!(:first_challenger) { create(:user, :spot_x13, :trumpet, :solo) }
+        let!(:challenger) { create(:user, :spot_a13, :trumpet, :solo) }
+        let!(:challenge) do
+          result # creates challenge the first time
+          described_class.create_challenge(challenger: first_challenger, performance: performance, spot: spot)
+          Challenge.last
+        end
+
+        it "doesn't create another user challenge" do
+          expect do
+            described_class.create_challenge(
+              challenger: second_challenger,
+              performance: performance,
+              spot: spot
+            )
+          end.not_to change { UserChallenge.count }
+        end
+
+        it "returns an error", :aggregate_failures do
+          error_result = described_class.create_challenge(
+            challenger: second_challenger,
+            performance: performance,
+            spot: spot
+          )
+
+          expect(error_result.success?).to be(false)
         end
       end
     end
