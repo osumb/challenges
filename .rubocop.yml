@@ -62,3 +62,6 @@ Lint/MissingCopEnableDirective:
 
 Style/StringLiterals:
   EnforcedStyle: double_quotes
+
+Layout/EmptyLineAfterGuardClause:
+  Enabled: false

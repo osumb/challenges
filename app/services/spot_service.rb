@@ -1,5 +1,5 @@
 class SpotService
-  SPOT_REGEX = /\d+|\D+/
+  SPOT_REGEX = /\d+|\D+/.freeze
 
   def self.find(query:)
     row, file = query.scan(SPOT_REGEX)
